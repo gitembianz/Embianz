@@ -202,24 +202,27 @@
         @endif
        </span>
       </div>
-      <!-- <div class="details__text">
-       <h3>
-        @if (app()->has('label_cart_delivery_tag'))
-         {!! app('label_cart_delivery_tag') !!}
-        @endif
-       </h3>
-       <span>
-        @if ($cart->delivery_price == 0)
-         @if (app()->has('label_cart_delivery_free'))
-          {!! app('label_cart_delivery_free') !!}
+      @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+
+       <div class="details__text">
+        <h3>
+         @if (app()->has('label_cart_delivery_tag'))
+          {!! app('label_cart_delivery_tag') !!}
          @endif
-        @else
-         {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
-          {!! app('global_currency_primary_symbol') !!}
+        </h3>
+        <span>
+         @if ($cart->delivery_price == 0)
+          @if (app()->has('label_cart_delivery_free'))
+           {!! app('label_cart_delivery_free') !!}
+          @endif
+         @else
+          {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
          @endif
-        @endif
-       </span>
-      </div> -->
+        </span>
+       </div>
+      @endif
       @if ($cart->voucher_id != null)
        <div class="details__text">
         <h3>
@@ -250,12 +253,13 @@
         @endif
        </h3>
        <span id="detailsTotal">
-        {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
+        @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+         {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
+        @else
+         {{ number_format($cart->final_amount - app('global_delivery_price'), 2, $decimal, $mill) }}
+        @endif
         @if (app()->has('global_currency_primary_symbol'))
          {!! app('global_currency_primary_symbol') !!}
-        @endif
-        <!-- {{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
-         {!! app('global_currency_primary_symbol') !!} TEMPORARY!!!--> 
         @endif
        </span>
       </div>
