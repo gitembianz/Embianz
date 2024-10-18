@@ -206,7 +206,9 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'product_price_from', 'value' => 'Preț începand de la', 'description' => 'Product variant price from', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'show_parent', 'value' => 'Vizualizează produsul', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'header_allproducts', 'value' => 'Toate Produsele', 'description' => 'All prodicts category in header - a', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_phone_title', 'value' => 'Telefon Comenzi:', 'description' => 'PDP Phone label title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_phone_link', 'value' => '<a href="tel:+40757527656">0 757 527 656</a>', 'description' => 'PDP Phone link', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_phone_program', 'value' => '(Luni-Duminica 09:00 - 21:00)', 'description' => 'PDP Phone program', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }
