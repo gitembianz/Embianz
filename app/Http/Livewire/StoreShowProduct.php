@@ -70,36 +70,37 @@ class StoreShowProduct extends Component
             $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
           },
           'related_product' => function ($query) {
-            $query->orderBy('sequence')
-              ->select('parent_id', 'product_id', 'sequence', 'id')
-              ->with([
-                'product' => function ($query) {
-                  $query->where('active', 1)
-                    ->where('start_date', '<=', now()->format('Y-m-d'))
-                    ->where('end_date', '>=', now()->format('Y-m-d'))
-                    ->select('id', 'name', 'sku', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
-                    ->with([
-                      'media' => function ($query) {
-                        $query->select('path', 'name', 'type')->where('type', 'main');
-                      },
-                      'reviews' => function ($query) {
-                        $query->select('product_id', 'count', 'value');
-                      },
-                      'product_categories' => function ($query) {
-                        $query->select('product_id', 'category_id', 'primary_category')
-                          ->where('primary_category', true);
-                        $query->with(['category' => function ($query) {
-                          $query->select('id', 'short_description', 'seo_id');
-                        }]);
-                      },
-                      'product_prices' => function ($query) {
-                        $query->select('product_id', 'value', 'discount', 'value_no_discount');
-                      },
-                    ]);
-                }
-              ]);
+            $query->select('product_id', 'id', 'parent_id')
+              ->orderBy('sequence', 'desc')
+              ->orderByRaw('(SELECT innerid FROM products WHERE products.id = product_id) DESC')
+              ->with(['product' => function ($query) {
+                $query->where('active', 1)
+                  ->where('start_date', '<=', now()->format('Y-m-d'))
+                  ->where('end_date', '>=', now()->format('Y-m-d'))
+                  ->select('id', 'name', 'sku', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
+                  ->with([
+                    'media' => function ($query) {
+                      $query->select('path', 'name', 'type')->where('type', 'main');
+                    },
+                    'reviews' => function ($query) {
+                      $query->select('product_id', 'count', 'value');
+                    },
+                    'product_categories' => function ($query) {
+                      $query->select('product_id', 'category_id', 'primary_category')
+                        ->where('primary_category', true);
+                      $query->with(['category' => function ($query) {
+                        $query->select('id', 'short_description', 'seo_id');
+                      }]);
+                    },
+                    'product_prices' => function ($query) {
+                      $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                    },
+                  ]);
+              }]);
           }
-        ])->where('id', $this->productId)->first();
+        ])
+        ->where('id', $this->productId)
+        ->first();
     }
   }
 }

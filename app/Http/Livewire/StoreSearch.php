@@ -114,7 +114,7 @@ class StoreSearch extends Component
                         && $product->type != 'parent'
                         && $product->start_date <= now()->format('Y-m-d')
                         && $product->end_date >= now()->format('Y-m-d');
-                })->sortByDesc('popularity');
+                })->sortByDesc('popularity')->sortByDesc('innerid');
 
                 $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -152,7 +152,8 @@ class StoreSearch extends Component
                             }]);
                         }
                     ])
-                    ->orderBy('popularity', 'desc')
+                    ->orderBy('popularity', 'DESC')
+                    ->orderBy('innerid', 'ASC')
                     ->paginate($this->loadAmount);
             }
         } else {

@@ -324,122 +324,140 @@ class Storesettingstable extends Component
   private function createNewSitemap($filePath)
   {
     $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-      '</urlset>';
-    file_put_contents($filePath, $xmlString);
-    return simplexml_load_string($xmlString);
-  }
+'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+    '</urlset>';
+file_put_contents($filePath, $xmlString);
+return simplexml_load_string($xmlString);
+}
 
 
-  public function sitemap()
-  {
-    $filePath = public_path('sitemap.xml');
-    $xml = $this->initializeSitemap();
+public function sitemap()
+{
+$filePath = public_path('sitemap.xml');
+$xml = $this->initializeSitemap();
 
-    //homepage
-    $url = $xml->addChild('url');
-    $url->addChild('loc', url('/'));
-    $url->addChild('lastmod', now()->toAtomString());
-    $url->addChild('priority', '1.0');
+//homepage
+$url = $xml->addChild('url');
+$url->addChild('loc', url('/'));
+$url->addChild('lastmod', now()->toAtomString());
+$url->addChild('priority', '1.0');
 
-    //static pages
-    $pages = [
-      '/faq' => '0.5',
-      '/cookie' => '0.5',
-      '/privacy' => '0.5',
-      '/contact' => '0.5',
-      '/about' => '0.5',
-      '/terms' => '0.5'
-    ];
+//static pages
+$pages = [
+'/faq' => '0.5',
+'/cookie' => '0.5',
+'/privacy' => '0.5',
+'/contact' => '0.5',
+'/about' => '0.5',
+'/terms' => '0.5'
+];
 
-    foreach ($pages as $page => $priority) {
-      $url = $xml->addChild('url');
-      $url->addChild('loc', url($page));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', $priority);
-    }
-    // Fetch and add active products
-    $products = Product::where('active', true)->where('type', '!=', 'parent')
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-      ->get();
+foreach ($pages as $page => $priority) {
+$url = $xml->addChild('url');
+$url->addChild('loc', url($page));
+$url->addChild('lastmod', now()->toAtomString());
+$url->addChild('priority', $priority);
+}
+// Fetch and add active products
+$products = Product::where('active', true)->where('type', '!=', 'parent')
+->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+    ->get();
 
     foreach ($products as $product) {
-      $url = $xml->addChild('url');
-      $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
-      $url->addChild('loc', htmlspecialchars($productUrl));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', '0.8');
+    $url = $xml->addChild('url');
+    $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
+    $url->addChild('loc', htmlspecialchars($productUrl));
+    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('priority', '0.8');
     }
 
     if (app()->has('global_default_category') && app('global_default_category') != "") {
-      $default_category = Category::find(app('global_default_category'));
-      if ($default_category != null) {
+    $default_category = Category::find(app('global_default_category'));
+    if ($default_category != null) {
+    $url = $xml->addChild('url');
+    $default_categoryUrl = route('products', ['categorySlug' => $default_category->seo_id ??
+    $default_category->id]);
+    $url->addChild('loc', htmlspecialchars($default_categoryUrl));
+    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('priority', '0.9');
+    }
+    $categories = Category::where('active', true)
+    ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+        ->where('id', '!=', $default_category->id)->get();
+        }
+
+        foreach ($categories as $category) {
         $url = $xml->addChild('url');
-        $default_categoryUrl = route('products', ['categorySlug' => $default_category->seo_id ??
-          $default_category->id]);
-        $url->addChild('loc', htmlspecialchars($default_categoryUrl));
+        $categoryUrl = route('products', ['categorySlug' => $category->seo_id ?? $category->id]);
+        $url->addChild('loc', htmlspecialchars($categoryUrl));
         $url->addChild('lastmod', now()->toAtomString());
         $url->addChild('priority', '0.9');
-      }
-      $categories = Category::where('active', true)
-        ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-        ->where('id', '!=', $default_category->id)->get();
-    }
-
-    foreach ($categories as $category) {
-      $url = $xml->addChild('url');
-      $categoryUrl = route('products', ['categorySlug' => $category->seo_id ?? $category->id]);
-      $url->addChild('loc', htmlspecialchars($categoryUrl));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', '0.9');
-    }
+        }
 
 
-    $xml->asXML($filePath);
-    chmod($filePath, 0755);
+        $xml->asXML($filePath);
+        chmod($filePath, 0755);
 
-    session()->flash('notification', [
-      'message' => 'Sitemap generated successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
+        session()->flash('notification', [
+        'message' => 'Sitemap generated successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+        ]);
+        }
 
-  public function refreshfilters()
-  {
-    Cache::forget('cached_specifications');
-    session()->flash('notification', [
-      'message' => 'Fileters update successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
+        public function refreshfilters()
+        {
+        Cache::forget('cached_specifications');
+        session()->flash('notification', [
+        'message' => 'Fileters update successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+        ]);
+        }
 
-  public function addSettingsIfNotExist()
-  {
-    $settings = StoreSeeder::settings();
-    foreach ($settings as $setting) {
-      $exists = DB::table('store__settings')
+        public function ProductshuffledIds()
+        {
+        $products = Product::all();
+
+        $shuffledIds = range(1, $products->count());
+        shuffle($shuffledIds);
+
+        foreach ($products as $index => $product) {
+        $product->innerid = $shuffledIds[$index];
+        $product->save();
+        }
+        session()->flash('notification', [
+        'message' => 'Product ids shuffled successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+        ]);
+        }
+
+        public function addSettingsIfNotExist()
+        {
+        $settings = StoreSeeder::settings();
+        foreach ($settings as $setting) {
+        $exists = DB::table('store__settings')
         ->where('parameter', $setting['parameter'])
         ->exists();
 
-      if (!$exists) {
+        if (!$exists) {
         DB::table('store__settings')->insert([
-          'parameter' => $setting['parameter'],
-          'value' => $setting['value'],
-          'description' => $setting['description'],
-          'createdby' => 'admin',
-          'lastmodifiedby' => 'admin',
-          'created_at' => $setting['created_at'],
-          'updated_at' => $setting['updated_at']
+        'parameter' => $setting['parameter'],
+        'value' => $setting['value'],
+        'description' => $setting['description'],
+        'createdby' => 'admin',
+        'lastmodifiedby' => 'admin',
+        'created_at' => $setting['created_at'],
+        'updated_at' => $setting['updated_at']
         ]);
-      }
-    }
-    Cache::forget('global_variables');
-    session()->flash('notification', [
-      'message' => 'Parameters update successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-}
+        }
+        }
+        Cache::forget('global_variables');
+        session()->flash('notification', [
+        'message' => 'Parameters update successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+        ]);
+        }
+        }

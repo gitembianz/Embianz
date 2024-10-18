@@ -67,7 +67,7 @@ class GeneralSearch extends Component
                         && $product->type != 'parent'
                         && $product->start_date <= now()->format('Y-m-d')
                         && $product->end_date >= now()->format('Y-m-d');
-                })->sortByDesc('popularity')->take(app('global_limit_searchitems'));
+                })->sortByDesc('popularity')->sortByDesc('innerid')->take(app('global_limit_searchitems'));
             } else {
                 return Product::search($this->search)
                     ->select('id', 'name', 'seo_id', 'type', 'short_description')
@@ -83,7 +83,8 @@ class GeneralSearch extends Component
                             $query->select('product_id', 'value', 'pricelist_id');
                         }
                     ])
-                    ->orderBy('popularity', 'desc')
+                    ->orderBy('popularity', 'DESC')
+                    ->orderBy('innerid', 'ASC')
                     ->limit(app('global_limit_searchitems'))
                     ->get();
             }
