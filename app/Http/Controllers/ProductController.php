@@ -177,7 +177,7 @@ private function generateCsvFeed($products, $feedType)
                 $image640 = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
                 $image640 = str_replace(' ', '%20', $image640);
                 $image70 = str_replace('resized640','resized70', $image640);
-                $category = $this->sanitizeData($product->category_name ?? '');
+                $category = $this->sanitizeData($product->seo_title ?? '');
                 return [
                     $store,
                     $this->sanitizeData($product->name),
