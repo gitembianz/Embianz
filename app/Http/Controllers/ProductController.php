@@ -156,7 +156,7 @@ private function generateCsvFeed($products, $feedType)
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->name),
-                    $category = $this->sanitizeData($product->category_name ?? ''),
+                    $category = $this->sanitizeData($product->seo_title ?? ''),
                     strip_tags($this->sanitizeData($product->long_description)),
                     $link,
                     $link,
