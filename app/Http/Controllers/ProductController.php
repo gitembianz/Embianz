@@ -156,7 +156,7 @@ private function generateCsvFeed($products, $feedType)
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->name),
-                    $category = $this->sanitizeData($product->seo_title ?? ''),
+                    $category = $this->sanitizeData($product->category_name ?? ''),
                     strip_tags($this->sanitizeData($product->long_description)),
                     $link,
                     $link,
@@ -177,7 +177,7 @@ private function generateCsvFeed($products, $feedType)
                 $image640 = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
                 $image640 = str_replace(' ', '%20', $image640);
                 $image70 = str_replace('resized640','resized70', $image640);
-                $category = $this->sanitizeData($product->seo_title ?? '');
+                $category = $this->sanitizeData($product->category_name ?? '');
                 return [
                     $store,
                     $this->sanitizeData($product->name),
