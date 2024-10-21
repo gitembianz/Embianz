@@ -50,13 +50,21 @@ class ShowOrder extends Component
         $new_status = $this->record ?? NULL;
         if (!is_null($new_status)) {
             $order = Order::find($this->orderId);
+            $oldstatus = $order->status_id;
+            $statusclose = Status::where('type', 'order')->where('name', 'canceled')->first()->id;
+
             if (array_key_exists('status_id', $new_status)) {
                 $order->status_id = $new_status['status_id'];
                 $order->updated_at = now();
                 $order->save();
-                if ($order->status->name == 'canceled') {
+                if ($oldstatus != $new_status['status_id'] && $new_status['status_id'] == $statusclose) {
                     foreach ($order->orders as $orderitem) {
                         $orderitem->product->quantity += $orderitem->quantity;
+                        $orderitem->product->save();
+                    }
+                } elseif ($oldstatus == $statusclose && $new_status['status_id'] != $statusclose) {
+                    foreach ($order->orders as $orderitem) {
+                        $orderitem->product->quantity -= $orderitem->quantity;
                         $orderitem->product->save();
                     }
                 }
