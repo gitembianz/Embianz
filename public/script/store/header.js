@@ -1,7 +1,220 @@
-'use strict';function scrollEvent(){const c=document.querySelector("header");var b=document.querySelector(".banner");const a=document.querySelector("main");if(b){const f=c.offsetHeight,d=b.offsetHeight;200<window.pageYOffset?(b.style.transform=`translate3d(0px, -${d}px, 0px)`,a.style.paddingTop=`${f}px`,c.style.paddingTop=0):(b.style.transform="translate3d(0px, 0px, 0px)",a.style.paddingTop=`${60+d}px`,c.style.paddingTop=`${d}px`)}else b=c.offsetHeight,200<window.pageYOffset?(a.style.paddingTop=`${b}px`,
-c.style.paddingTop=0):a.style.paddingTop=`${b}px`}function dropmenus(c,b=!1){document.querySelectorAll(c).forEach(function(a){let f=a.querySelector(`.${a.className}__open`),d=a.querySelector(`.${a.className}__list`);f&&d&&(b&&(a.classList.add("active"),d.classList.add("active")),f.addEventListener("click",function(){a.classList.toggle("active");d.classList.toggle("active");a.classList.contains("active")&&a.scrollIntoView({behavior:"smooth",block:"start"})}))})}
-function leftbar(c,b,a,f,d){c=document.getElementById(c);b=document.getElementById(b);const e=document.getElementById(a);a=document.getElementById(f);d=document.getElementById(d);const g=document.querySelector("body");c&&b&&e&&a&&(c.addEventListener("click",()=>{e.classList.add("active");dataLayer.push({event:"view_minicart",ecommerce:{}});g.style.overflow="hidden";scrollEvent()}),b.addEventListener("click",()=>{e.classList.remove("active");g.style.overflow="auto"}),d.addEventListener("click",h=>
-{e.classList.remove("active");g.style.overflow="auto"}),document.addEventListener("keydown",function(h){27===h.keyCode&&(e.classList.remove("active"),g.style.overflow="auto")}))}
-function searchBar(){const c=document.getElementById("searchOpen"),b=document.getElementById("searchClose"),a=document.getElementById("searchInput"),f=document.getElementById("modalClose"),d=document.getElementById("searching");c.addEventListener("click",function(){(new Promise(e=>{document.body.style.overflow="hidden";e()})).then(()=>{a.focus()})});b.addEventListener("click",function(){document.body.style.overflow="auto"});f.addEventListener("click",function(){document.body.style.overflow="auto"});
-a.addEventListener("keypress",function(e){"Enter"===e.key&&(e.preventDefault(),window.location.href="/search/"+encodeURIComponent(a.value))});d.addEventListener("click",function(){window.location.href="/search/"+encodeURIComponent(a.value)})}let lastTap=0;function DoubleTapRedirect(c){const b=(new Date).getTime(),a=b-lastTap;lastTap=b;500>a&&0<a&&(window.location.href=c)}searchBar();leftbar("basketOpen","basketClose","basketList","basketContent","basketHidden");
-leftbar("wishOpen","wishClose","wishList","wishContent","wishHidden");leftbar("menuOpen","menuClose","menuList","menuContent","menuHidden");dropmenus(".dropmenu",!1);dropmenus(".submenu",!1);scrollEvent();window.addEventListener("scroll",scrollEvent);window.addEventListener("resize",scrollEvent);
+//<--------------------------------------------------------------------->
+//<---------------------------- ScrollEvent ---------------------------->
+function scrollEvent() {
+    const header = document.querySelector("header");
+    const banner = document.querySelector(".banner");
+    const main = document.querySelector("main");
+    const body = document.body;
+  
+    if (!banner) {
+      const headerHeight = header.offsetHeight;
+      // const bannerHeight = banner.offsetHeight;
+  
+      if (window.pageYOffset > 200) {
+        // banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+        main.style.paddingTop = `${headerHeight}px`;
+        header.style.paddingTop = 0;
+      } else {
+        // banner.style.transform = `translate3d(0px, 0px, 0px)`;
+        main.style.paddingTop = `${headerHeight}px`;
+        // header.style.paddingTop = `${headerHeight}px`;
+      }
+    } else {
+      const headerHeight = header.offsetHeight;
+      const bannerHeight = banner.offsetHeight;
+  
+      if (window.pageYOffset > 200) {
+        banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+        main.style.paddingTop = `${headerHeight}px`;
+        header.style.paddingTop = 0;
+      } else {
+        banner.style.transform = `translate3d(0px, 0px, 0px)`;
+        main.style.paddingTop = `${60 + bannerHeight}px`;
+        header.style.paddingTop = `${bannerHeight}px`;
+      }
+    }
+  }
+  
+  //<-------------------------- End ScrollEvent -------------------------->
+  //<--------------------------------------------------------------------->
+  //<------------------------ DropMenu on leftbar ------------------------>
+  function dropmenus(menuID, setActive = false) {
+    let dropmenus = document.querySelectorAll(menuID);
+  
+    dropmenus.forEach(function (menu) {
+      let button = menu.querySelector(`.${menu.className}__open`);
+      let list = menu.querySelector(`.${menu.className}__list`);
+  
+      if (button && list) {
+        if (setActive) {
+          menu.classList.add("active");
+          list.classList.add("active");
+        }
+  
+        button.addEventListener("click", function () {
+          menu.classList.toggle("active");
+          list.classList.toggle("active");
+  
+          if (menu.classList.contains("active")) {
+            menu.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      } else {
+        return;
+      }
+    });
+  }
+  //<---------------------- End DropMenu on leftbar ---------------------->
+  //<--------------------------------------------------------------------->
+  //<------------------------------ LeftBar ------------------------------>
+  function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
+    const buttonOpen = document.getElementById(idOpen);
+    const buttonClose = document.getElementById(idClose);
+    const list = document.getElementById(idList);
+    const content = document.getElementById(idContent);
+    const contentModal = document.getElementById(hiddenId);
+    const body = document.querySelector("body");
+  
+    if (!buttonOpen || !buttonClose || !list || !content) {
+      // console.log("leftbar error");
+      return;
+    } else {
+      
+      buttonOpen.addEventListener("click", () => {
+        list.classList.add("active");
+        // gtm view_cart event
+  
+         switch (buttonOpen.id){
+            case 'basketOpen':
+                dataLayer.push({
+                    event: "view_minicart",
+                    ecommerce: {
+                    }
+                   });
+                   break;
+            case 'wishOpen':
+                dataLayer.push({
+                    event: "view_wishlist",
+                    ecommerce: {
+                    }
+                   });
+                   break;
+            case 'searchOpen':
+                dataLayer.push({
+                    event: "view_search",
+                    ecommerce: {
+                    }
+                   });
+                   break;
+
+            case 'menuOpen':
+                 dataLayer.push({
+                    event: "view_menu",
+                    ecommerce: {
+                    }
+                    });
+                    break;
+                    default: return;
+         }
+
+        body.style.overflow = "hidden";
+        scrollEvent();
+      });
+      buttonClose.addEventListener("click", () => {
+        list.classList.remove("active");
+        body.style.overflow = "auto";
+      });
+      contentModal.addEventListener("click", (event) => {
+        list.classList.remove("active");
+        body.style.overflow = "auto";
+      });
+  
+      function handleKeyPress(event) {
+        if (event.keyCode === 27) {
+          list.classList.remove("active");
+          body.style.overflow = "auto";
+        }
+      }
+  
+      document.addEventListener("keydown", handleKeyPress);
+    }
+  }
+  //<---------------------------- End LeftBar ---------------------------->
+  //<--------------------------------------------------------------------->
+  //<----------------------------- SearchBar ----------------------------->
+  function searchBar() {
+    const searchBtn = document.getElementById("searchOpen");
+    const closeBtn = document.getElementById("searchClose");
+    const input = document.getElementById("searchInput");
+    const modalClose = document.getElementById("modalClose");
+    const searching = document.getElementById("searching");
+  
+    searchBtn.addEventListener("click", function () {
+      new Promise((resolve) => {
+        document.body.style.overflow = "hidden";
+        resolve();
+      }).then(() => {
+        input.focus();
+      });
+    });
+  
+    closeBtn.addEventListener("click", function () {
+      document.body.style.overflow = "auto";
+    });
+    modalClose.addEventListener("click", function () {
+      document.body.style.overflow = "auto";
+    });
+    function handleKeyPress(event) {
+      if (event.keyCode === 27) {
+        document.getElementById("searchList").classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+    }
+  
+    input.addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        window.location.href = "/search/" + encodeURIComponent(input.value);
+      }
+    });
+    searching.addEventListener("click", function () {
+      window.location.href = "/search/" + encodeURIComponent(input.value);
+    });
+  }
+  
+  //<--------------------------- End SearchBar --------------------------->
+  //<--------------------------------------------------------------------->
+  //<------------------------ Double Tap Redirect ------------------------>
+  let lastTap = 0;
+  
+  function DoubleTapRedirect(link) {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    lastTap = currentTime;
+  
+    if (tapLength < 500 && tapLength > 0) {
+      window.location.href = link;
+    }
+  }
+  //<---------------------- End Double Tap Redirect ---------------------->
+  //<--------------------------------------------------------------------->
+  //<------------------------ Start Functions IOS ------------------------>
+  searchBar();
+  leftbar(
+    "basketOpen",
+    "basketClose",
+    "basketList",
+    "basketContent",
+    "basketHidden",
+  );
+  leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
+  leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
+  leftbar("searchOpen", "searchClose", "searchList", "searchContent", ""); 
+  dropmenus(".dropmenu", false);
+  dropmenus(".submenu", false);
+  scrollEvent();
+  window.addEventListener("scroll", scrollEvent);
+  window.addEventListener("resize", scrollEvent);
+  //<---------------------- End Start Functions IOS ---------------------->
+  //<--------------------------------------------------------------------->
+  
