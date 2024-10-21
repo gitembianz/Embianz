@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('products');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products');
-            $table->string('sequence')->nullable()->default(0);
+            $table->integer('sequence')->nullable()->default(0);
             $table->timestamps();
         });
     }
