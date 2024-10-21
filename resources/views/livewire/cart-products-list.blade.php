@@ -87,66 +87,73 @@
 
      <li class="leftbar__item">
       @if ($nonquantity[$index])
-       <div class="leftbar__link"
-        href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-        @if ($cartItem->product->media->where('type', 'min')->first())
-         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-          src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
-          alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
-        @else
-         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
-          alt="something wrong">
-        @endif
-        <div class="leftbar__link--text">
-         <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
-         <span class="item__product--error">Stoc disponibil pentru acest produs:
-          {{ $cartItem->product->quantity }}</span>
-         <div class="basket__item" style="border-top:1px solid #333333">
-          <div class="quantity">
-           <span>
-            @if (app()->has('label_product_quantity_tag'))
-             {!! app('label_product_quantity_tag') !!}
-            @endif
+       <div class="basket__split">
+
+        <div class="leftbar__link">
+         @if ($cartItem->product->media->where('type', 'min')->first())
+          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
+           src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+           alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
+         @else
+          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+           alt="something wrong">
+         @endif
+         <div class="leftbar__link--text">
+          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+          <span class="item__product--error">
+           @if (app()->has('label_product_quantity_error'))
+            {!! app('label_product_quantity_error') !!}
+           @endif
+           {{ $cartItem->product->quantity }}
+          </span>
+
+         </div>
+        </div>
+        <div class="basket__item" style="border-top:1px solid #333333">
+         <div class="quantity" style="border-bottom: 0 !important">
+          <span>
+           @if (app()->has('label_product_quantity_tag'))
+            {!! app('label_product_quantity_tag') !!}
+           @endif
+          </span>
+          <div class="quantity__buttons">
+           <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
+            style="width: 48px; height: 48px" aria-label="Decrease quantity"
+            wire:click="decrement({{ $cartItem->id }})">
+            <svg>
+             <circle cx="12" cy="12" r="10"></circle>
+             <line x1="8" y1="12" x2="16" y2="12">
+             </line>
+            </svg>
+           </button>
+           <span class="quantity__input product__quantity">
+            {{ $cartItem->quantity }}
            </span>
-           <div class="quantity__buttons">
-            <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
-             style="width: 48px; height: 48px" aria-label="Decrease quantity"
-             wire:click="decrement({{ $cartItem->id }})">
-             <svg>
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="8" y1="12" x2="16" y2="12">
-              </line>
-             </svg>
-            </button>
-            <span class="quantity__input product__quantity">
-             {{ $cartItem->quantity }}
-            </span>
-            <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
-             style="width: 48px; height: 48px" aria-label="Increase quantity"
-             wire:click="increment({{ $cartItem->id }})">
-             <svg>
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="16">
-              </line>
-              <line x1="8" y1="12" x2="16" y2="12">
-              </line>
-             </svg>
-            </button>
-           </div>
+           <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+            style="width: 48px; height: 48px" aria-label="Increase quantity"
+            wire:click="increment({{ $cartItem->id }})">
+            <svg>
+             <circle cx="12" cy="12" r="10"></circle>
+             <line x1="12" y1="8" x2="12" y2="16">
+             </line>
+             <line x1="8" y1="12" x2="16" y2="12">
+             </line>
+            </svg>
+           </button>
           </div>
-          <div class="basket__subtotal">
-           <span>
-            @if (app()->has('label_cart_page_subtotal_tag'))
-             {!! app('label_cart_page_subtotal_tag') !!}
-            @endif
-           </span>
-           <span>
-            {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
-            @if (app()->has('global_currency_primary_symbol'))
-             {!! app('global_currency_primary_symbol') !!}
-            @endif
-           </span>
-          </div>
+         </div>
+         <div class="basket__subtotal">
+          <span>
+           @if (app()->has('label_cart_page_subtotal_tag'))
+            {!! app('label_cart_page_subtotal_tag') !!}
+           @endif
+          </span>
+          <span>
+           {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
+           @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
+          </span>
          </div>
         </div>
        </div>
