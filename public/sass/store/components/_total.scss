@@ -80,6 +80,8 @@
   border-radius: 7px;
   width: 100%;
   position: relative;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
 
   & > img {
     width: 50px;
@@ -103,13 +105,22 @@
   }
 }
 
+
+@media (max-width: map-get($grid-breakpoints, sm)) {
+  .total__price:last-child{
+   flex-basis: 100%;
+    text-align:right;
+  }
+
+}
+
 .total__name {
   width: 100%;
   flex: 1;
   text-align: left;
   font-size: $textSize;
   font-size: $lightWeight;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   text-decoration: none;
   color: $lightBlack;
   margin: 0;
@@ -120,7 +131,7 @@
   font-size: $textSize;
   font-size: $lightWeight;
   text-transform: uppercase;
-  color: lighten($color: $lightBlack, $amount: 20%);
+  color: $lightBlack;
   text-wrap: nowrap;
   word-break: break-word;
   white-space: nowrap;
