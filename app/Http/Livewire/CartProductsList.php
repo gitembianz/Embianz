@@ -314,4 +314,64 @@ class CartProductsList extends Component
             return redirect()->route('order');
         }
     }
+    public function increment($id)
+    {
+        if ($this->cart) {
+            $cartitem_to_increment = $this->cart->cartItems->where('id', $id)->first();
+            if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity) {
+                $cartitem_to_increment->increment('quantity');
+                $this->cart->increment('quantity_amount');
+                $this->cart->delivery_price = app('global_delivery_price');
+                if ($cartitem_to_increment->price != $cartitem_to_increment->product->product_prices->first()->value) {
+                    $cartitem_to_increment->price = $cartitem_to_increment->product->product_prices->first()->value;
+                    $cartitem_to_increment->save();
+                    $sum_amount = 0;
+                    foreach ($this->cart->carts as $item) {
+                        $sum_amount = $sum_amount + $item->price * $item->quantity;
+                    }
+                    $this->cart->sum_amount = $sum_amount;
+                    $this->cart->seen_by_customer = true;
+                } else {
+                    $this->cart->sum_amount += $cartitem_to_increment->product->product_prices->first()->value;
+                }
+                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                    $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+                }
+                $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+                $this->cart->final_amount -= $this->cart->voucher_value;
+                $this->cart->status_id = app('global_cart_new');
+                $this->cart->save();
+                $this->emit('cartUpdated');
+            }
+        } else {
+            $this->emit('newcart');
+            return;
+        }
+    }
+
+    public function decrement($id)
+    {
+        if ($this->cart) {
+            $cartitem_to_decrement = $this->cart->cartItems->where('id', $id)->first();
+            if ($cartitem_to_decrement && $cartitem_to_decrement->quantity > 1) {
+                $cartitem_to_decrement->decrement('quantity');
+                $this->cart->decrement('quantity_amount');
+                $this->cart->delivery_price = app('global_delivery_price');
+                $this->cart->sum_amount -= $cartitem_to_decrement->product->product_prices->first()->value;
+                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                    $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+                }
+                $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+                $this->cart->final_amount -= $this->cart->voucher_value;
+                $this->cart->status_id = app('global_cart_new');
+                $this->cart->save();
+                $this->emit('cartUpdated');
+            } else {
+                return;
+            }
+        } else {
+            $this->emit('newcart');
+            return;
+        }
+    }
 }

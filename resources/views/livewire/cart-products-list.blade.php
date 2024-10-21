@@ -89,9 +89,6 @@
       @if ($nonquantity[$index])
        <div class="leftbar__link"
         href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-        <span class="leftbar__link--quantity">
-         {{ $cartItem->quantity }} x
-        </span>
         @if ($cartItem->product->media->where('type', 'min')->first())
          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
@@ -104,45 +101,137 @@
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
          <span class="item__product--error">Stoc disponibil pentru acest produs:
           {{ $cartItem->product->quantity }}</span>
-         <a class="item__product--link" href="{{ url('/cart') }}">Modifică cantitatea</a>
+         <div class="basket__item" style="border-top:1px solid #333333">
+          <div class="quantity">
+           <span>
+            @if (app()->has('label_product_quantity_tag'))
+             {!! app('label_product_quantity_tag') !!}
+            @endif
+           </span>
+           <div class="quantity__buttons">
+            <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
+             style="width: 48px; height: 48px" aria-label="Decrease quantity"
+             wire:click="decrement({{ $cartItem->id }})">
+             <svg>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="8" y1="12" x2="16" y2="12">
+              </line>
+             </svg>
+            </button>
+            <span class="quantity__input product__quantity">
+             {{ $cartItem->quantity }}
+            </span>
+            <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+             style="width: 48px; height: 48px" aria-label="Increase quantity"
+             wire:click="increment({{ $cartItem->id }})">
+             <svg>
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16">
+              </line>
+              <line x1="8" y1="12" x2="16" y2="12">
+              </line>
+             </svg>
+            </button>
+           </div>
+          </div>
+          <div class="basket__subtotal">
+           <span>
+            @if (app()->has('label_cart_page_subtotal_tag'))
+             {!! app('label_cart_page_subtotal_tag') !!}
+            @endif
+           </span>
+           <span>
+            {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
+           </span>
+          </div>
+         </div>
         </div>
        </div>
       @else
-       <a class="leftbar__link"
-        href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-        <span class="leftbar__link--quantity">
-         {{ $cartItem->quantity }} x
-        </span>
-        @if ($cartItem->product->media->where('type', 'min')->first())
-         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-          src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
-          alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
-        @else
-         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
-          alt="something wrong">
-        @endif
-        <div class="leftbar__link--text">
-         <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
-         <span class="leftbar__link--price">
-          @php
-           if (optional($cartItem->product->product_prices->first())->value) {
-               $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
-           } else {
-               $price = null;
-           }
-          @endphp
-          @if ($price && $price != null)
-           {{ $price }} @if (app()->has('global_currency_primary_symbol'))
+       <div class="basket__split">
+        <a class="leftbar__link"
+         href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+         @if ($cartItem->product->media->where('type', 'min')->first())
+          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
+           src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+           alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
+         @else
+          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+           alt="something wrong">
+         @endif
+         <div class="leftbar__link--text">
+          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+          <span class="leftbar__link--price">
+           @php
+            if (optional($cartItem->product->product_prices->first())->value) {
+                $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
+            } else {
+                $price = null;
+            }
+           @endphp
+           @if ($price && $price != null)
+            {{ $price }} @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
+           @else
+            @if (app()->has('label_product_status_indisponible'))
+             {!! app('label_product_status_indisponible') !!}
+            @endif
+           @endif
+          </span>
+         </div>
+        </a>
+        <div class="basket__item" style="border-top:1px solid #333333">
+         <div class="quantity">
+          <span>
+           @if (app()->has('label_product_quantity_tag'))
+            {!! app('label_product_quantity_tag') !!}
+           @endif
+          </span>
+          <div class="quantity__buttons">
+           <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
+            style="width: 48px; height: 48px" aria-label="Decrease quantity"
+            wire:click="decrement({{ $cartItem->id }})">
+            <svg>
+             <circle cx="12" cy="12" r="10"></circle>
+             <line x1="8" y1="12" x2="16" y2="12">
+             </line>
+            </svg>
+           </button>
+           <span class="quantity__input product__quantity">
+            {{ $cartItem->quantity }}
+           </span>
+           <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+            style="width: 48px; height: 48px" aria-label="Increase quantity"
+            wire:click="increment({{ $cartItem->id }})">
+            <svg>
+             <circle cx="12" cy="12" r="10"></circle>
+             <line x1="12" y1="8" x2="12" y2="16">
+             </line>
+             <line x1="8" y1="12" x2="16" y2="12">
+             </line>
+            </svg>
+           </button>
+          </div>
+         </div>
+         <div class="basket__subtotal">
+          <span>
+           @if (app()->has('label_cart_page_subtotal_tag'))
+            {!! app('label_cart_page_subtotal_tag') !!}
+           @endif
+          </span>
+          <span>
+           {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
+           @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
-          @else
-           @if (app()->has('label_product_status_indisponible'))
-            {!! app('label_product_status_indisponible') !!}
-           @endif
-          @endif
-         </span>
+          </span>
+         </div>
         </div>
-       </a>
+       </div>
       @endif
 
       <button class="leftbar__delete" style="border: none" type="button"
@@ -171,7 +260,7 @@
     @endforeach
    </ul>
 
-   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true') @endif>
+   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true')  @endif>
 
     <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_products_tag'))
