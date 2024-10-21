@@ -71,8 +71,8 @@ class StoreShowProduct extends Component
           },
           'related_product' => function ($query) {
             $query->select('product_id', 'id', 'parent_id')
-              ->orderBy('sequence', 'desc')
-              ->orderByRaw('(SELECT innerid FROM products WHERE products.id = product_id) DESC')
+              ->orderBy('sequence', 'asc')
+              ->orderByRaw('(SELECT popularity FROM products WHERE products.id = product_id) DESC')
               ->with(['product' => function ($query) {
                 $query->where('active', 1)
                   ->where('start_date', '<=', now()->format('Y-m-d'))
