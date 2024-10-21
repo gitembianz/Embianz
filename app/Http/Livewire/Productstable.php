@@ -13,6 +13,7 @@ use App\Models\Products_categories;
 use App\Models\Related_Products;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 use App\Models\ProductReviews as ModelsProductReviews;
 
 
@@ -251,5 +252,49 @@ class Productstable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
+  }
+  public function ProductshuffledIds()
+  {
+    $products = Product::all();
+
+    $shuffledIds = range(1, $products->count());
+    shuffle($shuffledIds);
+
+    foreach ($products as $index => $product) {
+      $product->innerid = $shuffledIds[$index];
+      $product->save();
+    }
+    session()->flash('notification', [
+      'message' => 'Product ids shuffled successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+  public function Relatedshuffleseq()
+  {
+    $products = Product::all();
+
+    $shuffledIds = range(1, $products->count());
+    shuffle($shuffledIds);
+
+    foreach ($products  as $product) {
+      if ($product->related_product->count() != 0) {
+        $shuffledIds = range(1, $product->related_product->count());
+        shuffle($shuffledIds);
+        foreach ($product->related_product as $index => $related) {
+          $related->sequence = $shuffledIds[$index];
+          $related->save();
+        }
+      } else {
+        continue;
+      }
+    }
+    Cache::forget('cached_products');
+
+    session()->flash('notification', [
+      'message' => 'Related products sequence shuffled successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 }
