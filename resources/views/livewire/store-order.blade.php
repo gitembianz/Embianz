@@ -3106,6 +3106,88 @@
         items: dlvData.items
        }
       });
+
+// Helper function to hash data using SHA-256
+async function sha256Hash(data) {
+    const encoder = new TextEncoder();
+    const encodedData = encoder.encode(data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', encodedData);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Function to extract shipping data from the confirmation page
+async function extractShippingDataAndHash() {
+    // Find the shipping section
+    const lookForm = document.querySelector('.look__form');
+    if (!lookForm) {
+        console.error('Shipping information not found.');
+        return;
+    }
+
+    // Extract shipping information using the appropriate classes or tags
+    const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
+    const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1].innerText.trim();
+    const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+    const email = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+    const street = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
+    const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+    const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+    const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+    const country = 'RO'; // Assuming Romania; update if different
+
+    // Normalize the data
+    const normalizedData = {
+        email: email.toLowerCase().trim(),
+        phone_number: phone.trim(),
+        address: {
+            first_name: firstName.toLowerCase().trim(),
+            last_name: lastName.toLowerCase().trim(),
+            street: street.toLowerCase().trim(),
+            city: city.toLowerCase().trim(),
+            region: region.toLowerCase().trim(),
+            postal_code: postalCode.trim(),
+            country: country.toLowerCase().trim()
+        }
+    };
+
+    // Hash the necessary fields
+    const hashedEmail = await sha256Hash(normalizedData.email);
+    const hashedPhone = await sha256Hash(normalizedData.phone_number);
+    const hashedFirstName = await sha256Hash(normalizedData.address.first_name);
+    const hashedLastName = await sha256Hash(normalizedData.address.last_name);
+
+    // Return the hashed data
+    return {
+        email: hashedEmail,
+        phone_number: hashedPhone,
+        address: {
+            first_name: hashedFirstName,
+            last_name: hashedLastName,
+            street: normalizedData.address.street,
+            city: normalizedData.address.city,
+            region: normalizedData.address.region,
+            postal_code: normalizedData.address.postal_code,
+            country: normalizedData.address.country
+        }
+    };
+}
+
+// Push the hashed shipping data to the dataLayer
+async function pushShippingDataToDataLayer() {
+    const hashedShippingData = await extractShippingDataAndHash();
+
+    // Push the data to the dataLayer for enhanced conversions
+    dataLayer.push({
+        event: 'set_user_data',
+        user_data: hashedShippingData
+    });
+}
+
+// Call this function after the page loads or at the appropriate moment
+pushShippingDataToDataLayer();
+
      </script>
     @endif
     <!------------------- Controls ------------------->
