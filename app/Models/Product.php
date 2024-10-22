@@ -8,6 +8,59 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
   use HasFactory;
+
+
+  protected $fillable = [
+    'name',
+    'sku',
+    'ean',
+    'active',
+    'is_new',
+    'short_description',
+    'long_description',
+    'meta_description',
+    'quantity',
+    'start_date',
+    'end_date',
+    'created_by',
+    'last_modified_by',
+    'seo_title',
+    'popularity',
+    'seo_id',
+    'parent_id',
+    'brand',
+    'innerid'
+  ];
+
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()
+      ->where(function ($query) use ($search) {
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $soundexValue = soundex($term);
+
+          $query->where(function ($subQuery) use ($term, $soundexValue) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('ean', 'like', '%' . $term . '%')
+              ->orWhere('meta_description', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+              ->orWhere('sku', 'like', '%' . $term . '%');
+
+            $words = explode(' ', $subQuery->from . '.name');
+
+            foreach ($words as $index => $word) {
+              $subQuery->orWhereRaw('SOUNDEX(SUBSTRING_INDEX(name, " ", ?)) = ?', [$index + 1, $soundexValue]);
+            }
+          });
+        }
+      }); 
+  }
+
+
   public function product_categories()
   {
     return $this->hasMany(Products_categories::class, 'product_id');
@@ -171,47 +224,6 @@ class Product extends Model
   }
 
 
-  protected $fillable = [
-    'name',
-    'sku',
-    'ean',
-    'active',
-    'is_new',
-    'short_description',
-    'long_description',
-    'meta_description',
-    'quantity',
-    'start_date',
-    'end_date',
-    'created_by',
-    'last_modified_by',
-    'seo_title',
-    'popularity',
-    'seo_id',
-    'parent_id',
-    'brand',
-    'innerid'
-  ];
-
-  public static function search($search)
-  {
-    return empty($search) ? static::query()
-      : static::query()
-      ->where(function ($query) use ($search) {
-        $searchTerms = explode(' ', $search);
-
-        foreach ($searchTerms as $term) {
-          $query->where(function ($subQuery) use ($term) {
-            $subQuery->where('id', 'like', '%' . $term . '%')
-              ->orWhere('name', 'like', '%' . $term . '%')
-              ->orWhere('ean', 'like', '%' . $term . '%')
-              ->orWhere('meta_description', 'like', '%' . $term . '%')
-              ->orWhere('short_description', 'like', '%' . $term . '%')
-              ->orWhere('sku', 'like', '%' . $term . '%');
-          });
-        }
-      });
-  }
 
   public static function name($search)
   {

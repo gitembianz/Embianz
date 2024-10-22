@@ -200,7 +200,7 @@ class StoreSearch extends Component
                     ['path' => LengthAwarePaginator::resolveCurrentPath()]
                 );
             } else {
-                return Category::search_by_name($this->search)
+                return Category::search($this->search)
                     ->select('id', 'name', 'seo_id', 'short_description', 'long_description')
                     ->where('active', true)
                     ->where('start_date', '<=', now()->format('Y-m-d'))
