@@ -147,7 +147,7 @@
    @if ($editproduct === null)
     <span class="disabled">{{ $product->brand }}</span>
    @else
-    <input type="text" placeholder=" " name="product__brand" wire:model.defer="prod.product_brand" required>
+    <input type="text" placeholder=" " name="product__brand" wire:model.defer="prod.brand" required>
    @endif
    <label for="product__name">Brand</label>
   </div>
