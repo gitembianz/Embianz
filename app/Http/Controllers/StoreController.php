@@ -76,8 +76,10 @@ class StoreController extends Controller
       ->orderBy('popularity', 'desc')
       ->orderBy('id', 'desc')
       ->first();
+    if ($product) {
 
-    $preload = $this->getPreloadImage($product, $data, $useCache);
+      $preload = $this->getPreloadImage($product, $data, $useCache);
+    }
 
     return view('store.products', compact('data', 'can', 'preload'));
   }
