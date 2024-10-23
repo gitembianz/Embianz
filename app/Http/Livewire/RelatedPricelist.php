@@ -22,7 +22,7 @@ class RelatedPricelist extends Component
   public $selectAll = false;
   public $showrelatedprice = false;
   public $productId;
-  public $columns = ['Id', 'Name', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
+  public $columns = ['Id', 'Name', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT', 'PRICE'];
   public $selectedColumns = [];
   public $idbeingremoved = null;
   public $addrelatedprice = false;
@@ -101,7 +101,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+      'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
     ];
   }
   public function load()
@@ -119,7 +119,7 @@ class RelatedPricelist extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedprices->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprices->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -148,7 +148,7 @@ class RelatedPricelist extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedpricesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedpricesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getRelatedpricesProperty()
   {
@@ -216,6 +216,8 @@ class RelatedPricelist extends Component
       $index . '.value' => $val->value_no_vat,
       $index . '.vat' => $val->vat,
       $index . '.discount' => $val->discount,
+      $index . '.price' => $val->price,
+
     ];
   }
 
@@ -231,6 +233,10 @@ class RelatedPricelist extends Component
     $new = PricelistEntries::find($id);
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
+      if (array_key_exists('price', $val)) {
+        $new->price = $val["price"];
+      }
+
       if (array_key_exists('vat', $val)) {
         if ($val["vat"] === "") {
           $val["vat"] = 0;
@@ -327,6 +333,7 @@ class RelatedPricelist extends Component
       $this->priceAndValues[$index]['price']['value'] = $test->value_no_vat;
       $this->priceAndValues[$index]['price']['discount'] = $test->discount;
       $this->priceAndValues[$index]['price']['vat'] = $test->vat;
+      $this->priceAndValues[$index]['price']['price'] = $test->price;
     }
   }
   public function confirmpricemultiple()
@@ -347,6 +354,7 @@ class RelatedPricelist extends Component
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
           $item->value_no_vat = $priceAndValue['price']['value'];
+          $item->price = $priceAndValue['price']['price'];
 
           if ($priceAndValue['price']['vat'] < 0) {
             session()->flash('notification', [
@@ -388,7 +396,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
       ]
     ];
     $this->row = 1;
@@ -429,7 +437,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
       ]
     ];
     $this->row = 1;
@@ -464,7 +472,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+      'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
     ];
   }
   public function clear($index)
@@ -481,7 +489,7 @@ class RelatedPricelist extends Component
           [
             'allow' => false,
             'itemselected' => null,
-            'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+            'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
           ]
         ];
       $this->row4 = 1;
@@ -495,6 +503,8 @@ class RelatedPricelist extends Component
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
         $new->vat = $priceAndValue['price']['vat'];
+        $new->price = $priceAndValue['price']['price'];
+
         $new->discount = $priceAndValue['price']['discount'];
         $new->value_no_vat = $priceAndValue['price']['value'];
         $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
@@ -514,7 +524,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
+        'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0, 'price' => null],
       ]
     ];
     $this->row = 1;
