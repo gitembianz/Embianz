@@ -87,6 +87,9 @@
        <th class="hidden" style="width: unset !important;">
         <button class="table--btn">VAT %</button>
        </th>
+       <th class="hidden" style="width: unset !important;">
+        <button class="table--btn">Price</button>
+       </th>
       </tr>
      </thead>
      <tbody>
@@ -119,6 +122,12 @@
            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
          </div>
         </td>
+        <td class="hidden" style="width: unset !important;" wire:click="expandRow2({{ $index }})">
+         <div class="searchable">
+          <input type="number" required
+           class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.price">
+         </div>
+        </td>
        </tr>
        <tr class="details-row  @if ($row2 === $j) active @endif">
         <td colspan="3">
@@ -138,6 +147,13 @@
           <div class="searchable">
            <input type="number" required
             class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+          </div>
+          </p>
+          <p>
+           <bold>Price</bold>
+          <div class="searchable">
+           <input type="number" required
+            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.price">
           </div>
           </p>
          </div>
@@ -205,6 +221,9 @@
        </th>
        <th class="hidden" style="width: unset !important;">
         <button class="table--btn">VAT %</button>
+       </th>
+       <th class="hidden" style="width: unset !important;">
+        <button class="table--btn">Price</button>
        </th>
        <th>
         <div style="display: flex;">
@@ -300,6 +319,12 @@
            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
          </div>
         </td>
+        <td class="hidden" wire:click="expandRow3({{ $index }})">
+         <div class="searchable">
+          <input type="number" required
+           class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.price">
+         </div>
+        </td>
         <td style="width: unset !important;">
          <div style="display: flex;">
           @if ($index == $row4 - 1)
@@ -350,6 +375,13 @@
           <div class="searchable">
            <input type="number" required
             class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+          </div>
+          </p>
+          <p>
+           <bold>Price</bold>
+          <div class="searchable">
+           <input type="number" required
+            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.price">
           </div>
           </p>
          </div>
@@ -513,6 +545,15 @@
           {{ $prices->pricelist->currency->name }}
          @elseif ($column === 'Value')
           {{ $prices->value }}
+         @elseif ($column === 'PRICE')
+          @if ($editedrow !== $nr)
+           {{ $prices->price }}
+          @else
+           <div class="searchable">
+            <input type="number" required class="input__searchable"
+             wire:model.defer="pricelist.{{ $nr }}.price">
+           </div>
+          @endif
          @elseif ($column === 'Value without Discount')
           {{ $prices->value_no_discount }}
          @elseif ($column === 'Discount')
