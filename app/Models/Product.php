@@ -51,16 +51,23 @@ class Product extends Model
               ->orWhere('sku', 'like', '%' . $term . '%')
               ->orWhereRaw("
                             EXISTS (
-                                SELECT 1 FROM (
-                                    SELECT SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(name, ' ', numbers.n), ' ', -1)) AS soundex_word
-                                    FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) numbers
-                                    WHERE SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(name, ' ', numbers.n), ' ', -1)) = ?
-                                ) AS temp
+                                SELECT 1
+                                FROM (
+                                    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 
+                                    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 
+                                    UNION ALL SELECT 9 UNION ALL SELECT 10
+                                ) AS numbers,
+                                products AS p
+                                WHERE p.id = products.id
+                                AND SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(p.name, ' ', numbers.n), ' ', -1)) = ?
                             )", [$soundexValue]);
           });
         }
       });
   }
+
+
+
 
 
   public function product_categories()
