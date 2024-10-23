@@ -42,12 +42,13 @@ class Product extends Model
         foreach ($searchTerms as $term) {
           $soundexValue = soundex($term);
 
-          $query->where(function ($subQuery) use ($soundexValue) {
-            $subQuery->where('id', 'like', '%' . $soundexValue . '%')
-              ->orWhere('ean', 'like', '%' . $soundexValue . '%')
-              ->orWhere('meta_description', 'like', '%' . $soundexValue . '%')
-              ->orWhere('short_description', 'like', '%' . $soundexValue . '%')
-              ->orWhere('sku', 'like', '%' . $soundexValue . '%')
+          $query->where(function ($subQuery) use ($term, $soundexValue) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('ean', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('meta_description', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+              ->orWhere('sku', 'like', '%' . $term . '%')
               ->orWhereRaw("
                             EXISTS (
                                 SELECT 1 FROM (
@@ -60,6 +61,7 @@ class Product extends Model
         }
       });
   }
+
 
   public function product_categories()
   {
