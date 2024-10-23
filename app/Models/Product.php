@@ -42,24 +42,24 @@ class Product extends Model
         foreach ($searchTerms as $term) {
           $soundexValue = soundex($term);
 
-          $query->where(function ($subQuery) use ($term, $soundexValue) {
-            $subQuery->where('id', 'like', '%' . $term . '%')
-              ->orWhere('name', 'like', '%' . $term . '%')
-              ->orWhere('ean', 'like', '%' . $term . '%')
-              ->orWhere('meta_description', 'like', '%' . $term . '%')
-              ->orWhere('short_description', 'like', '%' . $term . '%')
-              ->orWhere('sku', 'like', '%' . $term . '%');
-
-            $words = explode(' ', $subQuery->from . '.name');
-
-            foreach ($words as $index => $word) {
-              $subQuery->orWhereRaw('SOUNDEX(SUBSTRING_INDEX(name, " ", ?)) = ?', [$index + 1, $soundexValue]);
-            }
+          $query->where(function ($subQuery) use ($soundexValue) {
+            $subQuery->where('id', 'like', '%' . $soundexValue . '%')
+              ->orWhere('ean', 'like', '%' . $soundexValue . '%')
+              ->orWhere('meta_description', 'like', '%' . $soundexValue . '%')
+              ->orWhere('short_description', 'like', '%' . $soundexValue . '%')
+              ->orWhere('sku', 'like', '%' . $soundexValue . '%')
+              ->orWhereRaw("
+                            EXISTS (
+                                SELECT 1 FROM (
+                                    SELECT SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(name, ' ', numbers.n), ' ', -1)) AS soundex_word
+                                    FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) numbers
+                                    WHERE SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(name, ' ', numbers.n), ' ', -1)) = ?
+                                ) AS temp
+                            )", [$soundexValue]);
           });
         }
-      }); 
+      });
   }
-
 
   public function product_categories()
   {
