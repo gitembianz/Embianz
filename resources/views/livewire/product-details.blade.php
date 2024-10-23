@@ -152,7 +152,9 @@
    @if (app()->has('label_pdp_vat'))
     {!! app('label_pdp_vat') !!}
    @endif
-   {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
+   @if (app()->has('global_display_vat_value') && app('global_display_vat_value') === 'true')
+    {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
+   @endif
   </span>
   @if ($product->quantity != 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
    <div class="quantity">

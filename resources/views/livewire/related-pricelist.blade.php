@@ -741,6 +741,18 @@
               </div>
              @endif
             </p>
+           @elseif ($column === 'PRICE')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($editedrow !== $nr)
+              {{ $prices->price }}
+             @else
+              <div class="searchable">
+               <input type="number" required class="input__searchable"
+                wire:model.defer="pricelist.{{ $nr }}.price">
+              </div>
+             @endif
+            </p>
            @else
             <p>
              <bold>{{ $column }}:</bold>
