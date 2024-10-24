@@ -88,7 +88,6 @@
      <li class="leftbar__item">
       @if ($nonquantity[$index])
        <div class="basket__split">
-
         <div class="leftbar__link">
          @if ($cartItem->product->media->where('type', 'min')->first())
           <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
@@ -159,6 +158,7 @@
        </div>
       @else
        <div class="basket__split">
+       <div class="basket__item">
         <a class="leftbar__link"
          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
          @if ($cartItem->product->media->where('type', 'min')->first())
@@ -191,6 +191,14 @@
           </span>
          </div>
         </a>
+        <button class="leftbar__delete" style="border: none" type="button"
+       wire:click="removeFromCart({{ $cartItem->product->id }})">
+       <svg>
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+       </svg>
+        </button>
+        </div>
         <div class="basket__item" style="border-top:1px solid #333333">
          <div class="quantity">
           <span>
@@ -240,14 +248,6 @@
         </div>
        </div>
       @endif
-
-      <button class="leftbar__delete" style="border: none" type="button"
-       wire:click="removeFromCart({{ $cartItem->product->id }})">
-       <svg>
-        <polyline points="3 6 5 6 21 6"></polyline>
-        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-       </svg>
-      </button>
       @if ($disabled[$index])
        <div class="item__product--disabled">
         <span>
