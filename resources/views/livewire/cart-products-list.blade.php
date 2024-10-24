@@ -70,22 +70,7 @@
      }
      ?>
 
-     <script>
-      document.addEventListener('livewire:load', function() {
-       let observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-         if (entry.isIntersecting) {
-          @this.call('pricechanged');
-         }
-        });
-       });
-
-       observer.observe(document.getElementById('price_change'));
-      });
-     </script>
-
-
-     <li class="leftbar__item">
+     <li id="price_change" class="leftbar__item">
       @if ($nonquantity[$index])
        <div class="basket__split">
         <div class="leftbar__link">
@@ -158,46 +143,46 @@
        </div>
       @else
        <div class="basket__split">
-       <div class="basket__item__mini">
-        <a class="leftbar__link"
-         href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-         @if ($cartItem->product->media->where('type', 'min')->first())
-          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-           src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
-           alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
-         @else
-          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
-           alt="something wrong">
-         @endif
-         <div class="leftbar__link--text">
-          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
-          <span class="leftbar__link--price">
-           @php
-            if (optional($cartItem->product->product_prices->first())->value) {
-                $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
-            } else {
-                $price = null;
-            }
-           @endphp
-           @if ($price && $price != null)
-            {{ $price }} @if (app()->has('global_currency_primary_symbol'))
-             {!! app('global_currency_primary_symbol') !!}
+        <div class="basket__item__mini">
+         <a class="leftbar__link"
+          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+          @if ($cartItem->product->media->where('type', 'min')->first())
+           <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
+            src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+            alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
+          @else
+           <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+            alt="something wrong">
+          @endif
+          <div class="leftbar__link--text">
+           <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+           <span class="leftbar__link--price">
+            @php
+             if (optional($cartItem->product->product_prices->first())->value) {
+                 $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
+             } else {
+                 $price = null;
+             }
+            @endphp
+            @if ($price && $price != null)
+             {{ $price }} @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            @else
+             @if (app()->has('label_product_status_indisponible'))
+              {!! app('label_product_status_indisponible') !!}
+             @endif
             @endif
-           @else
-            @if (app()->has('label_product_status_indisponible'))
-             {!! app('label_product_status_indisponible') !!}
-            @endif
-           @endif
-          </span>
-         </div>
-        </a>
-        <button class="leftbar__delete" style="border: none" type="button"
-       wire:click="removeFromCart({{ $cartItem->product->id }})">
-       <svg>
-        <polyline points="3 6 5 6 21 6"></polyline>
-        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-       </svg>
-        </button>
+           </span>
+          </div>
+         </a>
+         <button class="leftbar__delete" style="border: none" type="button"
+          wire:click="removeFromCart({{ $cartItem->product->id }})">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
         </div>
         <div class="basket__item__mini" style="border-top:1px solid #333333">
          <div class="quantity">
@@ -428,4 +413,17 @@
    </button>
   </div>
  </div>
+ <script>
+  document.addEventListener('livewire:load', function() {
+   let observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+     if (entry.isIntersecting) {
+      @this.call('pricechanged');
+     }
+    });
+   });
+
+   observer.observe(document.getElementById('price_change'));
+  });
+ </script>
 </div>

@@ -201,7 +201,7 @@ class CartProductsList extends Component
                     $item->price = $item->product->product_prices->first()->value;
                     $item->save();
                     $sum_amount = 0;
-                    foreach ($this->cart->carts as $element) {
+                    foreach ($this->cart->cartItems as $element) {
                         $sum_amount = $sum_amount + $element->price * $element->quantity;
                     }
                     $this->cart->sum_amount = $sum_amount;
