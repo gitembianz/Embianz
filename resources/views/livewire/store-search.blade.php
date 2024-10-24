@@ -19,7 +19,8 @@
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"
-   wire:model="search" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+   wire:model.live.debounce.500ms="search"
+   placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
   <h2 class="section__title">
    @if (app()->has('label_search_title'))
     {!! app('label_search_title') !!}
