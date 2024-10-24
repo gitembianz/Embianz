@@ -1,5 +1,5 @@
 <div class="card__button--wrapper">
- @if ($product->quantity != 0 && $product->product_prices->count() != null)
+ @if ($product->quantity > 0 && $product->product_prices())
   <button class="card__button" onclick="flyToCart(this)" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
    <div class="card__button--cart">
     <svg>
@@ -24,7 +24,7 @@
    </span>
   </button>
  @else
-  @if ($product->product_prices->count() != null && (app()->has('global_preorder') && app('global_preorder') === 'true'))
+  @if ($product->product_prices() && (app()->has('global_preorder') && app('global_preorder') === 'true'))
    <button class="card__button" onclick="flyToCart(this)" wire:click="addToCart({{ $product->id }})"
     wire:ignore="$refresh">
     <div class="card__button--cart">
