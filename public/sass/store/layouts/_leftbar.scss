@@ -201,19 +201,19 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  background-color: transparent;
+  background-color: $lightBlack;
 
   &:hover {
-    background: $lightBlack;
-    color: $background;
+    background: $primary;
+    color: $lightBlack;
 
     &>svg {
-      stroke: $background;
+      stroke: $lightBlack;
     }
   }
 
   &>svg {
-    stroke: $lightBlack;
+    stroke: $primary;
   }
 }
 
@@ -236,15 +236,15 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: $lightWeight;
-  background-color: transparent;
-  color: $lightBlack;
+  font-weight: 400;
+  background-color: $lightBlack;
+  color: $primary;
   flex: 1;
   font-size: $textSize;
 
   &:hover {
-    background: $lightBlack;
-    color: $background;
+    background: $background;
+    color: $lightBlack;
 
     &>svg {
       stroke: $background;

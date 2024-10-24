@@ -90,24 +90,24 @@
   transition: all 0.3s ease-in-out;
   text-transform: uppercase;
   font-size: $textSize;
-  font-weight: $lightWeight;
+  font-weight: 400;
   flex: 1;
   gap: 15px;
-  background: $background;
-  color: $lightBlack;
+  background: $lightBlack;
+  color: $background;
   padding: 10px;
 
   &:hover {
-    background: $lightBlack;
-    color: $background;
+    background: $background;
+    color: $lightBlack;
 
     & > svg {
-      stroke: $background;
+      stroke: $lightBlack;
     }
   }
 
   & > svg {
-    stroke: $lightBlack;
+    stroke: $background;
     transition: all 0.3s ease-in-out;
   }
 }

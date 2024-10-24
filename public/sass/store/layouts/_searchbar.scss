@@ -119,16 +119,22 @@
 .search__close {
   width: 40px;
   height: 40px;
-  border: none;
+  border: 1px solid $background;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  background: $background;
+  background: $lightBlack;
 
   & > svg {
-    stroke: $lightBlack;
+    stroke: $background;
+  }
+  &:hover{
+    background-color: $background;
+    & > svg {
+      stroke: $lightBlack;
+    }
   }
 }
 
