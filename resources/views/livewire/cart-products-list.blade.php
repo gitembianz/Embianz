@@ -42,11 +42,9 @@
     @endif
    </span>
   @else
-   <?php $total = 0; ?>
    <ul class="leftbar__list">
     <?php
     $isdisabled = false;
-    $pricemodified = false;
     $disables = [];
     $nonquantity = [];
     ?>
@@ -55,7 +53,7 @@
      $disabled[$index] = false;
      $nonquantity[$index] = false;
      
-     if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
+     if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || ($cartItem->product->end_date < now()->format('Y-m-d') || ($cartItem->product->quantity < 0 && (app()->has('global_preorder') && app('global_preorder') != 'true')))) {
          $disabled[$index] = true;
          $isdisabled = true;
      }
@@ -64,7 +62,7 @@
          $isdisabled = true;
      }
      
-     if ($cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+     if ($cartItem->product->quantity > 0 && $cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
          $nonquantity[$index] = true;
          $isdisabled = true;
      }
@@ -113,7 +111,9 @@
            <span class="quantity__input product__quantity">
             {{ $cartItem->quantity }}
            </span>
-           <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+           <button class="quantity__arrow @if (
+               $cartItem->quantity >= $cartItem->product->quantity &&
+                   (app()->has('global_preorder') && app('global_preorder') != 'true')) disabled @endif"
             style="width: 48px; height: 48px" aria-label="Increase quantity"
             wire:click="increment({{ $cartItem->id }})">
             <svg>
@@ -204,7 +204,9 @@
            <span class="quantity__input product__quantity">
             {{ $cartItem->quantity }}
            </span>
-           <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+           <button class="quantity__arrow @if (
+               $cartItem->quantity >= $cartItem->product->quantity &&
+                   (app()->has('global_preorder') && app('global_preorder') != 'true')) disabled @endif"
             style="width: 48px; height: 48px" aria-label="Increase quantity"
             wire:click="increment({{ $cartItem->id }})">
             <svg>
