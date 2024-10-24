@@ -118,7 +118,7 @@ class GeneralSearch extends Component
                         && $category->end_date >= now()->format('Y-m-d');
                 })->take(app('global_limit_searchitems'));
             } else {
-                return Category::search_by_name($this->search)
+                return Category::search($this->search)
                     ->select('id', 'name', 'seo_id')
                     ->where('active', true)
                     ->where('start_date', '<=',  now()->format('Y-m-d'))

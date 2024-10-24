@@ -84,23 +84,27 @@ class Category extends Model
         $searchTerms = explode(' ', $search);
 
         foreach ($searchTerms as $term) {
-          $query->where(function ($subQuery) use ($term) {
+          $soundexValue = soundex($term);
+
+          $query->where(function ($subQuery) use ($term, $soundexValue) {
             $subQuery->where('id', 'like', '%' . $term . '%')
               ->orWhere('name', 'like', '%' . $term . '%')
               ->orWhere('sequence', 'like', '%' . $term . '%')
-              ->orWhere('short_description', 'like', '%' . $term . '%');
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+            ->orWhereRaw("
+                            EXISTS (
+                                SELECT 1
+                                FROM (
+                                    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 
+                                    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 
+                                    UNION ALL SELECT 9 UNION ALL SELECT 10
+                                ) AS numbers,
+                               categories AS p
+                                WHERE p.id = categories.id
+                                AND SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(p.name, ' ', numbers.n), ' ', -1)) = ?
+                            )", [$soundexValue]);
           });
         }
-      });
-  }
-
-  public static function search_by_name($search)
-  {
-    return empty($search) ? static::query()
-      : static::query()
-      ->where(function ($query) use ($search) {
-        $query->where('name', 'like', '%' . $search . '%')
-          ->orWhere('short_description', 'like', '%' . $search . '%');
       });
   }
 }

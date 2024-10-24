@@ -112,6 +112,26 @@
     <line x1="9" y1="15" x2="15" y2="15"></line>
    </svg>
   </a>
+  {{-- schuffle --}}
+  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle products innerids"
+   tooltip-top wire:click.prevent="ProductshuffledIds">
+   <svg>
+    <polyline points="16 3 21 3 21 8"></polyline>
+    <line x1="4" y1="20" x2="21" y2="3"></line>
+    <polyline points="21 16 21 21 16 21"></polyline>
+    <line x1="15" y1="15" x2="21" y2="21"></line>
+    <line x1="4" y1="4" x2="9" y2="9"></line>
+   </svg>
+  </button>
+  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle sequence on related"
+   tooltip-top wire:click.prevent="Relatedshuffleseq">
+   <svg>
+    <polyline points="17 1 21 5 17 9"></polyline>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+    <polyline points="7 23 3 19 7 15"></polyline>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+   </svg>
+  </button>
   {{-- IF CHECKED --}}
   <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
@@ -211,6 +231,25 @@
       </svg>
       <span>Add Product</span>
      </a>
+     <button class="button button--primary button--fill button--flexed" wire:click="ProductshuffledIds">
+      <svg>
+       <polyline points="16 3 21 3 21 8"></polyline>
+       <line x1="4" y1="20" x2="21" y2="3"></line>
+       <polyline points="21 16 21 21 16 21"></polyline>
+       <line x1="15" y1="15" x2="21" y2="21"></line>
+       <line x1="4" y1="4" x2="9" y2="9"></line>
+      </svg>
+      <span>Schuffle innerids</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="Relatedshuffleseq">
+      <svg>
+       <polyline points="17 1 21 5 17 9"></polyline>
+       <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+       <polyline points="7 23 3 19 7 15"></polyline>
+       <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      </svg>
+      <span>Schuffle sequences</span>
+     </button>
      <button class="button button--primary button--fill button--flexed" id="sort__open">
       <svg>
        <path stroke="none" d="M0 0h24v24H0z" fill="none" />

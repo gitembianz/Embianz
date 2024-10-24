@@ -415,23 +415,7 @@ $products = Product::where('active', true)->where('type', '!=', 'parent')
         ]);
         }
 
-        public function ProductshuffledIds()
-        {
-        $products = Product::all();
 
-        $shuffledIds = range(1, $products->count());
-        shuffle($shuffledIds);
-
-        foreach ($products as $index => $product) {
-        $product->innerid = $shuffledIds[$index];
-        $product->save();
-        }
-        session()->flash('notification', [
-        'message' => 'Product ids shuffled successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-        ]);
-        }
 
         public function addSettingsIfNotExist()
         {
