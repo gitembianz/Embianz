@@ -158,7 +158,7 @@
        </div>
       @else
        <div class="basket__split">
-       <div class="basket__item">
+       <div class="basket__item__mini">
         <a class="leftbar__link"
          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
          @if ($cartItem->product->media->where('type', 'min')->first())
@@ -199,7 +199,7 @@
        </svg>
         </button>
         </div>
-        <div class="basket__item" style="border-top:1px solid #333333">
+        <div class="basket__item__mini" style="border-top:1px solid #333333">
          <div class="quantity">
           <span>
            @if (app()->has('label_product_quantity_tag'))
