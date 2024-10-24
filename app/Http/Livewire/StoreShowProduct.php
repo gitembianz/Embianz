@@ -11,7 +11,6 @@ use App\Models\Wishlist;
 class StoreShowProduct extends Component
 {
   public $productId;
-  public $quantity;
   public $session_id;
   public $back = false;
   public $wishlistItems;
@@ -34,7 +33,6 @@ class StoreShowProduct extends Component
   {
     $this->productId = $productId;
     $this->session_id = $this->getSessionId();
-    $this->quantity = app('global_low_stock');
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
   public function isInWishlist($productId)

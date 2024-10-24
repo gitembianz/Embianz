@@ -231,7 +231,7 @@
    {{--
     </div> --}}
    <div class="related__wrapper">
-    @foreach ($product->related_product->sortByDesc('product.popularity') as $product)
+    @foreach ($product->related_product as $product)
      @if (
          $product->product &&
              $product->product->active == true &&
@@ -260,7 +260,7 @@
        }
        ?>
        @if ($price)
-        @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
+        @if ($product->product->quantity < app('global_low_stock') && $product->product->quantity > 0)
          <p class="card-status save">
           @if (app()->has('label_product_status_stock'))
            {!! app('label_product_status_stock') !!}
@@ -271,7 +271,7 @@
            -{{ $product->product->product_prices->first()->discount }}%
           </p>
          @endif
-        @elseif($product->product->quantity == 0)
+        @elseif($product->product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
          <p class="card-status out">
           @if (app()->has('label_product_status_indisponible'))
            {!! app('label_product_status_indisponible') !!}
