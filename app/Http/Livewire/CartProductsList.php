@@ -201,7 +201,7 @@ class CartProductsList extends Component
                     $item->price = $item->product->product_prices->first()->value;
                     $item->save();
                     $sum_amount = 0;
-                    foreach ($this->cart->carts as $element) {
+                    foreach ($this->cart->cartItems as $element) {
                         $sum_amount = $sum_amount + $element->price * $element->quantity;
                     }
                     $this->cart->sum_amount = $sum_amount;
@@ -317,8 +317,8 @@ class CartProductsList extends Component
     public function increment($id)
     {
         if ($this->cart) {
-            $cartitem_to_increment = $this->cart->cartItems->where('id', $id)->first();
-            if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity) {
+            $cartitem_to_increment = $this->cart->cartItems()->where('id', $id)->first();
+            if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
                 $cartitem_to_increment->increment('quantity');
                 $this->cart->increment('quantity_amount');
                 $this->cart->delivery_price = app('global_delivery_price');
