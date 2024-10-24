@@ -74,8 +74,9 @@
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
   </button>
-  <input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search"
-   autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+  <input class="controls__search" maxlength="100" type="text" name="search" id="search"
+   wire:model.live.debounce.500ms="search" autocomplete="off"
+   placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
   <button class="controls__button" id="sortOpen" aria-label="Open sort button">
    <svg>
     <line x1="21" y1="10" x2="7" y2="10"></line>
