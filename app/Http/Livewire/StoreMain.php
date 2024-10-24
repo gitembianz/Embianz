@@ -9,7 +9,6 @@ use App\Models\Wishlist;
 
 class StoreMain extends Component
 {
-  public $quantity;
   public $session_id;
   public $wishlistItems;
 
@@ -137,7 +136,6 @@ class StoreMain extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-    $this->quantity = app('global_low_stock');
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
 }
