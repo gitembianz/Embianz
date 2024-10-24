@@ -1,20 +1,715 @@
-'use strict';function sliderProduct(c,b){function d(a){"next"===a?(a=g+1,a>=p.length&&(a=p.length-1,C.classList.add("disabled"),D.classList.add("disabled")),A.classList.remove("disabled"),B.classList.remove("disabled")):(a=g-1,0>a&&(a=0,A.classList.add("disabled"),B.classList.add("disabled")),C.classList.remove("disabled"),D.classList.remove("disabled"));g=a;h();q(y);G.textContent=`${g+1} / ${p.length}`}function e(){m.scrollWidth>m.clientWidth?0===m.scrollLeft?(E.classList.add("disabled"),F.classList.remove("disabled")):
-m.scrollLeft+m.clientWidth>=m.scrollWidth?(E.classList.remove("disabled"),F.classList.add("disabled")):(E.classList.remove("disabled"),F.classList.remove("disabled")):(E.classList.add("disabled"),F.classList.add("disabled"))}function h(){0===g?(A.classList.add("disabled"),B.classList.add("disabled")):(A.classList.remove("disabled"),B.classList.remove("disabled"));g===p.length-1?(C.classList.add("disabled"),D.classList.add("disabled")):(C.classList.remove("disabled"),D.classList.remove("disabled"));
-Array.from(m.children).forEach((a,n)=>{a.classList.toggle("active",n===g);n===g&&(a.focus(),m.scrollTo({left:a.offsetLeft-(m.offsetWidth-a.offsetWidth)/2,behavior:"smooth"}))})}function q(a){a.style.transform=`translateX(-${100*g}%)`}function t(a,n){if(!m.querySelector(`.thumbnail[data-index="${n}"]`)){var l=document.createElement("img");if(a=a.querySelector("img")||a.querySelector("video"))l.src=a.src,l.alt=`Thumbnail ${n+1}`,l.classList.add("thumbnail"),l.setAttribute("data-index",n),l.loading=
-"lazy",l.addEventListener("click",()=>{g=n;q(y);h();G.textContent=`${g+1} / ${p.length}`}),m.appendChild(l)}}function k(){var a=p[g].querySelector("img");if(a){const n=a.getAttribute("data-img-src");a=a.getAttribute("data-name-alte");const l=document.createElement("img");l.src=n;l.alt=a;u.innerHTML="";u.appendChild(l);G.textContent=`${g+1} / ${p.length}`}}const w=document.querySelector(c),y=w.querySelector(c+"__wrapper"),p=w.querySelectorAll(c+"__slide"),m=w.querySelector(c+"__pagination"),E=w.querySelector(c+
-"__pagination--prev"),F=w.querySelector(c+"__pagination--next"),A=w.querySelector(c+"__prev"),C=w.querySelector(c+"__next"),x=document.querySelector(b),u=x.querySelector(b+"__content"),B=x.querySelector(b+"__prev"),D=x.querySelector(b+"__next");c=x.querySelector(b+"__close");const G=x.querySelector(b+"__count"),I=document.querySelector("body");let g=0,r=0,v=!1,J=0,H=0;w&&y&&p&&m&&E&&F&&A&&C&&x&&u&&B&&D&&G&&c&&I?(c.addEventListener("click",()=>{x.classList.remove("active");I.style.overflow="auto"}),
-C.addEventListener("click",()=>{d("next")}),A.addEventListener("click",()=>{d("prev")}),A.classList.add("disabled"),B.classList.add("disabled"),D.addEventListener("click",()=>{d("next");k()}),B.addEventListener("click",()=>{d("prev");k()}),E.addEventListener("click",()=>{m.scrollTo({left:m.scrollLeft-100,behavior:"smooth"});e()}),F.addEventListener("click",()=>{m.scrollTo({left:m.scrollLeft+100,behavior:"smooth"});e()}),m.addEventListener("scroll",()=>{e()}),setTimeout(()=>{e()},1500),p.forEach((a,
-n)=>{const l=a.querySelector("video");l&&(l.controls=!1);t(a,n);a.addEventListener("mousedown",f=>{J=r=f.clientX;v=!0;y.style.cursor="grab"});a.addEventListener("mousemove",f=>{if(v){var z=f.clientX-J;50<Math.abs(z)&&(z=g+(0<z?-1:1),0<=z&&z<p.length&&(g=z,h(),q(y)),J=f.clientX)}});a.addEventListener("mouseup",()=>{v=!1;y.style.cursor="auto"});a.addEventListener("mouseleave",()=>{v&&(v=!1,y.style.cursor="auto")});a.addEventListener("click",()=>{if(event.clientX===r){var f=a.querySelector("img");if(f){const z=
-f.getAttribute("data-img-src");f=f.getAttribute("data-name-alt");const K=document.createElement("img");K.src=z;K.alt=f;u.innerHTML="";u.appendChild(K);x.classList.add("active");I.style.overflow="hidden";document.addEventListener("keydown",function(L){27===L.keyCode&&(x.classList.remove("active"),I.style.overflow="auto")})}}})}),p.forEach((a,n)=>{let l=!1;a.addEventListener("touchstart",f=>{r=f.touches[0].clientX});a.addEventListener("touchmove",f=>{r&&(!f.scale||1===f.scale)&&10<Math.abs(f.changedTouches[0].clientX-
-r)&&f.cancelable&&(l=!0,f.preventDefault())});a.addEventListener("touchend",f=>{l&&(f=f.changedTouches[0].clientX-r,50<f&&0<n?g=n-1:-50>f&&n<p.length-1&&(g=n+1),h(),q(y),r=0,l=!1)})}),window.addEventListener("load",()=>h()),G.textContent=`${g+1} / ${p.length}`,u.addEventListener("mousedown",a=>{H=a.clientX}),u.addEventListener("mousemove",a=>{H&&50<Math.abs(a.clientX-H)&&(a.preventDefault(),v=!0)}),u.addEventListener("mouseup",a=>{v&&(a=a.clientX-H,50<a&&0<g?(d("prev"),k()):-50>a&&g<p.length-1&&(d("next"),
-k()),H=0,v=!1)}),u.addEventListener("touchstart",a=>{r=a.touches[0].clientX}),u.addEventListener("touchmove",a=>{r&&(!a.scale||1===a.scale)&&50<Math.abs(a.changedTouches[0].clientX-r)&&(a.preventDefault(),v=!0)}),u.addEventListener("touchend",a=>{v&&(a=a.changedTouches[0].clientX-r,50<a&&0<g?(d("prev"),k()):-50>a&&g<p.length-1&&(d("next"),k()),r=0,v=!1)})):console.log("Elementele necesare pentru slider product sau modal nu au fost g\u0103site.")}
-function relatedSlider(){const c=document.getElementById("relatedSlider");if(c){const b=c.querySelector(".related__wrapper"),d=c.querySelector(".related__btn.prev"),e=c.querySelector(".related__btn.next");function h(){return b.querySelectorAll(".card")[0].offsetWidth+16}function q(k){b.scrollBy({left:k,behavior:"smooth"})}function t(){const k=b.scrollLeft,w=b.scrollWidth-b.clientWidth;0>=k?d.classList.add("disabled"):d.classList.remove("disabled");k>=w?e.classList.add("disabled"):e.classList.remove("disabled")}
-(new ResizeObserver(function(k){k=b.scrollWidth>b.clientWidth;b.scrollHeight>b.clientHeight||k?(d.style.display="flex",e.style.display="flex"):(d.style.display="none",e.style.display="none")})).observe(b);d.addEventListener("click",()=>{d.classList.contains("disabled")||q(-h())});e.addEventListener("click",()=>{e.classList.contains("disabled")||q(h())});b.addEventListener("scroll",t);window.addEventListener("resize",()=>{const k=h();window.cardWidth=k});window.cardWidth=h();t()}}
-function flyToCart(c){const b=document.getElementById("basketOpen"),d=b.querySelector(".header__count"),e=c.closest(".product");c.classList.contains("in")||(c.classList.add("in"),setTimeout(()=>c.classList.remove("in"),1500));if(e){var h=e.querySelector(".dlv"),q=h.querySelector(".dlv_name").innerText.trim(),t=parseFloat(h.querySelector(".dlv_price").innerText.trim().replace(",","."));h=h.querySelector(".dlv_currency").innerText.trim();window.dataLayer=window.dataLayer||[];window.dataLayer.push({ecommerce:null});
-window.dataLayer.push({event:"add_to_cart",ecommerce:{currency:h,value:1*t,items:[{item_name:q,price:t,quantity:1}]}});b.classList.add("active");var k=e.querySelector("img").cloneNode();k.classList.add("flying-img-product");e.appendChild(k);q=k.getBoundingClientRect();t=b.getBoundingClientRect();h=t.bottom-q.bottom+30;k.style.cssText=`
-      --left : ${(t.left-(t.width/2+q.left+q.width/2)).toFixed(2)}px;
-      --top : ${h.toFixed(2)}px;
+//<--------------------------------------------------------------------->
+//<------------------------- Slider Product ---------------------------->
+function sliderProduct(sliderId, modalId) {
+  const slider = document.querySelector(sliderId);
+  const wrapper = slider.querySelector(sliderId + "__wrapper");
+  const slides = slider.querySelectorAll(sliderId + "__slide");
+  const pagination = slider.querySelector(sliderId + "__pagination");
+  const paginationLeft = slider.querySelector(sliderId + "__pagination--prev");
+  const paginationRight = slider.querySelector(sliderId + "__pagination--next");
+  const prevButton = slider.querySelector(sliderId + "__prev");
+  const nextButton = slider.querySelector(sliderId + "__next");
+  const modal = document.querySelector(modalId);
+  const modalContent = modal.querySelector(modalId + "__content");
+  const modalPrev = modal.querySelector(modalId + "__prev");
+  const modalNext = modal.querySelector(modalId + "__next");
+  const closeButton = modal.querySelector(modalId + "__close");
+  const modalCount = modal.querySelector(modalId + "__count");
+  const body = document.querySelector("body");
+
+  let currentIndex = 0;
+  let touchStartX = 0;
+  let isDragging = false;
+  let startX = 0;
+  let mouseStartX = 0;
+
+  if (
+    !slider ||
+    !wrapper ||
+    !slides ||
+    !pagination ||
+    !paginationLeft ||
+    !paginationRight ||
+    !prevButton ||
+    !nextButton ||
+    !modal ||
+    !modalContent ||
+    !modalPrev ||
+    !modalNext ||
+    !modalCount ||
+    !closeButton ||
+    !body
+  ) {
+    console.log(
+      "Elementele necesare pentru slider product sau modal nu au fost găsite.",
+    );
+    return;
+  }
+
+  function navigation(direction) {
+    let newIndex;
+    if (direction === "next") {
+      newIndex = currentIndex + 1;
+      if (newIndex >= slides.length) {
+        newIndex = slides.length - 1;
+        nextButton.classList.add("disabled");
+        modalNext.classList.add("disabled");
+      }
+      prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
+    } else {
+      newIndex = currentIndex - 1;
+      if (newIndex < 0) {
+        newIndex = 0;
+        prevButton.classList.add("disabled");
+        modalPrev.classList.add("disabled");
+      }
+      nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
+    }
+    currentIndex = newIndex;
+
+    updatePagination();
+    updateTransform(wrapper);
+    modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+  }
+
+  closeButton.addEventListener("click", () => {
+    modal.classList.remove("active");
+    body.style.overflow = "auto"; // Activează scroll-ul paginii
+  });
+
+  nextButton.addEventListener("click", () => {
+    navigation("next");
+  });
+
+  prevButton.addEventListener("click", () => {
+    navigation("prev");
+  });
+  prevButton.classList.add("disabled");
+  modalPrev.classList.add("disabled");
+
+  modalNext.addEventListener("click", () => {
+    navigation("next");
+    updateModalImage();
+  });
+
+  modalPrev.addEventListener("click", () => {
+    navigation("prev");
+    updateModalImage();
+  });
+
+  paginationLeft.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft - 100,
+      behavior: "smooth",
+    });
+    updatePaginationButtons();
+  });
+
+  paginationRight.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft + 100,
+      behavior: "smooth",
+    });
+    updatePaginationButtons();
+  });
+
+  pagination.addEventListener("scroll", () => {
+    updatePaginationButtons();
+  });
+
+  function updatePaginationButtons() {
+    if (pagination.scrollWidth > pagination.clientWidth) {
+      if (pagination.scrollLeft === 0) {
+        paginationLeft.classList.add("disabled");
+        paginationRight.classList.remove("disabled");
+      } else if (
+        pagination.scrollLeft + pagination.clientWidth >=
+        pagination.scrollWidth
+      ) {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.add("disabled");
+      } else {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.remove("disabled");
+      }
+    } else {
+      paginationLeft.classList.add("disabled");
+      paginationRight.classList.add("disabled");
+    }
+  }
+
+  setTimeout(() => {
+    updatePaginationButtons();
+  }, 1500);
+
+  function updatePagination() {
+    // Actualizarea butoanelor pentru slider
+    if (currentIndex === 0) {
+      prevButton.classList.add("disabled");
+      modalPrev.classList.add("disabled");
+    } else {
+      prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
+    }
+
+    if (currentIndex === slides.length - 1) {
+      nextButton.classList.add("disabled");
+      modalNext.classList.add("disabled");
+    } else {
+      nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
+    }
+
+    // Actualizarea punctelor de paginare
+    const thumbnails = Array.from(pagination.children);
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.classList.toggle("active", index === currentIndex);
+      if (index === currentIndex) {
+        thumbnail.focus();
+        pagination.scrollTo({
+          left:
+            thumbnail.offsetLeft -
+            (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
+          behavior: "smooth",
+        });
+      }
+    });
+  }
+
+  function updateTransform(element) {
+    element.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  function createThumb(slide, index) {
+    const existingThumbnail = pagination.querySelector(
+      `.thumbnail[data-index="${index}"]`,
+    );
+
+    if (existingThumbnail) {
+      return;
+    }
+
+    const thumbnail = document.createElement("img");
+    const mediaElement =
+      slide.querySelector("img") || slide.querySelector("video");
+
+    if (mediaElement) {
+      thumbnail.src = mediaElement.src;
+      thumbnail.alt = `Thumbnail ${index + 1}`;
+      thumbnail.classList.add("thumbnail");
+      thumbnail.setAttribute("data-index", index);
+      thumbnail.loading = 'lazy';
+
+      thumbnail.addEventListener("click", () => {
+        currentIndex = index;
+        updateTransform(wrapper);
+        updatePagination();
+        modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+      });
+
+      pagination.appendChild(thumbnail);
+    } else {
+      // console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
+    }
+  }
+
+  slides.forEach((slide, index) => {
+    const videoElement = slide.querySelector("video");
+    if (videoElement) {
+      videoElement.controls = false;
+    }
+    createThumb(slide, index);
+
+    // Adăugăm eveniment pentru trăgând și clic pe slide-uri
+    slide.addEventListener("mousedown", (event) => {
+      touchStartX = event.clientX;
+      startX = event.clientX;
+      isDragging = true;
+      wrapper.style.cursor = "grab"; // Setează cursorul la "grab" la începutul trăgândului
+    });
+
+    slide.addEventListener("mousemove", (event) => {
+      if (isDragging) {
+        const swipeDistance = event.clientX - startX;
+
+        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+          const indexChange = swipeDistance > 0 ? -1 : 1;
+          const newIndex = currentIndex + indexChange;
+
+          if (newIndex >= 0 && newIndex < slides.length) {
+            currentIndex = newIndex;
+            updatePagination();
+            updateTransform(wrapper);
+          }
+
+          startX = event.clientX;
+        }
+      }
+    });
+
+    slide.addEventListener("mouseup", () => {
+      isDragging = false;
+      wrapper.style.cursor = "auto"; // Resetarea cursorului la cursorul implicit la sfârșitul trăgândului
+    });
+
+    slide.addEventListener("mouseleave", () => {
+      if (isDragging) {
+        isDragging = false;
+        wrapper.style.cursor = "auto"; // Resetarea cursorului la cursorul implicit la părăsirea zonei slide-ului cu mouse-ul
+      }
+    });
+
+    slide.addEventListener("click", () => {
+      if (event.clientX === touchStartX) {
+        // Execută doar dacă nu a fost un trăgând, ci un clic simplu
+        const imgElement = slide.querySelector("img");
+        if (imgElement) {
+          const dataSrcValue = imgElement.getAttribute("data-img-src");
+          const dataAltValue = imgElement.getAttribute("data-name-alt");
+          const newImgElement = document.createElement("img");
+
+          newImgElement.src = dataSrcValue;
+          newImgElement.alt = dataAltValue;
+          modalContent.innerHTML = ""; // Golește conținutul modalului înainte de a adăuga imaginea
+          modalContent.appendChild(newImgElement); // Adaugă imaginea în conținutul modalului
+
+          modal.classList.add("active"); // Deschide modalul
+          body.style.overflow = "hidden"; // Blochează scroll-ul paginii
+
+          function handleKeyPress(event) {
+            if (event.keyCode === 27) {
+              modal.classList.remove("active"); // Deschide modalul
+              body.style.overflow = "auto"; // Blochează scroll-ul paginii
+            }
+          }
+
+          document.addEventListener("keydown", handleKeyPress);
+        } else {
+          // console.error(
+          //   "Elementul <img> nu a fost găsit în cadrul slide-ului.",
+          // );
+        }
+      }
+    });
+  });
+
+  function handleSlideSwipe(event, index) {
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (swipeDistance > 50 && index > 0) {
+      currentIndex = index - 1;
+    } else if (swipeDistance < -50 && index < slides.length - 1) {
+      currentIndex = index + 1;
+    }
+
+    updatePagination();
+    updateTransform(wrapper);
+
+    touchStartX = 0;
+  }
+
+  slides.forEach((slide, index) => {
+    let isSwiping = false;
+
+    slide.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;}
+    ,{passive:false});
+
+    slide.addEventListener("touchmove", (event) => {
+      if (touchStartX) {
+        const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+        // Verifică dacă utilizatorul face un gest de zoom
+        if (event.scale && event.scale !== 1) {
+          return; // Ignoră acțiunea dacă utilizatorul face zoom
+        }
+
+        if (Math.abs(swipeDistance) > 10 && !isScrolling() && event.cancelable) {
+          isSwiping = true;
+          event.preventDefault();
+        }
+      }
+    },{passive:false});
+
+    slide.addEventListener("touchend", (event) => {
+      if (isSwiping) {
+        handleSlideSwipe(event, index);
+        isSwiping = false;
+      }
+    });
+  });
+
+  function isScrolling() {
+    return false;
+  }
+
+  window.addEventListener("load", () => updatePagination());
+
+  modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+  function updateModalImage() {
+    // Actualizarea imaginii din modal
+    const imgElement = slides[currentIndex].querySelector("img");
+    if (imgElement) {
+      const dataSrcValue = imgElement.getAttribute("data-img-src");
+      const dataAltValue = imgElement.getAttribute("data-name-alte");
+      const newImgElement = document.createElement("img");
+
+      newImgElement.src = dataSrcValue;
+      newImgElement.alt = dataAltValue;
+      modalContent.innerHTML = "";
+      modalContent.appendChild(newImgElement);
+
+      modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+    } else {
+      // console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
+    }
+  }
+
+  modalContent.addEventListener("mousedown", (event) => {
+    mouseStartX = event.clientX;
+  });
+
+  modalContent.addEventListener("mousemove", (event) => {
+    if (mouseStartX) {
+      const dragDistance = event.clientX - mouseStartX;
+
+      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  });
+
+  modalContent.addEventListener("mouseup", (event) => {
+    if (isDragging) {
+      const mouseEndX = event.clientX;
+      const dragDistance = mouseEndX - mouseStartX;
+
+      if (dragDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      mouseStartX = 0;
+      isDragging = false;
+    }
+  });
+
+  // Funcție pentru gesturi de touch pe modalContent
+  modalContent.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+  },{passive:false});
+
+  modalContent.addEventListener("touchmove", (event) => {
+    if (touchStartX) {
+      const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+      // Verifică dacă utilizatorul face un gest de zoom
+      if (event.scale && event.scale !== 1) {
+        return; // Ignoră acțiunea dacă utilizatorul face zoom
+      }
+
+      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  },{passive:false});
+
+  modalContent.addEventListener("touchend", (event) => {
+    if (isDragging) {
+      const touchEndX = event.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (swipeDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      touchStartX = 0;
+      isDragging = false;
+    }
+  });
+}
+//<----------------------- End Modal Product --------------------------->
+//<--------------------------------------------------------------------->
+//<--------------------------- Related-Slider -------------------------->
+function relatedSlider() {
+  const slider = document.getElementById("relatedSlider");
+
+  if (!slider) {
+    return;
+  } else {
+    const wrapper = slider.querySelector(".related__wrapper");
+    const left = slider.querySelector(".related__btn.prev");
+    const right = slider.querySelector(".related__btn.next");
+
+    function updateCardWidth() {
+      const cards = wrapper.querySelectorAll(".card");
+      const cardWidth = cards[0].offsetWidth + 16; // adăugăm 16px pentru gap-ul dintre card-uri
+      return cardWidth;
+    }
+
+    function scrollSlider(distance) {
+      wrapper.scrollBy({
+        left: distance,
+        behavior: "smooth",
+      });
+    }
+
+    function toggleButtonsVisibility(entries) {
+      const hasVerticalScrollbar = wrapper.scrollHeight > wrapper.clientHeight;
+      const hasHorizontalScrollbar = wrapper.scrollWidth > wrapper.clientWidth;
+
+      // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
+      if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+        left.style.display = "flex";
+        right.style.display = "flex";
+      } else {
+        left.style.display = "none";
+        right.style.display = "none";
+      }
+    }
+
+    function updateButtonStates() {
+      const scrollLeft = wrapper.scrollLeft;
+      const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
+
+      if (scrollLeft <= 0) {
+        left.classList.add("disabled");
+      } else {
+        left.classList.remove("disabled");
+      }
+
+      if (scrollLeft >= maxScrollLeft) {
+        right.classList.add("disabled");
+      } else {
+        right.classList.remove("disabled");
+      }
+    }
+
+    // Creăm un nou ResizeObserver
+    const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
+
+    // Observăm schimbările în dimensiunile wrapper-ului
+    resizeObserver.observe(wrapper);
+
+    left.addEventListener("click", () => {
+      if (!left.classList.contains("disabled")) {
+        scrollSlider(-updateCardWidth());
+      }
+    });
+
+    right.addEventListener("click", () => {
+      if (!right.classList.contains("disabled")) {
+        scrollSlider(updateCardWidth());
+      }
+    });
+
+    wrapper.addEventListener("scroll", updateButtonStates);
+
+    window.addEventListener("resize", () => {
+      const cardWidth = updateCardWidth();
+      window.cardWidth = cardWidth;
+    });
+
+    window.cardWidth = updateCardWidth();
+
+    // Actualizăm starea butoanelor la încărcarea paginii
+    updateButtonStates();
+  }
+}
+//<------------------------- End Related-Slider ------------------------>
+//<--------------------------------------------------------------------->
+//<---------------------------- Fly-To-Cart ---------------------------->
+function flyToCart(button) {
+  const shopping_cart = document.getElementById("basketOpen");
+  const numberCart = shopping_cart.querySelector(".header__count");
+  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+
+  if (!button.classList.contains("in")) {
+    button.classList.add("in");
+    setTimeout(() => button.classList.remove("in"), 1500);
+  }
+
+  if (!target_parent) {
+    // console.error("Nu s-a găsit părintele 'product'.");
+    return;
+  }
+
+  function add_to_cart(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
+
+    // console.log('Product added to cart:', product);
+  }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency,
+  };
+  // Function call
+  add_to_cart(product);
+
+  // Creăm o imagine separată
+  shopping_cart.classList.add("active");
+  let img = target_parent.querySelector("img");
+  let flying_img = img.cloneNode();
+  flying_img.classList.add("flying-img-product");
+  target_parent.appendChild(flying_img);
+
+  // Obținem poziția imaginii care va zbura
+  const flying_img_pos = flying_img.getBoundingClientRect();
+  const shopping_cart_pos = shopping_cart.getBoundingClientRect();
+
+  let data = {
+    left:
+      shopping_cart_pos.left -
+      (shopping_cart_pos.width / 2 +
+        flying_img_pos.left +
+        flying_img_pos.width / 2),
+    top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+  };
+
+  flying_img.style.cssText = `
+      --left : ${data.left.toFixed(2)}px;
+      --top : ${data.top.toFixed(2)}px;
       z-index: 400;
-  `;setTimeout(()=>{e.removeChild(k);b.classList.remove("active")},1500);d&&(d.style.scale=1.5,setTimeout(()=>{d.style.scale=1},1500))}}
-function addWishList(c){const b=document.getElementById("wishlistCount");var d=c.closest(".product").querySelector(".dlv");c=d.querySelector(".dlv_name").innerText.trim();const e=parseFloat(d.querySelector(".dlv_price").innerText.trim().replace(",","."));d=d.querySelector(".dlv_currency").innerText.trim();window.dataLayer=window.dataLayer||[];window.dataLayer.push({ecommerce:null});window.dataLayer.push({event:"add_to_wishlist",ecommerce:{currency:d,value:1*e,items:[{item_name:c,price:e,quantity:1}]}});
-b&&(b.style.scale=1.5,setTimeout(()=>{b.style.scale=1},1500))}function miniSlider(c,b,d,e){c=document.getElementById(c);const h=document.getElementById(b);b=document.getElementById(d);e=document.getElementById(e);c&&h&&b&&e&&(b.addEventListener("click",()=>{h.scrollBy({left:-100,behavior:"smooth"})}),e.addEventListener("click",()=>{h.scrollBy({left:100,behavior:"smooth"})}))}sliderProduct(".product-slider",".product-modal");relatedSlider();miniSlider("miniSlider","miniWrapper","miniNavLeft","miniNavRight");
+  `;
+
+  setTimeout(() => {
+    target_parent.removeChild(flying_img);
+    shopping_cart.classList.remove("active");
+  }, 1500);
+
+  // Number Cart upscale
+  if (!numberCart) {
+    return;
+  } else {
+    numberCart.style.scale = 1.5;
+    setTimeout(() => {
+      numberCart.style.scale = 1;
+    }, 1500);
+  }
+}
+//<-------------------------- End Fly-To-Cart -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- Add-To-Wish ---------------------------->
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
+
+  const target_parent = button.closest(".product");
+
+  function add_to_wishlist(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "add_to_wishlist",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
+
+    // console.log('Product added to wishlist:', product);
+  }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency,
+  };
+  // Function call
+  add_to_wishlist(product);
+
+  if (!wish) {
+    return;
+  } else {
+    wish.style.scale = 1.5;
+
+    setTimeout(() => {
+      wish.style.scale = 1;
+    }, 1500);
+  }
+}
+//<-------------------------- END Add-To-Wish -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- MiniSlider ---------------------------->
+function miniSlider(sliderId, wrapperId, navLeftId, navRightId) {
+  const slider = document.getElementById(sliderId);
+  const wrapper = document.getElementById(wrapperId);
+  const navLeft = document.getElementById(navLeftId);
+  const navRight = document.getElementById(navRightId);
+
+  if (!slider || !wrapper || !navLeft || !navRight) {
+    // console.error("One or more elements from slider are missing!");
+    return;
+  }
+
+  const scrollAmount = 100;
+
+  navLeft.addEventListener("click", () => {
+    wrapper.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  navRight.addEventListener("click", () => {
+    wrapper.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+}
+//<-------------------------- End MiniSlider -------------------------->
+//<--------------------------------------------------------------------->
+//<-------------------------- Start Functions -------------------------->
+sliderProduct(".product-slider", ".product-modal");
+relatedSlider();
+miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
+//<------------------------ End Start Functions ------------------------>
+//<--------------------------------------------------------------------->

@@ -17,9 +17,9 @@ function dropmenus(menuID, setActive = false) {
         menu.classList.toggle("active");
         list.classList.toggle("active");
 
-        if (menu.classList.contains("active")) {
-          menu.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        // if (menu.classList.contains("active")) {
+        //   menu.scrollIntoView({ behavior: "smooth", block: "start" });
+        // }
       });
     } else {
       return;
