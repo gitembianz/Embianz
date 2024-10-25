@@ -29,7 +29,26 @@
   </div>
  </aside>
 
-
+ {{-- CSV Upload --}}
+ <aside>
+  <div class="background background--center @if ($uploadcsv == true) active @endif"></div>
+  <div class="aside aside--confirm @if ($uploadcsv == true) active @endif">
+   <span>
+    Please select the CSV file
+   </span>
+   <input style="display: none;" id="CSVMedia" wire:model="csvFile" type="file" accept="csv/*">
+   <label class="button button--primary button--long" type="button" for="CSVMedia">
+    <span>
+     Select CSV
+    </span>
+   </label>
+   <button class="button button--danger button--long" wire:click.prevent="$set('uploadcsv', false)">
+    <span>
+     Close
+    </span>
+   </button>
+  </div>
+ </aside>
  {{-- Asides --}}
  <aside>
   <div class="background background--right" wire:ignore id="sort__backdrop"></div>
@@ -89,6 +108,7 @@
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+
   {{-- Refresh Button --}}
   <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
    wire:click="$refresh">
@@ -100,6 +120,15 @@
     <path d="M16.84 18.37l0 .01" />
     <path d="M19.37 15.1l0 .01" />
     <path d="M19.94 11l0 .01" />
+   </svg>
+  </button>
+  {{-- import images from csv --}}
+  <button class="button button--primary button--centered display--desktop" tooltip="Import media from csv" tooltip-top
+   wire:click.prevent="$set('uploadcsv', true)">
+   <svg>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+    <polyline points="21 15 16 10 5 21"></polyline>
    </svg>
   </button>
   {{-- Add Product --}}
@@ -221,6 +250,14 @@
        <path d="M19.94 11l0 .01" />
       </svg>
       <span>Refresh table</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click.prevent="$set('uploadcsv', true)">
+      <svg>
+       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+       <circle cx="8.5" cy="8.5" r="1.5"></circle>
+       <polyline points="21 15 16 10 5 21"></polyline>
+      </svg>
+      <span>Media from CSV</span>
      </button>
      <a class="button button--primary button--fill button--flexed" href="{{ route('add_product') }}">
       <svg>
