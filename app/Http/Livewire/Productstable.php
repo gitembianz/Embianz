@@ -70,7 +70,7 @@ class Productstable extends Component
   }
 
 
-  private function processRow($row)
+  public function processRow($row)
   {
     $id = $row[0]; // id
     $mediaLink = $row[1]; // media link
@@ -103,7 +103,7 @@ class Productstable extends Component
         return;
       }
       $imageInfo = getimagesizefromstring($fileContent);
-      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') === 'true') {
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
@@ -127,94 +127,95 @@ class Productstable extends Component
           $name = $product->name . '(' . $j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $fileContent);
-
-
-        $media = new Media();
-        $media->name = $name;
-        $media->extension = $fileExtension;
-        $media->width = $imageInfo[0];
-        $media->height =  $imageInfo[1];
-        $media->size = strlen($fileContent);
-        $media->type = 'original';
-        $media->sequence = 1;
-        $media->path = $path;
-        $media->createdby = Auth::user()->name;
-        $media->lastmodifiedby = Auth::user()->name;
-        $media->save();
-        $product->media()->attach($media->id);
-
-        //Resize system
-        $filePath = $path . $name;
-        $file = Storage::disk('public_upload')->get($filePath);
-        // Set the file content
-
-        $ismin = $product->media()->where('type', 'min')->first();
-
-        if (!$ismin) {
-          $this->resizeImage(
-            $file,
-            $path,
-            70,
-            'min',
-            $name,
-            $fileExtension,
-            true,
-            1,
-            $product
-          );
-        } else {
-          $oldPath = $ismin->path . $ismin->name;
-          if (File::exists($oldPath)) {
-            File::delete($oldPath);
-          }
-
-          $resizedImage = Image::make($file)
-            ->resize(70, 70, function ($constraint) {
-              $constraint->aspectRatio();
-              $constraint->upsize();
-            });
-
-          $newPath = $ismin->path . "resized70_" . $name;
-          $resizedImage->encode('webp')->save($newPath);
-          $ismin->path = $ismin->path;
-          $ismin->name = "resized70_" . $name;
-          $ismin->sequence = 1;
-          $ismin->extension = $fileExtension;
-          $ismin->width = $resizedImage->width();
-          $ismin->height = $resizedImage->height();
-          $ismin->size = File::size($newPath);
-          $ismin->lastmodifiedby = Auth::user()->name;
-          $ismin->save();
-        }
-
-        $ismaim = $product->media()->where('type', 'main')->first();
-        if (!$ismaim) {
-          $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
-        } else {
-          $oldPath = $ismaim->path . $ismaim->name;
-          if (File::exists($oldPath)) {
-            File::delete($oldPath);
-          }
-
-          $resizedImage = Image::make($file)
-            ->resize(300, 300, function ($constraint) {
-              $constraint->aspectRatio();
-              $constraint->upsize();
-            });
-
-          $newPath = $ismaim->path . "resized300_" . $name;
-          $resizedImage->encode('webp')->save($newPath);
-          $ismaim->path = $ismaim->path;
-          $ismaim->name = "resized300_" . $name;
-          $ismaim->sequence = 1;
-          $ismaim->extension = $fileExtension;
-          $ismaim->width = $resizedImage->width();
-          $ismaim->height = $resizedImage->height();
-          $ismaim->size = File::size($newPath);
-          $ismaim->lastmodifiedby = Auth::user()->name;
-          $ismaim->save();
-        }
       }
+
+
+      $media = new Media();
+      $media->name = $name;
+      $media->extension = $fileExtension;
+      $media->width = $imageInfo[0];
+      $media->height =  $imageInfo[1];
+      $media->size = strlen($fileContent);
+      $media->type = 'original';
+      $media->sequence = 1;
+      $media->path = $path;
+      $media->createdby = Auth::user()->name;
+      $media->lastmodifiedby = Auth::user()->name;
+      $media->save();
+      $product->media()->attach($media->id);
+
+      //Resize system
+      $filePath = $path . $name;
+      $file = Storage::disk('public_upload')->get($filePath);
+      // Set the file content
+
+      $ismin = $product->media()->where('type', 'min')->first();
+
+      if (!$ismin) {
+        $this->resizeImage(
+          $file,
+          $path,
+          70,
+          'min',
+          $name,
+          $fileExtension,
+          true,
+          1,
+          $product
+        );
+      } else {
+        $oldPath = $ismin->path . $ismin->name;
+        if (File::exists($oldPath)) {
+          File::delete($oldPath);
+        }
+
+        $resizedImage = Image::make($file)
+          ->resize(70, 70, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+          });
+
+        $newPath = $ismin->path . "resized70_" . $name;
+        $resizedImage->encode('webp')->save($newPath);
+        $ismin->path = $ismin->path;
+        $ismin->name = "resized70_" . $name;
+        $ismin->sequence = 1;
+        $ismin->extension = $fileExtension;
+        $ismin->width = $resizedImage->width();
+        $ismin->height = $resizedImage->height();
+        $ismin->size = File::size($newPath);
+        $ismin->lastmodifiedby = Auth::user()->name;
+        $ismin->save();
+      }
+
+      $ismaim = $product->media()->where('type', 'main')->first();
+      if (!$ismaim) {
+        $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
+      } else {
+        $oldPath = $ismaim->path . $ismaim->name;
+        if (File::exists($oldPath)) {
+          File::delete($oldPath);
+        }
+
+        $resizedImage = Image::make($file)
+          ->resize(300, 300, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+          });
+
+        $newPath = $ismaim->path . "resized300_" . $name;
+        $resizedImage->encode('webp')->save($newPath);
+        $ismaim->path = $ismaim->path;
+        $ismaim->name = "resized300_" . $name;
+        $ismaim->sequence = 1;
+        $ismaim->extension = $fileExtension;
+        $ismaim->width = $resizedImage->width();
+        $ismaim->height = $resizedImage->height();
+        $ismaim->size = File::size($newPath);
+        $ismaim->lastmodifiedby = Auth::user()->name;
+        $ismaim->save();
+      }
+
 
       $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, 1, $product);
       return;
