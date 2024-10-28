@@ -75,7 +75,7 @@ class Productstable extends Component
     $id = $row[0]; // id
     $mediaLink = $row[1]; // media link
 
-    $product = Product::findOrFail($id);
+    $product = Product::find($id);
 
     if ($product) {
       $productType = class_basename(get_class($product));
