@@ -187,18 +187,15 @@ class StoreProducts extends Component
                   return [
                     'product_id' => $product['product_id'],
                     'parent_id' => $product['parent_id'],
-                    'type' => $product['type'],
                   ];
                 } elseif ($product['type'] != 'variant') {
                   return [
                     'product_id' => $product['product_id'],
-                    'type' => $product['type'],
                   ];
                 }
               } else {
                 return [
                   'product_id' => $product['product_id'],
-                  'type' => $product['type'],
                 ];
               }
             })->filter();
@@ -230,6 +227,7 @@ class StoreProducts extends Component
     $productIdsPerSpec = [];
 
     if (!empty($this->queryfilters)) {
+      // dd($this->queryfilters);
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
         $specVariantIds = [];
