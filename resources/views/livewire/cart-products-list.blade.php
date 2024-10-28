@@ -48,6 +48,7 @@
     $disables = [];
     $nonquantity = [];
     ?>
+    <span id="price_change" style="display: none">price change</span>
     @foreach ($cart->cartItems as $index => $cartItem)
      <?php
      $disabled[$index] = false;
@@ -68,7 +69,7 @@
      }
      ?>
 
-     <li id="price_change" class="leftbar__item">
+     <li class="leftbar__item">
       @if ($nonquantity[$index])
        <div class="basket__split">
         <div class="leftbar__link">
