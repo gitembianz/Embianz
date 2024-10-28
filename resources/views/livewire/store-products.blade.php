@@ -394,9 +394,9 @@
          $productsString = collect($productData['product_data'])
              ->map(function ($product) {
                  if (isset($product['parent_id'])) {
-                     return implode('|', [$product['product_id'], $product['parent_id'], $product['type']]);
+                     return implode('|', [$product['product_id'], $product['parent_id']]);
                  } else {
-                     return implode('|', [$product['product_id'], $product['type']]);
+                     return implode([$product['product_id']]);
                  }
              })
              ->implode(',');
