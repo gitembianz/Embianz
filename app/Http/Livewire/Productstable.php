@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Bus;
 
 
 use Illuminate\Support\Facades\Storage;
@@ -49,9 +48,11 @@ class Productstable extends Component
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
   ];
-
   public function updatingcsvFile($value)
   {
+    ini_set('max_execution_time', 300);
+    ini_set('memory_limit', '512M');
+
     $file = fopen($value->getRealPath(), 'r');
     // Skip the header row
     $header = fgetcsv($file);
@@ -67,6 +68,7 @@ class Productstable extends Component
       'title' => 'Success'
     ]);
   }
+
 
   private function processRow($row)
   {
