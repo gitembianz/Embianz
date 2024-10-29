@@ -169,24 +169,24 @@ class RelatedMediaCategory extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
-        $name = $this->file_name[$this->i] . '.' . $fileExtension;
+        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '.' . $fileExtension;
         if (file_exists($path . $name)) {
           $this->j = 1;
-          while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
+          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension)) {
             $this->j++;
           }
-          $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
+          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = $this->file_name[$this->i] . '.' . $fileExtension;
+        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '.' . $fileExtension;
         if (file_exists($path . $name)) {
           $this->j = 1;
-          while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
+          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension)) {
             $this->j++;
           }
-          $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
+          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
@@ -343,7 +343,7 @@ class RelatedMediaCategory extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->category->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->category->media()->pluck('media.id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -369,7 +369,7 @@ class RelatedMediaCategory extends Component
       } else {
         $type = $file->getClientOriginalExtension();
       }
-      $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+      $filename = strtolower(preg_replace('/\s+/', '-', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)));
       $name = $filename . '.' . $type;
       if (file_exists($path . $name)) {
         $this->j = 1;
@@ -526,7 +526,7 @@ class RelatedMediaCategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->category->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->category->media()->pluck('media.id')->map(fn($item) => (string) $item)->toArray();
   }
   public function isChecked($id)
   {

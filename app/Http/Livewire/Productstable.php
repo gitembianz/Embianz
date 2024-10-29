@@ -107,7 +107,7 @@ class Productstable extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
-        $name = $product->name . '.' . $fileExtension;
+        $name = strtolower(preg_replace('/\s+/', '-', $product->name));
         if (file_exists($path . $name)) {
           $j = 1;
           while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
@@ -129,7 +129,10 @@ class Productstable extends Component
         Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
 
-
+      $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
+      if ($isoriginal) {
+        $isoriginal->delete();
+      }
       $media = new Media();
       $media->name = $name;
       $media->extension = $fileExtension;
@@ -216,7 +219,10 @@ class Productstable extends Component
         $ismaim->save();
       }
 
-
+      $isfull = $product->media()->where('type', 'full')->where('sequence', '1')->first();
+      if ($isfull) {
+        $isfull->delete();
+      }
       $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, 1, $product);
       return;
     } else {

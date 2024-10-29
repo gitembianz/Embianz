@@ -192,7 +192,7 @@ class RelatedMediaProduct extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->product->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->product->media()->pluck('media.id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -256,27 +256,32 @@ class RelatedMediaProduct extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
-        $name = $this->file_name[$i] . '.' . $fileExtension;
+        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '.' . $fileExtension;
         if (file_exists($path . $name)) {
           $this->j = 1;
-          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension)) {
             $this->j++;
           }
-          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = $this->file_name[$i] . '.' . $fileExtension;
+        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '.' . $fileExtension;
         if (file_exists($path . $name)) {
           $this->j = 1;
-          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension)) {
             $this->j++;
           }
-          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
+      $isoriginal = $this->product->media()->where('type', 'original')->where('sequence', '1')->first();
+      if ($this->file_sequences[$i] == '1' && $isoriginal) {
+        $isoriginal->delete();
+      }
+
 
       $media = new Media();
       $media->name = $name;
@@ -301,6 +306,7 @@ class RelatedMediaProduct extends Component
         //Resize system
         //Min image -Search
         if ($this->file_sequences[$i] == '1') {
+
           $ismin = $this->product->media()->where('type', 'min')->first();
 
           if (!$ismin) {
@@ -368,7 +374,13 @@ class RelatedMediaProduct extends Component
           }
         }
 
-
+        $isfull = $this->product->media()->where(
+          'type',
+          'full'
+        )->where('sequence', '1')->first();
+        if ($this->file_sequences[$i] == '1' && $isfull) {
+          $isfull->delete();
+        }
         $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, $this->file_sequences[$i]);
       }
 
@@ -416,13 +428,17 @@ class RelatedMediaProduct extends Component
       $media->name = $file->getClientOriginalName();
       //name-checker
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-      $media->name = $filename . '.' . $type;
+      $media->name = strtolower(preg_replace('/\s+/', '-', $filename)) . '.' . $type;
       if (file_exists($path . $media->name)) {
         $this->j = 1;
-        while (file_exists($path . $filename . '(' . $this->j . ').' . $type)) {
+        while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $filename)) . '(' . $this->j . ').' . $type)) {
           $this->j++;
         }
-        $media->name = $filename . '(' . $this->j . ').' . $type;
+        $media->name = strtolower(preg_replace('/\s+/', '-', $filename)) . '(' . $this->j . ').' . $type;
+      }
+      $isoriginal = $this->product->media()->where('type', 'original')->where('sequence', '1')->first();
+      if ($this->file_sequences[$this->i] == '1' && $isoriginal) {
+        $isoriginal->delete();
       }
       $file->storeAs($path, $media->name, 'public_upload');
       $media->sequence = $this->file_sequences[$this->i];
@@ -506,7 +522,10 @@ class RelatedMediaProduct extends Component
           }
         }
 
-
+        $isfull = $this->product->media()->where('type', 'full')->where('sequence', '1')->first();
+        if ($this->file_sequences[$this->i] == '1' && $isfull) {
+          $isfull->delete();
+        }
         $this->resizeImage($file, $path, 640, 'full', $media->name, $type, false, $this->file_sequences[$this->i]);
       }
       $this->i += 1;
@@ -644,7 +663,7 @@ class RelatedMediaProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->product->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->product->media()->pluck('media.id')->map(fn($item) => (string) $item)->toArray();
   }
   public function isChecked($id)
   {
