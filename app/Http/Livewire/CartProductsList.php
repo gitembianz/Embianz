@@ -194,31 +194,33 @@ class CartProductsList extends Component
 
     public function pricechanged()
     {
-        foreach ($this->cart->cartItems as $item) {
-            if (optional($item->product->product_prices->first())->value) {
+        if ($this->cart) {
+            foreach ($this->cart->cartItems as $item) {
+                if (optional($item->product->product_prices->first())->value) {
 
-                if ($item->price != $item->product->product_prices->first()->value) {
-                    $item->price = $item->product->product_prices->first()->value;
-                    $item->save();
-                    $sum_amount = 0;
-                    foreach ($this->cart->cartItems as $element) {
-                        $sum_amount = $sum_amount + $element->price * $element->quantity;
+                    if ($item->price != $item->product->product_prices->first()->value) {
+                        $item->price = $item->product->product_prices->first()->value;
+                        $item->save();
+                        $sum_amount = 0;
+                        foreach ($this->cart->cartItems as $element) {
+                            $sum_amount = $sum_amount + $element->price * $element->quantity;
+                        }
+                        $this->cart->sum_amount = $sum_amount;
+                        if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                            $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+                        } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
+                            $this->cart->voucher_value = $this->cart->voucher->value;
+                        }
+                        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+                        $this->cart->final_amount -= $this->cart->voucher_value;
+                        $this->cart->seen_by_customer = true;
+                        $this->cart->save();
+                        $this->cartmodified = true;
+                        return;
                     }
-                    $this->cart->sum_amount = $sum_amount;
-                    if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
-                        $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
-                    } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
-                        $this->cart->voucher_value = $this->cart->voucher->value;
-                    }
-                    $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
-                    $this->cart->final_amount -= $this->cart->voucher_value;
-                    $this->cart->seen_by_customer = true;
-                    $this->cart->save();
-                    $this->cartmodified = true;
-                    return;
+                } else {
+                    continue;
                 }
-            } else {
-                continue;
             }
         }
     }
