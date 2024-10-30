@@ -165,25 +165,36 @@
    @endif
    <label for="product__name">Type</label>
   </div>
-
   {{-- Product Quantity --}}
   <div class="input__tabs">
    @if ($editproduct === null)
-    <span class="disabled">{{ $product->quantity }}</span>
+    <span class="disabled">{{ $product->google_category }}</span>
    @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
+    <input type="text" placeholder=" " name="google_category" wire:model.defer="prod.google_category" required>
    @endif
-   <label for="product__name">Quantity</label>
+   <label for="google_category">Google Category</label>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product Popularity --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->popularity }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
-   @endif
-   <label for="product__name">Popularity</label>
+   {{-- Product Quantity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->quantity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
+    @endif
+    <label for="product__name">Quantity</label>
+   </div>
+
+   {{-- Product Popularity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->popularity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+    @endif
+    <label for="product__name">Popularity</label>
+   </div>
   </div>
   <div class="details__checkboxes">
    {{-- Product SKU --}}

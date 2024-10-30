@@ -57,7 +57,8 @@ class ShowProduct extends Component
       'ean' => $this->product->ean,
       'seo_id' => $this->product->seo_id,
       'type' => $this->product->type,
-      'brand' => $this->product->brand
+      'brand' => $this->product->brand,
+      'google_category' => $this->product->google_category
 
     ];
     $this->editproduct = true;
@@ -88,6 +89,9 @@ class ShowProduct extends Component
       $new = Product::find($this->productId);
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
+      }
+      if (array_key_exists('google_category', $product_new)) {
+        $new->google_category = $product_new['google_category'];
       }
       if (array_key_exists('seo_id', $product_new)) {
         if ($product_new['seo_id'] == "") {
