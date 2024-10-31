@@ -8,11 +8,18 @@
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
   <div class="leftbar__top">
-   <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">
+
+   {{-- <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">
     @if (app()->has('label_cart_title'))
      {!! app('label_cart_title') !!}
     @endif
-   </a>
+   </a> --}}
+
+    <span> @if (app()->has('label_cart_page_title'))
+     {!! app('label_cart_page_title') !!}
+    @endif</span>
+
+
    <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -323,7 +330,10 @@
     @if ($message)
      <p class="voucher__error">{{ $message }}</p>
     @endif
-    @if ($cart->voucher_id == null)
+
+     <!-- CHANGE TO DYNAMIC -->
+
+    <!-- @if ($cart->voucher_id == null)
      <div class="voucher">
       <input type="text" wire:model="voucher" maxlength="100" name="voucher"
        placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
@@ -333,7 +343,9 @@
        @endif
       </button>
      </div>
-    @endif
+    @endif -->
+
+     <!-- CHANGE TO DYNAMIC -->
 
     @if ($isdisabled)
      <a class="leftbar__button leftbar__button--long item__button--disabled">

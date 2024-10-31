@@ -268,15 +268,20 @@
        <p class="voucher__error">{{ $message }}</p>
       @endif
       @if ($cart->voucher_id == null)
-       <div class="voucher">
-        <input type="text" wire:model="voucher" maxlength="100" name="voucher"
+
+      <!-- CHANGE TO DYNAMIC -->
+
+       <!-- <div class="voucher">
+         <input type="text" wire:model="voucher" maxlength="100" name="voucher"
          placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
         <button type="submit" wire:click="checkvoucher">
          @if (app()->has('label_cart_voucher_apply'))
           {!! app('label_cart_voucher_apply') !!}
          @endif
         </button>
-       </div>
+       </div> -->
+
+       <!-- CHANGE TO DYNAMIC -->
       @endif
       @if ($aplicabble_voucher)
        <div class="voucher__question">
