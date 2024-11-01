@@ -123,13 +123,12 @@ class StoreProducts extends Component
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
-      if ($this->category->accepted_items === 'default') {
+      if ($this->category->accepted_items == 'default') {
         $query->where('type', '!=', 'parent');
-      }
-      if (!empty($this->selectedKeys)) {
-        $query->whereIn('id', $this->selectedKeys);
       } else {
-        $query->where('type', '!=', 'variant');
+        if (empty($this->selectedKeys)) {
+          $query->where('type', '!=', 'variant');
+        }
       }
     }
     switch ($this->orderBy) {
@@ -161,7 +160,9 @@ class StoreProducts extends Component
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-
+    if (!empty($this->selectedKeys)) {
+      $query->whereIn('id', $this->selectedKeys);
+    }
 
     return $query->orderBy('popularity', 'DESC')
       ->orderBy('innerid', 'ASC')->paginate($this->loadAmount);
@@ -172,7 +173,7 @@ class StoreProducts extends Component
   {
     $query = app('cached_specifications');
 
-    if ($this->category !== null) {
+    if ($this->category != null) {
       $query = collect($query)->map(function ($spec) {
         $filteredValues = collect($spec['values'])->map(function ($value) {
           $filteredProducts = collect($value['products'])->filter(function ($product) {
@@ -219,7 +220,6 @@ class StoreProducts extends Component
 
     return $query;
   }
-
   public function applyFilter()
   {
     $this->selectedKeys = [];
@@ -227,6 +227,7 @@ class StoreProducts extends Component
     $productIdsPerSpec = [];
 
     if (!empty($this->queryfilters)) {
+      // dd($this->queryfilters);
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
         $specVariantIds = [];
@@ -239,10 +240,17 @@ class StoreProducts extends Component
 
             foreach ($productIdsWithTypes as $item) {
               $parts = explode('|', $item);
-              if (isset($parts[1])) {
-                $specVariantIds[$parts[1]][] = (string) $parts[0];
+              $productId = $parts[0];
+              $productType = $parts[1] ?? 'standard';
+
+              if ($productType === 'variant') {
+                $variantId = $productId;
+                $parentId = $parts[1] ?? null;
+                if ($parentId) {
+                  $specVariantIds[$parentId] = $variantId;
+                }
               } else {
-                $specProductIds[] = $parts[0];
+                $specProductIds[] = $productId;
               }
             }
 
@@ -250,26 +258,15 @@ class StoreProducts extends Component
           }
         }
 
-        if (!empty($specProductIds)) {
-          $productIdsPerSpec[] = array_unique($specProductIds);
-        }
-      }
-      if (!empty($productIdsPerSpec)) {
-        $productIdsPerSpec = [array_intersect(...$productIdsPerSpec)];
-      }
-      if (!empty($specVariantIds)) {
-        foreach ($specVariantIds as $parentId => $variants) {
-          $variantCount = array_count_values($variants);
+        $mergedProductIds = array_merge($specProductIds, array_keys($specVariantIds));
 
-          $maxCount = max($variantCount);
-          $mostFrequentVariant = array_search($maxCount, $variantCount);
-          $productIdsPerSpec[] = [$mostFrequentVariant];
+        if (!empty($mergedProductIds)) {
+          $productIdsPerSpec[] = array_unique($mergedProductIds);
         }
-        $productIdsPerSpec = [array_merge(...$productIdsPerSpec)];
       }
 
       if (count($productIdsPerSpec) > 1) {
-        $this->selectedKeys = $productIdsPerSpec[0];
+        $this->selectedKeys = array_intersect(...$productIdsPerSpec);
       } else {
         $this->selectedKeys = $productIdsPerSpec[0] ?? [];
       }
