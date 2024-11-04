@@ -42,10 +42,10 @@
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: transparent;
-  color: $lightBlack;
+  background: $lightBlack;
+  color: $primary;
   font-size: $textSize;
-  font-weight: $lightWeight;
+  font-weight: 400;
   text-decoration: none;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
@@ -55,7 +55,7 @@
 
   @media (hover: hover) {
     &:hover {
-      background: $lightBlack;
+      background: lighten($lightBlack,20%);
       color: $primary;
 
       & > svg {
@@ -66,8 +66,8 @@
 
   @media (hover: none) {
     &:active {
-      background: $lightBlack;
-      color: $primary;
+      background: $primary;
+      color: $lightBlack;
 
       & > svg {
         stroke: $primary;
@@ -87,8 +87,8 @@
   }
 
   &.active {
-    background: $lightBlack;
-    color: $primary;
+    background: $primary;
+      color: $lightBlack;
 
     & > svg {
       stroke: $primary;
@@ -96,7 +96,7 @@
   }
 
   & > svg {
-    stroke: $lightBlack;
+    stroke: $primary;
   }
 }
 

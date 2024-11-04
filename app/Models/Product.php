@@ -29,8 +29,7 @@ class Product extends Model
     'seo_id',
     'parent_id',
     'brand',
-    'innerid',
-    'google_category'
+    'innerid'
   ];
 
   public static function search($search)
