@@ -66,6 +66,7 @@
       </div>
      @endif
     </div>
+    @if ($product->media->where('type', 'full')->count() > 1 )
     <div class="product-slider__navigation">
      <button class="product-slider__prev" aria-label="Previous slide">
       <svg>
@@ -78,6 +79,7 @@
       </svg>
      </button>
     </div>
+    @endif
    </div>
    <div class="product-slider__pagination--navigation">
     <button class="product-slider__pagination--button product-slider__pagination--prev disabled" aria-label="Previous">
