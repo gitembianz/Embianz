@@ -124,6 +124,7 @@ class ProductController extends Controller
     \DB::raw('MAX(products.seo_title) as seo_title'),  // Aggregate seo_title
     \DB::raw('MAX(products.meta_description) as meta_description'),  // Aggregate meta_description
     \DB::raw('MAX(products.is_new) as is_new'),  // Aggregate is_new
+    \DB::raw('MAX(products.google_category) as google_category'),  // Aggregate is_new
     \DB::raw('categories.seo_title as category_seo_title'),
     \DB::raw('MIN(media.path) as media_path'),  // Select first media path
     \DB::raw('MIN(media.name) as media_name'),  // Select first media name
@@ -138,9 +139,9 @@ class ProductController extends Controller
 
 
     // Generate multiple CSV feeds
-    $this->generateCsvFeed($products, 'google');
+    $this->generateCsvFeed($products->where('active','=',1), 'google');
     $this->generateCsvFeed($products, 'salesforce');
-    $this->generateCsvFeed($products, 'facebook');
+    $this->generateCsvFeed($products->where('active','=',1), 'facebook');
 }
 
 private function generateCsvFeed($products, $feedType)
@@ -149,7 +150,7 @@ private function generateCsvFeed($products, $feedType)
     $feeds = [
         'google' => [
             'fileName' => 'google.csv',
-            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0'],
+            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0','google_product_category'],
             'columns' => function($product) {
                 $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
@@ -168,7 +169,8 @@ private function generateCsvFeed($products, $feedType)
                     $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
                     'in_stock',
                     $this->sanitizeData($product->brand),
-                    $category
+                    $category,
+                    $this->sanitizeData($product->google_category)
                 ];
             }
         ],

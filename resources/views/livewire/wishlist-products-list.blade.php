@@ -2,11 +2,20 @@
  <button class="leftbar__hidden--close" id="wishHidden" wire:click="$set('showwis', false)"></button>
  <div class="leftbar__content" id="wishContent">
   <div class="leftbar__top">
-   <a class="leftbar__button" href="/wishlist">
+
+    <!-- MAKE DYNAMIC -->
+
+   <!-- <a class="leftbar__button" href="/wishlist">
     @if (app()->has('label_wishlist_title'))
      {!! app('label_wishlist_title') !!}
     @endif
-   </a>
+   </a> -->
+   <span>@if (app()->has('label_wishlist_page_title'))
+    {!! app('label_wishlist_page_title') !!}
+    @endif
+</span>
+   <!-- MAKE DYNAMIC -->
+
    <button class="leftbar__close" wire:click="$set('showwis', false)" id="wishClose" href="#">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
