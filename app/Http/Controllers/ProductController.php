@@ -150,7 +150,7 @@ private function generateCsvFeed($products, $feedType)
     $feeds = [
         'google' => [
             'fileName' => 'google.csv',
-            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0'],'google_product_category',
+            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0','google_product_category'],
             'columns' => function($product) {
                 $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
