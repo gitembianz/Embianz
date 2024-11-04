@@ -15,9 +15,11 @@
     @endif
    </a> --}}
 
-    <span> @if (app()->has('label_cart_page_title'))
+   <span id="price_change">
+    @if (app()->has('label_cart_page_title'))
      {!! app('label_cart_page_title') !!}
-    @endif</span>
+    @endif
+   </span>
 
 
    <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
@@ -55,7 +57,6 @@
     $disables = [];
     $nonquantity = [];
     ?>
-    <span id="price_change" style="display: none">price change</span>
     @foreach ($cart->cartItems as $index => $cartItem)
      <?php
      $disabled[$index] = false;
@@ -331,21 +332,21 @@
      <p class="voucher__error">{{ $message }}</p>
     @endif
 
-     <!-- CHANGE TO DYNAMIC -->
+    <!-- CHANGE TO DYNAMIC -->
 
     <!-- @if ($cart->voucher_id == null)
-     <div class="voucher">
+<div class="voucher">
       <input type="text" wire:model="voucher" maxlength="100" name="voucher"
        placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
       <button type="submit" wire:click="checkvoucher">
        @if (app()->has('label_cart_voucher_apply'))
-        {!! app('label_cart_voucher_apply') !!}
-       @endif
+{!! app('label_cart_voucher_apply') !!}
+@endif
       </button>
      </div>
-    @endif -->
+@endif -->
 
-     <!-- CHANGE TO DYNAMIC -->
+    <!-- CHANGE TO DYNAMIC -->
 
     @if ($isdisabled)
      <a class="leftbar__button leftbar__button--long item__button--disabled">
