@@ -3032,101 +3032,47 @@
        </div>
       @endforeach
      </div>
-     <script>
-      function purchase() {
-       // Variables
-       var dlv = document.querySelector('.dlv');
-       // Check if dlv element exists
-       if (!dlv) {
-        console.error('Elementul cu clasa .dlv nu a fost găsit.');
-        return;
-       }
-       // Get all Values
-       var currency = dlv.querySelector('.dlv_currency').innerText.trim();
-       var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-       var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+   <script>
+  async function purchase() {
+    var dlv = document.querySelector('.dlv');
+    if (!dlv) {
+      console.error('Elementul cu clasa .dlv nu a fost găsit.');
+      return;
+    }
 
-       var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
-       // const tax = parseFloat(dlv.querySelector('.dlv_tax').innerText.trim().replace(',', '.'));
-       var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
+    var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+    var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+    var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+    var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
+    var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
 
-       var items = [];
-       // Get all items
-       var dlv_items = dlv.querySelectorAll('.dlv_item');
-       // Loop through each item
-       dlv_items.forEach(dlv_item => {
-        var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-        var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-        var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-        var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+    var items = [];
+    var dlv_items = dlv.querySelectorAll('.dlv_item');
+    dlv_items.forEach(dlv_item => {
+      var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+      var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+      var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+      var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+      items.push({ item_id, item_name, price: item_price, quantity: item_quantity });
+    });
 
-        // Create item object
-        var item = {
-         item_id: item_id,
-         item_name: item_name,
-         price: item_price,
-         quantity: item_quantity
-        };
+    return { currency, value, coupon, transaction_id, shipping, items };
+  }
 
-        // Push item in the array
-        items.push(item);
-       });
-
-       // Create the data object
-       var dlvData = {
-        currency: currency,
-        value: value,
-        coupon: coupon,
-        transaction_id: transaction_id,
-        // tax: tax,
-        shipping: shipping,
-        items: items
-       };
-       // Show the object
-       // console.log(dlvData);
-       return dlvData;
-      };
-      // purchase();
-
-      // Apelul funcției purchase pentru a extrage datele
-      var dlvData = purchase();
-
-      // Trimiterea datelor la Google Analytics folosind dataLayer.push
-      dataLayer.push({
-       ecommerce: null
-      });
-      dataLayer.push({
-       event: "purchase",
-       ecommerce: {
-        currency: dlvData.currency,
-        value: dlvData.value,
-        coupon: dlvData.coupon,
-        transaction_id: dlvData.transaction_id,
-        shipping: dlvData.shipping,
-        items: dlvData.items
-       }
-      });
-
-// Helper function to hash data using SHA-256
-async function sha256Hash(data) {
+  async function sha256Hash(data) {
     const encoder = new TextEncoder();
     const encodedData = encoder.encode(data);
     const hashBuffer = await crypto.subtle.digest('SHA-256', encodedData);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    return hashHex;
-}
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
-// Function to extract shipping data from the confirmation page
-async function extractShippingDataAndHash() {
-    // Find the shipping section
+  async function extractShippingDataAndHash() {
     const lookForm = document.querySelector('.look__form');
     if (!lookForm) {
-        console.error('Shipping information not found.');
-        return;
+      console.error('Shipping information not found.');
+      return;
     }
 
-    // Extract shipping information using the appropriate classes or tags
     const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
     const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1].innerText.trim();
     const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
@@ -3135,60 +3081,59 @@ async function extractShippingDataAndHash() {
     const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
     const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
     const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const country = 'RO'; // Assuming Romania; update if different
+    const country = 'RO';
 
-    // Normalize the data
     const normalizedData = {
-        email: email.toLowerCase().trim(),
-        phone_number: phone.trim(),
-        address: {
-            first_name: firstName.toLowerCase().trim(),
-            last_name: lastName.toLowerCase().trim(),
-            street: street.toLowerCase().trim(),
-            city: city.toLowerCase().trim(),
-            region: region.toLowerCase().trim(),
-            postal_code: postalCode.trim(),
-            country: country.toLowerCase().trim()
-        }
+      email: email.toLowerCase().trim(),
+      phone_number: phone.trim(),
+      address: {
+        first_name: firstName.toLowerCase().trim(),
+        last_name: lastName.toLowerCase().trim(),
+        street: street.toLowerCase().trim(),
+        city: city.toLowerCase().trim(),
+        region: region.toLowerCase().trim(),
+        postal_code: postalCode.trim(),
+        country: country.toLowerCase().trim()
+      }
     };
 
-    // Hash the necessary fields
-    const hashedEmail = await sha256Hash(normalizedData.email);
-    const hashedPhone = await sha256Hash(normalizedData.phone_number);
-    const hashedFirstName = await sha256Hash(normalizedData.address.first_name);
-    const hashedLastName = await sha256Hash(normalizedData.address.last_name);
-
-    // Return the hashed data
     return {
-        email: hashedEmail,
-        phone_number: hashedPhone,
-        address: {
-            first_name: hashedFirstName,
-            last_name: hashedLastName,
-            street: normalizedData.address.street,
-            city: normalizedData.address.city,
-            region: normalizedData.address.region,
-            postal_code: normalizedData.address.postal_code,
-            country: normalizedData.address.country
-        }
+      email: await sha256Hash(normalizedData.email),
+      phone_number: await sha256Hash(normalizedData.phone_number),
+      address: {
+        first_name: await sha256Hash(normalizedData.address.first_name),
+        last_name: await sha256Hash(normalizedData.address.last_name),
+        street: normalizedData.address.street,
+        city: normalizedData.address.city,
+        region: normalizedData.address.region,
+        postal_code: normalizedData.address.postal_code,
+        country: normalizedData.address.country
+      }
     };
-}
+  }
 
-// Push the hashed shipping data to the dataLayer
-async function pushShippingDataToDataLayer() {
-    const hashedShippingData = await extractShippingDataAndHash();
+  async function pushPurchaseEvent() {
+    const dlvData = await purchase();
+    const userData = await extractShippingDataAndHash();
 
-    // Push the data to the dataLayer for enhanced conversions
+    dataLayer.push({ ecommerce: null });
     dataLayer.push({
-        event: 'set_user_data',
-        user_data: hashedShippingData
+      event: "purchase",
+      ecommerce: {
+        currency: dlvData.currency,
+        value: dlvData.value,
+        coupon: dlvData.coupon,
+        transaction_id: dlvData.transaction_id,
+        shipping: dlvData.shipping,
+        items: dlvData.items,
+        user_data: userData
+      }
     });
-}
+  }
 
-// Call this function after the page loads or at the appropriate moment
-pushShippingDataToDataLayer();
+  pushPurchaseEvent();
+</script>
 
-     </script>
     @endif
     <!------------------- Controls ------------------->
     <div class="checkout__header" style="flex-direction: row !important">

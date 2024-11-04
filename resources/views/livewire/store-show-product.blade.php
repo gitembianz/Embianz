@@ -66,7 +66,21 @@
       </div>
      @endif
     </div>
-    @if ($product->media->where('type', 'full')->count() > 1 )
+    <!-- EDIT TO APPLY CLASS DINAMICALLY -->
+    @if ($product->media->where('type', 'full')->count() <= 1 )
+    <div class="product-slider__navigation" style="display:none">
+     <button class="product-slider__prev" aria-label="Previous slide">
+      <svg>
+       <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+     </button>
+     <button class="product-slider__next" aria-label="Next slide">
+      <svg>
+       <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+     </button>
+    </div>
+    @else
     <div class="product-slider__navigation">
      <button class="product-slider__prev" aria-label="Previous slide">
       <svg>
@@ -80,6 +94,7 @@
      </button>
     </div>
     @endif
+    <!-- EDIT TO APPLY CLASS DINAMICALLY -->
    </div>
    <div class="product-slider__pagination--navigation">
     <button class="product-slider__pagination--button product-slider__pagination--prev disabled" aria-label="Previous">
@@ -109,6 +124,19 @@
      <line x1="3" y1="21" x2="10" y2="14"></line>
     </svg>
    </button>
+
+   @if ($product->media->where('type', 'full')->count() == 1 )
+   <button class="product-modal__prev" style="display:none">
+    <svg>
+     <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+   </button>
+   <button class="product-modal__next" style="display:none">
+    <svg>
+     <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+   </button>
+   @else
    <button class="product-modal__prev">
     <svg>
      <polyline points="15 18 9 12 15 6"></polyline>
@@ -119,6 +147,8 @@
      <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
    </button>
+   @endif
+
    <span class="product-modal__count"></span>
   </div>
   <!------------------ End Modal Product ---------------->
