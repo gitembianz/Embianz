@@ -51,6 +51,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'display_delivery_price_on_cart', 'value' => 'true', 'description' => 'Display Delivery price on cart, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'display_phone_on_pdp', 'value' => 'true', 'description' => 'Display Phone number on pdp, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'display_vat_value', 'value' => 'true', 'description' => 'Display vat value on pdp, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'voucher_system_on', 'value' => 'false', 'description' => 'Store voucher sistem :false', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }

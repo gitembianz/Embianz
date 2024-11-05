@@ -1,27 +1,14 @@
 <div
- class="leftbar
-    @if ($showcart) active @else @endif
-    @if ($cartmodified) problem @endif
-
-    @if ($aplicabble_voucher) mod @endif"
+ class="leftbar @if ($showcart) active @endif @if ($cartmodified) problem @endif @if ($aplicabble_voucher) mod @endif"
  id="basketList">
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
   <div class="leftbar__top">
-
-   {{-- <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">
-    @if (app()->has('label_cart_title'))
-     {!! app('label_cart_title') !!}
-    @endif
-   </a> --}}
-
    <span id="price_change">
     @if (app()->has('label_cart_page_title'))
      {!! app('label_cart_page_title') !!}
     @endif
    </span>
-
-
    <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -44,6 +31,7 @@
        $decimal = ',';
    }
   @endphp
+
   @if (!isset($cart) || $cart->quantity_amount == 0)
    <span class="leftbar__empty">
     @if (app()->has('label_cart_empty'))
@@ -97,7 +85,6 @@
            @endif
            {{ $cartItem->product->quantity }}
           </span>
-
          </div>
         </div>
         <div class="basket__item" style="border-top:1px solid #333333">
@@ -263,18 +250,16 @@
     @endforeach
    </ul>
 
-   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true')  @endif>
-
+   <div class="leftbar__total">
     <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_products_tag'))
       {!! app('label_cart_products_tag') !!}
      @endif
-     <span id="leftbarTotalPrice">
+     <span @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true') id="leftbarTotalPrice" @endif>
       {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
       @if (app()->has('global_currency_primary_symbol'))
        {!! app('global_currency_primary_symbol') !!}
       @endif
-
      </span>
     </h5>
     @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
@@ -332,21 +317,22 @@
      <p class="voucher__error">{{ $message }}</p>
     @endif
 
-    <!-- CHANGE TO DYNAMIC -->
+    @if (app()->has('global_voucher_system_on') && app('global_voucher_system_on') === 'true')
+     @if ($cart->voucher_id == null)
+      <div class="voucher">
+       <input type="text" wire:model="voucher" maxlength="100" name="voucher"
+        placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
+       <button type="submit" wire:click="checkvoucher">
+        @if (app()->has('label_cart_voucher_apply'))
+         {!! app('label_cart_voucher_apply') !!}
+        @endif
+       </button>
+      </div>
+     @endif
+    @endif
 
-    <!-- @if ($cart->voucher_id == null)
-<div class="voucher">
-      <input type="text" wire:model="voucher" maxlength="100" name="voucher"
-       placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
-      <button type="submit" wire:click="checkvoucher">
-       @if (app()->has('label_cart_voucher_apply'))
-{!! app('label_cart_voucher_apply') !!}
-@endif
-      </button>
-     </div>
-@endif -->
 
-    <!-- CHANGE TO DYNAMIC -->
+
 
     @if ($isdisabled)
      <a class="leftbar__button leftbar__button--long item__button--disabled">
@@ -379,7 +365,7 @@
       let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
       let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '')
        .trim());
-      let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity')
+      let productQuantity = parseInt(product.querySelector('product__quantity')
        .innerText);
 
       productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
