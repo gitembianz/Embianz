@@ -1,6 +1,4 @@
 <section>
- <!------------------------------------------------------>
- <!------------------- Support Center ------------------>
  <div class="support">
   <div class="support__container container">
    <h2 class="support__text">

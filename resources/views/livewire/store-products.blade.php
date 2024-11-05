@@ -1,5 +1,4 @@
 <div>
- <!------------------------Breadcrumbs----------------------->
  @php
   if (app()->has('global_numberformat_element')) {
       if (app('global_numberformat_element') === '.') {
@@ -135,7 +134,7 @@
          $element = $product;
      }
     @endphp
-    <div class="product">
+    <div wire:key="product-{{ $element->id }}" class="product">
      <div @if ($loop->last) id="last_record" @endif class="card">
       <a
        href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
@@ -195,29 +194,29 @@
       @livewire(
           'product-wishlist-button',
           [
-              'productId' => $product->id,
+              'productId' => $element->id,
               'class' => 'card__action',
-              'is_in_wishlist' => $this->isInWishlist($product->id),
+              'is_in_wishlist' => $this->isInWishlist($element->id),
           ],
-          key($product->id)
+          key('w' . $element->id)
       )
 
       <div class="card-info">
        <div class="card-text">
         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
           href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
-          @if ($product->type === 'variant' && $category->accepted_items === 'parents')
-           {{ $product->parent->name }}
+          @if ($element->type === 'variant' && $category->accepted_items === 'parents')
+           {{ $element->parent->name }}
           @else
-           {{ $product->name }}
+           {{ $element->name }}
           @endif
          </a>
         </h2>
         @php
-         if ($product->type === 'variant' && $category->accepted_items === 'parents') {
-             $corectproduct = $product->parent;
+         if ($element->type === 'variant' && $category->accepted_items === 'parents') {
+             $corectproduct = $element->parent;
          } else {
-             $corectproduct = $product;
+             $corectproduct = $element;
          }
          if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
              $primaryCategory = $corectproduct->product_categories->where('primary_category', true)->first();
@@ -236,7 +235,7 @@
          {{-- label price from --}}
          @if (
              $category->display_variant_price == true &&
-                 ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents')) &&
+                 ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
                  app()->has('global_variant_price_from') &&
                  app()->has('global_variant_add_to_cart') &&
                  app('global_variant_add_to_cart') === 'true' &&
@@ -245,7 +244,7 @@
           {!! app('label_product_price_from') !!}
          @endif
          {{-- price --}}
-         @if ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents'))
+         @if ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents'))
           @if (
               $category->display_variant_price == true &&
                   app()->has('global_variant_add_to_cart') &&
@@ -315,12 +314,12 @@
         </div>
        </div>
        @if (
-           ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents')) &&
+           ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true' &&
                $category->display_variant_price == true)
-        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents'))
+        @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
+       @elseif($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents'))
         <div class="card__button--wrapper">
          <button class="card__button">
 
@@ -334,7 +333,7 @@
          </button>
         </div>
        @else
-        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+        @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
        @endif
       </div>
      </div>
@@ -400,11 +399,12 @@
                  }
              })
              ->implode(',');
+             $sanitizedValue = str_replace('.', ',', $value);
         @endphp
-        <label class="dropfilter__link" for="{{ $value }}">
+        <label class="dropfilter__link" for="{{ $sanitizedValue }}">
          <input type="checkbox"
-          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $productsString }}"
-          wire:change="applyFilter" id="{{ $value }}">
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $sanitizedValue }}.{{ $productsString }}"
+          wire:change="applyFilter" id="{{ $sanitizedValue }}">
          <h4>{{ $value }}</h4>
         </label>
        @endforeach

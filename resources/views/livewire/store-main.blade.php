@@ -62,10 +62,9 @@
         @endif
        </picture>
       </a>
-      {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
-
     </div>
+
     <button class="main-slider__button prev" aria-label="Previous main slider">
      <svg>
       <polyline points="15 18 9 12 15 6"></polyline>
@@ -78,6 +77,7 @@
     </button>
    </div>
   @endif
+
   @php
    if (app()->has('global_numberformat_element')) {
        if (app('global_numberformat_element') === '.') {
@@ -92,12 +92,9 @@
        $decimal = ',';
    }
   @endphp
-  <!-------------------- End Slider Images ------------------->
-  <!---------------------------------------------------------->
-  <!---------------------------------------------------------->
-  <!---------------------- Slider Cards ---------------------->
+  {{-- sliders --}}
   @if ($popproducts->isNotEmpty())
-   <!------------------- Section Description ------------------>
+
    <section>
     <div class="section__header container">
      <h1 class="section__title">Descoperă produsele noastre populare!</h1>
@@ -114,7 +111,6 @@
      <div class="card-slider__wrapper new-slider__wrapper">
       @foreach ($popproducts as $product)
        <div class="card-slider__slide new-slider__slide card" data-product-jsonld="products-{{ $loop->index }}">
-
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @php
@@ -135,7 +131,7 @@
                 'class' => 'card__action',
                 'is_in_wishlist' => $this->isInWishlist($product->id),
             ],
-            key($product->id)
+            key('popw' . $product->id)
         )
         <?php
         $price = null;
@@ -200,8 +196,6 @@
             {{ $primaryCategory->category->short_description }}
            </a>
           @endif
-
-
           <p class="card-price">
            @if ($discount)
             <span class="card-price discount">
@@ -231,7 +225,7 @@
           </p>
          </div>
 
-         @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+         @livewire('add-to-cart-button', ['product' => $product], key('pop' . $product->id))
          <div style="display: none" class="dlv">
           <span class="dlv_name"> {{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
@@ -261,7 +255,6 @@
   @endif
 
   @if ($newproducts->isNotEmpty())
-   <!------------------- Section Description ------------------>
    <section>
     <div class="section__header container">
      <h2 class="section__title">Produse adăugate recent</h1>
@@ -270,8 +263,6 @@
       </p>
     </div>
    </section>
-   <!----------------- End Section Description ---------------->
-
    <section>
     <div class="card-slider container popular-slider">
      <div class="card-slider__wrapper popular-slider__wrapper">
@@ -298,7 +289,7 @@
                 'class' => 'card__action',
                 'is_in_wishlist' => $this->isInWishlist($product->id),
             ],
-            key($product->id)
+            key('neww' . $product->id)
         )
         <?php
         $price = null;
@@ -362,9 +353,6 @@
             {{ $primaryCategory->category->short_description }}
            </a>
           @endif
-
-
-
           <p class="card-price">
            @if ($discount)
             <span class="card-price discount">
@@ -393,7 +381,7 @@
            @endif
           </p>
          </div>
-         @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+         @livewire('add-to-cart-button', ['product' => $product], key('new' . $product->id))
 
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
@@ -404,6 +392,7 @@
            @endif
           </span>
          </div>
+
         </div>
         <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
        </div>
@@ -425,8 +414,6 @@
 
   <!---------------------- Support Center -------------------->
   <x-support />
-
-  <!---------------------------------------------------------->
  </main>
  <script>
   document.addEventListener("livewire:load", function() {
