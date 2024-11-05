@@ -378,7 +378,7 @@
       let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
       let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '')
        .trim());
-      let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity')
+      let productQuantity = parseInt(product.querySelector('.product__quantity')
        .innerText);
 
       productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
