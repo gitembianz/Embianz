@@ -297,7 +297,9 @@ class StoreProducts extends Component
 
   public function removeSpec($key, $specname)
   {
-    unset($this->queryfilters[$specname][$key]);
+    $sanitizedkey = str_replace('.', ',', $key);
+
+    unset($this->queryfilters[$specname][$sanitizedkey]);
     if (empty($this->queryfilters[$specname])) {
       unset($this->queryfilters[$specname]);
     }
@@ -310,7 +312,7 @@ class StoreProducts extends Component
         'queryfilters' => $this->queryfilters
       ]);
     }
-    unset($this->selectedfilters[$key]);
+    unset($this->selectedfilters[$sanitizedkey]);
     $this->applyFilter();
   }
 }
