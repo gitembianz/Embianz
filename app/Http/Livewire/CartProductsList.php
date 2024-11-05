@@ -99,7 +99,9 @@ class CartProductsList extends Component
         if (array_key_exists('sessionId', $_COOKIE)) {
             return $_COOKIE['sessionId'];
         } else {
-            return session()->getId();
+            $sessionId = session()->getId();
+            setrawcookie('sessionId', $sessionId);
+            return $sessionId;
         }
     }
 
