@@ -181,26 +181,27 @@ class StoreProducts extends Component
             return in_array($this->category->id, $product['categories']);
           });
 
-          if ($filteredProducts->isNotEmpty()) {
-            $productData = $filteredProducts->map(function ($product) {
-              if ($this->category->accepted_items === 'parents') {
-                if ($product['parent_id'] != "" && $product['type'] != 'standard') {
-                  return [
-                    'product_id' => $product['product_id'],
-                    'parent_id' => $product['parent_id'],
-                  ];
-                } elseif ($product['type'] != 'variant') {
-                  return [
-                    'product_id' => $product['product_id'],
-                  ];
-                }
-              } else {
+          $productData = $filteredProducts->map(function ($product) {
+            if ($this->category->accepted_items === 'parents') {
+              if ($product['parent_id'] != "" && $product['type'] != 'standard') {
+                return [
+                  'product_id' => $product['product_id'],
+                  'parent_id' => $product['parent_id'],
+                ];
+              } elseif ($product['type'] != 'variant') {
                 return [
                   'product_id' => $product['product_id'],
                 ];
               }
-            })->filter();
+            } else {
+              return [
+                'product_id' => $product['product_id'],
+              ];
+            }
+            return null;
+          })->filter();
 
+          if ($productData->isNotEmpty()) {
             return [
               'product_data' => $productData->toArray(),
             ];
@@ -212,7 +213,7 @@ class StoreProducts extends Component
           return [
             'spec' => $spec['spec'],
             'sequence' => $spec['sequence'],
-            'values' => $filteredValues->toArray(),
+            'values' => $filteredValues->filter()->toArray(),
           ];
         }
         return null;
@@ -221,14 +222,15 @@ class StoreProducts extends Component
 
     return $query;
   }
+
   public function applyFilter()
   {
     $this->selectedKeys = [];
     $this->selectedfilters = [];
     $productIdsPerSpec = [];
+    $ids = [];
 
     if (!empty($this->queryfilters)) {
-      // dd($this->queryfilters);
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
         $specVariantIds = [];
@@ -238,20 +240,12 @@ class StoreProducts extends Component
 
             $fullString = array_keys($isfilterselected)[0];
             $productIdsWithTypes = explode(',', $fullString);
-
             foreach ($productIdsWithTypes as $item) {
               $parts = explode('|', $item);
-              $productId = $parts[0];
-              $productType = $parts[1] ?? 'standard';
-
-              if ($productType === 'variant') {
-                $variantId = $productId;
-                $parentId = $parts[1] ?? null;
-                if ($parentId) {
-                  $specVariantIds[$parentId] = $variantId;
-                }
+              if (isset($parts[1])) {
+                $specVariantIds[$parts[1]] = $parts[0];
               } else {
-                $specProductIds[] = $productId;
+                $specProductIds[] = $parts[0];
               }
             }
             $sanitizedValue = str_replace(',', '.', $value);
@@ -259,18 +253,16 @@ class StoreProducts extends Component
             $this->selectedfilters[$sanitizedValue] = $specName;
           }
         }
-
-        $mergedProductIds = array_merge($specProductIds, array_keys($specVariantIds));
-
-        if (!empty($mergedProductIds)) {
-          $productIdsPerSpec[] = array_unique($mergedProductIds);
+        if (!empty($specProductIds)) {
+          $productIdsPerSpec[] = array_unique($specProductIds);
         }
       }
+      $ids[] = array_intersect(...$productIdsPerSpec);
 
-      if (count($productIdsPerSpec) > 1) {
-        $this->selectedKeys = array_intersect(...$productIdsPerSpec);
+      if (count($ids) > 0) {
+        $this->selectedKeys = $ids[0];
       } else {
-        $this->selectedKeys = $productIdsPerSpec[0] ?? [];
+        $this->selectedKeys =  [];
       }
 
       session()->put('filtered_values', [
