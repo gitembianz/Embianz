@@ -231,6 +231,7 @@
         </div>
        </div>
       @endif
+
       @if ($disabled[$index])
        <div class="item__product--disabled">
         <span>
@@ -263,12 +264,11 @@
      </span>
     </h5>
     @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
-
      <h5 class="leftbar__total--text">
       @if (app()->has('label_cart_delivery_tag'))
        {!! app('label_cart_delivery_tag') !!}
       @endif
-      <span id="leftbarTotalPrice">
+      <span>
        @if ($cart->delivery_price == 0)
         @if (app()->has('label_cart_delivery_free'))
          {!! app('label_cart_delivery_free') !!}
@@ -346,7 +346,7 @@
       @endif
      </span>
     @else
-     <a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">
+     <a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue()">
       @if (app()->has('label_cart_order'))
        {!! app('label_cart_order') !!}
       @endif
