@@ -399,11 +399,12 @@
                  }
              })
              ->implode(',');
+             $sanitizedValue = str_replace('.', ',', $value);
         @endphp
-        <label class="dropfilter__link" for="{{ $value }}">
+        <label class="dropfilter__link" for="{{ $sanitizedValue }}">
          <input type="checkbox"
-          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $productsString }}"
-          wire:change="applyFilter" id="{{ $value }}">
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $sanitizedValue }}.{{ $productsString }}"
+          wire:change="applyFilter" id="{{ $sanitizedValue }}">
          <h4>{{ $value }}</h4>
         </label>
        @endforeach

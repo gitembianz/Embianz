@@ -73,6 +73,7 @@ class StoreProducts extends Component
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
     }
+    // dd($this->filtervalues);
   }
 
   public function loadMore()
@@ -253,8 +254,9 @@ class StoreProducts extends Component
                 $specProductIds[] = $productId;
               }
             }
+            $sanitizedValue = str_replace(',', '.', $value);
 
-            $this->selectedfilters[$value] = $specName;
+            $this->selectedfilters[$sanitizedValue] = $specName;
           }
         }
 
