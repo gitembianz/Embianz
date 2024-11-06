@@ -254,13 +254,15 @@
   <section>
    <div class="section__header
       container">
-    <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
+    <h2 class="section__title">
+     @if (app()->has('label_pdp_relatedproducts_slider_title'))
+      {!! app('label_pdp_relatedproducts_slider_title') !!}
+     @endif
+    </h2>
     <p class="section__text">
-     În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
-     Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
-     opțiuni care completează gama noastră și care îți pot satisface preferințele. Alege cu încredere
-     dintre
-     aceste alternative și găsește exact ceea ce cauți.
+     @if (app()->has('label_pdp_relatedproducts_slider_description'))
+      {!! app('label_pdp_relatedproducts_slider_description') !!}
+     @endif
     </p>
    </div>
   </section>
@@ -395,7 +397,11 @@
         @if ($price)
          @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
         @else
-         <a class="card-button-disabled" onclick="handleClick()" aria-label="Indisponibil">Indisponibil</a>
+         <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+          @if (app()->has('label_add_to_cart_button_indisponibil'))
+           {!! app('label_add_to_cart_button_indisponibil') !!}
+          @endif
+         </button>
         @endif
        </div>
        <div style="display: none" class="dlv">
@@ -413,9 +419,171 @@
     @endforeach
    </div>
   </section>
-  <!---------------------- Support Center -------------------->
-  <x-support />
  @endif
+
+ @if ($last_visited_products->count() > 1)
+  <section>
+   <div class="section__header
+      container">
+    <h2 class="section__title">
+     @if (app()->has('label_pdp_lastviewproducts_slider_title'))
+      {!! app('label_pdp_lastviewproducts_slider_title') !!}
+     @endif
+    </h2>
+    <p class="section__text">
+     @if (app()->has('label_pdp_lastviewproducts_slider_description'))
+      {!! app('label_pdp_lastviewproducts_slider_description') !!}
+     @endif
+    </p>
+   </div>
+  </section>
+  <section id="lastseenSlider" class="related__slider container">
+   <div class="related__navigation">
+    <button class="related__btnlast prev" aria-label="Previous related slider">
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
+    </button>
+    <button class="related__btnlast next" aria-label="Next related slider">
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
+    </button>
+
+   </div>
+   <div class="related__wrapperlast">
+    @foreach ($last_visited_products as $product)
+     <div class="card product" style="width: 100%;">
+      <a style="width: 100%"
+       href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+
+       @if ($product->media->first() != null)
+        <img loading="eager" width="300" height="300" class="card-image"
+         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+         alt="{{ $product->media->first()->name }} {{ $product->name }}">
+       @else
+        <img loading="eager" width="300" height="300" class="card-image"
+         src="/images/store/default/default300.webp" alt="something wrong">
+       @endif
+      </a>
+      @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $product->id))
+      <?php if ($product->product_prices->count() != 0) {
+          $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
+          $discount = $product->product_prices->first()->discount != 0 ? true : false;
+      } else {
+          $price = null;
+          $discount = false;
+      }
+      ?>
+      @if ($price)
+       @if ($product->quantity < app('global_low_stock') && $product->quantity > 0)
+        <p class="card-status save">
+         @if (app()->has('label_product_status_stock'))
+          {!! app('label_product_status_stock') !!}
+         @endif
+        </p>
+        @if ($discount)
+         <p class="card-status save-secondary">
+          -{{ $product->product_prices->first()->discount }}%
+         </p>
+        @endif
+       @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
+        <p class="card-status out">
+         @if (app()->has('label_product_status_indisponible'))
+          {!! app('label_product_status_indisponible') !!}
+         @endif
+        </p>
+       @else
+        @if ($discount)
+         <p class="card-status save">
+          -{{ $product->product_prices->first()->discount }}%
+         </p>
+        @endif
+       @endif
+       {{-- tagul de discount --}}
+      @else
+       <p class="card-status save">
+        @if (app()->has('label_product_status_coming_soon'))
+         {!! app('label_product_status_coming_soon') !!}
+        @endif
+       </p>
+      @endif
+      <div class="card-info">
+       <div class="card-text">
+        <h2><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
+        </h2>
+        @php
+         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+             $primaryCategory = $product->product_categories->where('primary_category', true)->first();
+         } else {
+             $primaryCategory = $product->product_categories->first();
+         }
+        @endphp
+
+        @if ($primaryCategory && $primaryCategory->category)
+         <a class="categorylink"
+          href="{{ route('products', ['categorySlug' => $primaryCategory->category->seo_id !== null && $primaryCategory->category->seo_id !== '' ? $primaryCategory->category->seo_id : $primaryCategory->category->id]) }}">
+          {{ $primaryCategory->category->short_description }}
+         </a>
+        @endif
+
+        <p class="card-price">
+         @if ($discount)
+          <span class="card-price discount">
+           @if ($product->product_prices->first())
+            {{ $price }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
+           @endif
+          </span>
+          <span class="card-price oldprice">
+           {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+           @if (app()->has('global_currency_primary_name'))
+            {!! app('global_currency_primary_name') !!}
+           @endif
+          </span>
+         @else
+          <span>
+           @if ($product->product_prices->first())
+            {{ $price }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
+           @endif
+          </span>
+         @endif
+
+        </p>
+       </div>
+       @if ($price)
+        @livewire('add-to-cart-button', ['product' => $product], key('last' . $product->id))
+       @else
+        <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+         @if (app()->has('label_add_to_cart_button_indisponibil'))
+          {!! app('label_add_to_cart_button_indisponibil') !!}
+         @endif
+        </button>
+       @endif
+      </div>
+      <div style="display: none" class="dlv">
+       <span class="dlv_name">{{ $product->name }}</span>
+       <span class="dlv_price">{{ $price }}</span>
+       <span class="dlv_currency">
+        @if (app()->has('global_currency_primary_name'))
+         {!! app('global_currency_primary_name') !!}
+        @endif
+       </span>
+      </div>
+      <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
+     </div>
+    @endforeach
+   </div>
+  </section>
+ @endif
+ <!---------------------- Support Center -------------------->
+ <x-support />
  <script>
   document.addEventListener("livewire:load", function() {
    injectJsonLd();

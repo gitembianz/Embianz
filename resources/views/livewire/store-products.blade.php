@@ -317,9 +317,10 @@
            ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true' &&
+               $price &&
                $category->display_variant_price == true)
         @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
-       @elseif($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents'))
+       @elseif(($price && $element->type == 'parent') || ($element->type === 'variant' && $category->accepted_items === 'parents'))
         <div class="card__button--wrapper">
          <button class="card__button">
 
@@ -332,8 +333,14 @@
           </a>
          </button>
         </div>
-       @else
+       @elseif ($price)
         @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
+       @else
+        <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+         @if (app()->has('label_add_to_cart_button_indisponibil'))
+          {!! app('label_add_to_cart_button_indisponibil') !!}
+         @endif
+        </button>
        @endif
       </div>
      </div>
@@ -399,7 +406,7 @@
                  }
              })
              ->implode(',');
-             $sanitizedValue = str_replace('.', ',', $value);
+         $sanitizedValue = str_replace('.', ',', $value);
         @endphp
         <label class="dropfilter__link" for="{{ $sanitizedValue }}">
          <input type="checkbox"

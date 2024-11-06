@@ -97,10 +97,15 @@
 
    <section>
     <div class="section__header container">
-     <h1 class="section__title">Descoperă produsele noastre populare!</h1>
+     <h1 class="section__title">
+      @if (app()->has('label_mainpage_popproducts_slider_title'))
+       {!! app('label_mainpage_popproducts_slider_title') !!}
+      @endif
+     </h1>
      <p class="section__text">
-      Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-      <a href="{{ url('/storeproducts') }}">Vezi toate produsele!</a>
+      @if (app()->has('label_mainpage_popproducts_slider_description'))
+       {!! app('label_mainpage_popproducts_slider_description') !!}
+      @endif
      </p>
     </div>
    </section>
@@ -224,8 +229,15 @@
            @endif
           </p>
          </div>
-
-         @livewire('add-to-cart-button', ['product' => $product], key('pop' . $product->id))
+         @if ($price)
+          @livewire('add-to-cart-button', ['product' => $product], key('pop' . $product->id))
+         @else
+          <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+           @if (app()->has('label_add_to_cart_button_indisponibil'))
+            {!! app('label_add_to_cart_button_indisponibil') !!}
+           @endif
+          </button>
+         @endif
          <div style="display: none" class="dlv">
           <span class="dlv_name"> {{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
@@ -257,9 +269,15 @@
   @if ($newproducts->isNotEmpty())
    <section>
     <div class="section__header container">
-     <h2 class="section__title">Produse adăugate recent</h1>
+     <h2 class="section__title">
+      @if (app()->has('label_mainpage_isnewproducts_slider_title'))
+       {!! app('label_mainpage_isnewproducts_slider_title') !!}
+      @endif
+      </h1>
       <p class="section__text">
-       Adăugăm constant noi produse pentru a-ți oferi ce este mai bun.
+       @if (app()->has('label_mainpage_isnewproducts_slider_description'))
+        {!! app('label_mainpage_isnewproducts_slider_description') !!}
+       @endif
       </p>
     </div>
    </section>
@@ -381,8 +399,15 @@
            @endif
           </p>
          </div>
-         @livewire('add-to-cart-button', ['product' => $product], key('new' . $product->id))
-
+         @if ($price)
+          @livewire('add-to-cart-button', ['product' => $product], key('new' . $product->id))
+         @else
+          <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+           @if (app()->has('label_add_to_cart_button_indisponibil'))
+            {!! app('label_add_to_cart_button_indisponibil') !!}
+           @endif
+          </button>
+         @endif
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
