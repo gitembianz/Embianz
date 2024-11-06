@@ -247,7 +247,15 @@
    <label for="product__name">Meta Description</label>
   </div>
 
-
+  {{-- Product Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->comments }}</span>
+   @else
+    <textarea type="text" placeholder=" " name="product__name" wire:model.defer="prod.comments"></textarea>
+   @endif
+   <label for="product__name">Comments</label>
+  </div>
 
   {{-- Product Long Description --}}
   <div class="textarea__tabs details__long">
