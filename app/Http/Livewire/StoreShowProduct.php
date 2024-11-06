@@ -67,6 +67,12 @@ class StoreShowProduct extends Component
           'product_specs' => function ($query) {
             $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
           },
+          'product_categories' => function ($query) {
+            $query->select('product_id', 'category_id');
+            $query->with(['category' => function ($query) {
+              $query->select('id', 'name', 'short_description', 'seo_id');
+            }]);
+          },
           'related_product' => function ($query) {
             $query->select('product_id', 'id', 'parent_id')
               ->orderBy('sequence', 'desc')

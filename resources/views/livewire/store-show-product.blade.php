@@ -67,32 +67,32 @@
      @endif
     </div>
     <!-- EDIT TO APPLY CLASS DINAMICALLY -->
-    @if ($product->media->where('type', 'full')->count() <= 1 )
-    <div class="product-slider__navigation" style="display:none">
-     <button class="product-slider__prev" aria-label="Previous slide">
-      <svg>
-       <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-     </button>
-     <button class="product-slider__next" aria-label="Next slide">
-      <svg>
-       <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-     </button>
-    </div>
+    @if ($product->media->where('type', 'full')->count() <= 1)
+     <div class="product-slider__navigation" style="display:none">
+      <button class="product-slider__prev" aria-label="Previous slide">
+       <svg>
+        <polyline points="15 18 9 12 15 6"></polyline>
+       </svg>
+      </button>
+      <button class="product-slider__next" aria-label="Next slide">
+       <svg>
+        <polyline points="9 18 15 12 9 6"></polyline>
+       </svg>
+      </button>
+     </div>
     @else
-    <div class="product-slider__navigation">
-     <button class="product-slider__prev" aria-label="Previous slide">
-      <svg>
-       <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-     </button>
-     <button class="product-slider__next" aria-label="Next slide">
-      <svg>
-       <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-     </button>
-    </div>
+     <div class="product-slider__navigation">
+      <button class="product-slider__prev" aria-label="Previous slide">
+       <svg>
+        <polyline points="15 18 9 12 15 6"></polyline>
+       </svg>
+      </button>
+      <button class="product-slider__next" aria-label="Next slide">
+       <svg>
+        <polyline points="9 18 15 12 9 6"></polyline>
+       </svg>
+      </button>
+     </div>
     @endif
     <!-- EDIT TO APPLY CLASS DINAMICALLY -->
    </div>
@@ -125,28 +125,28 @@
     </svg>
    </button>
 
-   @if ($product->media->where('type', 'full')->count() == 1 )
-   <button class="product-modal__prev" style="display:none">
-    <svg>
-     <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-   </button>
-   <button class="product-modal__next" style="display:none">
-    <svg>
-     <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-   </button>
+   @if ($product->media->where('type', 'full')->count() == 1)
+    <button class="product-modal__prev" style="display:none">
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
+    </button>
+    <button class="product-modal__next" style="display:none">
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
+    </button>
    @else
-   <button class="product-modal__prev">
-    <svg>
-     <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-   </button>
-   <button class="product-modal__next">
-    <svg>
-     <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-   </button>
+    <button class="product-modal__prev">
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
+    </button>
+    <button class="product-modal__next">
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
+    </button>
    @endif
 
    <span class="product-modal__count"></span>
@@ -158,6 +158,7 @@
   <!--------------------- End Product details -------------------->
   <!------------------------------------------------------>
  </section>
+
 
  <section class="tab container">
   <div class="tab__top">
@@ -230,11 +231,29 @@
   }
  </script>
  <h2></h2>
+ {{-- Display all categories --}}
+ <section>
+  <div class="container">
+   @if (app()->has('label_pdp_category_tag'))
+    {!! app('label_pdp_category_tag') !!}
+    @foreach ($product->product_categories as $index => $related)
+     <a
+      href="{{ route('products', ['categorySlug' => $related->category->seo_id !== null && $related->category->seo_id !== '' ? $related->category->seo_id : $related->category->id]) }}">
+      {{ $related->category->name }}
+     </a>
+     @if (!$loop->last)
+      ,
+     @endif
+    @endforeach
+   @endif
+  </div>
+ </section>
  <!---------------------------------------------------------->
  <!------------------- Section Description ------------------>
  @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
   <section>
-   <div class="section__header container">
+   <div class="section__header
+      container">
     <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
     <p class="section__text">
      În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
