@@ -402,6 +402,10 @@
           <span class="show-less">
            {!! $product->$column !!}
           </span>
+         @elseif($column === 'comments')
+          <span class="show-less">
+           {!! $product->$column !!}
+          </span>
          @elseif($column === 'short_description')
           <span class="show-less">
            {!! $product->$column !!}
