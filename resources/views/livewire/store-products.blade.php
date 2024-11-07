@@ -347,15 +347,24 @@
      <div style="display: none" class="json-ld-data" data-product-json='@json($element)'></div>
     </div>
    @endforeach
-   <x-lazy />
+   @unless (app()->has('global_pagination') && app('global_pagination') === 'links')
+    <x-lazy />
+   @endunless
   @endif
  </section>
  <!-----------------------Load more---------------------->
- @if ($products->total() >= $loadAmount)
+ @if (app()->has('global_pagination') && app('global_pagination') === 'links')
   <section class="container">
-   <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+   {{ $products->links() }}
   </section>
+ @else
+  @if ($products->total() >= $loadAmount)
+   <section class="container">
+    <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+   </section>
+  @endif
  @endif
+
  <!---------------------------Filters------------------------->
  <div class="filter" id="filterList" wire:ignore>
   <div class="filter__content" id="filterContent">
