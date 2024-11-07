@@ -209,6 +209,21 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'pdp_phone_title', 'value' => 'Telefon Comenzi:', 'description' => 'PDP Phone label title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'pdp_phone_link', 'value' => '<a href="tel:+40757527656">0 757 527 656</a>', 'description' => 'PDP Phone link', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'pdp_phone_program', 'value' => '(Luni-Duminica 09:00 - 21:00)', 'description' => 'PDP Phone program', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_category_tag', 'value' => 'Categories:', 'description' => 'PDP categoris pages', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mainpage_popproducts_slider_title', 'value' => 'Descoperă produsele noastre populare!', 'description' => 'Main page Popular products title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mainpage_popproducts_slider_description', 'value' => 'Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+      <a href="' . route('products') . '">Vezi toate produsele!</a>', 'description' => 'Main page Popular products description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mainpage_isnewproducts_slider_title', 'value' => 'Produse adăugate recent', 'description' => 'Main page is new products slider title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mainpage_isnewproducts_slider_description', 'value' => 'Adăugăm constant noi produse pentru a-ți oferi ce este mai bun.', 'description' => 'Main page is new products slider description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_relatedproducts_slider_title', 'value' => 'Descoperă și alte opțiuni similare', 'description' => 'PDP related slider products title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_relatedproducts_slider_description', 'value' => 'În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
+     Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
+     opțiuni care completează gama noastră și care îți pot satisface preferințele. Alege cu încredere
+     dintre
+     aceste alternative și găsește exact ceea ce cauți.', 'description' => 'PDP related slider products description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_lastviewproducts_slider_title', 'value' => 'Produse vizualizate recent', 'description' => 'Pdp lastview slider products title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pdp_lastviewproducts_slider_description', 'value' => '', 'description' => 'Pdp lastview slider products description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }

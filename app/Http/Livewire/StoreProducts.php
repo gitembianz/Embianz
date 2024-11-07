@@ -73,7 +73,6 @@ class StoreProducts extends Component
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
     }
-    // dd($this->filtervalues);
   }
 
   public function loadMore()
@@ -229,11 +228,12 @@ class StoreProducts extends Component
     $this->selectedfilters = [];
     $productIdsPerSpec = [];
     $ids = [];
+    $specVariantIds = [];
+    $totalspecs = 0;
 
     if (!empty($this->queryfilters)) {
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
-        $specVariantIds = [];
 
         foreach ($values as $value => $isfilterselected) {
           if (array_values($isfilterselected)[0]) {
@@ -243,7 +243,7 @@ class StoreProducts extends Component
             foreach ($productIdsWithTypes as $item) {
               $parts = explode('|', $item);
               if (isset($parts[1])) {
-                $specVariantIds[$parts[1]] = $parts[0];
+                $specVariantIds[$parts[1]][] = (string)$parts[0];
               } else {
                 $specProductIds[] = $parts[0];
               }
@@ -255,9 +255,31 @@ class StoreProducts extends Component
         }
         if (!empty($specProductIds)) {
           $productIdsPerSpec[] = array_unique($specProductIds);
+        } else {
+          $productIdsPerSpec[] = [];
+        }
+        $totalspecs++;
+      }
+
+      if (!empty($productIdsPerSpec)) {
+        $ids[] = array_intersect(...$productIdsPerSpec);
+      }
+      if (!empty($specVariantIds)) {
+        foreach ($specVariantIds as $parentId => $variants) {
+          $variantCount = array_count_values($variants);
+
+          $maxCount = max($variantCount);
+          if ($maxCount == $totalspecs) {
+
+            $mostFrequentVariant = array_search($maxCount, $variantCount);
+            $ids[] = [(string)$mostFrequentVariant];
+          }
         }
       }
-      $ids[] = array_intersect(...$productIdsPerSpec);
+      if (!empty($ids)) {
+
+        $ids = [array_merge(...$ids)];
+      }
 
       if (count($ids) > 0) {
         $this->selectedKeys = $ids[0];

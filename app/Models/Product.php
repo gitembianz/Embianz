@@ -29,7 +29,8 @@ class Product extends Model
     'seo_id',
     'parent_id',
     'brand',
-    'innerid'
+    'innerid',
+    'comments'
   ];
 
   public static function search($search)
@@ -154,7 +155,7 @@ class Product extends Model
 
         $currentHierarchy = collect([
           [
-            'name' => strip_tags($category->name),
+            'name' => $category->short_description ?? strip_tags($category->name),
             'slug' => $category->seo_id ?? $category->id,
           ],
         ]);
@@ -169,7 +170,7 @@ class Product extends Model
           }
 
           $currentHierarchy->push([
-            'name' => strip_tags($parentCategory->name),
+            'name' => $parentCategory->short_description ?? strip_tags($parentCategory->name),
             'slug' => $parentCategory->seo_id ?? $parentCategory->id,
           ]);
 
@@ -201,7 +202,7 @@ class Product extends Model
         }
         $currentHierarchy = collect([
           [
-            'name' => strip_tags($category->name),
+            'name' => $category->short_description ?? strip_tags($category->name),
             'slug' => $category->seo_id ?? $category->id,
           ],
         ]);
@@ -216,7 +217,7 @@ class Product extends Model
           }
 
           $currentHierarchy->push([
-            'name' => strip_tags($parentCategory->name),
+            'name' => $parentCategory->short_description ?? strip_tags($parentCategory->name),
             'slug' => $parentCategory->seo_id ?? $parentCategory->id,
           ]);
 

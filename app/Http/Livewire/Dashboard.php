@@ -24,13 +24,19 @@ class Dashboard extends Component
 
         if ($currentCartCount !== $previousCartCount) {
             Session::put('previousCartCount', $currentCartCount);
-            $this->emit('cartCountUpdated', $currentCartCount);
+            if (app()->has('global_dashboard_newcart_sound') && app('global_dashboard_newcart_sound') === 'true') {
+
+                $this->emit('cartCountUpdated', $currentCartCount);
+            }
         }
         $previousOrderCount = Session::get('previousOrderCount', 0);
 
         if ($orderCount !== $previousOrderCount) {
             Session::put('previousOrderCount', $orderCount);
-            $this->emit('orderCountUpdated', $orderCount);
+            if (app()->has('global_dashboard_neworder_sound') && app('global_dashboard_neworder_sound') === 'true') {
+
+                $this->emit('orderCountUpdated', $orderCount);
+            }
         }
 
         return view('livewire.dashboard')

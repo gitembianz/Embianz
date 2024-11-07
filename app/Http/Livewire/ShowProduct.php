@@ -57,7 +57,8 @@ class ShowProduct extends Component
       'ean' => $this->product->ean,
       'seo_id' => $this->product->seo_id,
       'type' => $this->product->type,
-      'brand' => $this->product->brand
+      'brand' => $this->product->brand,
+      'comments' => $this->product->comments
 
     ];
     $this->editproduct = true;
@@ -119,6 +120,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];
+      }
+      if (array_key_exists('comments', $product_new)) {
+        $new->comments = $product_new['comments'];
       }
       if (array_key_exists('meta_description', $product_new)) {
         $new->meta_description = $product_new['meta_description'];

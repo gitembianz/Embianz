@@ -196,7 +196,15 @@
           </span>
          </div>
         </div>
-        @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+        @if ($price)
+         @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+        @else
+         <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+          @if (app()->has('label_add_to_cart_button_indisponibil'))
+           {!! app('label_add_to_cart_button_indisponibil') !!}
+          @endif
+         </button>
+        @endif
        </div>
       </div>
      </div>

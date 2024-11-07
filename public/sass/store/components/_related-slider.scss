@@ -2,7 +2,8 @@
   position: relative;
 }
 
-.related__wrapper {
+.related__wrapper,
+.related__wrapperlast {
   width: 100%;
   height: 100%;
   display: grid;
@@ -34,7 +35,8 @@
   }
 }
 
-.related__btn {
+.related__btn,
+.related__btnlast {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +50,7 @@
   transform: translateY(-50%);
   z-index: 10;
 
-  & > svg {
+  &>svg {
     stroke: $primary;
   }
 
