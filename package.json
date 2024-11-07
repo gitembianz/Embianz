@@ -15,6 +15,7 @@
         "sass": "^1.56.1"
     },
     "dependencies": {
-        "@builder.io/partytown": "^0.10.2"
+        "@builder.io/partytown": "^0.10.2",
+        "locomotive-scroll": "^4.1.4"
     }
 }
