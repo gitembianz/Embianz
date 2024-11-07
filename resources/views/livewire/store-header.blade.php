@@ -182,7 +182,9 @@
         </button>
        </div>
        <ul class="dropmenu__list">
-        @foreach ($category->subcategory as $subcategory)
+        @foreach ($category->subcategory->sortBy(function ($subcategory) {
+          return $subcategory->category->sequence;
+      }) as $subcategory)
          <li class="submenu">
           <div class="submenu__button">
            <a class="submenu__button--link"
@@ -204,7 +206,9 @@
           </div>
           @if ($subcategory->category->subcategory->count() != 0)
            <div class="submenu__list">
-            @foreach ($subcategory->category->subcategory as $subsubCategory)
+            @foreach ($category->subcategory->sortBy(function ($subcategory) {
+              return $subcategory->category->sequence;
+          }) as $subcategory)
              <a class="submenu__link"
               href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
               @if ($subsubCategory->category->media->where('type', 'min')->first() != null)

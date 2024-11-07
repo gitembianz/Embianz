@@ -1,5 +1,5 @@
 <div>
- <main>
+ <main data-scroll-container>
   <!---------------------- Slider Images --------------------->
   @if (!$slideritems->isEmpty())
    <div class="main-slider">
@@ -111,7 +111,7 @@
    </section>
    <!----------------- End Section Description ---------------->
 
-   <section>
+   <section data-scroll>
     <div class="card-slider container new-slider">
      <div class="card-slider__wrapper new-slider__wrapper">
       @foreach ($popproducts as $product)
