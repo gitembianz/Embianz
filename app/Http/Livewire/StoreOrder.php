@@ -1000,7 +1000,17 @@ class StoreOrder extends Component
         ]);
       }
 
-      $this->orderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
+
+      $today = 1;
+      $uniqueorderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($today, 3, '0', STR_PAD_LEFT);
+      while (Order::where('order_number', $uniqueorderNumber)->exists()) {
+        $today++;
+        $uniqueorderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($today, 3, '0', STR_PAD_LEFT);
+      }
+
+
+
+      $this->orderNumber = $uniqueorderNumber;
       $order->update([
         'order_number' => $this->orderNumber
       ]);
