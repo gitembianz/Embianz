@@ -16,11 +16,11 @@ class StoreHeader extends Component
 
   private function getSessionId()
   {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
+    if (request()->cookie('sessionId')) {
+      return request()->cookie('sessionId');
     } else {
       $sessionId = session()->getId();
-      setrawcookie('sessionId', $sessionId);
+      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
       return $sessionId;
     }
   }
