@@ -223,6 +223,10 @@ class TextLabelSeeder extends Seeder
      aceste alternative și găsește exact ceea ce cauți.', 'description' => 'PDP related slider products description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'pdp_lastviewproducts_slider_title', 'value' => 'Produse vizualizate recent', 'description' => 'Pdp lastview slider products title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'pdp_lastviewproducts_slider_description', 'value' => '', 'description' => 'Pdp lastview slider products description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pagination_display', 'value' => 'Showing', 'description' => 'Pagination display label', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pagination_to', 'value' => 'to', 'description' => 'Pagination to label', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pagination_of', 'value' => 'of', 'description' => 'Pagination of label', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'pagination_results', 'value' => 'results', 'description' => 'Pagination results label', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
