@@ -25,6 +25,24 @@
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
+  <div class="dropdown dropdown--right">
+   {{-- Dropdown Button --}}
+   <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Actions with checked"
+    tooltip-top>
+    <span>Invoice</span>
+   </button>
+   {{-- Dropdown Content --}}
+   <div class="dropdown__content">
+    <div class="dropdown__container">
+     <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+      Get invoice number
+     </button>
+     <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+      Generate invoice
+     </button>
+    </div>
+   </div>
+  </div>
   @if ($edititem === null)
    <button class="button button--primary button--centered" tooltip="Edit this Order" tooltip-left
     wire:click.prevent="edititem()">
@@ -191,7 +209,8 @@
 
   {{-- Save Button --}}
   @if ($edititem != null)
-   <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()" value="Save">
+   <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()"
+    value="Save">
     Save
    </button>
   @endif
