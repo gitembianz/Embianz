@@ -88,7 +88,7 @@
    <label for="category__name">Ordernumber</label>
   </div>
   {{-- Order Session Id --}}
-  <div class="input__tabs details__long">
+  <div class="input__tabs">
    <span class="disabled">{{ $order->session_id }}</span>
    <label for="category__name">Session Id</label>
   </div>
@@ -159,6 +159,24 @@
     <label for="category__name">Voucher Value</label>
    </div>
   @endif
+  {{-- Product Start Date --}}
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->invoice_date }}</span>
+   @else
+    <input type="date" wire:model.defer="record.invoice_date">
+   @endif
+   <label for="product__name">Invoice Date</label>
+  </div>
+  {{-- Product Popularity --}}
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->invoice_number }}</span>
+   @else
+    <input type="text" wire:model.defer="record.invoice_number">
+   @endif
+   <label for="product__name">Invoice Number</label>
+  </div>
   {{-- Create date / time --}}
   <div class="input__tabs">
    <span class="disabled">{{ $order->created_at }}</span>
