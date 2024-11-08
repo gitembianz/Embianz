@@ -792,7 +792,9 @@ class StoreOrder extends Component
             'phone' => $this->individual_billing_phone,
             'email' => $this->individual_billing_email
           ]);
-          setrawcookie('accountId', $account->id);
+          // setrawcookie('accountId', $account->id);
+          cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
+
 
 
           Address::create([
@@ -900,7 +902,9 @@ class StoreOrder extends Component
             'bank_name' => $this->juridic_billing_bank,
             'account' => $this->juridic_billing_account,
           ]);
-          setrawcookie('accountId', $account->id);
+          // setrawcookie('accountId', $account->id);
+          cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
+
 
 
           Address::create([
