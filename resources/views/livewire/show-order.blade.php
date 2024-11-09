@@ -34,7 +34,7 @@
    {{-- Dropdown Content --}}
    <div class="dropdown__content">
     <div class="dropdown__container">
-     <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+     <button class="button button--primary button--long" wire:click="generate_invoice_number()">
       Get invoice number
      </button>
      <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
