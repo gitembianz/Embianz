@@ -63,6 +63,15 @@ return [
             ]) : [],
         ],
 
+        'mysql_invoice' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('INVOICE_DB_DATABASE', 'invoices'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -138,7 +147,7 @@ return [
             'path' => env('REDIS_PATH', ''),
             'scheme' => env('REDIS_SCHEME', 'tcp'),
             'persistent' => true, // keep Redis connection open
-            
+
         ],
 
         'cache' => [
