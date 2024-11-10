@@ -98,6 +98,11 @@
     <label for="category__name">Related Order</label>
    </div>
   @endif
+  {{-- Cart Quantity Amount --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $cart->quantity_amount }}</span>
+   <label for="category__name">Quantity Amount</label>
+  </div>
 
   {{-- Cart Session Id --}}
   <div class="input__tabs details__long">
@@ -105,11 +110,7 @@
    <label for="category__name">Session Id</label>
   </div>
 
-  {{-- Cart Quantity Amount --}}
-  <div class="input__tabs">
-   <span class="disabled">{{ $cart->quantity_amount }}</span>
-   <label for="category__name">Quantity Amount</label>
-  </div>
+
 
   {{-- Cart Sum Amount --}}
   <div class="input__tabs">
