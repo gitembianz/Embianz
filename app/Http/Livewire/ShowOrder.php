@@ -56,6 +56,8 @@ class ShowOrder extends Component
         }
     }
 
+    public function generate_invoice() {}
+
     public function render()
     {
         return view('livewire.show-order', [

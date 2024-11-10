@@ -205,7 +205,8 @@ class ProductDetails extends Component
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'price' => $this->product->product_prices->first()->value,
-                'quantity' => $this->quantity
+                'quantity' => $this->quantity,
+                'vat' => $this->product->product_prices->first()->vat,
             ]);
 
             $cart->quantity_amount += $this->quantity;
@@ -216,6 +217,7 @@ class ProductDetails extends Component
             }
             $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
             $cart->final_amount -= $cart->voucher_value;
+            $cart->save();
             $this->maxlimit = false;
         } else {
             if (($cartItem->quantity + $this->quantity) <= $this->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
@@ -242,6 +244,11 @@ class ProductDetails extends Component
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
                 $this->maxlimit = false;
+                if (!$cartItem->vat) {
+                    $cartItem->vat = $this->product->product_prices->first()->vat;
+                    $cartItem->save();
+                }
+                $cart->save();
             } else {
                 $this->maxlimit = true;
                 $this->quantity = 1;
