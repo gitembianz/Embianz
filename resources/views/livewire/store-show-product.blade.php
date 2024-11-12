@@ -239,7 +239,7 @@
     @foreach ($product->product_categories as $index => $related)
      <a
       href="{{ route('products', ['categorySlug' => $related->category->seo_id !== null && $related->category->seo_id !== '' ? $related->category->seo_id : $related->category->id]) }}">
-      {{ $related->category->name }}
+      {{ $related->category->short_description }}
      </a>
      @if (!$loop->last)
       ,
