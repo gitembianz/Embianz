@@ -127,7 +127,7 @@ class StoreOrder extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      return Cart_Item::select('id', 'quantity', 'price', 'product_id')
+      return Cart_Item::select('id', 'quantity', 'price', 'product_id', 'vat')
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
@@ -1030,6 +1030,7 @@ class StoreOrder extends Component
           'product_id' => $item->product_id,
           'price' => $item->price,
           'quantity' => $item->quantity,
+          'vat' => $item->vat
         ]);
       }
 

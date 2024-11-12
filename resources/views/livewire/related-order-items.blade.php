@@ -152,6 +152,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('VAT'))
+      <th class="hidden">
+       <button wire:click="sortBy('quantity')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        VAT
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created At'))
       <th class="hidden">
        <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -208,6 +218,11 @@
          {{ $product->quantity }}
         </td>
        @endif
+       @if ($this->showColumn('VAT'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $product->vat }}
+        </td>
+       @endif
        @if ($this->showColumn('Created At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
          {{ $product->created_at }}
@@ -248,6 +263,12 @@
           <p>
            <bold>Quantity</bold>
            {{ $product->quantity }}
+          </p>
+         @endif
+         @if ($this->showColumn('VAT'))
+          <p>
+           <bold>VAT</bold>
+           {{ $product->vat }}
           </p>
          @endif
          @if ($this->showColumn('Created At'))

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Status;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class ShowOrder extends Component
 {
@@ -13,6 +14,50 @@ class ShowOrder extends Component
     public $edititem = null;
     public $delete = false;
     public $statuses;
+    public $invoice_sdatabase;
+
+    public function generate_invoice_number()
+    {
+        $this->invoice_sdatabase = DB::connection('mysql_invoice')->table('invoices')->where('series', app('global_invoice_series'))->get();
+
+        $existingInvoice = $this->invoice_sdatabase->where('order_number', $this->order->order_number)->first();
+        if ($existingInvoice) {
+            $this->order->invoice_number = app('global_invoice_series') . $existingInvoice->number;
+            $this->order->save();
+
+            session()->flash('notification', [
+                'message' => 'Invoice number generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+        } else {
+            $nr = 1;
+            $uniqueNumber = str_pad($nr, 3, '0', STR_PAD_LEFT);
+
+            while ($this->invoice_sdatabase->where('number', $uniqueNumber)->first()) {
+                $nr++;
+                $uniqueNumber = str_pad($nr, 3, '0', STR_PAD_LEFT);
+            }
+
+            DB::connection('mysql_invoice')->table('invoices')->insert([
+                'number' => $uniqueNumber,
+                'order_number' => $this->order->order_number,
+                'series' => app('global_invoice_series'),
+            ]);
+
+            $this->order->invoice_number = app('global_invoice_series') . $uniqueNumber;
+            $this->order->save();
+
+            session()->flash('notification', [
+                'message' => 'Invoice number generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+        }
+    }
+
+    public function generate_invoice() {}
+
     public function render()
     {
         return view('livewire.show-order', [

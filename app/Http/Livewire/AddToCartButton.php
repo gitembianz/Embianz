@@ -65,7 +65,8 @@ class AddToCartButton extends Component
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'price' => $this->product->product_prices->first()->value,
-                'quantity' => 1
+                'quantity' => 1,
+                'vat' => $this->product->product_prices->first()->vat
             ]);
             $cart->increment('quantity_amount');
             $cart->sum_amount += $this->product->product_prices->first()->value;
@@ -100,6 +101,10 @@ class AddToCartButton extends Component
                 }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
+                if (!$cartItem->vat) {
+                    $cartItem->vat = $this->product->product_prices->first()->vat;
+                    $cartItem->save();
+                }
             }
         }
         $cart->status_id = app('global_cart_new');

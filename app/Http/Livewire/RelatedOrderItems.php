@@ -23,20 +23,21 @@ class RelatedOrderItems extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Price', 'Quantity'];
+    public $columns = ['Id', 'Price', 'Quantity', 'VAT'];
     public $selectedColumns = [];
     public $order;
-    public $row =null;
+    public $row = null;
     public $single = false;
     public $multiple = false;
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -71,7 +72,7 @@ class RelatedOrderItems extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->orderproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->orderproducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -102,7 +103,7 @@ class RelatedOrderItems extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->orderproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->orderproductsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function load()
     {
@@ -156,15 +157,16 @@ class RelatedOrderItems extends Component
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
 }

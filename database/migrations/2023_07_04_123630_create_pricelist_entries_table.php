@@ -22,7 +22,7 @@ return new class extends Migration
       $table->integer('discount')->default(
         '0'
       );
-      $table->decimal('tva_percent', 5, 2)->nullable();
+      $table->decimal('vat', 5, 2)->nullable();
       $table->timestamps();
     });
   }
