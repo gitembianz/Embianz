@@ -237,15 +237,14 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 400;
-  background-color: $lightBlack;
+  font-weight: 500;
+  background-color: $ctadark;
   color: $primary;
   flex: 1;
   font-size: $textSize;
 
   &:hover {
-    background: $background;
-    color: $lightBlack;
+    background: lighten($ctadark,10%);
 
     &>svg {
       stroke: $background;

@@ -9,7 +9,7 @@
        </svg>
       </button>
       <input id="searchInput" name="search" wire:model.live.debounce.500ms="search" maxlength="100" type="text"
-       autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+       autocomplete="off" placeholder="@if (app()->has('label_breadcrumbs_search')) {!! app('label_breadcrumbs_search') !!} @endif">
      </div>
      <button class="search__close" type="button" id="searchClose" wire:click.prevent="close"
       aria-label="close search component">
