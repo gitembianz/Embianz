@@ -57,6 +57,16 @@ class StoreSeeder extends Seeder
             ['parameter' => 'dashboard_neworder_sound', 'value' => 'true', 'description' => 'Dashboard new order sound :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'pagination', 'value' => 'lazy', 'description' => 'Pagination type, accepted: lazy/links', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'invoice_series', 'value' => 'EZ', 'description' => 'Invoide serias', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'invoice_furnizor', 'value' => ' S.C. Moladso Line S.R.L <br>
+Reg. Com: J40/15607/15.11.2019 <br>
+CIF: RO41903669 <br>
+Capital Social: 200 RON <br>
+Cont: RO53BTRLRONCRT0529777201 <br>
+Banca: Banca Transilvania <br>
+Sediul: Bd. Bucuretii Noi, nr. 50A, bl. Tr. A+C, et. 10, Ap. 64,<br>
+Sector 1, Bucuresti <br>
+Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];

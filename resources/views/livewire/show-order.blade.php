@@ -106,7 +106,7 @@
    <label for="category__name">Ordernumber</label>
   </div>
   {{-- Order Session Id --}}
-  <div class="input__tabs">
+  <div class="input__tabs details__long">
    <span class="disabled">{{ $order->session_id }}</span>
    <label for="category__name">Session Id</label>
   </div>
@@ -206,7 +206,6 @@
    <span class="disabled">{{ $order->updated_at }}</span>
    <label>Updated At</label>
   </div>
-
   {{-- Save Button --}}
   @if ($edititem != null)
    <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()"
@@ -220,5 +219,7 @@
  {{-- Tabs Body (Related) --}}
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
   @livewire('related-order-items', ['order' => $order])
+  @livewire('related-invoices', ['relatedby' => 'order', 'id' => $order->id])
+
  </div>
 </section>
