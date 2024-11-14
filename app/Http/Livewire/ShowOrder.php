@@ -50,7 +50,10 @@ class ShowOrder extends Component
             ]);
 
             $this->order->invoice_number = app('global_invoice_series') . $uniqueNumber;
+            $this->order->external_invoice_number =  $uniqueNumber;
+
             $this->order->save();
+
 
             session()->flash('notification', [
                 'message' => 'Invoice number generated successfully!',
@@ -111,7 +114,7 @@ class ShowOrder extends Component
                 <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
             (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
-            $this->order->invoice_number . "</td>
+            $this->order->external_invoice_number . "</td>
             </tr>
             <tr>
                 <td class='ff'></td>
@@ -298,7 +301,7 @@ class ShowOrder extends Component
         $this->record = [
             'status_id' => $this->order->status_id,
             'invoice_date' => $this->order->invoice_date,
-            'invoice_number' => $this->order->invoice_number
+            'invoice_number' => $this->order->invoice_number,
 
         ];
         $this->edititem = true;

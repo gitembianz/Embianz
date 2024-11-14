@@ -195,6 +195,10 @@
    @endif
    <label for="product__name">Invoice Number</label>
   </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $order->external_invoice_number }}</span>
+   <label>External Invoice Number</label>
+  </div>
   {{-- Create date / time --}}
   <div class="input__tabs">
    <span class="disabled">{{ $order->created_at }}</span>
