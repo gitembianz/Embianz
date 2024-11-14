@@ -442,3 +442,18 @@
   line-height:2;
 }
 }
+
+.related__cat{
+  font-size:$textSize;
+  padding-top:15px;
+  padding-bottom:15px;
+ 
+  text-wrap: wrap;
+  a{
+    color:$ctalight;
+  }
+}
+
+.section__margin{
+  margin-bottom:15px;
+}

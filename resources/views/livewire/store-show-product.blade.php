@@ -232,14 +232,14 @@
  </script>
  <h2></h2>
  {{-- Display all categories --}}
- <section>
-  <div class="container">
+ <section class="container">
+  <div class="related__cat">
    @if (app()->has('label_pdp_category_tag'))
     {!! app('label_pdp_category_tag') !!}
     @foreach ($product->product_categories as $index => $related)
      <a
       href="{{ route('products', ['categorySlug' => $related->category->seo_id !== null && $related->category->seo_id !== '' ? $related->category->seo_id : $related->category->id]) }}">
-      {{ $related->category->name }}
+      {{ $related->category->short_description }}
      </a>
      @if (!$loop->last)
       ,
@@ -269,7 +269,7 @@
   <!----------------- End Section Description ---------------->
   <!---------------------------------------------------------->
   <!---------------------- Slider Cards ---------------------->
-  <section id="relatedSlider" class="related__slider container">
+  <section id="relatedSlider" class="related__slider container section__margin">
    {{-- <div class="related__navigation"> --}}
    <button class="related__btn prev" aria-label="Previous related slider">
     <svg>
