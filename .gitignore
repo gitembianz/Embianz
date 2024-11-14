@@ -1,5 +1,6 @@
 vendor
 public/media/
+public/invoices/
 node_modules
 public/dist/css/main.css.map
 public/dist/css/loading-screen.css.map

@@ -18,6 +18,10 @@ class Account extends Model
     {
         return $this->hasMany(Address::class, 'account_id');
     }
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'account_id');
+    }
     public static function search($search)
     {
         return empty($search) ? static::query()
