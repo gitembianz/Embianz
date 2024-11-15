@@ -24,7 +24,7 @@ class RelatedInvoices extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Order', 'Account', 'Date', 'Path', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Order', 'Type', 'Account', 'Date', 'Path', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $object;
     public $objectid;
