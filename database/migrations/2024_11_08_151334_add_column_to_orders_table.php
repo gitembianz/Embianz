@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->date('invoice_date')->nullable()->after('voucher_value');
-            $table->string('invoice_number')->nullable()->after('voucher_value');
+            $table->string('invoice_series')->nullable()->after('voucher_value');
         });
     }
 

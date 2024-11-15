@@ -22,11 +22,18 @@ class ShowOrder extends Component
 
     public function generate_invoice_number()
     {
-        $this->invoice_sdatabase = DB::connection('mysql_invoice')->table('invoices')->where('series', app('global_invoice_series'))->get();
+        $this->invoice_sdatabase = DB::connection('mysql_invoice')
+            ->table('invoices')
+            ->where('series', app('global_invoice_series'))
+            ->get();
 
-        $existingInvoice = $this->invoice_sdatabase->where('order_number', $this->order->order_number)->first();
+        $existingInvoice = $this->invoice_sdatabase
+            ->where('order_number', $this->order->order_number)
+            ->first();
+
         if ($existingInvoice) {
-            $this->order->invoice_number = app('global_invoice_series') . $existingInvoice->number;
+            $this->order->external_invoice_number = str_pad($existingInvoice->number, 4, '0', STR_PAD_LEFT);
+            $this->order->invoice_series = app('global_invoice_series');
             $this->order->save();
 
             session()->flash('notification', [
@@ -35,25 +42,27 @@ class ShowOrder extends Component
                 'title' => 'Success'
             ]);
         } else {
-            $nr = 1;
-            $uniqueNumber = str_pad($nr, 3, '0', STR_PAD_LEFT);
+            $latestInvoice = DB::connection('mysql_invoice')
+                ->table('invoices')
+                ->where('series', app('global_invoice_series'))
+                ->orderByDesc('number')
+                ->first();
 
-            while ($this->invoice_sdatabase->where('number', $uniqueNumber)->first()) {
-                $nr++;
-                $uniqueNumber = str_pad($nr, 3, '0', STR_PAD_LEFT);
+            if ($latestInvoice) {
+                $newNumber = $latestInvoice->number + 1;
+            } else {
+                $newNumber = 1;
             }
 
             DB::connection('mysql_invoice')->table('invoices')->insert([
-                'number' => $uniqueNumber,
+                'number' => $newNumber,
                 'order_number' => $this->order->order_number,
                 'series' => app('global_invoice_series'),
             ]);
 
-            $this->order->invoice_number = app('global_invoice_series') . $uniqueNumber;
-            $this->order->external_invoice_number =  $uniqueNumber;
-
+            $this->order->invoice_series = app('global_invoice_series');
+            $this->order->external_invoice_number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
             $this->order->save();
-
 
             session()->flash('notification', [
                 'message' => 'Invoice number generated successfully!',
@@ -63,9 +72,10 @@ class ShowOrder extends Component
         }
     }
 
+
     public function generate_invoice()
     {
-        if (!$this->order->invoice_number) {
+        if (!$this->order->external_invoice_number) {
             session()->flash('notification', [
                 'message' => 'Please generate invoice number first!',
                 'type' => 'warning',
@@ -91,13 +101,13 @@ class ShowOrder extends Component
             File::makeDirectory($yearMonthPath, 0755, true);
         }
 
-        $filePath = $yearMonthPath . "/" . $this->order->invoice_number . "-" . $this->order->order_number . ".pdf";
+        $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".pdf";
         if (file_exists($filePath)) {
             $i = 1;
-            $newpath = $yearMonthPath . "/" . $this->order->invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
             while (file_exists($newpath)) {
                 $i++;
-                $newpath = $yearMonthPath . "/" . $this->order->invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
             }
             $filePath = $newpath;
         }
@@ -300,8 +310,7 @@ class ShowOrder extends Component
         $this->statuses = Status::where('type', 'order')->get();
         $this->record = [
             'status_id' => $this->order->status_id,
-            'invoice_date' => $this->order->invoice_date,
-            'invoice_number' => $this->order->invoice_number,
+            'invoice_date' => $this->order->invoice_date
 
         ];
         $this->edititem = true;
@@ -315,9 +324,6 @@ class ShowOrder extends Component
             $statusclose = Status::where('type', 'order')->where('name', 'canceled')->first()->id;
             if (array_key_exists('invoice_date', $new)) {
                 $order->invoice_date = $new['invoice_date'];
-            }
-            if (array_key_exists('invoice_number', $new)) {
-                $order->invoice_number = $new['invoice_number'];
             }
             if (array_key_exists('status_id', $new)) {
                 $order->status_id = $new['status_id'];
