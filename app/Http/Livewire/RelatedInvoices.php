@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -168,5 +169,22 @@ class RelatedInvoices extends Component
             'title' => 'Success'
         ]);
         $this->emit('orderUpdated');
+    }
+
+    public function downloadInvoice($id)
+    {
+        $item = Invoice::findOrFail($id);
+        $filePath = public_path($item->path);
+
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        return response()->download($filePath);
     }
 }
