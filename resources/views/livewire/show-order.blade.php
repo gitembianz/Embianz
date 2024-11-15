@@ -188,12 +188,13 @@
   </div>
   {{-- Product Popularity --}}
   <div class="input__tabs">
-   @if ($edititem === null)
-    <span class="disabled">{{ $order->invoice_number }}</span>
-   @else
-    <input type="text" wire:model.defer="record.invoice_number">
-   @endif
-   <label for="product__name">Invoice Number</label>
+   <span class="disabled">{{ $order->invoice_series }}</span>
+
+   <label for="product__name">Invoice Series</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $order->external_invoice_number }}</span>
+   <label>External Invoice Number</label>
   </div>
   {{-- Create date / time --}}
   <div class="input__tabs">

@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->date('invoice_date')->nullable()->after('voucher_value');
-            $table->string('invoice_series')->nullable()->after('voucher_value');
+            $table->string('external_invoice_number')->nullable()->after('invoice_series');
         });
     }
 
