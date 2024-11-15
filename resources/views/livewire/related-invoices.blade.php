@@ -26,6 +26,19 @@
    </button>
   </div>
  </aside>
+ {{-- preview sistem --}}
+ <aside>
+  <div class="background background--center @if ($previewurl != null) active @endif"></div>
+  <div class="aside aside--table @if ($previewurl != null) active @endif">
+   <iframe src="/{{ $previewurl }}" width="100%" height="95%" style="border: none;">
+    Your browser does not support iframes. Please download the file
+    <a href="/{{ $previewurl }}">here</a>.
+   </iframe>
+   <button class="button button--danger button--long" wire:click="cancel_preview()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
 
 
  {{-- Accordion Header --}}
@@ -262,7 +275,13 @@
            <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
          </button>
-
+         <button wire:click.prevent="previewInvoice({{ $invoice->id }})"
+          class="button button--secondary button--sm">
+          <svg>
+           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+           <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+         </button>
 
         </div>
        </td>

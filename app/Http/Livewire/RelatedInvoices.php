@@ -31,6 +31,7 @@ class RelatedInvoices extends Component
     public $row = null;
     public $single = false;
     public $multiple = false;
+    public $previewurl = null;
 
     public function render()
     {
@@ -186,5 +187,25 @@ class RelatedInvoices extends Component
         }
 
         return response()->download($filePath);
+    }
+    public function previewInvoice($id)
+    {
+        $item = Invoice::findOrFail($id);
+        $filePath = $item->path;
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        } else {
+            $this->previewurl = $item->path;
+            return;
+        }
+    }
+    public function cancel_preview()
+    {
+        $this->previewurl = null;
     }
 }
