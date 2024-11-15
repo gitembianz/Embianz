@@ -166,27 +166,6 @@
     @else
      ""
     @endif ,
-    // zipcode Validation
-    zipcode_require: @if (app()->bound('label_form_zipcode_require'))
-     "{{ app('label_form_zipcode_require') }}"
-    @else
-     ""
-    @endif ,
-    zipcode_min: @if (app()->bound('label_form_zipcode_min'))
-     "{{ app('label_form_zipcode_min') }}"
-    @else
-     ""
-    @endif ,
-    zipcode_max: @if (app()->bound('label_form_zipcode_max'))
-     "{{ app('label_form_zipcode_max') }}"
-    @else
-     ""
-    @endif ,
-    zipcode_space: @if (app()->bound('label_form_zipcode_space'))
-     "{{ app('label_form_zipcode_space') }}"
-    @else
-     ""
-    @endif ,
     // company Validation
     company_require: @if (app()->bound('label_form_company_require'))
      "{{ app('label_form_company_require') }}"
@@ -704,7 +683,7 @@
        <div class="checkout__item checkout__item--required" id="individualShippingPostalParent">
         <input type="text" wire:model.defer="individual_billing_zipcode" name="individualShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-         required id="individualShippingPostal">
+          id="individualShippingPostal">
         <span></span>
         <label for="individualShippingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1091,7 +1070,7 @@
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPostalParent">
         <input type="text" wire:model.defer="individual_shipping_zipcode" name="individualBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-         required id="individualBillingPostal">
+          id="individualBillingPostal">
         <span></span>
         <label for="individualBillingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1533,7 +1512,7 @@
        <div class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
         <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code" required id="juridicShippingPostal">
+         autocomplete="postal-code"  id="juridicShippingPostal">
         <span></span>
         <label for="juridicShippingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1921,7 +1900,7 @@
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPostalParent">
         <input type="text" wire:model.defer="juridic_shipping_zipcode" name="juridicBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code" required id="juridicBillingPostal">
+         autocomplete="postal-code"  id="juridicBillingPostal">
         <span></span>
         <label for="juridicBillingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -2016,7 +1995,7 @@
       applyValidations("individualShippingAddressParent", addressValidations, false);
       applyValidations("individualShippingCountyParent", countyValidations, false);
       applyValidations("individualShippingCityParent", cityValidations, false);
-      applyValidations("individualShippingPostalParent", zipcodeValidations, false);
+      // applyValidations("individualShippingPostalParent", zipcodeValidations, false);
       applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
       applyValidations("individualBillingLastNameParent", lastNameValidation, false);
       applyValidations("individualBillingEmailParent", emailValidation, false);
@@ -2024,7 +2003,7 @@
       applyValidations("individualBillingAddressParent", addressValidations, false);
       applyValidations("individualBillingCountyParent", countyValidations, false);
       applyValidations("individualBillingCityParent", cityValidations, false);
-      applyValidations("individualBillingPostalParent", zipcodeValidations, false);
+      // applyValidations("individualBillingPostalParent", zipcodeValidations, false);
       // ----------------------------------------------------------------------------
       applyValidations("juridicShippingFirstNameParent", firstNameValidation, false);
       applyValidations("juridicShippingLastNameParent", lastNameValidation, false);
@@ -2033,7 +2012,7 @@
       applyValidations("juridicShippingAddressParent", addressValidations, false);
       applyValidations("juridicShippingCountyParent", countyValidations, false);
       applyValidations("juridicShippingCityParent", cityValidations, false);
-      applyValidations("juridicShippingPostalParent", zipcodeValidations, false);
+      // applyValidations("juridicShippingPostalParent", zipcodeValidations, false);
       applyValidations("companyNameParent", companyName, false);
       applyValidations("registerNumberParent", registerNumber, false);
       applyValidations("registerCodeParent", registerCode, false);
@@ -2044,7 +2023,7 @@
       applyValidations("juridicBillingAddressParent", addressValidations, false);
       applyValidations("juridicBillingCountyParent", countyValidations, false);
       applyValidations("juridicBillingCityParent", cityValidations, false);
-      applyValidations("juridicBillingPostalParent", zipcodeValidations, false);
+      // applyValidations("juridicBillingPostalParent", zipcodeValidations, false);
      </script>
      <div class="dlv" style="display: none">
       <span class="dlv_currency">
