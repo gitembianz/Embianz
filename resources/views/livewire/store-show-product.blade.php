@@ -421,7 +421,7 @@
   </section>
  @endif
 
- @if ($last_visited_products->count() > 1)
+ @if ($last_visited_products->count() > 0)
   <section>
    <div class="section__header
       container">
