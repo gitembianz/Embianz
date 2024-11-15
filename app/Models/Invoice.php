@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
-    protected $fillable = ['order_id', 'account_id', 'path', 'date'];
+    protected $fillable = ['order_id', 'type', 'account_id', 'path', 'date'];
     public function account()
     {
         return $this->belongsTo(Account::class, 'account_id');

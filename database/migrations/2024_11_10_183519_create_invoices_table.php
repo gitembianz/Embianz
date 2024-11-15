@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id');
             $table->foreign('account_id')->references('id')->on('orders');
             $table->date('date')->nullable();
+            $table->string('type')->nullable();
             $table->longText('path')->nullable();
             $table->timestamps();
         });

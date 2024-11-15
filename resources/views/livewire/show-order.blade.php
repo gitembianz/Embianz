@@ -40,6 +40,12 @@
      <button class="button button--primary button--long" wire:click="generate_invoice()">
       Generate invoice
      </button>
+     <button class="button button--primary button--long" wire:click="generate_storno_number()">
+      Get storno number
+     </button>
+     <button class="button button--primary button--long" wire:click="generate_storno()">
+      Generate storno
+     </button>
     </div>
    </div>
   </div>
@@ -179,6 +185,11 @@
   @endif
   {{-- Product Start Date --}}
   <div class="input__tabs">
+   <span class="disabled">{{ $order->invoice_series }}</span>
+
+   <label for="product__name">Invoice Series</label>
+  </div>
+  <div class="input__tabs">
    @if ($edititem === null)
     <span class="disabled">{{ $order->invoice_date }}</span>
    @else
@@ -186,15 +197,23 @@
    @endif
    <label for="product__name">Invoice Date</label>
   </div>
-  {{-- Product Popularity --}}
   <div class="input__tabs">
-   <span class="disabled">{{ $order->invoice_series }}</span>
-
-   <label for="product__name">Invoice Series</label>
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->storno_date }}</span>
+   @else
+    <input type="date" wire:model.defer="record.storno_date">
+   @endif
+   <label for="product__name">Storno Date</label>
   </div>
+  {{-- Product Popularity --}}
+
   <div class="input__tabs">
    <span class="disabled">{{ $order->external_invoice_number }}</span>
    <label>External Invoice Number</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $order->external_storno_number }}</span>
+   <label>External Storno Number</label>
   </div>
   {{-- Create date / time --}}
   <div class="input__tabs">

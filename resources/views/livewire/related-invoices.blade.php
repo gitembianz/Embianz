@@ -167,6 +167,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Type'))
+      <th class="hidden">
+       <button wire:click="sortBy('type')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Type
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Path'))
       <th class="hidden">
        <button wire:click="sortBy('path')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -243,6 +253,11 @@
          {{ $invoice->date }}
         </td>
        @endif
+       @if ($this->showColumn('Type'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $invoice->type }}
+        </td>
+       @endif
        @if ($this->showColumn('Path'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
          {{ $invoice->path }}
@@ -294,6 +309,12 @@
           <p>
            <bold>Date</bold>
            {{ $invoice->date }}
+          </p>
+         @endif
+         @if ($this->showColumn('Type'))
+          <p>
+           <bold>Type</bold>
+           {{ $invoice->type }}
           </p>
          @endif
          @if ($this->showColumn('Path'))
