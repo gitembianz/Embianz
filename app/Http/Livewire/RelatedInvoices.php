@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Invoice;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
+
 
 
 class RelatedInvoices extends Component
@@ -134,6 +136,9 @@ class RelatedInvoices extends Component
     public function deleteSingleRecord()
     {
         $item = Invoice::findOrFail($this->idbeingremoved);
+        if (File::exists($item->path)) {
+            File::delete($item->path);
+        }
         $item->delete();
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
@@ -148,6 +153,9 @@ class RelatedInvoices extends Component
         $items = Invoice::whereKey($this->checked)->get();
         foreach ($items as $item) {
             $del = Invoice::find($item->id);
+            if (File::exists($del->path)) {
+                File::delete($del->path);
+            }
             $del->delete();
         }
 

@@ -1,5 +1,7 @@
 <div class="accordion @if ($showrelated) active @endif">
  {{-- Delete Record OR Records --}}
+ <x-alert />
+
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
   <div class="aside aside--confirm @if ($single || $multiple) active @endif">
