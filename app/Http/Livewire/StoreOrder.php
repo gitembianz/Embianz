@@ -177,7 +177,6 @@ class StoreOrder extends Component
       'individual_billing_address2',
       'individual_billing_county',
       'individual_billing_city',
-      'individual_billing_zipcode',
       'individual_shipping_first',
       'individual_shipping_last',
       'individual_shipping_phone',
@@ -186,7 +185,6 @@ class StoreOrder extends Component
       'individual_shipping_address2',
       'individual_shipping_county',
       'individual_shipping_city',
-      'individual_shipping_zipcode',
       'juridic_billing_first',
       'juridic_billing_last',
       'juridic_billing_phone',
@@ -200,7 +198,6 @@ class StoreOrder extends Component
       'juridic_billing_address2',
       'juridic_billing_county',
       'juridic_billing_city',
-      'juridic_billing_zipcode',
       'juridic_shipping_first',
       'juridic_shipping_last',
       'juridic_shipping_phone',
@@ -209,7 +206,6 @@ class StoreOrder extends Component
       'juridic_shipping_address2',
       'juridic_shipping_county',
       'juridic_shipping_city',
-      'juridic_shipping_zipcode'
     ]);
   }
 
@@ -287,12 +283,6 @@ class StoreOrder extends Component
           'min:1',
           'max:40',
         ],
-        'individual_billing_zipcode' =>
-        [
-          'required',
-          'min:1',
-          'max:100',
-        ],
       ];
 
       if (!$this->individual_identic) {
@@ -326,12 +316,6 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:40',
-          ],
-          'individual_shipping_zipcode' =>
-          [
-            'required',
-            'min:1',
-            'max:100',
           ],
         ];
         $rules = array_merge($rules, $shippingRules);
@@ -385,12 +369,6 @@ class StoreOrder extends Component
           'min:1',
           'max:40',
         ],
-        'juridic_billing_zipcode' =>
-        [
-          'required',
-          'min:1',
-          'max:100',
-        ]
       ];
       if (!$this->juridic_identic) {
         $shippingRules = [
@@ -420,11 +398,6 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:40',
-          ],
-          'juridic_shipping_zipcode' => [
-            'required',
-            'min:1',
-            'max:100',
           ],
         ];
         $rules = array_merge($rules, $shippingRules);
