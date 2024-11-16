@@ -3049,9 +3049,9 @@
     return {
       email: email.toLowerCase().trim(),
       phone_number: phone.trim(),
-      first_name: firstName.toLowerCase().trim(),
-      last_name: lastName.toLowerCase().trim(),
       address: {
+        first_name: firstName.toLowerCase().trim(),
+        last_name: lastName.toLowerCase().trim(),
         street: street.toLowerCase().trim(),
         city: city.toLowerCase().trim(),
         region: region.toLowerCase().trim(),
@@ -3085,8 +3085,6 @@
     dataLayer.push({
       event: "user_data",
       user_data: {
-        first_name: userData.first_name,
-        last_name: userData.last_name,
         email: userData.email,
         phone_number: userData.phone_number,
         address: userData.address
