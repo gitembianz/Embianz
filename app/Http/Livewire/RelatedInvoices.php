@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use App\Models\Invoice;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class RelatedInvoices extends Component
@@ -21,13 +24,14 @@ class RelatedInvoices extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Order', 'Account', 'Date', 'Path', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Order', 'Type', 'Account', 'Date', 'Path', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $object;
     public $objectid;
     public $row = null;
     public $single = false;
     public $multiple = false;
+    public $previewurl = null;
 
     public function render()
     {
@@ -134,6 +138,9 @@ class RelatedInvoices extends Component
     public function deleteSingleRecord()
     {
         $item = Invoice::findOrFail($this->idbeingremoved);
+        if (File::exists($item->path)) {
+            File::delete($item->path);
+        }
         $item->delete();
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
@@ -148,6 +155,9 @@ class RelatedInvoices extends Component
         $items = Invoice::whereKey($this->checked)->get();
         foreach ($items as $item) {
             $del = Invoice::find($item->id);
+            if (File::exists($del->path)) {
+                File::delete($del->path);
+            }
             $del->delete();
         }
 
@@ -160,5 +170,42 @@ class RelatedInvoices extends Component
             'title' => 'Success'
         ]);
         $this->emit('orderUpdated');
+    }
+
+    public function downloadInvoice($id)
+    {
+        $item = Invoice::findOrFail($id);
+        $filePath = public_path($item->path);
+
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        return response()->download($filePath);
+    }
+    public function previewInvoice($id)
+    {
+        $item = Invoice::findOrFail($id);
+        $filePath = $item->path;
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        } else {
+            $this->previewurl = $item->path;
+            return;
+        }
+    }
+    public function cancel_preview()
+    {
+        $this->previewurl = null;
     }
 }
