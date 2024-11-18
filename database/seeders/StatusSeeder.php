@@ -26,7 +26,7 @@ class StatusSeeder extends Seeder
             ['name' => 'check_payment', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'processing', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'delivered', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['name' => 'cancelled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'canceled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'hold', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
         ]);
 
