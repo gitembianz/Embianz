@@ -67,6 +67,7 @@ Sediul: Bd. Bucuretii Noi, nr. 50A, bl. Tr. A+C, et. 10, Ap. 64,<br>
 Sector 1, Bucuresti <br>
 Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
+            ['parameter' => 'default_payment', 'value' => 'cash', 'description' => 'Default payment :card|cash', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
