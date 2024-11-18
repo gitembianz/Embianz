@@ -563,7 +563,7 @@ class StoreOrder extends Component
     }
     if ($this->is_account != null) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
-      if ($account == null) {
+      if (!$account) {
         unset($_COOKIE['accountId']);
         $this->is_account = null;
       } else {
