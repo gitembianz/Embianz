@@ -88,6 +88,9 @@
   <form class="aside aside--table @if ($addbrand) active @endif">
    {{-- Navigation --}}
    <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Add new brands') }}
+    </h1>
     <button class="button button--primary button--centered" wire:click.prevent="save_brands()">
      <svg>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -113,17 +116,16 @@
     <table class="expandable-table">
      <thead>
       <tr>
-       <th class="unhidden" style="width: auto !important;">
-        <div class="table--btn">Position</div>
+       <th>
+        <div class="table--btn">Nr.</div>
+
        </th>
-       <th style="width: auto !important;">
+       <th style="min-width: 30%">
         <div class="table--btn">Name</div>
        </th>
+
        <th>
-        <div class="table--btn">Sequence</div>
-       </th>
-       <th class="hidden">
-        <div class="table--btn">Link</div>
+        <div class="table--btn">Description</div>
        </th>
        <th>
         <button class="button button--secondary button--sm" style="opacity: 0">
@@ -136,35 +138,26 @@
       </tr>
      </thead>
      <tbody>
-      @php
-       $j = 0;
-      @endphp
-      @for ($i = 0; $i <= $row; $i++)
+      @for ($i = 0; $i <= $rowadd; $i++)
        <tr class="expandable-row">
-        <td style="width: auto !important;" wire:click="expandRow2({{ $i }})" class="unhidden">
+        <td wire:click="expandRow2({{ $i }})">
          {{ $i }}</td>
-        <td style="width: auto !important;" style="width: auto;">
+        <td>
          <div class="searchable">
-          <input placeholder="Media name" type="text" class="input__searchable"
-           wire:model="file_name.{{ $i }}">
+          <input placeholder="Brand name" type="text" class="input__searchable"
+           wire:model.defer="brand_name.{{ $i }}">
          </div>
         </td>
         <td>
          <div class="searchable">
-          <input placeholder="Ex: 1,2,3.." type="number" min="0" class="input__searchable"
-           wire:model="file_sequences.{{ $i }}">
-         </div>
-        </td>
-        <td class="hidden">
-         <div class="searchable">
-          <input placeholder="Media external link" type="url" class="input__searchable"
-           wire:model="file_link.{{ $i }}">
+          <input placeholder="Brand description.." type="text"class="input__searchable"
+           wire:model.defer="brand_description.{{ $i }}">
          </div>
         </td>
         <td>
          <div style="display: flex;">
           @if ($i == $row)
-           <button type="button" class="button button--secondary button--sm" wire:click="plus">
+           <button type="button" class="button button--secondary button--sm" wire:click="plus()">
             <svg>
              <line x1="12" y1="5" x2="12" y2="19">
              </line>
@@ -173,8 +166,7 @@
             </svg>
            </button>
           @endif
-          <button type="button" class="button button--secondary button--sm"
-           wire:click="clear({{ $i }})">
+          <button type="button" class="button button--secondary button--sm" wire:click="clear({{ $i }})">
            <svg>
             <line x1="18" y1="6" x2="6" y2="18">
             </line>
@@ -185,27 +177,10 @@
          </div>
         </td>
        </tr>
-       <tr class="details-row @if ($rind2 === $j) active @endif">
-        <td colspan="3">
-         <div class="details">
-          <p>
-           <bold>Link</bold>
-          <div class="searchable">
-           <input placeholder="Media external link" type="url" class="input__searchable"
-            wire:model="file_link.{{ $i }}">
-          </div>
-          </p>
-         </div>
-        </td>
-       </tr>
-       @php
-        $j++;
-       @endphp
       @endfor
      </tbody>
     </table>
    </div>
-
   </form>
  </aside>
 
@@ -385,7 +360,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 12) class="hidden" @endif>
+       <th @if ($index > 1) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -425,7 +400,7 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 12) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_brand', ['id' => $brand->id]) }}">{{ $brand->name }}</a>
