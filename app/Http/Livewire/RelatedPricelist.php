@@ -506,9 +506,9 @@ class RelatedPricelist extends Component
         $new->price = $priceAndValue['price']['price'];
 
         $new->discount = $priceAndValue['price']['discount'];
-        $new->value_no_vat = $priceAndValue['price']['value'];
-        $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
-        $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
+        $new->value_no_vat =  str_replace(',', '.', $priceAndValue['price']['value']);
+        $new->value_no_discount = str_replace(',', '.', $priceAndValue['price']['value']) + (0.01 * $priceAndValue['price']['vat'] * str_replace(',', '.', $priceAndValue['price']['value']));
+        $new->value = str_replace(',', '.', $priceAndValue['price']['value']) - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * str_replace(',', '.', $priceAndValue['price']['value']));
         $new->save();
       } else {
         session()->flash('notification', [
