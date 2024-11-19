@@ -15,6 +15,7 @@
     <h3>Menu</h3>
    </div>
    <span class="aside--line"></span>
+   {{-- dashboard --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'dashboard') button--active @endif"
     href="{{ route('dashboard') }}">
     <svg>
@@ -25,6 +26,7 @@
     </svg>
     <span>Dashboard</span>
    </a>
+   {{-- categories --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'category') button--active @endif"
     href="{{ route('category') }}">
     <svg>
@@ -36,6 +38,7 @@
     </svg>
     <span>Categories</span>
    </a>
+   {{-- products --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'product') button--active @endif"
     href="{{ route('all_products') }}">
     <svg>
@@ -48,6 +51,19 @@
     </svg>
     <span>Products</span>
    </a>
+   {{-- Brands --}}
+   <a class="button button--fill button--flexed button--primary @if ($active == 'brand') button--active @endif"
+    href="{{ route('all_brands') }}">
+    <svg>
+     <path
+      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+     </path>
+     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+     <line x1="12" y1="22.08" x2="12" y2="12"></line>
+    </svg>
+    <span>Brands</span>
+   </a>
+   {{-- vouchers --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'voucher') button--active @endif"
     href="{{ route('vouchers') }}">
     <svg>
@@ -59,6 +75,7 @@
     </svg>
     <span>Vouchers</span>
    </a>
+   {{-- accounts --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'account') button--active @endif"
     href="{{ route('accounts') }}">
     <svg>
@@ -70,6 +87,7 @@
     </svg>
     <span>Accounts</span>
    </a>
+   {{-- carts --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'cart') button--active @endif"
     href="{{ route('carts') }}">
     <svg>
@@ -81,6 +99,7 @@
     </svg>
     <span>Carts</span>
    </a>
+   {{-- orders --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'order') button--active @endif"
     href="{{ route('orders') }}">
     <svg>
@@ -92,6 +111,7 @@
     </svg>
     <span>Orders</span>
    </a>
+   {{-- pricelists --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'price') button--active @endif"
     href="{{ route('pricelists') }}">
     <svg>
@@ -101,6 +121,7 @@
     </svg>
     <span>Price List</span>
    </a>
+   {{-- specifications --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'spec') button--active @endif"
     href="{{ route('specs') }}">
     <svg>
@@ -113,7 +134,9 @@
     </svg>
     <span>Specifications</span>
    </a>
-   <a class="button button--fill button--flexed button--primary @if ($active == 'wishlist') button--active @endif"
+   {{-- wishlists --}}
+   <a
+    class="button button--fill button--flexed button--primary @if ($active == 'wishlist') button--active @endif"
     href="{{ route('wishlists') }}">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -126,6 +149,7 @@
     </svg>
     <span>Wishlists</span>
    </a>
+   {{-- sessions --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'session') button--active @endif"
     href="{{ route('sessions') }}">
@@ -137,6 +161,7 @@
     </svg>
     <span>Sessions</span>
    </a>
+   {{-- storesettings --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'store_settings') button--active @endif"
     href="{{ route('storesettings') }}">
@@ -156,6 +181,7 @@
     </svg>
     <span>Store settings</span>
    </a>
+   {{-- currencies --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'currency') button--active @endif"
     href="{{ route('currencies') }}">
@@ -170,6 +196,7 @@
     </svg>
     <span>Currency</span>
    </a>
+   {{-- custom scripts --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'scripts') button--active @endif"
     href="{{ route('customscripts') }}">
@@ -179,6 +206,7 @@
     </svg>
     <span>Custom Script</span>
    </a>
+   {{-- payments --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'payment') button--active @endif"
     href="{{ route('payments') }}">
@@ -190,6 +218,7 @@
     </svg>
     <span>Payment</span>
    </a>
+   {{-- labels --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'labels') button--active @endif"
     href="{{ route('labels') }}">
@@ -199,6 +228,7 @@
     </svg>
     <span>Labels</span>
    </a>
+   {{-- variants --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'variant') button--active @endif"
     href="{{ route('variants') }}">
@@ -221,6 +251,7 @@
    </svg>
    <span>Menu</span>
   </button>
+  {{-- dashboard desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'dashboard') button--secondary @endif"
    href="{{ route('dashboard') }}">
@@ -232,6 +263,7 @@
    </svg>
    <span>Dashboard</span>
   </a>
+  {{-- categories desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'category') button--secondary @endif"
    href="{{ route('category') }}">
@@ -244,6 +276,7 @@
    </svg>
    <span>Categories</span>
   </a>
+  {{-- products desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'product') button--secondary @endif"
    href="{{ route('all_products') }}">
@@ -257,6 +290,20 @@
    </svg>
    <span>Products</span>
   </a>
+  {{-- brands desktop --}}
+  <a
+   class="button button--long button--flexed button--primary @if ($active == 'brand') button--secondary @endif"
+   href="{{ route('all_brands') }}">
+   <svg>
+    <path
+     d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+    </path>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+   </svg>
+   <span>Brands</span>
+  </a>
+  {{-- vouchers desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'voucher') button--secondary @endif"
    href="{{ route('vouchers') }}">
@@ -269,6 +316,7 @@
    </svg>
    <span>Vouchers</span>
   </a>
+  {{-- accounts desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'account') button--secondary @endif"
    href="{{ route('accounts') }}">
@@ -281,6 +329,7 @@
    </svg>
    <span>Accounts</span>
   </a>
+  {{-- carts desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'cart') button--secondary @endif"
    href="{{ route('carts') }}">
@@ -293,6 +342,7 @@
    </svg>
    <span>Carts</span>
   </a>
+  {{-- orders molbile --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'order') button--secondary @endif"
    href="{{ route('orders') }}">
@@ -305,6 +355,7 @@
    </svg>
    <span>Orders</span>
   </a>
+  {{-- pricelist desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'price') button--secondary @endif"
    href="{{ route('pricelists') }}">
@@ -315,6 +366,7 @@
    </svg>
    <span>Price List</span>
   </a>
+  {{-- specification desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'spec') button--secondary @endif"
    href="{{ route('specs') }}">
@@ -328,6 +380,7 @@
    </svg>
    <span>Specifications</span>
   </a>
+  {{-- wistlist desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'wishlist') button--secondary @endif"
    href="{{ route('wishlists') }}">
@@ -342,6 +395,7 @@
    </svg>
    <span>Wishlists</span>
   </a>
+  {{-- session desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'session') button--secondary @endif"
    href="{{ route('sessions') }}">
@@ -353,6 +407,7 @@
    </svg>
    <span>Sessions</span>
   </a>
+  {{-- storesettings desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'store_settings') button--secondary @endif"
    href="{{ route('storesettings') }}">
@@ -372,6 +427,7 @@
    </svg>
    <span>Store settings</span>
   </a>
+  {{-- currencies desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'currency') button--secondary @endif"
    href="{{ route('currencies') }}">
@@ -386,6 +442,7 @@
    </svg>
    <span>Currency</span>
   </a>
+  {{-- custom scripts desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'scripts') button--secondary @endif"
    href="{{ route('customscripts') }}">
@@ -395,6 +452,7 @@
    </svg>
    <span>Custom Scripts</span>
   </a>
+  {{-- payments desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'payment') button--secondary @endif"
    href="{{ route('payments') }}">
@@ -406,6 +464,7 @@
    </svg>
    <span>Payment</span>
   </a>
+  {{-- labels desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'labels') button--secondary @endif"
    href="{{ route('labels') }}">
@@ -415,6 +474,7 @@
    </svg>
    <span>Labels</span>
   </a>
+  {{-- variants desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'variant') button--secondary @endif"
    href="{{ route('variants') }}">
@@ -431,26 +491,22 @@
   const buttons2 = leftbar2.querySelectorAll('a');
   const closeButton2 = leftbar2.querySelector('button');
 
-  // Funcția pentru inițializarea stării componentului pe baza localStorage
   function initializeComponentState() {
    const isActive = localStorage.getItem('leftbarActive') === 'true';
    if (isActive) {
     leftbar2.classList.add('active');
    } else {
-    leftbar2.classList.remove('active'); // Asigură-te că clasa 'active' nu este prezentă inițial
+    leftbar2.classList.remove('active');
    }
   }
 
-  // Salvăm starea în localStorage la fiecare modificare a clasei
   function saveComponentState() {
    const isActive = leftbar2.classList.contains('active');
    localStorage.setItem('leftbarActive', isActive);
   }
 
-  // Inițializează starea componentului la încărcarea paginii
   initializeComponentState();
 
-  // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
   function addTransition() {
    leftbar2.style.transition = 'all 0.25s ease';
    closeButton2.style.transition = 'all 0.25s ease';
@@ -459,8 +515,6 @@
    });
   }
   setTimeout(addTransition, 500);
-
-  // Observăm schimbările clasei și salvăm starea
   const observer2 = new MutationObserver(saveComponentState);
   observer2.observe(leftbar2, {
    attributes: true,
