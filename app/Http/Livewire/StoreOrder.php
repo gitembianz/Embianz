@@ -556,11 +556,11 @@ class StoreOrder extends Component
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     }
-    if (array_key_exists('accountId', $_COOKIE)) {
-      $this->is_account = $_COOKIE['accountId'];
-    } else {
-      $this->is_account = null;
-    }
+    // if (array_key_exists('accountId', $_COOKIE)) {
+    //   $this->is_account = $_COOKIE['accountId'];
+    // } else {
+    // }
+    $this->is_account = null;
     if ($this->is_account != null) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
       if (!$account) {
