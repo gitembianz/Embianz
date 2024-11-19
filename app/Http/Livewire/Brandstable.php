@@ -25,6 +25,12 @@ class Brandstable extends Component
     public $single = false;
     public $multiple = false;
     public $addbrand = false;
+    public $rowadd;
+    public $rind2 = null;
+    public $brand_description = [];
+    public $brand_name = [];
+
+
 
     public function render()
     {
@@ -42,6 +48,7 @@ class Brandstable extends Component
     }
     public function mount($tableName)
     {
+        $this->rowadd = 0;
         $this->tableName = $tableName;
         $this->columns = Schema::getColumnListing($this->tableName);
         $this->selectedColumns = $this->columns;
@@ -143,6 +150,45 @@ class Brandstable extends Component
 
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function plus()
+    {
+        $this->rowadd++;
+        $this->brand_name[$this->rowadd] = null;
+        $this->brand_description[$this->rowadd] = null;
+    }
+    public function clear($i)
+    {
+        array_splice($this->brand_name, $i, 1);
+        array_splice($this->brand_description, $i, 1);
+        $this->rowadd--;
+
+        if ($this->rowadd < 0) {
+            $this->addbrand = false;
+            $this->rowadd = 0;
+            $this->brand_name = [];
+            $this->brand_description = [];
+        }
+    }
+    public function save_brands()
+    {
+        for ($i = 0; $i <= $this->rowadd; $i++) {
+            $this->resetErrorBag();
+            $this->validate([
+                'brand_name.*' => 'required',
+                'brand_description.*' => 'required'
+            ]);
+            // de pus eorile in blade
+            Brand::create([
+                'name' => $this->brand_name[$i],
+                'description' => $this->brand_description[$i]
+            ]);
+        }
+        session()->flash('notification', [
+            'message' => 'Brands added successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);

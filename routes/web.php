@@ -51,6 +51,7 @@
       // brands routes
       route::view('/brands', 'admin.brands')->name('all_brands');
       route::view('/add_brand', 'admin.add_brand')->name('add_brand');
+      route::get('/show_brand/{id}/', [AdminController::class, 'show_brand'])->name('show_brand');
 
 
 
