@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Status;
 use Livewire\Component;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -170,21 +170,38 @@ class ShowOrder extends Component
         }
         // generate PDF
         $htmlContent = "
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+     <html>
+<head>
+  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+
+     <style>
+    *{ font-family: DejaVu Sans !important;
+        font-size:12px;
+    }
+    table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+      th, td {
+                padding: 8px;
+                word-wrap: break-word; 
+            }
+          
+  </style>
+      </head>
+      <body>
         <table class='info'>
             <tr>
-                <td class='ff'></td>
+
                 <td class='ff'>" . (app()->has('label_invoice_title') ? app('label_invoice_title') : 'Invoice') . "</td>
             </tr>
             <tr>
-                <td class='ff'></td>
                 <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
             (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_invoice_number . "</td>
             </tr>
             <tr>
-                <td class='ff'></td>
                 <td class='ff'>" . (app()->has('label_invoice_date') ? app('label_invoice_date') : 'Date: ') . $this->order->invoice_date . "</td>
             </tr>
             <tr>
@@ -315,7 +332,7 @@ class ShowOrder extends Component
         </tbody>
     </table>
     <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
-    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p>";
+    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
@@ -379,7 +396,15 @@ class ShowOrder extends Component
         }
         // generate PDF
         $htmlContent = "
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+       <html>
+<head>
+  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+
+     <style>
+    *{ font-family: DejaVu Sans !important;}
+  </style>
+      </head>
+      <body>
         <table class='info'>
             <tr>
                 <td class='ff'></td>
@@ -524,7 +549,7 @@ class ShowOrder extends Component
         </tbody>
     </table>
     <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . -number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
-    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p>";
+    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
