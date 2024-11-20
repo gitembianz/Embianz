@@ -23,7 +23,8 @@ class StoreHead extends Component
 
         $this->canonical = empty($canonical)
             ? url()->current() . (request()->getQueryString() ? '?' . request()->getQueryString() : '')
-            : $canonical;
+            : config('app.url') . '/' . ltrim($canonical, '/');
+
 
         $this->image = empty($image) ? "images/store/logo-banner.webp" : $image;
 
