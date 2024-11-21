@@ -336,7 +336,7 @@
       </tr>
      @else
       @foreach ($filteredMedia as $index => $file)
-       <tr class="expandable-row @if ($this->isChecked($file->id)) active @endif">
+       <tr class="expandable-row">
         <td wire:click="expandRow({{ $index }})">
          @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'jfif', 'webp']))
           <img loading="eager" src="/{{ $file->path . $file->name }}" alt="{{ $file->name }}" width="50">
@@ -344,13 +344,14 @@
           A problem with media
          @endif
         </td>
-        @foreach ($selectedColumns as $column)
+        @foreach ($selectedColumns as $numar => $column)
          @php
           if ($column === 'id' || $column === 'sequence') {
               continue;
           }
          @endphp
-         <td data-title="{{ $column }}">
+         <td wire:click="expandRow({{ $index }})" @if ($numar > 1) class="hidden" @endif
+          data-title="{{ $column }}">
           @if ($column === 'name')
            @if ($editedMediaIndex !== $index)
             {{ $file->$column }}
