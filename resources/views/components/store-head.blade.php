@@ -32,7 +32,7 @@
  @endif
  {{-- favicon end --}}
 
- <link rel="canonical" href="{{ config('app.url') . '/' . $canonical }}">
+ <link rel="canonical" href="{{ $canonical }}">
 
  <?php
  $theme = app()->has('global_theme') ? app('global_theme') : 'store';

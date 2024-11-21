@@ -86,7 +86,7 @@ class StoreOrder extends Component
   public $juridic_shipping_zipcode;
 
   public $rtc = false;
-  public $crd = true;
+  public $crd = false;
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
@@ -556,14 +556,14 @@ class StoreOrder extends Component
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     }
-    if (array_key_exists('accountId', $_COOKIE)) {
-      $this->is_account = $_COOKIE['accountId'];
-    } else {
-      $this->is_account = null;
-    }
+    // if (array_key_exists('accountId', $_COOKIE)) {
+    //   $this->is_account = $_COOKIE['accountId'];
+    // } else {
+    // }
+    $this->is_account = null;
     if ($this->is_account != null) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
-      if ($account == null) {
+      if (!$account) {
         unset($_COOKIE['accountId']);
         $this->is_account = null;
       } else {
@@ -624,11 +624,20 @@ class StoreOrder extends Component
         }
       }
     }
+
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
-    $this->payment = $this->card;
-    $this->payment['description'] = app('label_order_cart_stripe_title');
+    if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
+
+      $this->payment = $this->card;
+      $this->payment['description'] = app('label_order_cart_stripe_title');
+      $this->crd = true;
+    } else {
+      $this->rtc = true;
+      $this->payment = $this->cash;
+      $this->payment['description'] = app('label_order_cash_title');
+    }
 
 
     if ($this->step == 2) {

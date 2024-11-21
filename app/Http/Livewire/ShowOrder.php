@@ -276,7 +276,7 @@ class ShowOrder extends Component
             $htmlContent .= "
                 <tr>
                     <td>" . ($i + 1) . "</td>
-                    <td>" . $item->product->name . "<br> (" . $item->product->sku . ")</td>
+                    <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
                     <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                     <td>" . $vatRate . "</td>
                     <td>" . $item->quantity . "</td>
@@ -493,7 +493,7 @@ class ShowOrder extends Component
             $htmlContent .= "
                 <tr>
                     <td>" . ($i + 1) . "</td>
-                    <td>" . $item->product->name . "<br> (" . $item->product->sku . ")</td>
+                    <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
                     <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                     <td>" . $vatRate . "</td>
                     <td>" . $item->quantity . "</td>

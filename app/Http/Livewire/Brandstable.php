@@ -2,14 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Account;
-use App\Models\Address;
-use App\Models\Order;
+use App\Models\Brand;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
 
-class Accountstable extends Component
+class Brandstable extends Component
 {
     use WithPagination;
     public $loadAmount = 20;
@@ -26,7 +24,18 @@ class Accountstable extends Component
     public $row = null;
     public $single = false;
     public $multiple = false;
+    public $addbrand = false;
+    public $rowadd;
+    public $rind2 = null;
+    public $brand_description = [];
+    public $brand_name = [];
 
+
+
+    public function render()
+    {
+        return view('livewire.brandstable', ['brands' => $this->brands]);
+    }
     public function expandRow($index)
     {
         if ($this->row  === null) {
@@ -37,12 +46,9 @@ class Accountstable extends Component
             $this->row = null;
         }
     }
-    public function render()
-    {
-        return view('livewire.accountstable', ['accounts' => $this->accounts]);
-    }
     public function mount($tableName)
     {
+        $this->rowadd = 0;
         $this->tableName = $tableName;
         $this->columns = Schema::getColumnListing($this->tableName);
         $this->selectedColumns = $this->columns;
@@ -58,7 +64,7 @@ class Accountstable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->accounts->pluck('id')->map(fn($item) => (string) $item)->toArray();
+            $this->checked = $this->brands->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -85,77 +91,20 @@ class Accountstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->accountsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
-    }
-    public function getAccountsProperty()
-    {
-        return $this->accountsQuery->paginate($this->loadAmount);
+        $this->checked = $this->brandsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function loadMore()
     {
         $this->loadAmount += 10;
     }
-    public function getAccountsQueryProperty()
+    public function getBrandsProperty()
     {
-        return Account::search($this->search)
+        return $this->brandsQuery->paginate($this->loadAmount);
+    }
+    public function getBrandsQueryProperty()
+    {
+        return Brand::search($this->search)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
-    }
-
-    public function deleteRecords()
-    {
-        $accounts = Account::whereKey($this->checked)->get();
-        foreach ($accounts as $account) {
-            $del = Account::find($account->id);
-            $adresses = Address::where('account_id', $del->id)->get();
-            if ($adresses != NULL) {
-                foreach ($adresses as $adress) {
-                    $adress->delete();
-                }
-            }
-            $orders = Order::where('account_id', $account->id)->get();
-            if ($orders != NULL) {
-                foreach ($orders as $order) {
-                    $order->account_id = null;
-                    $order->save();
-                }
-            }
-
-            $del->delete();
-        }
-        $this->checked = [];
-        $this->selectPage = false;
-        $this->multiple = false;
-        session()->flash('notification', [
-            'message' => 'Records deleted successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
-    }
-    public function deleteSingleRecord()
-    {
-        $account = Account::findOrFail($this->idbeingremoved);
-        $adresses = Address::where('account_id', $account->id)->get();
-        if ($adresses != NULL) {
-            foreach ($adresses as $adress) {
-                $adress->delete();
-            }
-        }
-        $orders = Order::where('account_id', $account->id)->get();
-        if ($orders != NULL) {
-            foreach ($orders as $order) {
-                $order->account_id = null;
-                $order->save();
-            }
-        }
-        $account->delete();
-        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
-        $this->single = false;
-
-        session()->flash('notification', [
-            'message' => 'Record deleted successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
     }
     public function confirmItemRemoval($id)
     {
@@ -174,5 +123,74 @@ class Accountstable extends Component
     public function isChecked($id)
     {
         return in_array($id, $this->checked);
+    }
+
+    public function deleteRecords()
+    {
+        $items = Brand::whereKey($this->checked)->get();
+        foreach ($items as $item) {
+            $del = Brand::findOrFail($item->id);
+            $del->delete();
+        }
+        $this->checked = [];
+        $this->selectPage = false;
+        $this->multiple = false;
+        session()->flash('notification', [
+            'message' => 'Records deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function deleteSingleRecord()
+    {
+        $item = Brand::findOrFail($this->idbeingremoved);
+        $item->delete();
+        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+        $this->single = false;
+
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function plus()
+    {
+        $this->rowadd++;
+        $this->brand_name[$this->rowadd] = null;
+        $this->brand_description[$this->rowadd] = null;
+    }
+    public function clear($i)
+    {
+        array_splice($this->brand_name, $i, 1);
+        array_splice($this->brand_description, $i, 1);
+        $this->rowadd--;
+
+        if ($this->rowadd < 0) {
+            $this->addbrand = false;
+            $this->rowadd = 0;
+            $this->brand_name = [];
+            $this->brand_description = [];
+        }
+    }
+    public function save_brands()
+    {
+        for ($i = 0; $i <= $this->rowadd; $i++) {
+            $this->resetErrorBag();
+            $this->validate([
+                'brand_name.*' => 'required',
+                'brand_description.*' => 'required'
+            ]);
+            // de pus eorile in blade
+            Brand::create([
+                'name' => $this->brand_name[$i],
+                'description' => $this->brand_description[$i]
+            ]);
+        }
+        session()->flash('notification', [
+            'message' => 'Brands added successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
     }
 }

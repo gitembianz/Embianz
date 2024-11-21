@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\ProductReviews as ModelsProductReviews;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -27,6 +28,12 @@ class AdminController extends Controller
   {
     $data = Cart::find($id);
     return view('admin.show_cart', compact('data'));
+  }
+
+  public function show_brand($id)
+  {
+    $data = Brand::find($id);
+    return view('admin.show_brand', compact('data'));
   }
 
   function correctMediaSequence()
