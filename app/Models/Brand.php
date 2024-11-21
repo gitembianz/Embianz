@@ -17,4 +17,8 @@ class Brand extends Model
             ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('description', 'like', '%' . $search . '%');
     }
+    public function media()
+    {
+        return $this->morphToMany(Media::class, 'mediable', 'item_media');
+    }
 }
