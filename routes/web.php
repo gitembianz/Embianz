@@ -48,6 +48,11 @@
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
       route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');
 
+      // all_promotions
+      route::view('/promotions', 'admin.promotions')->name('all_promotions');
+      route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
+
+
       // brands routes
       route::view('/brands', 'admin.brands')->name('all_brands');
       route::view('/add_brand', 'admin.add_brand')->name('add_brand');
