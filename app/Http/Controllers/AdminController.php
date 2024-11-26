@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\ProductReviews as ModelsProductReviews;
+use App\Models\Promotion;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -24,6 +25,70 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+  public function new_promotion()
+  {
+    $vouchers = Voucher::get();
+    return view('admin.add_promotion', compact('vouchers'));
+  }
+  public function store_promotion(Request $request)
+  {
+    $rules = [
+      'name' => 'required',
+      'end_date' => 'required|date|after_or_equal:start_date',
+      'cart_amount' => [
+        'nullable',
+        'integer',
+        'gt:0'
+
+      ],
+      'cooldown_timer' => [
+        'nullable',
+        'integer',
+        'gt:0'
+      ]
+    ];
+    $messages = [
+      'end_date' => 'The end date is required.',
+      'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
+      'cart_amount' => 'The value must be bigger than 0',
+      'cooldown_timer' => 'The value must be bigger than 0'
+    ];
+    $this->validate(
+      $request,
+      $rules,
+      $messages
+    );
+    if (!$request->filled('name') || !$request->filled('voucher_id')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $code = Voucher::find($request->voucher_id);
+    $values = array(
+      "name" => $request->name,
+      "type" => $request->type,
+      "voucher_id" => $request->voucher_id,
+      "voucher_code" => $code->code,
+      "start_date" => $request->start_date,
+      "end_date" => $request->end_date,
+      "cooldown_timer" => $request->cooldown,
+      "cart_amount" => $request->amount,
+      "active" => $request->has('active'),
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Promotion::insert($values);
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
   public function show_cart($id)
   {
     $data = Cart::find($id);
