@@ -53,7 +53,7 @@
      <svg>
       <polyline points="6 9 12 15 18 9"></polyline>
      </svg>
-     {{ $column }}
+     {{ str_replace('_id', '', $column) }}
     </button>
    @endforeach
   </div>
@@ -77,7 +77,7 @@
     <label class="switch switch--primary" style="margin: 0.25rem 0">
      <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
       {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-     <span>{{ $column }}</span>
+     <span>{{ str_replace('_id', '', $column) }}</span>
     </label>
    @endforeach
   </div>
@@ -147,7 +147,7 @@
        <svg>
         <polyline points="6 9 12 15 18 9"></polyline>
        </svg>
-       {{ $column }}
+       {{ str_replace('_id', '', $column) }}
       </button>
      @endforeach
     </div>
@@ -170,7 +170,7 @@
       <label class="switch switch--primary inline">
        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-       <span>{{ $column }}</span>
+       <span>{{ str_replace('_id', '', $column) }}</span>
       </label>
      @endforeach
     </div>
@@ -264,7 +264,7 @@
        <th @if ($index > count($selectedColumns) - 17) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-         {{ $column }}
+         {{ str_replace('_id', '', $column) }}
          <svg>
           <polyline points="6 9 12 15 18 9"></polyline>
          </svg>
@@ -303,8 +303,8 @@
        @foreach ($selectedColumns as $index => $column)
         <td @if ($index > count($selectedColumns) - 17) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
-         @if ($column === 'name')
-          <a href="{{ route('show_promotion', ['id' => $promotion->id]) }}">{{ strip_tags($promotion->name) }}</a>
+         @if ($column === 'voucher_id')
+          <a href="{{ route('vouchers') }}">{{ $promotion->voucher->name }}</a>
          @elseif ($column === 'active')
           @if ($promotion->$column)
            <div class="checkbox--secondary disabled">
