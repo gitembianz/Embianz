@@ -6,6 +6,8 @@ use App\Models\Brand;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\File;
+
 
 class Brandstable extends Component
 {
@@ -130,6 +132,15 @@ class Brandstable extends Component
         $items = Brand::whereKey($this->checked)->get();
         foreach ($items as $item) {
             $del = Brand::findOrFail($item->id);
+            $medias = $del->media()->get();
+            foreach ($medias as $media) {
+                $media->delete();
+            }
+            $productType = class_basename(get_class($item));
+            $filespath = 'media/' . $productType . '/' . $item->id;
+            if (File::exists($filespath)) {
+                File::deleteDirectory($filespath);
+            }
             $del->delete();
         }
         $this->checked = [];
@@ -144,6 +155,15 @@ class Brandstable extends Component
     public function deleteSingleRecord()
     {
         $item = Brand::findOrFail($this->idbeingremoved);
+        $medias = $item->media()->get();
+        foreach ($medias as $media) {
+            $media->delete();
+        }
+        $productType = class_basename(get_class($item));
+        $filespath = 'media/' . $productType . '/' . $item->id;
+        if (File::exists($filespath)) {
+            File::deleteDirectory($filespath);
+        }
         $item->delete();
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
