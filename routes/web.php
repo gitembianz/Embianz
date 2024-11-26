@@ -50,7 +50,10 @@
 
       // all_promotions
       route::view('/promotions', 'admin.promotions')->name('all_promotions');
-      route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
+      route::get('/new_promotion', [AdminController::class, 'new_promotion'])->name('newpromotion');
+      route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
+      route::get('/show_promotion/{id}/', [AdminController::class, 'show_promotion'])->name('show_promotion');
+
 
 
       // brands routes
