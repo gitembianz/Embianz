@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('type')->nullable();
             $table->longText('details')->nullable();
             $table->unsignedBigInteger('voucher_id')->index()->nullable();
             $table->foreign('voucher_id')->references('id')->on('vouchers');
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->boolean('active');
             $table->integer('cooldown_timer')->nullable();
+            $table->integer('cart_amount')->nullable();
+
             $table->timestamps();
         });
     }
