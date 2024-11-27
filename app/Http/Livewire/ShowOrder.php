@@ -496,8 +496,8 @@ class ShowOrder extends Component
                     <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
                     <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                     <td>" . $vatRate . "</td>
-                    <td>" . $item->quantity . "</td>
-                    <td>" . -number_format($pu, 2) . "</td>
+                    <td>" . -$item->quantity . "</td>
+                    <td>" . number_format($pu, 2) . "</td>
                     <td>" . -number_format($pu * $item->quantity, 2) . "</td>
                     <td>" . -number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
                     <td>" . -number_format($item->price * $item->quantity, 2) . "</td>
@@ -513,7 +513,7 @@ class ShowOrder extends Component
                         <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere Voucher') . " - " . $vatRate . "%</td>
                         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                         <td>" . $vatRate . "</td>
-                        <td>1</td>
+                        <td>-1</td>
                         <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                         <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                         <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
@@ -529,8 +529,8 @@ class ShowOrder extends Component
         <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
         <td>19</td>
-        <td>1</td>
-        <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+        <td>-1</td>
+        <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
         <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
         <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
         <td>" . -number_format($this->order->delivery_price, 2) . "</td>
