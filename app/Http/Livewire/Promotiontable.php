@@ -213,6 +213,9 @@ class Promotiontable extends Component
             $new->save();
             $new->voucher_code = $new->voucher->code;
             $new->save();
+            if ($new->type == "counter" && $new->active) {
+                Promotion::where('active', true)->where('id', '!=', $new->id)->where('type', 'counter')->update(['active' => false]);
+            }
 
             session()->flash('notification', [
                 'message' => 'Record edited successfully!',

@@ -75,7 +75,9 @@ class AdminController extends Controller
       ]);
     }
     $innerid = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
-
+    if ($request->type == "counter" && $request->has('active')) {
+      Promotion::where('active', true)->where('type', 'counter')->update(['active' => false]);
+    }
     $code = Voucher::find($request->voucher_id);
     $values = array(
       "name" => $request->name,
