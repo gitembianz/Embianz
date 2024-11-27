@@ -236,14 +236,14 @@ class ShowOrder extends Component
         <thead>
             <tr>
                 <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_name') ? app('label_invoice_name') : 'Denumire Articol/Serviciu') . "</th>
-                <th>" . (app()->has('label_invoice_um') ? app('label_invoice_um') : 'U.M') . "</th>
-                <th>" . (app()->has('label_invoice_vat') ? app('label_invoice_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_quantity') ? app('label_invoice_quantity') : 'Cantitate') . "</th>
-                <th>" . (app()->has('label_invoice_pu') ? app('label_invoice_pu') : 'Pret Unitar - RON') . "</th>
-                <th>" . (app()->has('label_invoice_val') ? app('label_invoice_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_valvat') ? app('label_invoice_valvat') : 'Valoare TVA - RON') . "</th>
-                <th>" . (app()->has('label_invoice_total') ? app('label_invoice_total') : 'Total') . "</th>
+                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
+                <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
+                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
             </tr>
         </thead>
         <tbody>";
@@ -453,14 +453,14 @@ class ShowOrder extends Component
         <thead>
             <tr>
                 <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_name') ? app('label_invoice_name') : 'Denumire Articol/Serviciu') . "</th>
-                <th>" . (app()->has('label_invoice_um') ? app('label_invoice_um') : 'U.M') . "</th>
-                <th>" . (app()->has('label_invoice_vat') ? app('label_invoice_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_quantity') ? app('label_invoice_quantity') : 'Cantitate') . "</th>
-                <th>" . (app()->has('label_invoice_pu') ? app('label_invoice_pu') : 'Pret Unitar - RON') . "</th>
-                <th>" . (app()->has('label_invoice_val') ? app('label_invoice_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_valvat') ? app('label_invoice_valvat') : 'Valoare TVA - RON') . "</th>
-                <th>" . (app()->has('label_invoice_total') ? app('label_invoice_total') : 'Total') . "</th>
+                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
+                <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
+                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
             </tr>
         </thead>
         <tbody>";
@@ -496,8 +496,8 @@ class ShowOrder extends Component
                     <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
                     <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                     <td>" . $vatRate . "</td>
-                    <td>" . $item->quantity . "</td>
-                    <td>" . -number_format($pu, 2) . "</td>
+                    <td>" . -$item->quantity . "</td>
+                    <td>" . number_format($pu, 2) . "</td>
                     <td>" . -number_format($pu * $item->quantity, 2) . "</td>
                     <td>" . -number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
                     <td>" . -number_format($item->price * $item->quantity, 2) . "</td>
@@ -513,7 +513,7 @@ class ShowOrder extends Component
                         <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere Voucher') . " - " . $vatRate . "%</td>
                         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                         <td>" . $vatRate . "</td>
-                        <td>1</td>
+                        <td>-1</td>
                         <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                         <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                         <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
@@ -529,8 +529,8 @@ class ShowOrder extends Component
         <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
         <td>19</td>
-        <td>1</td>
-        <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+        <td>-1</td>
+        <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
         <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
         <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
         <td>" . -number_format($this->order->delivery_price, 2) . "</td>

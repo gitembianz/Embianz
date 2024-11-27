@@ -9,6 +9,10 @@ class Promotion extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'details'];
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class);
+    }
 
     public static function search($search)
     {
