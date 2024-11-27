@@ -53,7 +53,7 @@
      <svg>
       <polyline points="6 9 12 15 18 9"></polyline>
      </svg>
-     {{ $column }}
+     {{ str_replace('_id', '', $column) }}
     </button>
    @endforeach
   </div>
@@ -77,7 +77,7 @@
     <label class="switch switch--primary" style="margin: 0.25rem 0">
      <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
       {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-     <span>{{ $column }}</span>
+     <span>{{ str_replace('_id', '', $column) }}</span>
     </label>
    @endforeach
   </div>
@@ -147,7 +147,7 @@
        <svg>
         <polyline points="6 9 12 15 18 9"></polyline>
        </svg>
-       {{ $column }}
+       {{ str_replace('_id', '', $column) }}
       </button>
      @endforeach
     </div>
@@ -170,7 +170,7 @@
       <label class="switch switch--primary inline">
        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-       <span>{{ $column }}</span>
+       <span>{{ str_replace('_id', '', $column) }}</span>
       </label>
      @endforeach
     </div>
@@ -261,10 +261,10 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 17) class="hidden" @endif>
+       <th @if ($index > 1) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-         {{ $column }}
+         {{ str_replace('_id', '', $column) }}
          <svg>
           <polyline points="6 9 12 15 18 9"></polyline>
          </svg>
@@ -301,75 +301,211 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 17) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
-         @if ($column === 'name')
-          <a href="{{ route('show_promotion', ['id' => $promotion->id]) }}">{{ strip_tags($promotion->name) }}</a>
-         @elseif ($column === 'active')
-          @if ($promotion->$column)
-           <div class="checkbox--secondary disabled">
-            <input type="checkbox" id="disabled2" disabled checked>
-            <label id="disabled2"></label>
-           </div>
+         @if ($column === 'voucher_id')
+          @if ($editindex !== $nr)
+           <a href="{{ route('vouchers') }}">{{ $promotion->voucher->name }}</a>
           @else
-           <div class="checkbox--secondary disabled">
-            <input type="checkbox" id="disabled1" disabled>
-            <label for="disabled2"></label>
+           <div class="searchable">
+            <select class="input__searchable" wire:model.defer="item.{{ $nr }}.voucher_id">
+             @foreach ($vouchers as $voucher)
+              <option value="{{ $voucher->id }}">
+               {{ $voucher->name }} ({{ $voucher->code }})</option>
+             @endforeach
+            </select>
+           </div>
+          @endif
+         @elseif ($column === 'name' || $column === 'details')
+          @if ($editindex !== $nr)
+           {{ $promotion->$column }}
+          @else
+           <div class="searchable">
+            <input type="text" class="input__searchable"
+             wire:model.defer="item.{{ $nr }}.{{ $column }}">
+           </div>
+          @endif
+         @elseif ($column === 'cooldown_timer' || $column === 'cart_amount')
+          @if ($editindex !== $nr)
+           {{ $promotion->$column }}
+          @else
+           <div class="searchable">
+            <input type="number" class="input__searchable"
+             wire:model.defer="item.{{ $nr }}.{{ $column }}">
+           </div>
+          @endif
+         @elseif ($column === 'type')
+          @if ($editindex !== $nr)
+           {{ $promotion->$column }}
+          @else
+           <div class="searchable">
+            <select class="input__searchable" wire:model.defer="item.{{ $nr }}.type">
+             <option value="counter">counter</option>
+             <option value="amount">amount</option>
+            </select>
+           </div>
+          @endif
+         @elseif ($column === 'active')
+          @if ($editindex !== $nr)
+           @if ($promotion->active)
+            <div class="checkbox--secondary">
+             <input type="checkbox" id="isactive{{ $nr }}" disabled checked>
+             <label for="isactive{{ $nr }}"></label>
+            </div>
+           @else
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="notactive{{ $nr }}" disabled>
+             <label for="notactive{{ $nr }}"></label>
+            </div>
+           @endif
+          @else
+           <div class="checkbox--secondary inline">
+            <input type="checkbox" id="check{{ $nr }}"
+             wire:model.lazy="item.{{ $nr }}.{{ $column }}" />
+            <label for="check{{ $nr }}"></label>
            </div>
           @endif
          @elseif ($column === 'details')
           <span class="show-less">
            {!! $promotion->$column !!}
           </span>
+         @elseif ($column === 'start_date' || $column === 'end_date')
+          @if ($editindex !== $nr)
+           {{ $promotion->$column }}
+          @else
+           <div class="searchable">
+            <input type="date" required class="input__searchable"
+             wire:model.defer="item.{{ $nr }}.{{ $column }}">
+           </div>
+          @endif
          @else
           {{ $promotion->$column }}
          @endif
         </td>
        @endforeach
        <td style="border-right: none">
-        <button wire:click.prevent="confirmItemRemoval({{ $promotion->id }})"
-         class="button button--secondary button--sm">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+        <div style="display:flex;">
+         @if ($editindex !== $nr)
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $nr }}, {{ $promotion->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $promotion->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+            </path>
+           </svg>
+          </button>
+         @else
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $nr }} , {{ $promotion->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         @endif
+        </div>
        </td>
       </tr>
       <tr class="details-row  @if ($row === $i) active @endif">
        <td colspan="18">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index > 1)
-           @if ($column === 'name')
-            <p>
-             <bold>{{ $column }}:</bold>
-             <a href="{{ route('show_promotion', ['id' => $promotion->id]) }}">{{ $promotion->name }}</a>
-            </p>
-           @elseif ($column === 'active')
-            @if ($promotion->$column)
-             <p>
-              <bold>{{ $column }}:</bold>
-             <div class="checkbox--secondary disabled">
-              <input type="checkbox" id="disabled3" disabled checked>
-              <label id="disabled3"></label>
-             </div>
-             </p>
+          @if ($index > 1 && $row === $i)
+           <p>
+            <bold>{{ $column }}:</bold>
+            @if ($column === 'voucher_id')
+             @if ($editindex !== $nr)
+              <a href="{{ route('vouchers') }}">{{ $promotion->voucher->name }}</a>
+             @else
+              <div class="searchable">
+               <select class="input__searchable" wire:model.defer="item.{{ $nr }}.voucher_id">
+                @foreach ($vouchers as $voucher)
+                 <option value="{{ $voucher->id }}">
+                  {{ $voucher->name }} ({{ $voucher->code }})</option>
+                @endforeach
+               </select>
+              </div>
+             @endif
+            @elseif ($column === 'name' || $column === 'details')
+             @if ($editindex !== $nr)
+              {{ $promotion->$column }}
+             @else
+              <div class="searchable">
+               <input type="text" class="input__searchable"
+                wire:model.defer="item.{{ $nr }}.{{ $column }}">
+              </div>
+             @endif
+            @elseif ($column === 'cooldown_timer' || $column === 'cart_amount')
+             @if ($editindex !== $nr)
+              {{ $promotion->$column }}
+             @else
+              <div class="searchable">
+               <input type="number" class="input__searchable"
+                wire:model.defer="item.{{ $nr }}.{{ $column }}">
+              </div>
+             @endif
+            @elseif ($column === 'type')
+             @if ($editindex !== $nr)
+              {{ $promotion->$column }}
+             @else
+              <div class="searchable">
+               <select class="input__searchable" wire:model.defer="item.{{ $nr }}.type">
+                <option value="counter">counter</option>
+                <option value="amount">amount</option>
+               </select>
+              </div>
+             @endif
+            @elseif ($column === 'active')
+             @if ($editindex !== $nr)
+              @if ($promotion->active)
+               <div class="checkbox--secondary">
+                <input type="checkbox" id="isactive{{ $nr }}" disabled checked>
+                <label for="isactive{{ $nr }}"></label>
+               </div>
+              @else
+               <div class="checkbox--secondary disabled">
+                <input type="checkbox" id="notactive{{ $nr }}" disabled>
+                <label for="notactive{{ $nr }}"></label>
+               </div>
+              @endif
+             @else
+              <div class="checkbox--secondary inline">
+               <input type="checkbox" id="check{{ $nr }}"
+                wire:model.lazy="item.{{ $nr }}.{{ $column }}" />
+               <label for="check{{ $nr }}"></label>
+              </div>
+             @endif
+            @elseif ($column === 'details')
+             <span class="show-less">
+              {!! $promotion->$column !!}
+             </span>
+            @elseif ($column === 'start_date' || $column === 'end_date')
+             @if ($editindex !== $nr)
+              {{ $promotion->$column }}
+             @else
+              <div class="searchable">
+               <input type="date" required class="input__searchable"
+                wire:model.defer="item.{{ $nr }}.{{ $column }}">
+              </div>
+             @endif
             @else
-             <p>
-              <bold>{{ $column }}:</bold>
-             <div class="checkbox--secondary disabled">
-              <input type="checkbox" id="disabled4" disabled>
-              <label id="disabled4"></label>
-             </div>
-             </p>
-            @endif
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
              {{ $promotion->$column }}
-            </p>
-           @endif
+            @endif
+           </p>
           @endif
          @endforeach
         </div>

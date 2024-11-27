@@ -236,14 +236,14 @@ class ShowOrder extends Component
         <thead>
             <tr>
                 <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_name') ? app('label_invoice_name') : 'Denumire Articol/Serviciu') . "</th>
-                <th>" . (app()->has('label_invoice_um') ? app('label_invoice_um') : 'U.M') . "</th>
-                <th>" . (app()->has('label_invoice_vat') ? app('label_invoice_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_quantity') ? app('label_invoice_quantity') : 'Cantitate') . "</th>
-                <th>" . (app()->has('label_invoice_pu') ? app('label_invoice_pu') : 'Pret Unitar - RON') . "</th>
-                <th>" . (app()->has('label_invoice_val') ? app('label_invoice_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_valvat') ? app('label_invoice_valvat') : 'Valoare TVA - RON') . "</th>
-                <th>" . (app()->has('label_invoice_total') ? app('label_invoice_total') : 'Total') . "</th>
+                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
+                <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
+                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
             </tr>
         </thead>
         <tbody>";
@@ -453,14 +453,14 @@ class ShowOrder extends Component
         <thead>
             <tr>
                 <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_name') ? app('label_invoice_name') : 'Denumire Articol/Serviciu') . "</th>
-                <th>" . (app()->has('label_invoice_um') ? app('label_invoice_um') : 'U.M') . "</th>
-                <th>" . (app()->has('label_invoice_vat') ? app('label_invoice_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_quantity') ? app('label_invoice_quantity') : 'Cantitate') . "</th>
-                <th>" . (app()->has('label_invoice_pu') ? app('label_invoice_pu') : 'Pret Unitar - RON') . "</th>
-                <th>" . (app()->has('label_invoice_val') ? app('label_invoice_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_valvat') ? app('label_invoice_valvat') : 'Valoare TVA - RON') . "</th>
-                <th>" . (app()->has('label_invoice_total') ? app('label_invoice_total') : 'Total') . "</th>
+                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
+                <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
+                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
             </tr>
         </thead>
         <tbody>";

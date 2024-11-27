@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Promotion;
+use App\Models\Voucher;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,9 @@ class Promotiontable extends Component
     public $row = null;
     public $single = false;
     public $multiple = false;
+    public $editindex = null;
+    public $item = [];
+    public $vouchers;
 
     public function render()
     {
@@ -112,6 +116,11 @@ class Promotiontable extends Component
         return in_array($id, $this->checked);
     }
 
+    // public function updated($propertyName)
+    // {
+    //     dd($propertyName, $this->item);
+    // }
+
     public function deleteRecords()
     {
         $items = Promotion::whereKey($this->checked)->get();
@@ -141,5 +150,79 @@ class Promotiontable extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
+    }
+    public function edititem($index, $id)
+    {
+        $this->vouchers = Voucher::get();
+        $this->editindex = $index;
+        $this->row = $index;
+        $record = Promotion::find($id);
+        $this->item[$index] = [
+            'name' => $record->name,
+            'type' => $record->type,
+            'details' => $record->details,
+            'voucher_id' => $record->voucher_id,
+            'start_date' => $record->start_date,
+            'end_date' => $record->end_date,
+            'active' => $record->active == 1 ? true : false,
+            'cooldown_timer' => $record->cooldown_timer,
+            'cart_amount' => $record->cart_amount,
+        ];
+    }
+    public function canceledit()
+    {
+        $this->editindex = null;
+        $this->item = [];
+    }
+    public function saveitem($index, $id)
+    {
+        $record = $this->item[$index] ?? null;
+        if (!is_null($record)) {
+            $new = Promotion::find($id);
+            if (array_key_exists('name', $record)) {
+                $new->name = $record['name'];
+            }
+            if (array_key_exists('type', $record)) {
+                $new->type = $record['type'];
+            }
+            if (array_key_exists('details', $record)) {
+                $new->details = $record['details'];
+            }
+            if (array_key_exists('voucher_id', $record)) {
+                $new->voucher_id = $record['voucher_id'];
+            }
+            if (array_key_exists('start_date', $record)) {
+                $new->start_date = $record['start_date'];
+            }
+            if (array_key_exists('end_date', $record)) {
+                $new->end_date = $record['end_date'];
+            }
+            if (array_key_exists('active', $record)) {
+                $new->active = $record['active'];
+            }
+            if (array_key_exists('cooldown_timer', $record)) {
+                $new->cooldown_timer = $record['cooldown_timer'];
+            }
+            if (array_key_exists('cart_amount', $record)) {
+                $new->cart_amount = $record['cart_amount'];
+            }
+            $new->save();
+            $new->voucher_code = $new->voucher->code;
+            $new->save();
+
+            session()->flash('notification', [
+                'message' => 'Record edited successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+        } else {
+            session()->flash('notification', [
+                'message' => 'Nothing was edited!',
+                'type' => 'warning',
+                'title' => 'Warning'
+            ]);
+        }
+        $this->editindex = null;
+        $this->item = [];
     }
 }
