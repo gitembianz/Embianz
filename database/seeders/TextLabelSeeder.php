@@ -249,6 +249,7 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'invoice_th_totalfinal', 'value' => 'Total Plata', 'description' => 'Invoice Table total', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'invoice_footer', 'value' => 'Cf. Comanda: SEM20241101026 <br>
 Factura circula fara semnatura si stampila conform Legii 571/2003 privind Codul Fiscal, art. 319 alin.29.', 'description' => 'Invoice footer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'invoice_total_prev', 'value' => 'Total', 'description' => 'Invoice Table total prev', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
