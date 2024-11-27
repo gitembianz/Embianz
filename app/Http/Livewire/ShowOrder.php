@@ -322,7 +322,7 @@ class ShowOrder extends Component
         // total row
         $htmlContent .= "
         <tr>
-        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</span></td>
+        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span></td>
         <td style='font-weight: 700;'><span>" . number_format($totalval, 2) . "</span></td>
         <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount - $totalval, 2) . "</span></td>
         <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount, 2) . "</span></td>
@@ -539,7 +539,7 @@ class ShowOrder extends Component
         // total row
         $htmlContent .= "
         <tr>
-        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</span></td>
+        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span></td>
         <td style='font-weight: 700;'><span>" . -number_format($totalval, 2) . "</span></td>
         <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount - $totalval, 2) . "</span></td>
         <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount, 2) . "</span></td>
