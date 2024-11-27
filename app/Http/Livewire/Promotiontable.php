@@ -167,6 +167,7 @@ class Promotiontable extends Component
             'active' => $record->active == 1 ? true : false,
             'cooldown_timer' => $record->cooldown_timer,
             'cart_amount' => $record->cart_amount,
+            'cookie_time' => $record->cookie_time
         ];
     }
     public function canceledit()
@@ -206,6 +207,9 @@ class Promotiontable extends Component
             if (array_key_exists('cart_amount', $record)) {
                 $new->cart_amount = $record['cart_amount'];
             }
+            if (array_key_exists('cookie_time', $record)) {
+                $new->cookie_time = $record['cookie_time'];
+            }
             $new->save();
             $new->voucher_code = $new->voucher->code;
             $new->save();
@@ -224,5 +228,32 @@ class Promotiontable extends Component
         }
         $this->editindex = null;
         $this->item = [];
+    }
+    public function getcookieid($id)
+    {
+        $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+
+        Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
+
+        session()->flash('notification', [
+            'message' => 'Cookie ID updated successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function getcookieids()
+    {
+        $promotions = Promotion::all();
+
+        foreach ($promotions as $promotion) {
+            $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+            $promotion->update(['cookieid' => $newCookieId]);
+        }
+
+        session()->flash('notification', [
+            'message' => 'All cookie IDs have been refreshed successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
     }
 }

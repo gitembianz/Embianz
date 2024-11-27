@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Promotion extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'details'];
+    protected $fillable = ['name', 'details', 'cookieid'];
     public function voucher()
     {
         return $this->belongsTo(Voucher::class);
