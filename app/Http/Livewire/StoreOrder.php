@@ -943,17 +943,12 @@ class StoreOrder extends Component
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
       }
-      if ($this->is_account != null) {
-        $accid = $this->is_account;
-      } else {
-        $accid = $account->id;
-      }
       if ($this->payment['type'] != 'card') {
 
         $order = Order::create([
           'name' => $uniqueName,
           'session_id' => $this->session_id,
-          'account_id' => $accid,
+          'account_id' => $account->id,
           'cart_id' => $this->cart->id,
           'quantity_amount' => $this->cart->quantity_amount,
           'sum_amount' => $this->cart->sum_amount,
@@ -969,7 +964,7 @@ class StoreOrder extends Component
         $order = Order::create([
           'name' => $uniqueName,
           'session_id' => $this->session_id,
-          'account_id' => $accid,
+          'account_id' => $account->id,
           'cart_id' => $this->cart->id,
 
           'quantity_amount' => $this->cart->quantity_amount,
