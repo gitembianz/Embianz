@@ -17,7 +17,9 @@ class StoreHeader extends Component
   private function getSessionId()
   {
     if (request()->cookie('sessionId')) {
-      return request()->cookie('sessionId');
+      $sessionId = request()->cookie('sessionId');
+      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
+      return $sessionId;
     } else {
       $sessionId = session()->getId();
       cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
