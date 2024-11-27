@@ -45,13 +45,20 @@ class AdminController extends Controller
         'nullable',
         'integer',
         'gt:0'
+      ],
+      'cookie' => [
+        'nullable',
+        'integer',
+        'gt:0'
       ]
     ];
     $messages = [
       'end_date' => 'The end date is required.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
       'cart_amount' => 'The value must be bigger than 0',
-      'cooldown_timer' => 'The value must be bigger than 0'
+      'cooldown_timer' => 'The value must be bigger than 0',
+      'cookie' => 'The value must be bigger than 0'
+
     ];
     $this->validate(
       $request,
@@ -67,6 +74,8 @@ class AdminController extends Controller
         ],
       ]);
     }
+    $innerid = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+
     $code = Voucher::find($request->voucher_id);
     $values = array(
       "name" => $request->name,
@@ -77,6 +86,8 @@ class AdminController extends Controller
       "end_date" => $request->end_date,
       "cooldown_timer" => $request->cooldown,
       "cart_amount" => $request->amount,
+      "cookieid" => $innerid,
+      "cookie_time" => $request->cookie ??  30,
       "active" => $request->has('active'),
       "created_at" => now(),
       "updated_at" => now()

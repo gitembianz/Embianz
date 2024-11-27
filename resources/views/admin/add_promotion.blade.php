@@ -71,17 +71,19 @@
     <label>Voucher</label>
    </div>
   @endif
+  <div class="details__checkboxes">
 
-  {{-- promotion Start Date --}}
-  <div class="input__tabs">
-   <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
-   <label>Start Date</label>
-  </div>
+   {{-- promotion Start Date --}}
+   <div class="input__tabs">
+    <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+    <label>Start Date</label>
+   </div>
 
-  {{-- promotion End Date --}}
-  <div class="input__tabs">
-   <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
-   <label>End Date</label>
+   {{-- promotion End Date --}}
+   <div class="input__tabs">
+    <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
+    <label>End Date</label>
+   </div>
   </div>
   <div class="details__checkboxes">
 
@@ -95,12 +97,17 @@
   {{-- promotion Popularity --}}
   <div class="input__tabs">
    <input type="number" min="0" name="cooldown" value="{{ old('cooldown') }}">
-   <label>Cooldowm Timer</label>
+   <label>Cooldowm Timer(min)</label>
   </div>
   {{-- promotion Popularity --}}
   <div class="input__tabs">
    <input type="number" min="0" name="amount" value="{{ old('amount') }}">
    <label>Cart Amount</label>
+  </div>
+
+  <div class="input__tabs">
+   <input type="number" min="0" name="cookie" value="{{ old('cookie') }}">
+   <label>Cookie time(days)</label>
   </div>
 
   {{-- Save Button --}}
