@@ -3063,6 +3063,12 @@
 
   async function pushPurchaseEvent() {
     const dlvData = await purchase();
+    const userData = await extractShippingData();
+
+    if (!dlvData || !userData) {
+      console.error("Missing data for the purchase event.");
+      return;
+    }
 
     dataLayer.push({ ecommerce: null }); // Clear any previous ecommerce data
     dataLayer.push({
@@ -3073,27 +3079,17 @@
         coupon: dlvData.coupon,
         transaction_id: dlvData.transaction_id,
         shipping: dlvData.shipping,
-        items: dlvData.items
-      }
-    });
-  }
-
-  async function pushUserDataEvent() {
-    const userData = await extractShippingData();
-
-    dataLayer.push({ ecommerce: null }); // Clear any previous ecommerce data
-    dataLayer.push({
-      event: "user_data",
-      user_data: {
-        email: userData.email,
-        phone_number: userData.phone_number,
-        address: userData.address
+        items: dlvData.items,
+        user_data: {
+          email: userData.email,
+          phone_number: userData.phone_number,
+          address: userData.address
+        }
       }
     });
   }
 
   pushPurchaseEvent();
-  pushUserDataEvent();
 </script>
 
 

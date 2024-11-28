@@ -176,7 +176,7 @@ private function generateCsvFeed($products, $feedType)
         ],
         'salesforce' => [
             'fileName' => 'salesforce.csv',
-            'headers' => ['Store','Product Name', 'Product Id','SKU', 'EAN', 'Active', 'New', 'Quantity', 'Popularity', 'Start Date','End Date','Short Description','Long Description','SEO Id','SEO Title','Product URL','Image URL 640','Image URL 70','Price','Currency','VAT','Price without VAT','Discount','Category','Brand','Type'],
+             'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0','google_product_category'],
             'columns' => function($product) {
                 $store = $this->sanitizeData(app('global_site_url'));
                 $producturl = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
@@ -216,19 +216,25 @@ private function generateCsvFeed($products, $feedType)
         ],
         'facebook' => [
             'fileName' => 'facebook.csv',
-            'headers' => ['id', 'name', 'image_link', 'price', 'availability', 'category'],
+            'headers' => ['id','title','description', 'availability','condition', 'price', 'link', 'image_link', 'brand', 'google_product_category'],
             'columns' => function($product) {
-                $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
-                $category = $this->sanitizeData($product->category_seo_title ?? '');
-                return [
-                    $this->sanitizeData($product->id),
-                    $this->sanitizeData($product->name),
-                    $image,
-                    $this->sanitizeData($product->price),
-                    'in stock',
-                    $category
-                ];
-            }
+              $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
+              $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+              $image = str_replace(' ', '%20', $image);
+              $category = $this->sanitizeData($product->category_seo_title ?? '');
+              return [
+                  $this->sanitizeData($product->id),
+                  $this->sanitizeData($product->name),
+                  strip_tags($this->sanitizeData($product->long_description)),
+                  'in stock',
+                  'new',
+                  $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
+                  $link,
+                  $image,
+                  $this->sanitizeData($product->brand),
+                  $this->sanitizeData($product->google_category)
+              ];
+          }
         ]
     ];
 
