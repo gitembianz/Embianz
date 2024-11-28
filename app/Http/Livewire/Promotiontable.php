@@ -7,6 +7,7 @@ use App\Models\Voucher;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 
 
 class Promotiontable extends Component
@@ -116,11 +117,6 @@ class Promotiontable extends Component
         return in_array($id, $this->checked);
     }
 
-    // public function updated($propertyName)
-    // {
-    //     dd($propertyName, $this->item);
-    // }
-
     public function deleteRecords()
     {
         $items = Promotion::whereKey($this->checked)->get();
@@ -216,7 +212,7 @@ class Promotiontable extends Component
             if ($new->type == "counter" && $new->active) {
                 Promotion::where('active', true)->where('id', '!=', $new->id)->where('type', 'counter')->update(['active' => false]);
             }
-
+            Cache::forget('promotions');
             session()->flash('notification', [
                 'message' => 'Record edited successfully!',
                 'type' => 'success',
@@ -234,7 +230,7 @@ class Promotiontable extends Component
     }
     public function getcookieid($id)
     {
-        $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+        $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
 
         Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
 
@@ -246,11 +242,11 @@ class Promotiontable extends Component
     }
     public function getcookieids()
     {
-        $promotions = Promotion::all();
 
-        foreach ($promotions as $promotion) {
-            $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
-            $promotion->update(['cookieid' => $newCookieId]);
+        foreach ($this->promotions as $promotion) {
+            $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+            $promotion->cookieid = $newCookieId;
+            $promotion->save();
         }
 
         session()->flash('notification', [

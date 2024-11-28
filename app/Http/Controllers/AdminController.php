@@ -74,7 +74,7 @@ class AdminController extends Controller
         ],
       ]);
     }
-    $innerid = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
+    $innerid = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
     if ($request->type == "counter" && $request->has('active')) {
       Promotion::where('active', true)->where('type', 'counter')->update(['active' => false]);
     }
@@ -96,6 +96,8 @@ class AdminController extends Controller
     );
 
     Promotion::insert($values);
+    Cache::forget('promotions');
+
     return redirect()->back()->with('notification', [
       'message' => 'Record added successfully!',
       'type' => 'success',
@@ -314,6 +316,8 @@ class AdminController extends Controller
     $voucher->end_date = $request->end_date;
     $voucher->single_use = $request->has('single_use');
     $voucher->save();
+    Cache::forget('promotions');
+
 
     return redirect()->back()->with([
       'notification' => [
