@@ -102,6 +102,14 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  <button class="button button--primary  button--centered display--desktop" tooltip="Refresh cookieids" tooltip-top
+   wire:click.prevent="getcookieids()">
+   <svg>
+    <polyline points="1 4 1 10 7 10"></polyline>
+    <polyline points="23 20 23 14 17 14"></polyline>
+    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+   </svg>
+  </button>
   {{-- Add New Button --}}
   <a class="button button--primary button--centered display--desktop" tooltip="Add new promotion" tooltip-top
    href="{{ route('newpromotion') }}">
@@ -201,6 +209,14 @@
        <path d="M19.94 11l0 .01" />
       </svg>
       <span>Refresh table</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="getcookieids()">
+      <svg>
+       <polyline points="1 4 1 10 7 10"></polyline>
+       <polyline points="23 20 23 14 17 14"></polyline>
+       <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+      </svg>
+      <span>Refresh cookieids</span>
      </button>
      {{-- Add New Button --}}
      <a class="button button--primary button--fill button--flexed" href="{{ route('newpromotion') }}">
@@ -325,7 +341,7 @@
              wire:model.defer="item.{{ $nr }}.{{ $column }}">
            </div>
           @endif
-         @elseif ($column === 'cooldown_timer' || $column === 'cart_amount')
+         @elseif ($column === 'cooldown_timer' || $column === 'cart_amount' || $column === 'cookie_time')
           @if ($editindex !== $nr)
            {{ $promotion->$column }}
           @else
@@ -385,6 +401,13 @@
        @endforeach
        <td style="border-right: none">
         <div style="display:flex;">
+         <button class="button button--secondary button--sm" wire:click.prevent="getcookieid({{ $promotion->id }})">
+          <svg>
+           <polyline points="1 4 1 10 7 10"></polyline>
+           <polyline points="23 20 23 14 17 14"></polyline>
+           <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+          </svg>
+         </button>
          @if ($editindex !== $nr)
           <button class="button button--secondary button--sm"
            wire:click.prevent="edititem({{ $nr }}, {{ $promotion->id }})">
@@ -449,7 +472,7 @@
                 wire:model.defer="item.{{ $nr }}.{{ $column }}">
               </div>
              @endif
-            @elseif ($column === 'cooldown_timer' || $column === 'cart_amount')
+            @elseif ($column === 'cooldown_timer' || $column === 'cart_amount' || $column === 'cookie_time')
              @if ($editindex !== $nr)
               {{ $promotion->$column }}
              @else

@@ -10,6 +10,7 @@ use App\Models\Product_Spec;
 use App\Models\PriceList;
 use App\Models\TextLabel;
 use App\Models\CustomScript;
+use App\Models\Promotion;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -38,6 +39,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
+        $this->loadAllPromotionsIntoCache();
 
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
@@ -366,5 +368,29 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         });
 
         $this->app->instance('cached_specifications', $productSpecs);
+    }
+
+    private function loadAllPromotionsIntoCache()
+    {
+        $promotions = Cache::rememberForever('promotions', function () {
+            $promotions = Promotion::with([
+                'voucher' => function ($query) {
+                    $query->select('id', 'percent', 'value');
+                }
+            ])
+
+                ->whereHas('voucher', function ($query) {
+                    $query->where('status_id', app('global_voucher_active'))
+                        ->where('start_date', '<=', now()->format('Y-m-d'))
+                        ->where('end_date', '>=', now()->format('Y-m-d'));
+                })->where('active', true)
+                ->where('start_date', '<=', now()->format('Y-m-d'))
+                ->where('end_date', '>=', now()->format('Y-m-d'))
+                ->get();
+
+            return $promotions->toArray();
+        });
+
+        $this->app->instance('promotions', $promotions);
     }
 }
