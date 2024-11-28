@@ -135,7 +135,6 @@ class StoreMain extends Component
   }
   public function mount()
   {
-    dd(app()->make('promotions'));
     $this->session_id = $this->getSessionId();
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
