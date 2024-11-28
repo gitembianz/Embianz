@@ -7,6 +7,8 @@ use App\Models\Voucher;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
+
 
 class Vouchertable extends Component
 {
@@ -69,7 +71,7 @@ class Vouchertable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->vouchers->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->vouchers->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -139,6 +141,7 @@ class Vouchertable extends Component
         'title' => 'Warning'
       ]);
     }
+    Cache::forget('promotions');
     $this->editindex = null;
     $this->voucher = [];
   }
@@ -169,7 +172,7 @@ class Vouchertable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->vouchersQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->vouchersQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
