@@ -198,13 +198,25 @@ class Promotiontable extends Component
                 $new->active = $record['active'];
             }
             if (array_key_exists('cooldown_timer', $record)) {
-                $new->cooldown_timer = $record['cooldown_timer'];
+                if ($record['cooldown_timer'] == "") {
+                    $new->cooldown_timer = 0;
+                } else {
+                    $new->cooldown_timer = $record['cooldown_timer'];
+                }
             }
             if (array_key_exists('cart_amount', $record)) {
-                $new->cart_amount = $record['cart_amount'];
+                if ($record['cart_amount'] == "") {
+                    $new->cart_amount = 0;
+                } else {
+                    $new->cart_amount = $record['cart_amount'];
+                }
             }
             if (array_key_exists('cookie_time', $record)) {
-                $new->cookie_time = $record['cookie_time'];
+                if ($record['cookie_time'] == "") {
+                    $new->cookie_time = 0;
+                } else {
+                    $new->cookie_time = $record['cookie_time'];
+                }
             }
             $new->save();
             $new->voucher_code = $new->voucher->code;

@@ -1,4 +1,4 @@
-<x-store-head :canonical="'about'" :title="' Despre noi | '" :description="'Despre noi'" />
+<x-store-head :canonical="'about'" :title="' Despre noi'" :description="'Despre noi'" />
 @livewire('store-header')
 <main>
 	<!---------------------------------------------------------->

@@ -17,7 +17,7 @@ class StoreHead extends Component
      */
     public function __construct($title = "", $description = "", $canonical = "", $image = "", $preload = "")
     {
-        $this->title = $title . app('global_site_name');
+        $this->title = $title ?? app('global_site_name');
 
         $this->description = empty($description) ? "" : $description;
 

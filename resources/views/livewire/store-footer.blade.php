@@ -1,5 +1,6 @@
 <div>
- <section id="cookie-banner" style="display: none">
+ <section id="cookie-banner" >
+  {{-- style="top: 0; z-index:400" --}}
   <div class="container cookie__container">
    <div class="cookie__description">
     <span>
@@ -71,7 +72,84 @@
     </div>
    </div>
   </div>
+  <div class="container cookie__container" style="margin-top: 200px !important">
+   <div class="cookie__description">
+
+    <span id="countdown" style="font-size: 30px;">timer</span>
+   </div>
+  </div>
+
  </section>
+ @php
+  $timer = 500;
+ @endphp
+ <script>
+  const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds
+  let ticker;
+
+  function startTimer() {
+   ticker = setInterval(tick, 1000);
+  }
+
+  function tick() {
+   // Retrieve remaining time from localStorage
+   let timeLeft = parseInt(localStorage.getItem("timeLeft"), 10);
+
+   // If time is still left, decrement and update the display
+   if (timeLeft > 0) {
+    timeLeft--;
+    localStorage.setItem("timeLeft", timeLeft);
+   } else {
+    clearInterval(ticker); // Stop ticking when the timer reaches 0
+    document.getElementById("countdown").innerHTML = "0s";
+    return;
+   }
+
+   // Calculate days, hours, minutes, and seconds
+   const days = Math.floor(timeLeft / 86400);
+   timeLeft %= 86400;
+   const hours = Math.floor(timeLeft / 3600);
+   timeLeft %= 3600;
+   const mins = Math.floor(timeLeft / 60);
+   const secs = timeLeft % 60;
+
+   // Build the display string dynamically
+   let pretty = "";
+   if (days > 0) pretty += days + "d ";
+   if (hours > 0 || days > 0) pretty += hours + "h ";
+   if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+   pretty += secs + "s";
+
+   document.getElementById("countdown").innerHTML = pretty;
+  }
+
+  function initTimer() {
+   const now = Math.floor(Date.now() / 1000); // Current time in seconds
+   const startTime = localStorage.getItem("startTime");
+   let timeLeft = localStorage.getItem("timeLeft");
+
+   if (!startTime) {
+    // First-time visit: Initialize startTime and remaining time
+    localStorage.setItem("startTime", now);
+    localStorage.setItem("timeLeft", cooldownPeriod);
+    timeLeft = cooldownPeriod;
+   } else {
+    // Calculate the remaining time based on the elapsed time
+    const elapsed = now - startTime;
+    timeLeft = Math.max(cooldownPeriod - elapsed, 0);
+    localStorage.setItem("timeLeft", timeLeft);
+   }
+
+   if (timeLeft > 0) {
+    startTimer(); // Start ticking only if there's time left
+   } else {
+    document.getElementById("countdown").innerHTML = "0s";
+   }
+  }
+
+  initTimer();
+ </script>
+
 
  <x-alert-newsletter />
 
