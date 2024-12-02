@@ -1,4 +1,4 @@
-<x-store-head :canonical="'privacy'" :title="'Politica de confidențialitate | '" :description="'Politica de confidențialitate'"/>
+<x-store-head :canonical="'privacy'" :title="'Politica de confidențialitate'" :description="'Politica de confidențialitate'"/>
 @livewire('store-header')
 	<main>
 		<!---------------------------------------------------------->
