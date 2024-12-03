@@ -1,5 +1,5 @@
 <div>
- <section id="cookie-banner" >
+ <section id="cookie-banner" style="display: none">
   {{-- style="top: 0; z-index:400" --}}
   <div class="container cookie__container">
    <div class="cookie__description">
@@ -72,15 +72,15 @@
     </div>
    </div>
   </div>
-  <div class="container cookie__container" style="margin-top: 200px !important">
+  {{-- <div class="container cookie__container" style="margin-top: 200px !important">
    <div class="cookie__description">
 
     <span id="countdown" style="font-size: 30px;">timer</span>
    </div>
-  </div>
+  </div> --}}
 
  </section>
- @php
+ {{-- @php
   $timer = 500;
  @endphp
  <script>
@@ -148,7 +148,7 @@
   }
 
   initTimer();
- </script>
+ </script> --}}
 
 
  <x-alert-newsletter />
