@@ -60,6 +60,7 @@
       route::view('/add_brand', 'admin.add_brand')->name('add_brand');
       route::get('/show_brand/{id}/', [AdminController::class, 'show_brand'])->name('show_brand');
 
+      route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
 
       //todolist routes
