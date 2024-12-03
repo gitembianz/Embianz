@@ -243,7 +243,7 @@
       @if ($column == 'payload')
        <?php continue; ?>
       @elseif ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 7) class="hidden" @endif>
+       <th @if ($index > 1) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -283,16 +283,14 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        @if ($column == 'payload')
-         <?php continue; ?>
-        @endif
-        <td @if ($index > count($selectedColumns) - 7) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
-         @if ($column == 'last_activity')
-          {{ date('Y-m-d H:i:s', $item->$column) }}
+         @if ($column === 'sessions')
+          <a href="{{ route('show_session', ['id' => $item->id]) }}">{{ $item->$column }}</a>
          @else
           {{ $item->$column }}
          @endif
+
         </td>
        @endforeach
        <td style="border-right: none">
@@ -309,18 +307,10 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 6)
-           @if ($column == 'payload')
-            <?php continue; ?>
-           @elseif ($column == 'last_activity')
-            <p>
-             <bold>{{ $column }}:</bold>{{ date('Y-m-d H:i:s', $item->$column) }}
-            </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>{{ $item->$column }}
-            </p>
-           @endif
+          @if ($index > 1)
+           <p>
+            <bold>{{ $column }}:</bold>{{ $item->$column }}
+           </p>
           @endif
          @endforeach
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
@@ -16,16 +17,20 @@ class StoreHeader extends Component
 
   private function getSessionId()
   {
-    if (request()->cookie('sessionId')) {
-      $sessionId = request()->cookie('sessionId');
-      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
-      return $sessionId;
-    } else {
-      $sessionId = session()->getId();
-      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
-      return $sessionId;
+    $cookieSessionId = request()->cookie('sessionId');
+    $sessionId = $cookieSessionId ?: session()->getId();
+
+    cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
+
+    if ($cookieSessionId) {
+      DB::table('sessions')
+        ->where('id', session()->getId())
+        ->update(['innersession' => $cookieSessionId]);
     }
+
+    return $sessionId;
   }
+
 
   public function render()
   {

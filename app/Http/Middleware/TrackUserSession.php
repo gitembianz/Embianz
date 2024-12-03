@@ -16,22 +16,22 @@ class TrackUserSession
      */
     public function handle(Request $request, Closure $next)
     {
-        // $sessionId = Session::getId();
-        // $ipAddress = ServerRequest::ip();
-        // $userAgent = ServerRequest::header('User-Agent');
+        $sessionId = Session::getId();
+        $ipAddress = ServerRequest::ip();
+        $userAgent = ServerRequest::header('User-Agent');
 
-        // DB::table('user_sessions')->upsert(
-        //     [
-        //         'sessions' => $sessionId,
-        //         'last_activity' => now(),
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //         'ip_address' => $ipAddress,
-        //         'user_agent' => $userAgent,
-        //     ],
-        //     ['sessions'],
-        //     ['last_activity', 'updated_at']
-        // );
+        DB::table('user_sessions')->upsert(
+            [
+                'sessions' => $sessionId,
+                'last_activity' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+                'ip_address' => $ipAddress,
+                'user_agent' => $userAgent,
+            ],
+            ['sessions'],
+            ['last_activity', 'updated_at']
+        );
 
         return $next($request);
     }
