@@ -56,7 +56,7 @@ class Sessionstable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->sessions->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->sessions->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -87,7 +87,7 @@ class Sessionstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->sessions->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->sessions->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function getSessionsProperty()
     {
@@ -96,7 +96,6 @@ class Sessionstable extends Component
                 ->where(function ($query) {
                     $query->where('id', 'like', '%' . $this->search . '%')
                         ->orWhere('user_agent', 'like', '%' . $this->search . '%')
-                        ->orWhere('payload', 'like', '%' . $this->search . '%')
                         ->orWhere('last_activity', 'like', '%' . $this->search . '%');
                 })
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')

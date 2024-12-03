@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\ProductReviews as ModelsProductReviews;
 use App\Models\Promotion;
+use App\Models\UserSessions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -108,6 +109,20 @@ class AdminController extends Controller
   {
     $data = Cart::find($id);
     return view('admin.show_cart', compact('data'));
+  }
+  public function show_session($id)
+  {
+    $data = UserSessions::find($id);
+    if ($data) {
+
+      return view('admin.show_session', compact('data'));
+    } else {
+      return redirect()->back()->with('notification', [
+        'message' => 'Record not found!',
+        'type' => 'warning',
+        'title' => 'warning'
+      ]);
+    }
   }
 
   public function show_brand($id)

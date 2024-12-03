@@ -113,7 +113,8 @@
   </div>
   {{-- Order Session Id --}}
   <div class="input__tabs details__long">
-   <span class="disabled">{{ $order->session_id }}</span>
+   <a href="{{ route('show_session', ['id' => $order->session_id]) }}">{{ $order->session_id }}</a>
+
    <label for="category__name">Session Id</label>
   </div>
   {{-- Order Account --}}
