@@ -57,13 +57,13 @@
   </div>
   {{-- Percent --}}
   <div class="input__tabs">
-   <input type="number" name="percent" placeholder=" " value="{{ old('percent') }}">
+   <input type="number" name="percent" value="{{ old('percent') }}">
    <label>Percent %</label>
   </div>
 
   {{-- Value --}}
   <div class="input__tabs">
-   <input type="number" name="value" placeholder=" " value="{{ old('value') }}">
+   <input type="number" name="value" value="{{ old('value') }}">
    <label>Value</label>
   </div>
   <div class="details__checkboxes">

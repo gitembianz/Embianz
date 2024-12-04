@@ -39,7 +39,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
-        // $this->loadAllPromotionsIntoCache();
+        $this->loadAllPromotionsIntoCache();
 
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
@@ -372,25 +372,17 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
     private function loadAllPromotionsIntoCache()
     {
-        $promotions = Cache::rememberForever('promotions', function () {
-            $promotions = Promotion::with([
-                'voucher' => function ($query) {
-                    $query->select('id', 'percent', 'value');
-                }
-            ])
+        if (Schema::hasTable('promotions')) {
+            $promotions = Cache::rememberForever('promotions', function () {
+                $promotions = Promotion::where('active', true)
+                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                    ->get();
 
-                ->whereHas('voucher', function ($query) {
-                    $query->where('status_id', app('global_voucher_active'))
-                        ->where('start_date', '<=', now()->format('Y-m-d'))
-                        ->where('end_date', '>=', now()->format('Y-m-d'));
-                })->where('active', true)
-                ->where('start_date', '<=', now()->format('Y-m-d'))
-                ->where('end_date', '>=', now()->format('Y-m-d'))
-                ->get();
+                return $promotions->toArray();
+            });
 
-            return $promotions->toArray();
-        });
-
-        $this->app->instance('promotions', $promotions);
+            $this->app->instance('promotions', $promotions);
+        }
     }
 }
