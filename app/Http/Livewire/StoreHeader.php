@@ -48,6 +48,19 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
+    // dd(app()->make('promotions'));
+    // if ($this->promotion) {
+    //   if ($this->promotion->first()['cookieid'] && $this->promotion->first()['cookie_time']) {
+    //     $promotionCookieId = $this->promotion->first()['cookieid'];
+
+    //     $existingCookieId = request()->cookie('promotion_cookie_id');
+    //     if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
+    //       cookie()->queue('promotion_cookie_id', $promotionCookieId, 60 * $this->promotion->first()['cookie_time']);
+
+    //       $this->timer = $this->promotion->first()['cooldown_timer'] ?? null;
+    //     }
+    //   }
+    // }
   }
 
   public function getCartProperty()
@@ -123,6 +136,21 @@ class StoreHeader extends Component
         ->orderBy('sequence')
         ->limit(app('global_limit_category'))
         ->get();
+    }
+  }
+  public function getPromotionProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+      return collect(app()->make('promotions'))
+        ->filter(function ($promotion) {
+          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+            $promotion['start_date'] <= now()->format('Y-m-d') &&
+            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['type'] === 'counter';
+        });
+    } else {
+      return collect();
     }
   }
 }
