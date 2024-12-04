@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('type')->nullable();
             $table->longText('details')->nullable();
-            $table->unsignedBigInteger('voucher_id')->index()->nullable();
-            $table->foreign('voucher_id')->references('id')->on('vouchers');
-            $table->string('voucher_code')->nullable();
+            $table->decimal('promotion_percent', 5, 2)->nullable();
+            $table->decimal('promotion_value', 10, 2)->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('active');
