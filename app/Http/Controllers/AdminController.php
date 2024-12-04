@@ -26,11 +26,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
-  public function new_promotion()
-  {
-    $vouchers = Voucher::get();
-    return view('admin.add_promotion', compact('vouchers'));
-  }
+
   public function store_promotion(Request $request)
   {
     $rules = [
@@ -51,9 +47,19 @@ class AdminController extends Controller
         'nullable',
         'integer',
         'gt:0'
+      ],
+      'percent' => [
+        'nullable',
+        'integer',
+        'between:1,100',
+      ],
+      'value' => [
+        'nullable',
+        'gt:0'
       ]
     ];
     $messages = [
+      'name' => ' Promotion name is required',
       'end_date' => 'The end date is required.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
       'cart_amount' => 'The value must be bigger than 0',
@@ -66,25 +72,24 @@ class AdminController extends Controller
       $rules,
       $messages
     );
-    if (!$request->filled('name') || !$request->filled('voucher_id')) {
+    if ($request->filled('percent') && $request->filled('value')) {
       return redirect()->back()->withInput()->with([
         'notification' => [
-          'message' => 'Please fill all imputs!',
+          'message' => 'The promotion accepts either a percent or a value, not both!',
           'type' => 'error',
           'title' => 'Something went wrong'
         ],
       ]);
     }
-    $innerid = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+    $innerid = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
     if ($request->type == "counter" && $request->has('active')) {
       Promotion::where('active', true)->where('type', 'counter')->update(['active' => false]);
     }
-    $code = Voucher::find($request->voucher_id);
     $values = array(
       "name" => $request->name,
       "type" => $request->type,
-      "voucher_id" => $request->voucher_id,
-      "voucher_code" => $code->code,
+      "promotion_percent" => $request->percent ?? null,
+      "promotion_value" => $request->value ?? null,
       "start_date" => $request->start_date,
       "end_date" => $request->end_date,
       "cooldown_timer" => $request->cooldown,
@@ -285,6 +290,8 @@ class AdminController extends Controller
     ]);
   }
 
+
+  // sadasdasdasd
   public function store_voucher(Request $request)
   {
     $rules = [

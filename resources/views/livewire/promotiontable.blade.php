@@ -319,20 +319,7 @@
        @foreach ($selectedColumns as $index => $column)
         <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
-         @if ($column === 'voucher_id')
-          @if ($editindex !== $nr)
-           <a href="{{ route('vouchers') }}">{{ $promotion->voucher->name }}</a>
-          @else
-           <div class="searchable">
-            <select class="input__searchable" wire:model.defer="item.{{ $nr }}.voucher_id">
-             @foreach ($vouchers as $voucher)
-              <option value="{{ $voucher->id }}">
-               {{ $voucher->name }} ({{ $voucher->code }})</option>
-             @endforeach
-            </select>
-           </div>
-          @endif
-         @elseif ($column === 'name' || $column === 'details')
+         @if ($column === 'name' || $column === 'details')
           @if ($editindex !== $nr)
            {{ $promotion->$column }}
           @else
@@ -341,7 +328,12 @@
              wire:model.defer="item.{{ $nr }}.{{ $column }}">
            </div>
           @endif
-         @elseif ($column === 'cooldown_timer' || $column === 'cart_amount' || $column === 'cookie_time')
+         @elseif (
+             $column === 'cooldown_timer' ||
+                 $column === 'cart_amount' ||
+                 $column === 'cookie_time' ||
+                 $column === 'promotion_percent' ||
+                 $column === 'promotion_value')
           @if ($editindex !== $nr)
            {{ $promotion->$column }}
           @else
@@ -450,20 +442,7 @@
           @if ($index > 1 && $row === $i)
            <p>
             <bold>{{ $column }}:</bold>
-            @if ($column === 'voucher_id')
-             @if ($editindex !== $nr)
-              <a href="{{ route('vouchers') }}">{{ $promotion->voucher->name }}</a>
-             @else
-              <div class="searchable">
-               <select class="input__searchable" wire:model.defer="item.{{ $nr }}.voucher_id">
-                @foreach ($vouchers as $voucher)
-                 <option value="{{ $voucher->id }}">
-                  {{ $voucher->name }} ({{ $voucher->code }})</option>
-                @endforeach
-               </select>
-              </div>
-             @endif
-            @elseif ($column === 'name' || $column === 'details')
+            @if ($column === 'name' || $column === 'details')
              @if ($editindex !== $nr)
               {{ $promotion->$column }}
              @else
@@ -472,7 +451,12 @@
                 wire:model.defer="item.{{ $nr }}.{{ $column }}">
               </div>
              @endif
-            @elseif ($column === 'cooldown_timer' || $column === 'cart_amount' || $column === 'cookie_time')
+            @elseif (
+                $column === 'cooldown_timer' ||
+                    $column === 'cart_amount' ||
+                    $column === 'cookie_time' ||
+                    $column === 'promotion_percent' ||
+                    $column === 'promotion_value')
              @if ($editindex !== $nr)
               {{ $promotion->$column }}
              @else
