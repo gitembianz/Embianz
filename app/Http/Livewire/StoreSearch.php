@@ -52,7 +52,8 @@ class StoreSearch extends Component
 
             $this->search = "";
         }
-        $this->session_id = $this->getSessionId();
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
         $this->quantity = app('global_low_stock');
     }
 
@@ -63,16 +64,6 @@ class StoreSearch extends Component
             'value' => $this->search,
             'loadAmount' =>  $this->loadAmount
         ]);
-    }
-
-
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            return session()->getId();
-        }
     }
 
     public function toggle($item)

@@ -23,15 +23,6 @@ class StoreProducts extends Component
   public $selectedfilters = [];
   public $wishlistItems;
 
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      return session()->getId();
-    }
-  }
-
   public function render()
   {
     return view('livewire.store-products', [
@@ -47,7 +38,7 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
-    $this->session_id = $this->getSessionId();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);

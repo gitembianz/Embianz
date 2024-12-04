@@ -96,17 +96,6 @@ class StoreOrder extends Component
     'isdisabled' => 'checkIsDisabled'
   ];
 
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setrawcookie('sessionId', $sessionId);
-      return $sessionId;
-    }
-  }
-
   public function checkIsDisabled()
   {
     $this->modification = true;
@@ -434,7 +423,8 @@ class StoreOrder extends Component
   public function mount()
   {
     $this->modification = false;
-    $this->session_id = $this->getSessionId();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
     if (session()->has('paymentcancel')) {
       $this->payment_cancel = true;
       $this->step = 2;
