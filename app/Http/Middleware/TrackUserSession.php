@@ -16,7 +16,7 @@ class TrackUserSession
      */
     public function handle(Request $request, Closure $next)
     {
-        $sessionId = Session::getId();
+        $sessionId = request()->cookie('sessionId') ?? Session::getId();
         $ipAddress = ServerRequest::ip();
         $userAgent = ServerRequest::header('User-Agent');
 

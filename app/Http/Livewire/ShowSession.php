@@ -28,4 +28,18 @@ class ShowSession extends Component
     {
         $this->sessionId = $sessionId;
     }
+    public function confirmItemRemoval()
+    {
+        $this->delete = true;
+    }
+    public function deleteRecord()
+    {
+        UserSessions::find($this->sessionId)->delete();
+        $this->delete = false;
+        return redirect()->route('sessions')->with('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
 }
