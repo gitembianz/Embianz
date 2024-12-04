@@ -39,7 +39,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
-        $this->loadAllPromotionsIntoCache();
+        // $this->loadAllPromotionsIntoCache();
 
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
