@@ -185,8 +185,13 @@ class Promotiontable extends Component
             if (array_key_exists('details', $record)) {
                 $new->details = $record['details'];
             }
-            if (array_key_exists('voucher_id', $record)) {
-                $new->voucher_id = $record['voucher_id'];
+            if (array_key_exists('percent', $record)) {
+                $new->percent = $record['percent'];
+                $new->value = null;
+            }
+            if (array_key_exists('value', $record)) {
+                $new->value = $record['value'];
+                $new->percent = null;
             }
             if (array_key_exists('start_date', $record)) {
                 $new->start_date = $record['start_date'];
@@ -219,8 +224,6 @@ class Promotiontable extends Component
                 }
             }
             $new->save();
-            $new->voucher_code = $new->voucher->code;
-            $new->save();
             if ($new->type == "counter" && $new->active) {
                 Promotion::where('active', true)->where('id', '!=', $new->id)->where('type', 'counter')->update(['active' => false]);
             }
@@ -242,7 +245,7 @@ class Promotiontable extends Component
     }
     public function getcookieid($id)
     {
-        $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+        $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
 
         Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
 
@@ -256,7 +259,7 @@ class Promotiontable extends Component
     {
 
         foreach ($this->promotions as $promotion) {
-            $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+            $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
             $promotion->cookieid = $newCookieId;
             $promotion->save();
         }
