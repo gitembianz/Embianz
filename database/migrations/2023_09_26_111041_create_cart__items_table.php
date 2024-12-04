@@ -20,6 +20,7 @@ return new class extends Migration
       $table->decimal('price', 10, 2)->default(0);
       $table->integer('quantity')->default(0);
       $table->decimal('delivery_price', 10, 2)->nullable();
+      $table->decimal('vat', 5, 2)->nullable();
       $table->timestamps();
     });
   }
