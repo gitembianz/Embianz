@@ -24,7 +24,8 @@ return new class extends Migration
             $table->boolean('active');
             $table->integer('cooldown_timer')->nullable();
             $table->integer('cart_amount')->nullable();
-
+            $table->integer('cookie_time')->nullable()->default(30);
+            $table->string('cookieid')->nullable();
             $table->timestamps();
         });
     }
