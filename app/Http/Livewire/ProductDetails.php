@@ -24,16 +24,10 @@ class ProductDetails extends Component
             'variants' => $this->variants
         ]);
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            return session()->getId();
-        }
-    }
     public function mount($product)
     {
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
         $prodid = $this->product->id;
 
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
@@ -73,7 +67,7 @@ class ProductDetails extends Component
                         $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
                     },
                     'wishlists' => function ($query) {
-                        $query->where('session_id', $this->getSessionId());
+                        $query->where('session_id', $this->session_id);
                     },
                     'parent' => function ($query) {
                         $query->with(['variants' => function ($query) {
@@ -99,7 +93,6 @@ class ProductDetails extends Component
         }
 
         $this->quantity = 1;
-        $this->session_id = $this->getSessionId();
         $this->is_in_wishlist = in_array($prodid, $this->wishlistItems);
     }
 

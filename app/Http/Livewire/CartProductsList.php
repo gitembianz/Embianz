@@ -94,17 +94,6 @@ class CartProductsList extends Component
         }
     }
 
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setrawcookie('sessionId', $sessionId);
-            return $sessionId;
-        }
-    }
-
     public function removevoucher()
     {
         $this->cart->update([
@@ -191,7 +180,7 @@ class CartProductsList extends Component
 
     public function mount()
     {
-        $this->session_id = $this->getSessionId();
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     }
 
     public function pricechanged()

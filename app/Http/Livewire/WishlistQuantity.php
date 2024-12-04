@@ -22,17 +22,9 @@ class WishlistQuantity extends Component
 
     public function mount()
     {
-        $this->session_id = $this->getSessionId();
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
 
         $this->count = Wishlist::where('session_id', $this->session_id)->count();
-    }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            return $sessionId;
-        }
     }
 }

@@ -18,9 +18,12 @@ class StoreHeader extends Component
   private function getSessionId()
   {
     $cookieSessionId = request()->cookie('sessionId');
+
     $sessionId = $cookieSessionId ?: session()->getId();
 
-    cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
+    $period = app()->has('global_cookie_max_ages') ? app('global_cookie_max_ages') : 30;
+
+    cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * $period));
 
     if ($cookieSessionId) {
       DB::table('sessions')
@@ -30,6 +33,7 @@ class StoreHeader extends Component
 
     return $sessionId;
   }
+
 
 
   public function render()
