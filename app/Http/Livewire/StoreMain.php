@@ -30,15 +30,6 @@ class StoreMain extends Component
     return in_array($productId, $this->wishlistItems);
   }
 
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      return session()->getId();
-    }
-  }
-
   public function getPopProductsProperty()
   {
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
@@ -135,7 +126,7 @@ class StoreMain extends Component
   }
   public function mount()
   {
-    $this->session_id = $this->getSessionId();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
 }

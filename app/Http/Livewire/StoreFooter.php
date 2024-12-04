@@ -18,7 +18,10 @@ class StoreFooter extends Component
   public $ischecked = false;
   public function mount()
   {
+    session(['fav_color' => 'green']);
+
     $this->cookieConsent = $this->checkCookieConsent();
+    // dd(app()->make('promotions'));
     // if ($this->promotion) {
     //   if ($this->promotion->first()['cookieid'] && $this->promotion->first()['cookie_time']) {
     //     $promotionCookieId = $this->promotion->first()['cookieid'];
@@ -34,7 +37,7 @@ class StoreFooter extends Component
   }
 
 
-
+  // YTo2OntzOjY6Il90b2tlbiI7czo0MDoiczczSThOcmhrMDM1cTJ1OEpsbnRwdENKT1VvUVRoYnlEa1BxMGUyYyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjE0OiJodHRwOi8vZW1iaWFueiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo5OiJmYXZfY29sb3IiO3M6NToiZ3JlZW4iO30=
 
   public function render()
   {
