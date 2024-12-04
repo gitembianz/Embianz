@@ -26,6 +26,9 @@ return new class extends Migration
       $table->boolean('preload_image')->nullable()->default(
         true
       );
+      $table->boolean('preload_image')->nullable()->default(
+        true
+      );
       $table->boolean('display_variant_price')->default(false)->nullable();
 
       $table->longText('long_description')->nullable();

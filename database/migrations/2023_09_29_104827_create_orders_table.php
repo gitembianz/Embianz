@@ -31,6 +31,11 @@ return new class extends Migration
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');
       $table->decimal('voucher_value', 10, 2)->default(0);
+      $table->date('invoice_date')->nullable();
+      $table->string('invoice_series')->nullable();
+      $table->string('external_invoice_number')->nullable();
+      $table->date('storno_date')->nullable();
+      $table->string('external_storno_number')->nullable();
       $table->decimal('delivery_price', 5, 2)->default(0);
       $table->decimal('final_amount', 10, 2)->default(0);
       $table->timestamps();

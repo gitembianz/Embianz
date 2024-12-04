@@ -19,6 +19,7 @@ return new class extends Migration
       $table->foreign('product_id')->references('id')->on('products');
       $table->decimal('price', 10, 2)->default(0);
       $table->integer('quantity')->default(0);
+      $table->decimal('vat', 5, 2)->nullable();
       $table->timestamps();
     });
   }
