@@ -9,9 +9,10 @@ class Promotion extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'details', 'cookieid' . 'active'];
-    public function voucher()
+
+    public function sessions()
     {
-        return $this->belongsTo(Voucher::class);
+        return $this->hasMany(UserSessions::class, 'session_id');
     }
 
     public static function search($search)
@@ -19,7 +20,6 @@ class Promotion extends Model
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%' . $search . '%')
             ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('details', 'like', '%' . $search . '%')
-            ->orWhere('voucher_code', 'like', '%' . $search . '%');
+            ->orWhere('details', 'like', '%' . $search . '%');
     }
 }

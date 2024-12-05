@@ -5,6 +5,11 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
+   @php
+    if ($relatedby === 'user_promotions') {
+        $relatedby = 'Promotions';
+    }
+   @endphp
    {{ ucfirst($relatedby) }}
    ({{ $relateds->total() }})
    <svg>
@@ -95,6 +100,8 @@
           <a href="{{ route('show_order', ['id' => $related->id]) }}">{{ $related->name }}</a>
          @elseif ($column === 'product_id' && $relatedby === 'wishlist')
           <a href="{{ route('show_product', ['id' => $related->id]) }}">{{ $related->product->name }}</a>
+         @elseif ($column === 'promotion_id')
+          <a href="{{ route('all_promotions') }}">{{ $related->promotion->name }}</a>
          @else
           {{ $related->$column }}
          @endif
