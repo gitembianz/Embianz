@@ -16,10 +16,6 @@ return new class extends Migration
             $table->string('sessions')->unique();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->string('promotion_cookieid')->nullable();
-            $table->dateTime('promotion_start_date')->nullable();
-            $table->dateTime('promotion_expiration_date')->nullable();
-            $table->integer('promotion_cooldown_timer')->nullable();
             $table->dateTime('last_activity')->nullable();
             $table->timestamps();
         });

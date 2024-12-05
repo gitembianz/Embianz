@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\UserSessions;
 
 class StoreHeader extends Component
 {
   public $session_id;
+  public $timer = null;
+
   protected $listeners = [
     'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
@@ -48,7 +51,36 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
+
+    if ($this->promotion) {
+      $firstPromotion = $this->promotion->first();
+
+      if ($firstPromotion['cookieid'] && $firstPromotion['cookie_time']) {
+        $promotionCookieId = $firstPromotion['cookieid'];
+
+        $existingCookieId = request()->cookie('pcid');
+
+        if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
+          cookie()->queue(
+            'pcid',
+            $promotionCookieId,
+            60 * $firstPromotion['cookie_time'] // Time in minutes
+          );
+
+          $promotionCooldown = $firstPromotion['cooldown_timer']; // Timer in minutes
+          $expirationDate = now()->addSeconds($promotionCooldown * 60); // Add cooldown in seconds
+
+          UserSessions::where('sessions', $this->session_id)->update([
+            "promotion_cookieid" => $promotionCookieId,
+            "promotion_start_date" => now(),
+            "promotion_cooldown_timer" => $promotionCooldown,
+            "promotion_expiration_date" => $expirationDate,
+          ]);
+        }
+      }
+    }
   }
+
 
   public function getCartProperty()
   {
@@ -123,6 +155,21 @@ class StoreHeader extends Component
         ->orderBy('sequence')
         ->limit(app('global_limit_category'))
         ->get();
+    }
+  }
+  public function getPromotionProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+      return collect(app()->make('promotions'))
+        ->filter(function ($promotion) {
+          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+            $promotion['start_date'] <= now()->format('Y-m-d') &&
+            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['type'] === 'counter';
+        });
+    } else {
+      return collect();
     }
   }
 }

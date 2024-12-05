@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserSessions extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'promotion_cookieid',
+        'promotion_start_date',
+        'promotion_cooldown_timer',
+        'promotion_expiration_date'
+
+    ];
 }
