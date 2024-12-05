@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\UserSessions;
 
 class StoreHeader extends Component
 {
   public $session_id;
+  public $timer = null;
+
   protected $listeners = [
     'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
@@ -48,20 +51,36 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-    // dd(app()->make('promotions'));
-    // if ($this->promotion) {
-    //   if ($this->promotion->first()['cookieid'] && $this->promotion->first()['cookie_time']) {
-    //     $promotionCookieId = $this->promotion->first()['cookieid'];
 
-    //     $existingCookieId = request()->cookie('promotion_cookie_id');
-    //     if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
-    //       cookie()->queue('promotion_cookie_id', $promotionCookieId, 60 * $this->promotion->first()['cookie_time']);
+    if ($this->promotion) {
+      $firstPromotion = $this->promotion->first();
 
-    //       $this->timer = $this->promotion->first()['cooldown_timer'] ?? null;
-    //     }
-    //   }
-    // }
+      if ($firstPromotion['cookieid'] && $firstPromotion['cookie_time']) {
+        $promotionCookieId = $firstPromotion['cookieid'];
+
+        $existingCookieId = request()->cookie('pcid');
+
+        if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
+          cookie()->queue(
+            'pcid',
+            $promotionCookieId,
+            60 * $firstPromotion['cookie_time'] // Time in minutes
+          );
+
+          $promotionCooldown = $firstPromotion['cooldown_timer']; // Timer in minutes
+          $expirationDate = now()->addSeconds($promotionCooldown * 60); // Add cooldown in seconds
+
+          UserSessions::where('sessions', $this->session_id)->update([
+            "promotion_cookieid" => $promotionCookieId,
+            "promotion_start_date" => now(),
+            "promotion_cooldown_timer" => $promotionCooldown,
+            "promotion_expiration_date" => $expirationDate,
+          ]);
+        }
+      }
+    }
   }
+
 
   public function getCartProperty()
   {
