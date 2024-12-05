@@ -52,7 +52,7 @@ class StoreHeader extends Component
   {
     $this->session_id = $this->getSessionId();
 
-    if ($this->promotion) {
+    if ($this->promotion->first()) {
       $firstPromotion = $this->promotion->first();
 
       if ($firstPromotion['cookieid'] && $firstPromotion['cookie_time']) {
@@ -64,11 +64,11 @@ class StoreHeader extends Component
           cookie()->queue(
             'pcid',
             $promotionCookieId,
-            60 * $firstPromotion['cookie_time'] // Time in minutes
+            60 * $firstPromotion['cookie_time']
           );
 
-          $promotionCooldown = $firstPromotion['cooldown_timer']; // Timer in minutes
-          $expirationDate = now()->addSeconds($promotionCooldown * 60); // Add cooldown in seconds
+          $promotionCooldown = $firstPromotion['cooldown_timer'];
+          $expirationDate = now()->addSeconds($promotionCooldown * 60);
 
           UserSessions::where('sessions', $this->session_id)->update([
             "promotion_cookieid" => $promotionCookieId,

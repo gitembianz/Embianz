@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\UserPromotions;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -89,6 +90,9 @@ class RelatedSession extends Component
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
         } elseif ($this->relatedby === 'wishlist') {
             return Wishlist::where('session_id', $this->session_id)->with('product')
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
+        } elseif ($this->relatedby === 'user_promotions') {
+            return UserPromotions::where('session_id', $this->session_id)->with('promotion')
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
         } else {
             return collect();
