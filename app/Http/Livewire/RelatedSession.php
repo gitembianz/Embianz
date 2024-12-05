@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\UserPromotions;
+use App\Models\UserSessions;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -27,6 +28,9 @@ class RelatedSession extends Component
     public $row = null;
     public $loadAmount = 15;
     public $showrelated = false;
+    public $delete = false;
+    public $idbeingremoved = null;
+
 
 
     public function render()
@@ -35,6 +39,28 @@ class RelatedSession extends Component
             'relateds' => $this->relateds
         ]);
     }
+    public function confirmItemRemoval($id)
+    {
+        $this->delete = true;
+        $this->idbeingremoved = $id;
+    }
+
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
+    }
+
+    public function deleteRecord()
+    {
+        DB::table($this->relatedby)->where('id', $this->idbeingremoved)->delete();
+        $this->delete = false;
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+
     public function mount($relatedby, $session_id)
     {
         $this->relatedby = $relatedby;
@@ -92,7 +118,8 @@ class RelatedSession extends Component
             return Wishlist::where('session_id', $this->session_id)->with('product')
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
         } elseif ($this->relatedby === 'user_promotions') {
-            return UserPromotions::where('session_id', $this->session_id)->with('promotion')
+            $id = UserSessions::where('sessions', $this->session_id)->first()->id;
+            return UserPromotions::where('session_id', $id)->with('promotion')
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
         } else {
             return collect();

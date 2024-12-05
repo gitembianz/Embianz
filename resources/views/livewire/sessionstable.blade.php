@@ -286,7 +286,7 @@
         <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'sessions')
-          <a href="{{ route('show_session', ['id' => $item->id]) }}">{{ $item->$column }}</a>
+          <a href="{{ route('show_session', ['id' => $item->$column]) }}">{{ $item->$column }}</a>
          @else
           {{ $item->$column }}
          @endif
