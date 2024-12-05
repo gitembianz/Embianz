@@ -249,6 +249,7 @@ class Promotiontable extends Component
         $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
 
         Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
+        Cache::forget('promotions');
 
         session()->flash('notification', [
             'message' => 'Cookie ID updated successfully!',
@@ -264,6 +265,7 @@ class Promotiontable extends Component
             $promotion->cookieid = $newCookieId;
             $promotion->save();
         }
+        Cache::forget('promotions');
 
         session()->flash('notification', [
             'message' => 'All cookie IDs have been refreshed successfully!',

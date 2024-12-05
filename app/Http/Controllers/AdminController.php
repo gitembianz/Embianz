@@ -117,7 +117,7 @@ class AdminController extends Controller
   }
   public function show_session($id)
   {
-    $data = UserSessions::find($id);
+    $data = UserSessions::where('sessions', $id)->first();
     if ($data) {
 
       return view('admin.show_session', compact('data'));
