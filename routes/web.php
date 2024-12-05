@@ -50,7 +50,7 @@
 
       // all_promotions
       route::view('/promotions', 'admin.promotions')->name('all_promotions');
-      route::get('/new_promotion', [AdminController::class, 'new_promotion'])->name('newpromotion');
+      route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
       route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
 
 
@@ -60,6 +60,7 @@
       route::view('/add_brand', 'admin.add_brand')->name('add_brand');
       route::get('/show_brand/{id}/', [AdminController::class, 'show_brand'])->name('show_brand');
 
+      route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
 
       //todolist routes

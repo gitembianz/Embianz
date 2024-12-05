@@ -289,6 +289,8 @@
           @if ($order->account_id)
            <a href="{{ route('show_account', ['id' => $order->account_id]) }}">{{ $order->account->name }}</a>
           @endif
+         @elseif($column === 'session_id')
+          <a href="{{ route('show_session', ['id' => $order->session_id]) }}">{{ $order->$column }}</a>
          @elseif ($column === 'cart_id')
           @if ($order->cart_id)
            <a href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>

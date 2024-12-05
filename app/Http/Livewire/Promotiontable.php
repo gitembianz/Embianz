@@ -157,7 +157,8 @@ class Promotiontable extends Component
             'name' => $record->name,
             'type' => $record->type,
             'details' => $record->details,
-            'voucher_id' => $record->voucher_id,
+            'promotion_percent' => $record->promotion_percent,
+            'promotion_value' => $record->promotion_value,
             'start_date' => $record->start_date,
             'end_date' => $record->end_date,
             'active' => $record->active == 1 ? true : false,
@@ -185,8 +186,13 @@ class Promotiontable extends Component
             if (array_key_exists('details', $record)) {
                 $new->details = $record['details'];
             }
-            if (array_key_exists('voucher_id', $record)) {
-                $new->voucher_id = $record['voucher_id'];
+            if (array_key_exists('promotion_percent', $record) && $record['promotion_percent'] != "") {
+                $new->promotion_percent = $record['promotion_percent'];
+                $new->promotion_value = null;
+            }
+            if (array_key_exists('promotion_value', $record) && $record['promotion_value'] != "") {
+                $new->promotion_value = $record['promotion_value'];
+                $new->promotion_percent = null;
             }
             if (array_key_exists('start_date', $record)) {
                 $new->start_date = $record['start_date'];
@@ -219,8 +225,6 @@ class Promotiontable extends Component
                 }
             }
             $new->save();
-            $new->voucher_code = $new->voucher->code;
-            $new->save();
             if ($new->type == "counter" && $new->active) {
                 Promotion::where('active', true)->where('id', '!=', $new->id)->where('type', 'counter')->update(['active' => false]);
             }
@@ -242,7 +246,7 @@ class Promotiontable extends Component
     }
     public function getcookieid($id)
     {
-        $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+        $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
 
         Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
 
@@ -256,7 +260,7 @@ class Promotiontable extends Component
     {
 
         foreach ($this->promotions as $promotion) {
-            $newCookieId = 'promo'  . substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+            $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
             $promotion->cookieid = $newCookieId;
             $promotion->save();
         }

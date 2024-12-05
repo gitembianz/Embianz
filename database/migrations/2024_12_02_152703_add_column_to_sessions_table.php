@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('brand')->nullable()->default(
-                'noren'
-            )->after('name');
+        Schema::table('sessions', function (Blueprint $table) {
+            $table->string('innersession')->nullable()->after('id');
         });
     }
 
@@ -23,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('sessions', function (Blueprint $table) {
             //
         });
     }

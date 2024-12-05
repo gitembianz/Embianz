@@ -1,5 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
+<x-alert />
 <x-dashboardsidebar :active="__('session')" />
-@livewire('sessionstable', ['tableName' => 'user_sessions'])
+@livewire('show-session', ['sessionId' => $data->id])
 <x-dashboardfooter />

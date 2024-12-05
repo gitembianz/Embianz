@@ -2,13 +2,17 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\UserSessions;
 
 class StoreHeader extends Component
 {
   public $session_id;
+  public $timer = null;
+
   protected $listeners = [
     'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
@@ -16,16 +20,24 @@ class StoreHeader extends Component
 
   private function getSessionId()
   {
-    if (request()->cookie('sessionId')) {
-      $sessionId = request()->cookie('sessionId');
-      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
-      return $sessionId;
-    } else {
-      $sessionId = session()->getId();
-      cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * 30));
-      return $sessionId;
+    $cookieSessionId = request()->cookie('sessionId');
+
+    $sessionId = $cookieSessionId ?: session()->getId();
+
+    $period = app()->has('global_cookie_max_ages') ? app('global_cookie_max_ages') : 30;
+
+    cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * $period));
+
+    if ($cookieSessionId) {
+      DB::table('sessions')
+        ->where('id', session()->getId())
+        ->update(['innersession' => $cookieSessionId]);
     }
+
+    return $sessionId;
   }
+
+
 
   public function render()
   {
@@ -39,7 +51,36 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
+
+    if ($this->promotion->first()) {
+      $firstPromotion = $this->promotion->first();
+
+      if ($firstPromotion['cookieid'] && $firstPromotion['cookie_time']) {
+        $promotionCookieId = $firstPromotion['cookieid'];
+
+        $existingCookieId = request()->cookie('pcid');
+
+        if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
+          cookie()->queue(
+            'pcid',
+            $promotionCookieId,
+            60 * $firstPromotion['cookie_time']
+          );
+
+          $promotionCooldown = $firstPromotion['cooldown_timer'];
+          $expirationDate = now()->addSeconds($promotionCooldown * 60);
+
+          UserSessions::where('sessions', $this->session_id)->update([
+            "promotion_cookieid" => $promotionCookieId,
+            "promotion_start_date" => now(),
+            "promotion_cooldown_timer" => $promotionCooldown,
+            "promotion_expiration_date" => $expirationDate,
+          ]);
+        }
+      }
+    }
   }
+
 
   public function getCartProperty()
   {
@@ -114,6 +155,21 @@ class StoreHeader extends Component
         ->orderBy('sequence')
         ->limit(app('global_limit_category'))
         ->get();
+    }
+  }
+  public function getPromotionProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+      return collect(app()->make('promotions'))
+        ->filter(function ($promotion) {
+          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+            $promotion['start_date'] <= now()->format('Y-m-d') &&
+            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['type'] === 'counter';
+        });
+    } else {
+      return collect();
     }
   }
 }

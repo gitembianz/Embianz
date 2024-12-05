@@ -24,18 +24,11 @@ class StoreShowProduct extends Component
       'last_visited_products' => $this->lastproduct
     ]);
   }
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      return session()->getId();
-    }
-  }
   public function mount($productId)
   {
     $this->productId = $productId;
-    $this->session_id = $this->getSessionId();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
 
     $this->lastVisited = json_decode(request()->cookie('last_visited_products', '[]'), true);

@@ -15,7 +15,10 @@ return new class extends Migration
   {
     Schema::create('products', function (Blueprint $table) {
       $table->id();
+      $table->integer('innerid')->nullable();
       $table->string('name')->nullable();
+      $table->unsignedBigInteger('brand_id')->index()->nullable();
+
       $table->string('brand')->nullable()->default(
         'noren'
       );
@@ -31,6 +34,7 @@ return new class extends Migration
         false
       );
       $table->integer('popularity')->nullable();
+      $table->longText('comments')->nullable();
       $table->longText('long_description')->nullable();
       $table->string('short_description')->nullable();
       $table->string('meta_description')->nullable();

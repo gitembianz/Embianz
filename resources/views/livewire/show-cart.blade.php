@@ -106,7 +106,7 @@
 
   {{-- Cart Session Id --}}
   <div class="input__tabs details__long">
-   <span class="disabled">{{ $cart->session_id }}</span>
+   <a href="{{ route('show_session', ['id' => $cart->session_id]) }}">{{ $cart->session_id }}</a>
    <label for="category__name">Session Id</label>
   </div>
 

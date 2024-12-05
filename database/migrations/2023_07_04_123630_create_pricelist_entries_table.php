@@ -23,6 +23,7 @@ return new class extends Migration
         '0'
       );
       $table->decimal('vat', 5, 2)->nullable();
+      $table->decimal('price', 10, 4)->nullable();
       $table->timestamps();
     });
   }
