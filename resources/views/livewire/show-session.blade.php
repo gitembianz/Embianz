@@ -104,6 +104,6 @@
   @livewire('related-session', ['relatedby' => 'carts', 'session_id' => $session->sessions], key(2))
   @livewire('related-session', ['relatedby' => 'orders', 'session_id' => $session->sessions], key(3))
   @livewire('related-session', ['relatedby' => 'wishlist', 'session_id' => $session->sessions], key(4))
-
+  @livewire('related-session', ['relatedby' => 'user_promotions', 'session_id' => $session->sessions], key(5))
  </div>
 </section>
