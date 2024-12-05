@@ -1,5 +1,22 @@
 <div class="accordion @if ($showrelated) active @endif">
  <x-alert />
+
+ {{-- Delete Record --}}
+ <aside>
+  <div class="background background--center @if ($delete) active @endif"></div>
+  <div class="aside aside--confirm @if ($delete) active @endif">
+   <span>
+    Are you sure to delete this record?
+   </span>
+   <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
+    <span>Delete</span>
+   </button>
+   <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
+
  {{-- Accordion Header --}}
  <div class="accordion__header">
   <button
@@ -7,7 +24,7 @@
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
    @php
     if ($relatedby === 'user_promotions') {
-        $relatedby = 'Promotions';
+        $relatedby = 'promotions';
     }
    @endphp
    {{ ucfirst($relatedby) }}
@@ -71,6 +88,18 @@
        </th>
       @endif
      @endforeach
+     @if ($relatedby === 'promotions')
+      <th style="border-left: none; border-right: none;">
+       <div style="display: flex;">
+        <button class="button button--secondary button--sm" style="opacity: 0">
+         <svg>
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+         </svg>
+        </button>
+       </div>
+      </th>
+     @endif
     </tr>
    </thead>
    <tbody>
@@ -107,6 +136,17 @@
          @endif
         </td>
        @endforeach
+       @if ($relatedby === 'promotions')
+        <td>
+         <button wire:click.prevent="confirmItemRemoval({{ $related->id }})"
+          class="button button--secondary button--sm">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </td>
+       @endif
       </tr>
      @endforeach
     @endif
