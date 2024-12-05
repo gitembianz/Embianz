@@ -157,7 +157,8 @@ class Promotiontable extends Component
             'name' => $record->name,
             'type' => $record->type,
             'details' => $record->details,
-            'voucher_id' => $record->voucher_id,
+            'promotion_percent' => $record->promotion_percent,
+            'promotion_value' => $record->promotion_value,
             'start_date' => $record->start_date,
             'end_date' => $record->end_date,
             'active' => $record->active == 1 ? true : false,
@@ -185,13 +186,13 @@ class Promotiontable extends Component
             if (array_key_exists('details', $record)) {
                 $new->details = $record['details'];
             }
-            if (array_key_exists('percent', $record)) {
-                $new->percent = $record['percent'];
-                $new->value = null;
+            if (array_key_exists('promotion_percent', $record) && $record['promotion_percent'] != "") {
+                $new->promotion_percent = $record['promotion_percent'];
+                $new->promotion_value = null;
             }
-            if (array_key_exists('value', $record)) {
-                $new->value = $record['value'];
-                $new->percent = null;
+            if (array_key_exists('promotion_value', $record) && $record['promotion_value'] != "") {
+                $new->promotion_value = $record['promotion_value'];
+                $new->promotion_percent = null;
             }
             if (array_key_exists('start_date', $record)) {
                 $new->start_date = $record['start_date'];

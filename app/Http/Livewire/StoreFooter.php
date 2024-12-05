@@ -11,7 +11,6 @@ class StoreFooter extends Component
 {
 
   public $email = null;
-  public $timer = null;
   public $ischecked = false;
 
   public function render()
