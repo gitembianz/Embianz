@@ -1,12 +1,13 @@
 <div>
- <section id="cookie-banner">
-  {{-- <section id="cookie-banner" style="display: none"> --}}
-
-  {{-- style="top: 0; z-index:400" --}}
+ <section id="cookie-banner" style="display: none">
   @if ($timer > 0)
    <div class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 200px">
     <div class="cookie__description">
-
+     <span>
+      @if (app()->has('label_promotion_counter_title'))
+       {!! app('label_promotion_counter_title') !!}
+      @endif
+     </span>
      <span id="countdown" style="font-size: 30px;"></span>
     </div>
    </div>
@@ -86,63 +87,59 @@
 
 
  </section>
+ @if ($timer > 0)
+  <script>
+   const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
+   let ticker;
 
- <script>
-  const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
-  let ticker;
-
-  function startTimer(endTime) {
-   ticker = setInterval(() => tick(endTime), 1000);
-  }
-
-  function tick(endTime) {
-   // Get the current time in seconds
-   const now = Math.floor(Date.now() / 1000);
-
-   // Calculate the remaining time
-   let timeLeft = Math.max(endTime - now, 0);
-
-   // If time is still left, update the display
-   if (timeLeft > 0) {
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(timeLeft / 86400);
-    timeLeft %= 86400;
-    const hours = Math.floor(timeLeft / 3600);
-    timeLeft %= 3600;
-    const mins = Math.floor(timeLeft / 60);
-    const secs = timeLeft % 60;
-
-    // Build the display string dynamically
-    let pretty = "";
-    if (days > 0) pretty += days + "d ";
-    if (hours > 0 || days > 0) pretty += hours + "h ";
-    if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
-    pretty += secs + "s";
-
-    document.getElementById("countdown").innerHTML = pretty;
-   } else {
-    clearInterval(ticker); // Stop ticking when the timer reaches 0
-    document.getElementById("countdown").innerHTML = "0s";
+   function startTimer(endTime) {
+    ticker = setInterval(() => tick(endTime), 1000);
    }
-  }
 
-  function initTimer() {
-   const now = Math.floor(Date.now() / 1000); // Current time in seconds
+   function tick(endTime) {
+    const now = Math.floor(Date.now() / 1000);
 
-   // Calculate the end time from now + cooldownPeriod
-   const endTime = now + cooldownPeriod;
+    let timeLeft = Math.max(endTime - now, 0);
 
-   // Start ticking only if there's time left
-   if (cooldownPeriod > 0) {
-    startTimer(endTime);
-   } else {
-    document.getElementById("countdown").innerHTML = "0s";
-    @this.call('timmerexpired');
+    if (timeLeft > 0) {
+     const days = Math.floor(timeLeft / 86400);
+     timeLeft %= 86400;
+     const hours = Math.floor(timeLeft / 3600);
+     timeLeft %= 3600;
+     const mins = Math.floor(timeLeft / 60);
+     const secs = timeLeft % 60;
+
+     let pretty = "";
+     if (days > 0) pretty += days + "d ";
+     if (hours > 0 || days > 0) pretty += hours + "h ";
+     if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+     pretty += secs + "s";
+
+     document.getElementById("countdown").innerHTML = pretty;
+    } else {
+     clearInterval(ticker);
+     document.getElementById("countdown").innerHTML = "0s";
+     @this.call('timmerexpired');
+
+    }
    }
-  }
 
-  initTimer();
- </script>
+   function initTimer() {
+    const now = Math.floor(Date.now() / 1000);
+
+    const endTime = now + cooldownPeriod;
+
+    if (cooldownPeriod > 0) {
+     startTimer(endTime);
+    } else {
+     document.getElementById("countdown").innerHTML = "0s";
+     @this.call('timmerexpired');
+    }
+   }
+
+   initTimer();
+  </script>
+ @endif
 
 
 

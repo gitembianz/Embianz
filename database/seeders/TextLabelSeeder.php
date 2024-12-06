@@ -251,6 +251,8 @@ class TextLabelSeeder extends Seeder
 Factura circula fara semnatura si stampila conform Legii 571/2003 privind Codul Fiscal, art. 319 alin.29.', 'description' => 'Invoice footer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'invoice_total_prev', 'value' => 'Total', 'description' => 'Invoice Table total prev', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'promotion_counter_title', 'value' => 'Doar astazi ai o reducere speciala, plasasea o comanda in', 'description' => 'Promotion title counter', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'cart_promotion_tag', 'value' => 'Reducere: ', 'description' => 'Promotion tag on cartlist', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'cart_promotion_timer', 'value' => 'Plaseaza comanda pentru reducere in: ', 'description' => 'Promotion title on carts', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
