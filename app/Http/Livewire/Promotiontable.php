@@ -163,8 +163,7 @@ class Promotiontable extends Component
             'end_date' => $record->end_date,
             'active' => $record->active == 1 ? true : false,
             'cooldown_timer' => $record->cooldown_timer,
-            'cart_amount' => $record->cart_amount,
-            'cookie_time' => $record->cookie_time
+            'cart_amount' => $record->cart_amount
         ];
     }
     public function canceledit()
@@ -215,13 +214,6 @@ class Promotiontable extends Component
                     $new->cart_amount = 0;
                 } else {
                     $new->cart_amount = $record['cart_amount'];
-                }
-            }
-            if (array_key_exists('cookie_time', $record)) {
-                if ($record['cookie_time'] == "") {
-                    $new->cookie_time = 0;
-                } else {
-                    $new->cookie_time = $record['cookie_time'];
                 }
             }
             $new->save();
