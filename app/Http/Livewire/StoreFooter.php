@@ -2,21 +2,58 @@
 
 namespace App\Http\Livewire;
 
+use GuzzleHttp\Client;
 use Livewire\Component;
 use App\Models\Subscribers;
-use GuzzleHttp\Client;
+use App\Models\UserSessions;
 use Illuminate\Database\QueryException;
+use Carbon\Carbon;
 
 class StoreFooter extends Component
 {
 
   public $email = null;
   public $ischecked = false;
+  public $session_id;
+  public $timer = null;
 
   public function render()
   {
     return view('livewire.store-footer');
   }
+  public function mount()
+  {
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+    $user = UserSessions::where('sessions', $this->session_id)->first();
+
+    // If no user is found, exit
+    if (!$user) {
+      return;
+    }
+
+    // Retrieve the user's 'counter' promotion
+    $existingPromotion = optional($user->promotions)
+      ->where('promotion_type', 'counter')
+      ->first();
+
+    // If a promotion exists, calculate the timer
+    if ($existingPromotion && $existingPromotion->promotion_expiration_date) {
+      $expirationDate = Carbon::parse($existingPromotion->promotion_expiration_date);
+      $now = Carbon::now();
+
+      // Calculate the time difference in seconds
+      $this->timer = $expirationDate->greaterThan($now)
+        ? $expirationDate->diffInSeconds($now)
+        : 0; // Timer is 0 if the promotion has expired
+    }
+  }
+
+  public function timmerexpired()
+  {
+    // React to timer changes and trigger the function when timer reaches 0
+    dd('gata');
+  }
+
 
   public function store()
   {
