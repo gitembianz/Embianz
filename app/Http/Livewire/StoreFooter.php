@@ -15,7 +15,7 @@ class StoreFooter extends Component
   public $email = null;
   public $ischecked = false;
   public $session_id;
-  public $timer = null;
+  public $timer = 0;
 
   public function render()
   {
@@ -23,37 +23,34 @@ class StoreFooter extends Component
   }
   public function mount()
   {
-    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-    $user = UserSessions::where('sessions', $this->session_id)->first();
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+      $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+      $user = UserSessions::where('sessions', $this->session_id)->first();
 
-    // If no user is found, exit
-    if (!$user) {
-      return;
-    }
+      if (!$user) {
+        return;
+      }
 
-    // Retrieve the user's 'counter' promotion
-    $existingPromotion = optional($user->promotions)
-      ->where('promotion_type', 'counter')
-      ->first();
+      $existingPromotion = optional($user->promotions)
+        ->where('promotion_type', 'counter')
+        ->first();
 
-    // If a promotion exists, calculate the timer
-    if ($existingPromotion && $existingPromotion->promotion_expiration_date) {
-      $expirationDate = Carbon::parse($existingPromotion->promotion_expiration_date);
-      $now = Carbon::now();
+      if ($existingPromotion && $existingPromotion->promotion_expiration_date) {
+        $expirationDate = Carbon::parse($existingPromotion->promotion_expiration_date);
+        $now = Carbon::now();
 
-      // Calculate the time difference in seconds
-      $this->timer = $expirationDate->greaterThan($now)
-        ? $expirationDate->diffInSeconds($now)
-        : 0; // Timer is 0 if the promotion has expired
+        $this->timer = $expirationDate->greaterThan($now)
+          ? $expirationDate->diffInSeconds($now)
+          : 0;
+      }
     }
   }
 
   public function timmerexpired()
   {
-    // React to timer changes and trigger the function when timer reaches 0
-    dd('gata');
+    $this->timer = 0;
+    $this->emit('timmerexpired');
   }
-
 
   public function store()
   {
