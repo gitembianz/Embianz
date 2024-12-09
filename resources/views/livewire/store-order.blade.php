@@ -683,7 +683,7 @@
        <div class="checkout__item checkout__item--required" id="individualShippingPostalParent">
         <input type="text" wire:model.defer="individual_billing_zipcode" name="individualShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-          id="individualShippingPostal">
+         id="individualShippingPostal">
         <span></span>
         <label for="individualShippingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1070,7 +1070,7 @@
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPostalParent">
         <input type="text" wire:model.defer="individual_shipping_zipcode" name="individualBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-          id="individualBillingPostal">
+         id="individualBillingPostal">
         <span></span>
         <label for="individualBillingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1512,7 +1512,7 @@
        <div class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
         <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code"  id="juridicShippingPostal">
+         autocomplete="postal-code" id="juridicShippingPostal">
         <span></span>
         <label for="juridicShippingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1900,7 +1900,7 @@
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPostalParent">
         <input type="text" wire:model.defer="juridic_shipping_zipcode" name="juridicBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code"  id="juridicBillingPostal">
+         autocomplete="postal-code" id="juridicBillingPostal">
         <span></span>
         <label for="juridicBillingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -2497,6 +2497,21 @@
          </span>
          <span>{{ $payment['description'] }}</span>
         </div>
+        @if ($cart->promotion_value > 0)
+         <div class="total__item">
+          <span>
+           @if (app()->has('label_cart_promotion_tag'))
+            {!! app('label_cart_promotion_tag') !!}
+           @endif
+          </span>
+          <span>
+
+           -{{ number_format($cart->promotion_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
+          </span>
+         </div>
+        @endif
         <div class="total__item">
          <span>
           @if (app()->has('label_cart_delivery_tag'))
@@ -2535,7 +2550,7 @@
            {!! app('label_cart_total_tag') !!}
           @endif
          </span>
-         <span>{{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+         <span>{{ number_format($cart->final_amount - $cart->promotion_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
          </span>
@@ -2567,7 +2582,7 @@
         {!! app('global_currency_primary_name') !!}
        @endif
       </span>
-      <span class="dlv_value">{{ $cart->final_amount }}</span>
+      <span class="dlv_value">{{ $cart->final_amount - $cart->promotion_value }}</span>
       <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
       <span class="dlv_payment">{{ $payment['name'] }}</span>
       @foreach ($cartItems as $cartItem)
@@ -2921,6 +2936,22 @@
         </span>
         <span>{{ $new_order->payment->description }}</span>
        </div>
+       @if ($new_order->promotion_value > 0)
+
+        <div class="total__item">
+         <span>
+          @if (app()->has('label_cart_promotion_tag'))
+           {!! app('label_cart_promotion_tag') !!}
+          @endif
+         </span>
+         <span>
+
+          -{{ number_format($new_order->promotion_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
+         </span>
+        </div>
+       @endif
        <div class="total__item">
         <span>
          @if (app()->has('label_cart_delivery_tag'))
@@ -3002,95 +3033,118 @@
        </div>
       @endforeach
      </div>
-<script>
-  async function purchase() {
-    var dlv = document.querySelector('.dlv');
-    if (!dlv) {
-      console.error('Elementul cu clasa .dlv nu a fost găsit.');
-      return;
-    }
+     <script>
+      async function purchase() {
+       var dlv = document.querySelector('.dlv');
+       if (!dlv) {
+        console.error('Elementul cu clasa .dlv nu a fost găsit.');
+        return;
+       }
 
-    var currency = dlv.querySelector('.dlv_currency').innerText.trim();
-    var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-    var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-    var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
-    var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
+       var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+       var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+       var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+       var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
+       var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
 
-    var items = [];
-    var dlv_items = dlv.querySelectorAll('.dlv_item');
-    dlv_items.forEach(dlv_item => {
-      var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-      var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-      var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-      var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
-      items.push({ item_id, item_name, price: item_price, quantity: item_quantity });
-    });
+       var items = [];
+       var dlv_items = dlv.querySelectorAll('.dlv_item');
+       dlv_items.forEach(dlv_item => {
+        var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+        var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+        var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+        var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+        items.push({
+         item_id,
+         item_name,
+         price: item_price,
+         quantity: item_quantity
+        });
+       });
 
-    return { currency, value, coupon, transaction_id, shipping, items };
-  }
-
-  async function extractShippingData() {
-    const lookForm = document.querySelector('.look__form');
-    if (!lookForm) {
-      console.error('Shipping information not found.');
-      return;
-    }
-
-    const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
-    const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1].innerText.trim();
-    const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const email = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const street = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
-    const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-    const country = 'RO';
-
-    return {
-      email: email.toLowerCase().trim(),
-      phone_number: phone.trim(),
-      address: {
-        first_name: firstName.toLowerCase().trim(),
-        last_name: lastName.toLowerCase().trim(),
-        street: street.toLowerCase().trim(),
-        city: city.toLowerCase().trim(),
-        region: region.toLowerCase().trim(),
-        postal_code: postalCode.trim(),
-        country: country.toLowerCase().trim()
+       return {
+        currency,
+        value,
+        coupon,
+        transaction_id,
+        shipping,
+        items
+       };
       }
-    };
-  }
 
-  async function pushPurchaseEvent() {
-    const dlvData = await purchase();
-    const userData = await extractShippingData();
+      async function extractShippingData() {
+       const lookForm = document.querySelector('.look__form');
+       if (!lookForm) {
+        console.error('Shipping information not found.');
+        return;
+       }
 
-    if (!dlvData || !userData) {
-      console.error("Missing data for the purchase event.");
-      return;
-    }
+       const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0].innerText
+        .trim();
+       const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1].innerText
+        .trim();
+       const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector('strong')
+        .innerText.trim();
+       const email = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+        .querySelector('strong').innerText.trim();
+       const street = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+        .nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
+       const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+        .nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+       const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+        .nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+       const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+        .nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText
+        .trim();
+       const country = 'RO';
 
-    dataLayer.push({ ecommerce: null }); // Clear any previous ecommerce data
-    dataLayer.push({
-      event: "purchase",
-      ecommerce: {
-        currency: dlvData.currency,
-        value: dlvData.value,
-        coupon: dlvData.coupon,
-        transaction_id: dlvData.transaction_id,
-        shipping: dlvData.shipping,
-        items: dlvData.items,
-        user_data: {
+       return {
+        email: email.toLowerCase().trim(),
+        phone_number: phone.trim(),
+        address: {
+         first_name: firstName.toLowerCase().trim(),
+         last_name: lastName.toLowerCase().trim(),
+         street: street.toLowerCase().trim(),
+         city: city.toLowerCase().trim(),
+         region: region.toLowerCase().trim(),
+         postal_code: postalCode.trim(),
+         country: country.toLowerCase().trim()
+        }
+       };
+      }
+
+      async function pushPurchaseEvent() {
+       const dlvData = await purchase();
+       const userData = await extractShippingData();
+
+       if (!dlvData || !userData) {
+        console.error("Missing data for the purchase event.");
+        return;
+       }
+
+       dataLayer.push({
+        ecommerce: null
+       }); // Clear any previous ecommerce data
+       dataLayer.push({
+        event: "purchase",
+        ecommerce: {
+         currency: dlvData.currency,
+         value: dlvData.value,
+         coupon: dlvData.coupon,
+         transaction_id: dlvData.transaction_id,
+         shipping: dlvData.shipping,
+         items: dlvData.items,
+         user_data: {
           email: userData.email,
           phone_number: userData.phone_number,
           address: userData.address
+         }
         }
+       });
       }
-    });
-  }
 
-  pushPurchaseEvent();
-</script>
+      pushPurchaseEvent();
+     </script>
 
 
 

@@ -98,16 +98,21 @@
     <label for="category__name">Related Order</label>
    </div>
   @endif
+  {{-- Cart Session Id --}}
+  <div class="input__tabs details__long">
+   <a href="{{ route('show_session', ['id' => $cart->session_id]) }}">{{ $cart->session_id }}</a>
+   <label for="category__name">Session Id</label>
+  </div>
   {{-- Cart Quantity Amount --}}
   <div class="input__tabs">
    <span class="disabled">{{ $cart->quantity_amount }}</span>
    <label for="category__name">Quantity Amount</label>
   </div>
 
-  {{-- Cart Session Id --}}
-  <div class="input__tabs details__long">
-   <a href="{{ route('show_session', ['id' => $cart->session_id]) }}">{{ $cart->session_id }}</a>
-   <label for="category__name">Session Id</label>
+  {{-- Cart Quantity Amount --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $cart->promotion_value }}</span>
+   <label for="category__name">Promotion Value</label>
   </div>
 
 

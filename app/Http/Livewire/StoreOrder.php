@@ -5,15 +5,17 @@ namespace App\Http\Livewire;
 use Stripe\Stripe;
 use App\Models\Cart;
 use App\Models\Order;
+use GuzzleHttp\Client;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
+use App\Models\UserSessions;
 use Stripe\Checkout\Session;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
 
 
 class StoreOrder extends Component
@@ -93,8 +95,48 @@ class StoreOrder extends Component
   protected $listeners = [
     'nocard' => 'mount',
     'cartUpdated' => 'mount',
-    'isdisabled' => 'checkIsDisabled'
+    'isdisabled' => 'checkIsDisabled',
+    'timmerexpired' => 'checkpromotions'
   ];
+
+  public function getPromotionsProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
+      $user = UserSessions::where('sessions', $this->session_id)->first();
+      return $user->promotions;
+    } else {
+      return collect();
+    }
+  }
+
+  public function checkpromotions()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+      $value = 0;
+
+      $counterpromotion = optional($this->promotions)
+        ->where('promotion_type', 'counter')
+        ->first();
+
+      if ($counterpromotion && Carbon::parse($counterpromotion->promotion_expiration_date)->isFuture()) {
+
+        if ($counterpromotion->promotion_value && $this->cart) {
+          $value += $counterpromotion->promotion_value;
+        } elseif ($counterpromotion->promotion_percent && $this->cart) {
+          $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
+        }
+      }
+      if ($this->cart->status_id === app('global_cart_new')) {
+
+        $this->cart->update([
+          'promotion_value' => $value
+        ]);
+      }
+
+      $this->mount();
+    }
+  }
+
 
   public function checkIsDisabled()
   {
@@ -103,7 +145,7 @@ class StoreOrder extends Component
 
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'currency_id', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'status_id')
+    return Cart::select('id', 'quantity_amount', 'currency_id', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'status_id', 'promotion_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
@@ -546,6 +588,10 @@ class StoreOrder extends Component
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     }
+    $this->individual_billing_country = app('global_default_country');
+    $this->individual_shipping_country = app('global_default_country');
+    $this->juridic_billing_country = app('global_default_country');
+    $this->juridic_shipping_country = app('global_default_country');
     if (request()->cookie('accountId')) {
       $this->is_account = request()->cookie('accountId');
     }
@@ -633,12 +679,6 @@ class StoreOrder extends Component
         'status_id' => app('global_cart_checkoutdetails')
       ]);
       $this->validatequantity = true;
-    }
-    if ($this->is_account == null) {
-      $this->individual_billing_country = app('global_default_country');
-      $this->individual_shipping_country = app('global_default_country');
-      $this->juridic_billing_country = app('global_default_country');
-      $this->juridic_shipping_country = app('global_default_country');
     }
   }
 
@@ -942,9 +982,10 @@ class StoreOrder extends Component
           'cart_id' => $this->cart->id,
           'quantity_amount' => $this->cart->quantity_amount,
           'sum_amount' => $this->cart->sum_amount,
-          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
+          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value),
           'delivery_price' => app('global_delivery_price'),
           'voucher_value' => $this->cart->voucher_value ?? 0,
+          'promotion_value' => $this->cart->promotion_value ?? 0,
           'currency_id' => $this->cart->currency_id,
           'status_id' =>  app('global_order_processing'),
           'payment_id' => $this->payment['id'],
@@ -962,6 +1003,7 @@ class StoreOrder extends Component
           'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
           'delivery_price' => app('global_delivery_price'),
           'voucher_value' => $this->cart->voucher_value ?? 0,
+          'promotion_value' => $this->cart->promotion_value ?? 0,
           'currency_id' => $this->cart->currency_id,
           'status_id' =>  app('global_order_check_payment'),
           'payment_id' => $this->payment['id'],
