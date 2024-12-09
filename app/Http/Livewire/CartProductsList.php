@@ -302,6 +302,7 @@ class CartProductsList extends Component
                 ]);
                 $cartItem->delete();
                 $this->emit('cartUpdated');
+                $this->emit('timmerexpired');
             }
         }
     }
@@ -394,6 +395,7 @@ class CartProductsList extends Component
             $this->emit('newcart');
             return;
         }
+        $this->checkpromotions();
     }
 
     public function decrement($id)
@@ -420,5 +422,6 @@ class CartProductsList extends Component
             $this->emit('newcart');
             return;
         }
+        $this->checkpromotions();
     }
 }
