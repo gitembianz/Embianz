@@ -248,7 +248,7 @@ class ShowOrder extends Component
         </thead>
         <tbody>";
 
-        $voucherValue = $this->order->voucher_value;
+        $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
         $totalval = 0;
         $i = 0;
         if ($voucherValue &&  $voucherValue != 0) {
@@ -465,7 +465,7 @@ class ShowOrder extends Component
         </thead>
         <tbody>";
 
-        $voucherValue = $this->order->voucher_value;
+        $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
         $totalval = 0;
         $i = 0;
         if ($voucherValue &&  $voucherValue != 0) {

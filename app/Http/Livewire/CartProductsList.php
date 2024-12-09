@@ -6,7 +6,9 @@ use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
+use App\Models\UserSessions;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class CartProductsList extends Component
@@ -17,12 +19,15 @@ class CartProductsList extends Component
     public $message = null;
     public $cartmodified = false;
     public $session_id;
+    public $timer = 0;
 
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'orderprocess',
         'newcartlist' => 'mount',
         'cartUpdated' => 'mount',
+        'timmerexpired' => 'checkpromotions',
+
     ];
     public function render()
     {
@@ -35,13 +40,26 @@ class CartProductsList extends Component
             return view('livewire.cart-products-list');
         }
     }
+
+    public function getPromotionsProperty()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
+            $user = UserSessions::where('sessions', $this->session_id)->first();
+            return $user->promotions;
+        } else {
+            return collect();
+        }
+    }
+
+
+
     public function getCartProperty()
     {
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
             $cachedProducts = app()->make('cached_products')->keyBy('id');
 
-            $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+            $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
                 ->where('session_id', $this->session_id)
                 ->where('status_id', '!=', app('global_cart_closed'))
                 ->with([
@@ -65,7 +83,7 @@ class CartProductsList extends Component
 
             return $cart;
         } else {
-            return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+            return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
                 ->where('session_id', $this->session_id)
                 ->where('status_id', '!=', app('global_cart_closed'))
                 ->with([
@@ -163,6 +181,41 @@ class CartProductsList extends Component
         $this->mount();
     }
 
+    public function checkpromotions()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === "true" && $this->cart) {
+            $value = 0;
+
+            $counterpromotion = optional($this->promotions)
+                ->where('promotion_type', 'counter')
+                ->first();
+
+            if ($counterpromotion && Carbon::parse($counterpromotion->promotion_expiration_date)->isFuture()) {
+                $expirationDate = Carbon::parse($counterpromotion->promotion_expiration_date);
+                $now = Carbon::now();
+
+                if ($counterpromotion->promotion_value && $this->cart) {
+                    $value += $counterpromotion->promotion_value;
+                } elseif ($counterpromotion->promotion_percent && $this->cart) {
+                    $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
+                }
+
+                $this->timer = $expirationDate->greaterThan($now)
+                    ? $expirationDate->diffInSeconds($now)
+                    : 0;
+            } else {
+                $this->timer = 0;
+            }
+
+            $this->cart->update([
+                'promotion_value' => $value
+            ]);
+
+            $this->mount();
+        }
+    }
+
+
     public function updatingShowcart()
     {
         $this->message = null;
@@ -182,6 +235,7 @@ class CartProductsList extends Component
     {
         $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     }
+
 
     public function pricechanged()
     {
