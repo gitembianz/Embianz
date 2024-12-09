@@ -344,7 +344,7 @@
      @endif
     @endif
     @if ($timer > 0)
-     <h5 class="leftbar__total--text" style="color:red">
+     <h5 wire:ignore class="leftbar__total--text" style="color:red">
       @if (app()->has('label_cart_promotion_timer'))
        {!! app('label_cart_promotion_timer') !!}
       @endif
