@@ -131,6 +131,18 @@
           <a href="{{ route('show_product', ['id' => $related->id]) }}">{{ $related->product->name }}</a>
          @elseif ($column === 'promotion_id')
           <a href="{{ route('all_promotions') }}">{{ $related->promotion->name }}</a>
+         @elseif ($column === 'active' || $column === 'seen_by_customer')
+          @if ($related->$column)
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="checkboxdisabled1" disabled checked>
+            <label for="checkboxdisabled"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="checkboxdisabled2" disabled>
+            <label for="checkboxdisabled"></label>
+           </div>
+          @endif
          @else
           {{ $related->$column }}
          @endif

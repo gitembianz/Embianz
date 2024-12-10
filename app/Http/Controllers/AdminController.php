@@ -95,7 +95,6 @@ class AdminController extends Controller
       "cooldown_timer" => $request->cooldown,
       "cart_amount" => $request->amount,
       "cookieid" => $innerid,
-      "cookie_time" => $request->cookie ??  30,
       "active" => $request->has('active'),
       "created_at" => now(),
       "updated_at" => now()

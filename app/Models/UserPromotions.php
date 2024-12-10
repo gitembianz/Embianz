@@ -18,7 +18,8 @@ class UserPromotions extends Model
         'promotion_expiration_date',
         'promotion_value',
         'promotion_percent',
-        'promotion_cart_amount'
+        'promotion_cart_amount',
+        'active'
     ];
     public function promotion()
     {

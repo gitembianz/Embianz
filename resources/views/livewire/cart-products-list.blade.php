@@ -375,7 +375,7 @@
      </a>
     @endif
    </div>
-   @if ($timer > 0)
+   @if ($timer > 0 && $showcart)
     <script>
      const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
      let ticker;
@@ -402,8 +402,10 @@
        if (hours > 0 || days > 0) pretty += hours + "h ";
        if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
        pretty += secs + "s";
+       if (document.getElementById("countdown_cart")) {
 
-       document.getElementById("countdown_cart").innerHTML = pretty;
+        document.getElementById("countdown_cart").innerHTML = pretty;
+       }
       } else {
        clearInterval(ticker);
        document.getElementById("countdown_cart").innerHTML = "0s";
