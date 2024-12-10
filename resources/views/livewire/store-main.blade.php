@@ -1,4 +1,6 @@
 <div>
+ <x-confettialert />
+
  <main>
   <!---------------------- Slider Images --------------------->
   @if (!$slideritems->isEmpty())

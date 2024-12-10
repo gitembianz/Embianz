@@ -25,6 +25,9 @@ return new class extends Migration
             $table->integer('promotion_cart_amount')->nullable();
             $table->integer('promotion_value')->nullable();
             $table->integer('promotion_percent')->nullable();
+            $table->boolean('active')->nullable()->default(
+                true
+            );
             $table->timestamps();
         });
     }
