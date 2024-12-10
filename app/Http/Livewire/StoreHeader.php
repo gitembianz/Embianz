@@ -121,6 +121,7 @@ class StoreHeader extends Component
       "promotion_expiration_date" => $expirationDate,
       "promotion_value" => $counterpromo['promotion_value'],
       "promotion_percent" => $counterpromo['promotion_percent'],
+      "active" => true
     ]);
   }
 

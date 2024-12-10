@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\UserSessions;
+use App\Models\UserPromotions;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 
 class CartProductsList extends Component
@@ -46,6 +47,22 @@ class CartProductsList extends Component
         if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
             $user = UserSessions::where('sessions', $this->session_id)->first();
             return $user->promotions;
+        } else {
+            return collect();
+        }
+    }
+
+    public function getGlobalPromotionsProperty()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+            return collect(app()->make('promotions'))
+                ->filter(function ($promotion) {
+                    return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+                        $promotion['start_date'] <= now()->format('Y-m-d') &&
+                        $promotion['end_date'] >= now()->format('Y-m-d') &&
+                        $promotion['type'] === 'amount';
+                });
         } else {
             return collect();
         }
@@ -194,9 +211,9 @@ class CartProductsList extends Component
                 $expirationDate = Carbon::parse($counterpromotion->promotion_expiration_date);
                 $now = Carbon::now();
 
-                if ($counterpromotion->promotion_value && $this->cart) {
+                if ($counterpromotion->promotion_value) {
                     $value += $counterpromotion->promotion_value;
-                } elseif ($counterpromotion->promotion_percent && $this->cart) {
+                } elseif ($counterpromotion->promotion_percent) {
                     $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
                 }
 
@@ -205,6 +222,20 @@ class CartProductsList extends Component
                     : 0;
             } else {
                 $this->timer = 0;
+            }
+
+            foreach ($this->promotions->where('promotion_type', 'amount') as $promo) {
+                if ($promo->promotion_cart_amount > $this->cart->sum_amount) {
+                    $promo->active = false;
+                    $promo->save();
+                }
+                if ($promo->active) {
+                    if ($promo->promotion_value) {
+                        $value += $promo->promotion_value;
+                    } elseif ($promo->promotion_percent) {
+                        $value += $this->cart->sum_amount * ($promo->promotion_percent / 100);
+                    }
+                }
             }
 
             $this->cart->update([
@@ -395,6 +426,13 @@ class CartProductsList extends Component
             $this->emit('newcart');
             return;
         }
+        foreach ($this->globalpromotions as $promo) {
+            if ($this->cart->sum_amount >= $promo['cart_amount']) {
+                $user = UserSessions::where('sessions', $this->session_id)->first();
+
+                $this->createPromotion($user->id, $promo);
+            }
+        }
         $this->checkpromotions();
     }
 
@@ -423,5 +461,38 @@ class CartProductsList extends Component
             return;
         }
         $this->checkpromotions();
+    }
+    private function createPromotion($userId, $promo)
+    {
+        // Check if the promotion already exists
+        $existingPromotion = UserPromotions::where('session_id', $userId)
+            ->where('promotion_id', $promo['id'])
+            ->first();
+
+        // Create or update the promotion
+        $promotion = UserPromotions::updateOrCreate(
+            [
+                'session_id' => $userId,
+                'promotion_id' => $promo['id'],
+            ],
+            [
+                "promotion_type" => $promo['type'],
+                "promotion_cookieid" => $promo['cookieid'],
+                "promotion_start_date" => $promo['start_date'],
+                "promotion_expiration_date" => $promo['end_date'],
+                "promotion_cooldown_timer" => $promo['cooldown_timer'],
+                "promotion_cart_amount" => $promo['cart_amount'],
+                "promotion_value" => $promo['promotion_value'],
+                "promotion_percent" => $promo['promotion_percent'],
+                "active" => true, // Always set 'active' to true
+            ]
+        );
+
+        // If the promotion was newly created, emit the event
+        if (!$existingPromotion) {
+            $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
+
+            $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
+        }
     }
 }

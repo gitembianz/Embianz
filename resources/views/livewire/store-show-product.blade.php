@@ -1,4 +1,5 @@
 <div id="store-show-product">
+
  @php
   if (app()->has('global_numberformat_element')) {
       if (app('global_numberformat_element') === '.') {

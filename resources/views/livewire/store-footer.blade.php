@@ -89,57 +89,59 @@
  </section>
  @if ($timer > 0)
   <script>
-   const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
-   let ticker;
+   document.addEventListener("DOMContentLoaded", function() {
+    const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
+    let ticker;
 
-   function startTimer(endTime) {
-    ticker = setInterval(() => tick(endTime), 1000);
-   }
-
-   function tick(endTime) {
-    const now = Math.floor(Date.now() / 1000);
-
-    let timeLeft = Math.max(endTime - now, 0);
-
-    if (timeLeft > 0) {
-     const days = Math.floor(timeLeft / 86400);
-     timeLeft %= 86400;
-     const hours = Math.floor(timeLeft / 3600);
-     timeLeft %= 3600;
-     const mins = Math.floor(timeLeft / 60);
-     const secs = timeLeft % 60;
-
-     let pretty = "";
-     if (days > 0) pretty += days + "d ";
-     if (hours > 0 || days > 0) pretty += hours + "h ";
-     if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
-     pretty += secs + "s";
-
-     document.getElementById("countdown").innerHTML = pretty;
-    } else {
-     clearInterval(ticker);
-     document.getElementById("countdown").innerHTML = "0s";
-     @this.call('timmerexpired');
-
+    function startTimer(endTime) {
+     ticker = setInterval(() => tick(endTime), 1000);
     }
-   }
 
-   function initTimer() {
-    const now = Math.floor(Date.now() / 1000);
+    function tick(endTime) {
+     const now = Math.floor(Date.now() / 1000);
 
-    const endTime = now + cooldownPeriod;
+     let timeLeft = Math.max(endTime - now, 0);
 
-    if (cooldownPeriod > 0) {
-     startTimer(endTime);
-    } else {
-     document.getElementById("countdown").innerHTML = "0s";
-     @this.call('timmerexpired');
+     if (timeLeft > 0) {
+      const days = Math.floor(timeLeft / 86400);
+      timeLeft %= 86400;
+      const hours = Math.floor(timeLeft / 3600);
+      timeLeft %= 3600;
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+
+      let pretty = "";
+      if (days > 0) pretty += days + "d ";
+      if (hours > 0 || days > 0) pretty += hours + "h ";
+      if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+      pretty += secs + "s";
+
+      document.getElementById("countdown").innerHTML = pretty;
+     } else {
+      clearInterval(ticker);
+      document.getElementById("countdown").innerHTML = "0s";
+      @this.call('timmerexpired');
+     }
     }
-   }
 
-   initTimer();
+    function initTimer() {
+     const now = Math.floor(Date.now() / 1000);
+
+     const endTime = now + cooldownPeriod;
+
+     if (cooldownPeriod > 0) {
+      startTimer(endTime);
+     } else {
+      document.getElementById("countdown").innerHTML = "0s";
+      @this.call('timmerexpired');
+     }
+    }
+
+    initTimer();
+   });
   </script>
  @endif
+
 
 
 
