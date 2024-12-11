@@ -3,6 +3,10 @@
  id="basketList">
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
+  <div wire:loading class="wire-loading-container">
+   <div class="spinner"></div>
+  </div>
+
   <div class="leftbar__top">
    <span id="price_change">
     @if (app()->has('label_cart_page_title'))
@@ -377,7 +381,7 @@
    </div>
    @if ($timer > 0 && $showcart)
     <script>
-     const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
+     const cooldownPeriod = {{ $timer }};
      let ticker;
 
      function startTimer(endTime) {
