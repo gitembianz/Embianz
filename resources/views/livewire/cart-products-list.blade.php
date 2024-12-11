@@ -3,7 +3,7 @@
  id="basketList">
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
-  <div wire:loading class="wire-loading-container">
+  <div wire:loading.delay wire:target="increment, decrement, remove" class="wire-loading-container">
    <div class="spinner"></div>
   </div>
 
