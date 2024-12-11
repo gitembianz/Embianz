@@ -1437,12 +1437,20 @@ input[type=checkbox]:checked:after {
 
 #cookie-banner {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100vw;
+  height: 100%;
   background-color: #012758;
   opacity: 90%;
-  z-index: 100;
+  z-index: 999;
+  display: none;
+  /* Start with hidden */
+}
+
+body.no-scroll {
+  overflow: hidden;
+  /* Prevent scrolling */
 }
 
 .cookie-btns {
@@ -1450,7 +1458,7 @@ input[type=checkbox]:checked:after {
   align-items: center;
   justify-content: center;
   gap: 25px;
-  flex-wrap: wrap;
+  flex-direction: row;
 }
 .cookie-btns > .button {
   font-size: 14px;
@@ -1460,6 +1468,19 @@ input[type=checkbox]:checked:after {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
+  position: relative;
+  width: 70vw;
+  max-width: 400px;
+  height: auto;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 6px;
+  gap: 10px;
+  color: black;
 }
 
 .cookie__description {
@@ -1467,11 +1488,11 @@ input[type=checkbox]:checked:after {
   margin-bottom: 10px;
 }
 .cookie__description > span {
-  color: #ffffff;
+  color: black;
   font-size: 14px;
 }
 .cookie__description > a {
-  color: #ffffff;
+  color: black;
   text-decoration: underline;
   font-size: 14px;
 }
@@ -1491,7 +1512,7 @@ input[type=checkbox]:checked:after {
 }
 .cookie__form--container > label > span,
 .cookie__form--container > label p {
-  color: #ffffff;
+  color: black;
   font-size: 14px;
 }
 .cookie__form--container > label p {
@@ -1514,7 +1535,7 @@ input[type=checkbox]:checked:after {
   gap: 25px;
   padding-top: 10px;
   padding-bottom: 10px;
-  border: 1px solid #ffffff;
+  border: 1px solid black;
   border-left: none;
   border-right: none;
   opacity: 1;
@@ -1541,31 +1562,45 @@ input[type=checkbox]:checked:after {
 }
 
 .cookie__button {
+  width: 50%;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 15px;
-  height: 40px;
+  border-radius: 3px;
+  background: #333333;
+  text-transform: uppercase;
+  border: none;
+  color: #ffffff;
+  text-align: center;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 3px;
-  color: #fafafa;
-  border: 1px solid #fafafa;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
 }
 .cookie__button:hover {
-  background-color: #efefef;
-  color: #012758;
+  background: #0d0d0d;
 }
 
 .cookie__button--accept {
-  background-color: #fafafa;
-  color: #012758;
+  width: 50%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: #333333;
+  text-transform: uppercase;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
 }
 .cookie__button--accept:hover {
-  background-color: #efefef;
-  color: #012758;
+  background: #0d0d0d;
 }
 
 .details {
