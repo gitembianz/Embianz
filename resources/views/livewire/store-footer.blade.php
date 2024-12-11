@@ -1,13 +1,14 @@
 <div>
  <section id="cookie-banner" style="display: none">
   @if ($timer > 0)
-   <div class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 200px">
+   <div class="container cookie__container" style="margin-top: 150px !important; margin-bottom: 100px">
     <div class="cookie__description">
      <span>
       @if (app()->has('label_promotion_counter_title'))
        {!! app('label_promotion_counter_title') !!}
       @endif
      </span>
+     <br>
      <span id="countdown" style="font-size: 30px;"></span>
     </div>
    </div>
@@ -143,7 +144,22 @@
  @endif
 
 
+ <script>
+  document.addEventListener('DOMContentLoaded', function() {
+   const cookieBanner = document.getElementById('cookie-banner');
+   const body = document.body;
 
+   // When the banner is displayed (e.g., with `display: block` in the script)
+   // Add 'no-scroll' class to the body to prevent scrolling
+   if (cookieBanner.style.display === 'block') {
+    body.classList.add('no-scroll');
+   } else {
+    body.classList.remove('no-scroll');
+
+   }
+
+  });
+ </script>
 
  <x-alert-newsletter />
 
