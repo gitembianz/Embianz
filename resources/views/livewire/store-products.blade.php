@@ -160,20 +160,19 @@
        }
       @endphp
       @if ($price)
-       {{-- Out- negru // save - rosu --}}
-       @if ($element->quantity < app('global_low_stock') && $element->quantity > 0)
-        <p class="card-status out">
+       @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
+        <p class="card-status save-secondary">
          @if (app()->has('label_product_status_stock'))
           {!! app('label_product_status_stock') !!}
          @endif
         </p>
         @if ($discount)
          <p class="card-status save-secondary">
-          -{{ $element->product_prices->first()->discount }}%
+          -{{ $product->product_prices->first()->discount }}%
          </p>
         @endif
-       @elseif($element->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
-        <p class="card-status out">
+       @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
+        <p class="card-status save-secondary">
          @if (app()->has('label_product_status_indisponible'))
           {!! app('label_product_status_indisponible') !!}
          @endif
@@ -181,7 +180,7 @@
        @else
         @if ($discount)
          <p class="card-status save">
-          -{{ $element->product_prices->first()->discount }}%
+          -{{ $product->product_prices->first()->discount }}%
          </p>
         @endif
        @endif
