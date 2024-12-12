@@ -13,7 +13,7 @@
     </div>
    </div>
   @endif
-  <div class="container cookie__container">
+  <div class="cookie__container">
 
    <div class="cookie__description">
     <span>
