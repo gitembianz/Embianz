@@ -45,6 +45,7 @@ class ShowProduct extends Component
       'product_name' => $this->product->name,
       'active' => $this->product->active == 1 ? true : false,
       'is_new' => $this->product->is_new == 1 ? true : false,
+      'low_stock' => $this->product->low_stock == 1 ? true : false,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,
@@ -111,6 +112,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('is_new', $product_new)) {
         $new->is_new = $product_new['is_new'];
+      }
+      if (array_key_exists('low_stock', $product_new)) {
+        $new->low_stock = $product_new['low_stock'];
       }
       if (array_key_exists('end_date', $product_new)) {
         $new->end_date = $product_new['end_date'];
