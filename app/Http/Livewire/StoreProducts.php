@@ -42,10 +42,10 @@ class StoreProducts extends Component
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items', 'display_variant_price')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items', 'display_variant_price')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find(app('global_default_category')) ?? null;
       }
     }
     if (isset($filteredValues['loadAmount'])) {

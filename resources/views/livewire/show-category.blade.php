@@ -100,7 +100,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->name }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.name" required>
+    <input type="text" wire:model.defer="cat.name" required>
    @endif
    <label for="category__name">Name</label>
   </div>
@@ -175,7 +175,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->start_date }}</span>
    @else
-    <input type="date" placeholder=" " name="category__name" wire:model.defer="cat.start_date" required>
+    <input type="date" wire:model.defer="cat.start_date" required>
    @endif
    <label for="category__name">Start Date</label>
   </div>
@@ -185,7 +185,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->end_date }}</span>
    @else
-    <input type="date" placeholder=" " name="category__name" wire:model.defer="cat.end_date" required>
+    <input type="date" wire:model.defer="cat.end_date" required>
    @endif
    <label for="category__name">End Date</label>
   </div>
@@ -196,7 +196,7 @@
     @if ($editcategory === null)
      <span class="disabled">{{ $category->slider_sequence }}</span>
     @else
-     <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.slider_sequence" required>
+     <input type="number" wire:model.defer="cat.slider_sequence" required>
     @endif
     <label for="category__name">Slider Sequence</label>
    </div>
@@ -206,7 +206,7 @@
     @if ($editcategory === null)
      <span class="disabled">{{ $category->sequence }}</span>
     @else
-     <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.sequence" required>
+     <input type="number" wire:model.defer="cat.sequence" required>
     @endif
     <label for="category__name">Sequence</label>
    </div>
@@ -218,7 +218,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->meta_description }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.meta_description" required>
+    <input type="text" wire:model.defer="cat.meta_description" required>
    @endif
    <label for="category__name">Meta Description</label>
   </div>
@@ -229,7 +229,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->short_description }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.short_description" required>
+    <input type="text" wire:model.defer="cat.short_description" required>
    @endif
    <label for="category__name">Short Description</label>
   </div>
@@ -252,9 +252,19 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->long_description }}</span>
    @else
-    <textarea type="text" placeholder=" " name="category__name" wire:model.defer="cat.long_description" required></textarea>
+    <textarea type="text" wire:model.defer="cat.long_description" required></textarea>
    @endif
    <label for="category__name">Long Description</label>
+  </div>
+
+  {{-- Category Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($editcategory === null)
+    <span class="disabled">{{ $category->long_description_bottom }}</span>
+   @else
+    <textarea type="text" wire:model.defer="cat.long_description_bottom" required></textarea>
+   @endif
+   <label for="category__name">Long Description Bottom</label>
   </div>
 
   {{-- Category Seo Title --}}
@@ -262,7 +272,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->seo_title }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.seo_title" required>
+    <input type="text" wire:model.defer="cat.seo_title" required>
    @endif
    <label for="category__name">Seo Title</label>
   </div>
@@ -272,7 +282,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->seo_id }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.seo_id" required>
+    <input type="text" wire:model.defer="cat.seo_id" required>
    @endif
    <label for="category__name">Friendly URL</label>
   </div>

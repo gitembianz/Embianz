@@ -1071,9 +1071,12 @@ input[type=checkbox]:checked:after {
   font-weight: 500;
   width: 100%;
   text-transform: none;
-  display: -webkit-box; /* Required for `-webkit-line-clamp` */
-  -webkit-box-orient: vertical; /* Specifies vertical box orientation */
-  overflow: hidden; /* Hides the overflowing text */
+  display: -webkit-box;
+  /* Required for `-webkit-line-clamp` */
+  -webkit-box-orient: vertical;
+  /* Specifies vertical box orientation */
+  overflow: hidden;
+  /* Hides the overflowing text */
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
@@ -1161,7 +1164,7 @@ input[type=checkbox]:checked:after {
 }
 .card-status.save-secondary {
   background: #d94d55;
-  top: 50px;
+  top: 55px;
 }
 .card-status.discount {
   background: #d94d55;
