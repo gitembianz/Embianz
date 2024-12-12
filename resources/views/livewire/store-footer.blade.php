@@ -1,16 +1,19 @@
 <div>
  <section id="cookie-banner" style="display: none">
   @if ($timer > 0)
-   <div class="container cookie__container" style="margin-top: 150px !important; margin-bottom: 100px">
+   <div wire:ignore class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 100px">
     <div class="cookie__description">
-     <span>
+     <span style="font-size: 25px;">
       @if (app()->has('label_promotion_counter_title'))
        {!! app('label_promotion_counter_title') !!}
       @endif
      </span>
-     <br>
+     <br><br>
      <span id="countdown" style="font-size: 30px;"></span>
     </div>
+   </div>
+  @else
+   <div class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 100px">
    </div>
   @endif
   <div class="cookie__container">
