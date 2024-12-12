@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('user_promotions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('session_id')->index()->nullable();
-            $table->foreign('session_id')->references('id')->on('user_sessions');
+            $table->foreign('session_id')->references('id')->on('user_sessions')->onDelete('cascade');
             $table->unsignedBigInteger('promotion_id')->index()->nullable();
-            $table->foreign('promotion_id')->references('id')->on('promotions');
+            $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
             $table->string('promotion_type')->nullable();
             $table->string('promotion_cookieid')->nullable();
             $table->dateTime('promotion_start_date')->nullable();
@@ -25,6 +25,9 @@ return new class extends Migration
             $table->integer('promotion_cart_amount')->nullable();
             $table->integer('promotion_value')->nullable();
             $table->integer('promotion_percent')->nullable();
+            $table->boolean('active')->nullable()->default(
+                true
+            );
             $table->timestamps();
         });
     }

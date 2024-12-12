@@ -144,10 +144,17 @@
    <span class="disabled">{{ $order->final_amount }}</span>
    <label>Final amount </label>
   </div>
-  {{-- Order Sum amount --}}
-  <div class="input__tabs">
-   <span class="disabled">{{ $order->delivery_price }}</span>
-   <label>Delivery Price </label>
+  <div class="details__checkboxes">
+
+   {{-- Order Sum amount --}}
+   <div class="input__tabs">
+    <span class="disabled">{{ $order->delivery_price }}</span>
+    <label>Delivery Price </label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $order->promotion_value }}</span>
+    <label>Promotion Value </label>
+   </div>
   </div>
   {{-- Order Currency --}}
   <div class="input__tabs">

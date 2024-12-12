@@ -62,6 +62,8 @@ class Category extends Model
     'parent',
     'active',
     'long_description',
+    'long_description_bottom',
+
     'meta_description',
     'short_description',
     'sequence',
@@ -91,7 +93,7 @@ class Category extends Model
               ->orWhere('name', 'like', '%' . $term . '%')
               ->orWhere('sequence', 'like', '%' . $term . '%')
               ->orWhere('short_description', 'like', '%' . $term . '%')
-            ->orWhereRaw("
+              ->orWhereRaw("
                             EXISTS (
                                 SELECT 1
                                 FROM (

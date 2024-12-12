@@ -47,6 +47,7 @@ class ShowCategory extends Component
       'short_description' => $this->category->short_description,
       'meta_description' => $this->category->meta_description,
       'long_description' => $this->category->long_description,
+      'long_description_bottom' => $this->category->long_description_bottom,
       'seo_title' => $this->category->seo_title,
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
@@ -125,6 +126,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('long_description', $category_new)) {
         $new->long_description = $category_new['long_description'];
+      }
+      if (array_key_exists('long_description_bottom', $category_new)) {
+        $new->long_description_bottom = $category_new['long_description_bottom'];
       }
       if (array_key_exists('seo_title', $category_new)) {
         $new->seo_title = $category_new['seo_title'];

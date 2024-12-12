@@ -95,7 +95,6 @@ class AdminController extends Controller
       "cooldown_timer" => $request->cooldown,
       "cart_amount" => $request->amount,
       "cookieid" => $innerid,
-      "cookie_time" => $request->cookie ??  30,
       "active" => $request->has('active'),
       "created_at" => now(),
       "updated_at" => now()
@@ -117,7 +116,7 @@ class AdminController extends Controller
   }
   public function show_session($id)
   {
-    $data = UserSessions::find($id);
+    $data = UserSessions::where('sessions', $id)->first();
     if ($data) {
 
       return view('admin.show_session', compact('data'));

@@ -3,6 +3,10 @@
  id="basketList">
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
+  <div wire:loading.delay wire:target="increment, decrement, remove" class="wire-loading-container">
+   <div class="spinner"></div>
+  </div>
+
   <div class="leftbar__top">
    <span id="price_change">
     @if (app()->has('label_cart_page_title'))
@@ -263,6 +267,19 @@
       @endif
      </span>
     </h5>
+    @if ($cart->promotion_value > 0)
+     <h5 class="leftbar__total--text">
+      @if (app()->has('label_cart_promotion_tag'))
+       {!! app('label_cart_promotion_tag') !!}
+      @endif
+      <span style="color: red">
+       -{{ number_format($cart->promotion_value, 2, $decimal, $mill) }}@if (app()->has('global_currency_primary_symbol'))
+        {!! app('global_currency_primary_symbol') !!}
+       @endif
+      </span>
+     </h5>
+    @endif
+
     @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
      <h5 class="leftbar__total--text">
       @if (app()->has('label_cart_delivery_tag'))
@@ -306,7 +323,7 @@
        {!! app('label_cart_total_tag') !!}
       @endif
       <span id="leftbarTotalPrice">
-       {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
+       {{ number_format($cart->final_amount - $cart->promotion_value, 2, $decimal, $mill) }}
        @if (app()->has('global_currency_primary_symbol'))
         {!! app('global_currency_primary_symbol') !!}
        @endif
@@ -330,6 +347,15 @@
       </div>
      @endif
     @endif
+    @if ($timer > 0)
+     <h5 wire:ignore class="leftbar__total--text" style="color:red">
+      @if (app()->has('label_cart_promotion_timer'))
+       {!! app('label_cart_promotion_timer') !!}
+      @endif
+      <span id="countdown_cart" style="color:red"></span>
+     </h5>
+    @endif
+
 
 
 
@@ -353,6 +379,61 @@
      </a>
     @endif
    </div>
+   @if ($timer > 0 && $showcart)
+    <script>
+     const cooldownPeriod = {{ $timer }};
+     let ticker;
+
+     function startTimer(endTime) {
+      ticker = setInterval(() => tick(endTime), 1000);
+     }
+
+     function tick(endTime) {
+      const now = Math.floor(Date.now() / 1000);
+
+      let timeLeft = Math.max(endTime - now, 0);
+
+      if (timeLeft > 0) {
+       const days = Math.floor(timeLeft / 86400);
+       timeLeft %= 86400;
+       const hours = Math.floor(timeLeft / 3600);
+       timeLeft %= 3600;
+       const mins = Math.floor(timeLeft / 60);
+       const secs = timeLeft % 60;
+
+       let pretty = "";
+       if (days > 0) pretty += days + "d ";
+       if (hours > 0 || days > 0) pretty += hours + "h ";
+       if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+       pretty += secs + "s";
+       if (document.getElementById("countdown_cart")) {
+
+        document.getElementById("countdown_cart").innerHTML = pretty;
+       }
+      } else {
+       clearInterval(ticker);
+       document.getElementById("countdown_cart").innerHTML = "0s";
+       @this.call('checkpromotions');
+
+      }
+     }
+
+     function initTimer() {
+      const now = Math.floor(Date.now() / 1000);
+
+      const endTime = now + cooldownPeriod;
+
+      if (cooldownPeriod > 0) {
+       startTimer(endTime);
+      } else {
+       document.getElementById("countdown_cart").innerHTML = "0s";
+       @this.call('checkpromotions');
+      }
+     }
+
+     initTimer();
+    </script>
+   @endif
 
    <script>
     document.getElementById('headerContinue').addEventListener('click', function() {
@@ -422,6 +503,8 @@
     entries.forEach(entry => {
      if (entry.isIntersecting) {
       @this.call('pricechanged');
+      @this.call('checkpromotions');
+
      }
     });
    });

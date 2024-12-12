@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
+use App\Models\UserSessions;
+use App\Models\UserPromotions;
 use Illuminate\Support\Facades\DB;
 
 
@@ -17,31 +20,64 @@ class CartProductsList extends Component
     public $message = null;
     public $cartmodified = false;
     public $session_id;
+    public $timer = 0;
 
     protected $listeners = [
         'showcart' => 'cartshow',
-        'orderprocess' => 'orderprocess',
+        'orderprocess' => 'mount',
         'newcartlist' => 'mount',
         'cartUpdated' => 'mount',
+        'timmerexpired' => 'checkpromotions',
+
     ];
     public function render()
     {
-        if ($this->showcart) {
+        return view('livewire.cart-products-list', [
+            'cart' => $this->showcart ? $this->cart : null,
+        ]);
+    }
+    public function mount()
+    {
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+        $this->message = null;
+        $this->voucher = "";
+    }
 
-            return view('livewire.cart-products-list', [
-                'cart' => $this->cart,
-            ]);
+    public function getPromotionsProperty()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
+            $user = UserSessions::where('sessions', $this->session_id)->first();
+            return $user->promotions;
         } else {
-            return view('livewire.cart-products-list');
+            return collect();
         }
     }
+
+    public function getGlobalPromotionsProperty()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+            return collect(app()->make('promotions'))
+                ->filter(function ($promotion) {
+                    return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+                        $promotion['start_date'] <= now()->format('Y-m-d') &&
+                        $promotion['end_date'] >= now()->format('Y-m-d') &&
+                        $promotion['type'] === 'amount';
+                });
+        } else {
+            return collect();
+        }
+    }
+
+
+
     public function getCartProperty()
     {
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
             $cachedProducts = app()->make('cached_products')->keyBy('id');
 
-            $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+            $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
                 ->where('session_id', $this->session_id)
                 ->where('status_id', '!=', app('global_cart_closed'))
                 ->with([
@@ -65,7 +101,7 @@ class CartProductsList extends Component
 
             return $cart;
         } else {
-            return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+            return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
                 ->where('session_id', $this->session_id)
                 ->where('status_id', '!=', app('global_cart_closed'))
                 ->with([
@@ -107,67 +143,93 @@ class CartProductsList extends Component
         $this->voucher = "";
         $this->emit('cartUpdated');
     }
+    private function calculateVoucherValue($voucher, $sumAmount)
+    {
+        return $voucher->percent !== null
+            ? ($voucher->percent / 100) * $sumAmount
+            : min($voucher->value, $sumAmount);
+    }
     public function checkvoucher()
     {
-        if ($this->cart) {
-            $voucher = Voucher::where('code', $this->voucher)
-                ->where('status_id', app('global_voucher_active'))
-                ->where('start_date', '<=',  now()->format('Y-m-d'))
-                ->where('end_date', '>=',  now()->format('Y-m-d'))
-                ->first();
-            if ($voucher) {
-                if ($voucher && $voucher->percent !== null) {
-                    $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
-
-                    $this->cart->update([
-                        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $discountAmount),
-                        'voucher_id' => $voucher->id,
-                        'voucher_value' => $discountAmount,
-                        'updated_at' => now(),
-                    ]);
-                } else {
-                    if ($voucher->value > $this->cart->sum_amount) {
-                        $this->message = null;
-                        $this->cart->update([
-                            'final_amount' =>  app('global_delivery_price'),
-                            'voucher_id' => $voucher->id,
-                            'voucher_value' => $voucher->value,
-                            'updated_at' => now(),
-                        ]);
-                    } else {
-                        $this->message = null;
-                        $this->cart->update([
-                            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
-                            'voucher_id' => $voucher->id,
-                            'voucher_value' => $voucher->value,
-                            'updated_at' => now(),
-                        ]);
-                    }
-                }
-            } else {
-                $this->message = "Voucher-ul '" . $this->voucher .  "' nu a fost gasit!";
-                $this->voucher = "";
-                return false;
-            }
-            $this->emit('cartUpdated');
-            $this->voucher = "";
-            return true;
-        } else {
+        if (!$this->cart) {
             $this->message = null;
             $this->emit('newcart');
             return;
         }
-    }
-    public function orderprocess()
-    {
-        $this->mount();
+
+        $voucher = Voucher::where('code', $this->voucher)
+            ->where('status_id', app('global_voucher_active'))
+            ->where('start_date', '<=', now()->format('Y-m-d'))
+            ->where('end_date', '>=', now()->format('Y-m-d'))
+            ->first();
+
+        if ($voucher) {
+            $discount = $this->calculateVoucherValue($voucher, $this->cart->sum_amount);
+            $this->cart->update([
+                'final_amount' => $this->cart->sum_amount + app('global_delivery_price') - $discount,
+                'voucher_id' => $voucher->id,
+                'voucher_value' => $discount,
+                'updated_at' => now(),
+            ]);
+            $this->message = null;
+            $this->emit('cartUpdated');
+            $this->voucher = "";
+            return true;
+        } else {
+            $this->message = "Voucher-ul '" . $this->voucher . "' nu a fost găsit!";
+            $this->voucher = "";
+            return false;
+        }
     }
 
-    public function updatingShowcart()
+    public function checkpromotions()
     {
-        $this->message = null;
-        $this->voucher = "";
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === "true" && $this->cart) {
+            $value = 0;
+
+            $counterpromotion = optional($this->promotions)
+                ->where('promotion_type', 'counter')
+                ->first();
+
+            if ($counterpromotion && Carbon::parse($counterpromotion->promotion_expiration_date)->isFuture()) {
+                $expirationDate = Carbon::parse($counterpromotion->promotion_expiration_date);
+                $now = Carbon::now();
+
+                if ($counterpromotion->promotion_value) {
+                    $value += $counterpromotion->promotion_value;
+                } elseif ($counterpromotion->promotion_percent) {
+                    $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
+                }
+
+                $this->timer = $expirationDate->greaterThan($now)
+                    ? $expirationDate->diffInSeconds($now)
+                    : 0;
+            } else {
+                $this->timer = 0;
+            }
+
+            foreach ($this->promotions->where('promotion_type', 'amount') as $promo) {
+                if ($promo->promotion_cart_amount > $this->cart->sum_amount) {
+                    $promo->active = false;
+                    $promo->save();
+                }
+                if ($promo->active) {
+                    if ($promo->promotion_value) {
+                        $value += $promo->promotion_value;
+                    } elseif ($promo->promotion_percent) {
+                        $value += $this->cart->sum_amount * ($promo->promotion_percent / 100);
+                    }
+                }
+            }
+
+            $this->cart->update([
+                'promotion_value' => $value
+            ]);
+
+            $this->mount();
+        }
     }
+
 
     public function seen()
     {
@@ -178,10 +240,8 @@ class CartProductsList extends Component
         return;
     }
 
-    public function mount()
-    {
-        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-    }
+
+
 
     public function pricechanged()
     {
@@ -248,6 +308,7 @@ class CartProductsList extends Component
                 ]);
                 $cartItem->delete();
                 $this->emit('cartUpdated');
+                $this->emit('timmerexpired');
             }
         }
     }
@@ -307,6 +368,14 @@ class CartProductsList extends Component
             return redirect()->route('order');
         }
     }
+
+    private function updateCartTotals()
+    {
+        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value;
+        $this->cart->status_id = app('global_cart_new');
+        $this->cart->save();
+        $this->emit('cartUpdated');
+    }
     public function increment($id)
     {
         if ($this->cart) {
@@ -340,6 +409,14 @@ class CartProductsList extends Component
             $this->emit('newcart');
             return;
         }
+        foreach ($this->globalpromotions as $promo) {
+            if ($this->cart->sum_amount >= $promo['cart_amount']) {
+                $user = UserSessions::where('sessions', $this->session_id)->first();
+
+                $this->createPromotion($user->id, $promo);
+            }
+        }
+        $this->checkpromotions();
     }
 
     public function decrement($id)
@@ -365,6 +442,40 @@ class CartProductsList extends Component
         } else {
             $this->emit('newcart');
             return;
+        }
+        $this->checkpromotions();
+    }
+    private function createPromotion($userId, $promo)
+    {
+        // Check if the promotion already exists
+        $existingPromotion = UserPromotions::where('session_id', $userId)
+            ->where('promotion_id', $promo['id'])
+            ->first();
+
+        // Create or update the promotion
+        $promotion = UserPromotions::updateOrCreate(
+            [
+                'session_id' => $userId,
+                'promotion_id' => $promo['id'],
+            ],
+            [
+                "promotion_type" => $promo['type'],
+                "promotion_cookieid" => $promo['cookieid'],
+                "promotion_start_date" => $promo['start_date'],
+                "promotion_expiration_date" => $promo['end_date'],
+                "promotion_cooldown_timer" => $promo['cooldown_timer'],
+                "promotion_cart_amount" => $promo['cart_amount'],
+                "promotion_value" => $promo['promotion_value'],
+                "promotion_percent" => $promo['promotion_percent'],
+                "active" => true, // Always set 'active' to true
+            ]
+        );
+
+        // If the promotion was newly created, emit the event
+        if (!$existingPromotion) {
+            $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
+
+            $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
         }
     }
 }

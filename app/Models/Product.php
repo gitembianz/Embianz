@@ -30,7 +30,8 @@ class Product extends Model
     'parent_id',
     'brand',
     'innerid',
-    'comments'
+    'comments',
+    'low_stock'
   ];
 
   public static function search($search)

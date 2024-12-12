@@ -14,8 +14,8 @@
    </p>
   </div>
   <button class="newsletter__close" aria-label="Close Newsletter">
-   @if (app()->has('newsletter_close_button'))
-    {!! app('newsletter_close_button') !!}
+   @if (app()->has('label_newsletter_close_button'))
+    {!! app('label_newsletter_close_button') !!}
    @endif
   </button>
  </div>

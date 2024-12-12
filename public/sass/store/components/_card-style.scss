@@ -29,7 +29,7 @@
   // }
 }
 
-.card--category{
+.card--category {
   flex-direction: row;
   text-decoration: none;
   gap: 10px;
@@ -46,22 +46,23 @@
     pointer-events: none;
     mix-blend-mode: multiply;
   }
-  &>.card-info{
+
+  &>.card-info {
     justify-content: space-evenly;
 
-    &>.card-title{
+    &>.card-title {
       font-size: 16px;
       font-weight: 500;
-      
+
     }
 
-    &>p{
+    &>p {
       font-size: 14px;
       font-weight: 400;
       color: $lightBlack;
       text-wrap: balance;
 
-      &>b{
+      &>b {
         font-size: 14px;
         font-weight: 400;
         color: $lightBlack;
@@ -106,10 +107,10 @@
   letter-spacing: 0.5px;
 
   .categorylink {
-      color:$darkGray;
-      text-decoration: none;
-      font-weight: 500;
-      align-self:flex-start;
+    color: $darkGray;
+    text-decoration: none;
+    font-weight: 500;
+    align-self: flex-start;
   }
 
   p {
@@ -120,6 +121,7 @@
     &.sale {
       color: $darkRed;
     }
+
     @media (max-width: map-get($grid-breakpoints, md)) {
       font-size: 12px;
       font-weight: 500;
@@ -128,26 +130,30 @@
     }
   }
 
-  & > h3,
-  & > h2 {
+  &>h3,
+  &>h2 {
     font-size: $textSize;
     color: $lightBlack;
     font-weight: $lightWeight;
     width: 100%;
     //flex: 1;
     text-transform: none;
-    display: -webkit-box;        /* Required for `-webkit-line-clamp` */
-    -webkit-box-orient: vertical; /* Specifies vertical box orientation */
-    overflow: hidden;            /* Hides the overflowing text */
+    display: -webkit-box;
+    /* Required for `-webkit-line-clamp` */
+    -webkit-box-orient: vertical;
+    /* Specifies vertical box orientation */
+    overflow: hidden;
+    /* Hides the overflowing text */
     -webkit-line-clamp: 3;
     line-clamp: 3;
   }
 
-  & > span {
+  &>span {
     color: $darkGray;
     font-size: $spanSize;
     font-weight: $lightWeight;
   }
+
   @media (max-width: map-get($grid-breakpoints, md)) {
     flex-direction: column;
     align-items: flex-start;
@@ -230,7 +236,7 @@
 
   &.save-secondary {
     background: $darkRed;
-    top: 50px;
+    top: 55px;
   }
 
   &.discount {
@@ -287,60 +293,69 @@
   }
 
 
-	&.in {
+  &.in {
     // animation 2s
     $timing: 1500ms;
-		& > .card__button--text {
-			animation: textIn $timing ease-out forwards;
-		}
-		& > .card__button--cart {
-			animation: cartIn $timing ease-out forwards calc($timing / 12);
-		}
-		& > .card__button--gift {
-			animation: giftIn $timing ease-out forwards calc($timing / 12);
-		}
 
-	}
-	&::after {
-		content: '';
-		left: 50%;
-		bottom: 5px;
-		position: absolute;
-		width: 90%;
-		height: 2px;
-		transform: translateX(-50%);
-		background: #fafafa;
-		opacity: 1;
-	}
+    &>.card__button--text {
+      animation: textIn $timing ease-out forwards;
+    }
+
+    &>.card__button--cart {
+      animation: cartIn $timing ease-out forwards calc($timing / 12);
+    }
+
+    &>.card__button--gift {
+      animation: giftIn $timing ease-out forwards calc($timing / 12);
+    }
+
+  }
+
+  &::after {
+    content: '';
+    left: 50%;
+    bottom: 5px;
+    position: absolute;
+    width: 90%;
+    height: 2px;
+    transform: translateX(-50%);
+    background: #fafafa;
+    opacity: 1;
+  }
 }
+
 .card__button--cart {
-	position: absolute;
-	bottom: 5px;
-	left: -150%;
-	transform: translateX(-50%);
-  & >svg{
+  position: absolute;
+  bottom: 5px;
+  left: -150%;
+  transform: translateX(-50%);
+
+  &>svg {
     stroke: $background;
   }
 }
+
 .card__button--gift {
-	position: absolute;
-	bottom: 100px;
-	left: 49%;
-	scale: 0.5;
-	transform: translateX(-50%);
-  & >svg{
+  position: absolute;
+  bottom: 100px;
+  left: 49%;
+  scale: 0.5;
+  transform: translateX(-50%);
+
+  &>svg {
     stroke: $background;
   }
 }
+
 .card__button--text {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: #fafafa;
-	font-size: 14px;
-	font-weight: 500;
-	text-transform: uppercase;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fafafa;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
   width: 100%;
   height: 100%;
   display: flex;
@@ -353,25 +368,29 @@
     font-size: 12px;
   }
 }
+
 @keyframes textIn {
-	0% {
-		top: 50%;
-		left: 50%;
+  0% {
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(1);
-	}
-	20% {
-		top: 150%;
-		left: 50%;
+  }
+
+  20% {
+    top: 150%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
-	}
-	80% {
-		top: 150%;
-		left: 50%;
+  }
+
+  80% {
+    top: 150%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
-	}
-	100% {
-		top: 50%;
-		left: 50%;
+  }
+
+  100% {
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(1);
   }
 }
@@ -379,45 +398,51 @@
 
 @keyframes cartIn {
   0% {
-		bottom: 5px;
-		left: -150%;
-		transform: translateX(-50%);
-	}
-	30% {
-		bottom: 5px;
-		left: 50%;
-		transform: translateX(-50%);
-	}
+    bottom: 5px;
+    left: -150%;
+    transform: translateX(-50%);
+  }
+
+  30% {
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   70% {
-		bottom: 5px;
-		left: 50%;
-		transform: translateX(-50%);
-	}
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   100% {
-		bottom: 5px;
-		left: 150%;
-		transform: translateX(-50%);
-	}
+    bottom: 5px;
+    left: 150%;
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes giftIn {
-	0% {
-		bottom: 100px;
+  0% {
+    bottom: 100px;
     left: 50%;
-	}
-	30% {
-		bottom: 8px;
+  }
+
+  30% {
+    bottom: 8px;
     left: 50%;
-	}
+  }
+
   70% {
-		bottom: 8px;
+    bottom: 8px;
     left: 50%;
-	}
-	100% {
-		bottom: 5px;
-		left: 150%;
-		transform: translateX(-50%);
-	}
+  }
+
+  100% {
+    bottom: 5px;
+    left: 150%;
+    transform: translateX(-50%);
+  }
 }
 
 
