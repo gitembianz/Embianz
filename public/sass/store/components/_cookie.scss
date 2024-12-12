@@ -1,53 +1,46 @@
 #cookie-banner {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-color: $lightBlack;
-  opacity: 90%;
+  background: rgba(0, 0, 0, 0.9);
   z-index: 999;
   display: none;
+  align-items: center;
+  justify-content: center;
   /* Start with hidden */
 }
 
-body.no-scroll {
-  overflow: hidden;
-  /* Prevent scrolling */
-}
-
-.cookie-btns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  flex-direction: row;
-
-  &>.button {
-    font-size: $textSize;
-  }
-}
-
 .cookie__container {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  position: relative;
-  width: 80vw;
-  max-width: 500px;
-  height: 98vh;
-  background-color: #fafafa;
+  position: absolute;
   display: flex;
+  opacity: 1;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
-  padding: 10px;
+  overflow: auto;
+  box-sizing: border-box;
+  width: auto;
+  min-height: 100px;
+  max-width: 500px;
+  min-width: 350px;
+  background-color: #fafafa;
+  padding: 20px 10px;
   border-radius: 6px;
-  gap: 20px;
   color: black;
+  text-align: center;
+  flex-direction: column;
 }
 
 .cookie__description {
+  opacity: 1;
+  touch-action: manipulation !important;
+  padding-bottom: 20px;
+  margin: 0;
   text-align: center;
   margin-bottom: 10px;
 
@@ -63,14 +56,36 @@ body.no-scroll {
   }
 }
 
+body.no-scroll {
+  overflow: hidden;
+  /* Prevent scrolling */
+}
+
+.cookie-btns {
+  display: flex;
+  opacity: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  flex-direction: row;
+
+  &>.button {
+    font-size: $textSize;
+  }
+}
+
+
+
+
+
 .cookie__form--container {
+  opacity: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
-  opacity: 0;
   visibility: hidden;
 
   &>label {
@@ -91,6 +106,7 @@ body.no-scroll {
 
 .cookie__form {
   width: 100%;
+  opacity: 1;
   display: grid;
   grid-template-rows: 0fr;
   transition: all 0.4s ease-in-out;
@@ -145,45 +161,62 @@ body.no-scroll {
 }
 
 .cookie__button {
+  opacity: 1;
   width: 50%;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  background: $text;
+  background-color: $primary;
   text-transform: uppercase;
   border: none;
-  color: $background;
+  color: $lightBlack;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
+  border: 1px solid $lightBlack;
   transition: background 0.3s ease-in-out;
   cursor: pointer;
 
-  &:hover {
-    background: darken($text, 15%);
-  }
+
 }
 
 .cookie__button--accept {
-  width: 50%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 3px;
-  background: $text;
-  text-transform: uppercase;
-  border: none;
-  color: $background;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background 0.3s ease-in-out;
-  cursor: pointer;
 
-  &:hover {
-    background: darken($text, 15%);
-  }
+
+  color: $background;
+  background: $ctalight;
+
+
 }
+
+// .cookie__button {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 0 15px;
+//   height: 40px;
+//   font-size: $textSize;
+//   font-weight: $lightWeight;
+//   border-radius: 3px;
+//   color: $primary;
+//   border: 1px solid $primary;
+//   background-color: transparent;
+//   transition: all 0.3s ease-in-out;
+
+//   &:hover {
+//     background-color: $secondary;
+//     color: $lightBlack;
+//   }
+// }
+
+// .cookie__button--accept {
+//   background-color: $primary;
+//   color: $lightBlack;
+
+//   &:hover {
+//     background-color: $secondary;
+//     color: $lightBlack;
+//   }
+// }
