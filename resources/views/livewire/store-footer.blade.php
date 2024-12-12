@@ -1,22 +1,17 @@
 <div>
  <section id="cookie-banner" style="display: none">
-  @if ($timer > 0)
-   <div wire:ignore class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 100px">
+  <div class="container cookie__container">
+   @if ($timer > 0)
     <div class="cookie__description">
-     <span style="font-size: 25px;">
+     <p style="border: none">
       @if (app()->has('label_promotion_counter_title'))
        {!! app('label_promotion_counter_title') !!}
       @endif
-     </span>
+     </p>
      <br><br>
-     <span id="countdown" style="font-size: 30px;"></span>
+     <span id="countdown" style="font-size: 30px; text-decoration:none!important"></span>
     </div>
-   </div>
-  @else
-   <div class="container cookie__container" style="margin-top: 200px !important; margin-bottom: 100px">
-   </div>
-  @endif
-  <div class="cookie__container">
+   @endif
 
    <div class="cookie__description">
     <span>
@@ -91,6 +86,23 @@
 
 
  </section>
+ <script>
+  document.addEventListener('DOMContentLoaded', function() {
+   const cookieBanner = document.getElementById('cookie-banner');
+   const body = document.body;
+   const acceptCookies = document.getElementById('accept-cookies');
+
+   acceptCookies.addEventListener('click', function() {
+    body.classList.remove('no-scroll');
+   });
+
+   if (window.getComputedStyle(cookieBanner).display === 'block') {
+    body.classList.add('no-scroll');
+   } else {
+    body.classList.remove('no-scroll');
+   }
+  });
+ </script>
  @if ($timer > 0)
   <script>
    document.addEventListener("DOMContentLoaded", function() {
@@ -103,9 +115,7 @@
 
     function tick(endTime) {
      const now = Math.floor(Date.now() / 1000);
-
      let timeLeft = Math.max(endTime - now, 0);
-
      if (timeLeft > 0) {
       const days = Math.floor(timeLeft / 86400);
       timeLeft %= 86400;
@@ -113,13 +123,11 @@
       timeLeft %= 3600;
       const mins = Math.floor(timeLeft / 60);
       const secs = timeLeft % 60;
-
       let pretty = "";
       if (days > 0) pretty += days + "d ";
       if (hours > 0 || days > 0) pretty += hours + "h ";
       if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
       pretty += secs + "s";
-
       document.getElementById("countdown").innerHTML = pretty;
      } else {
       clearInterval(ticker);
@@ -130,9 +138,7 @@
 
     function initTimer() {
      const now = Math.floor(Date.now() / 1000);
-
      const endTime = now + cooldownPeriod;
-
      if (cooldownPeriod > 0) {
       startTimer(endTime);
      } else {
@@ -140,7 +146,6 @@
       @this.call('timmerexpired');
      }
     }
-
     initTimer();
    });
   </script>
@@ -151,16 +156,13 @@
   document.addEventListener('DOMContentLoaded', function() {
    const cookieBanner = document.getElementById('cookie-banner');
    const body = document.body;
-
    // When the banner is displayed (e.g., with `display: block` in the script)
    // Add 'no-scroll' class to the body to prevent scrolling
    if (cookieBanner.style.display === 'block') {
     body.classList.add('no-scroll');
    } else {
     body.classList.remove('no-scroll');
-
    }
-
   });
  </script>
 
@@ -250,4 +252,3 @@
    </span>
   </div>
  </footer>
-</div>
