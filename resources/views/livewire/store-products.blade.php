@@ -366,6 +366,14 @@
    </section>
   @endif
  @endif
+ <!----------------------Categorie + detalii--------------------->
+ @if ($category)
+  <section class="section__header container">
+   <p class="section__text">
+    {!! $category->long_description_bottom !!}
+   </p>
+  </section>
+ @endif
 
  <!---------------------------Filters------------------------->
  <div class="filter" id="filterList" wire:ignore>
