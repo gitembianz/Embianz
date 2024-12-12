@@ -3,12 +3,12 @@
   <div class="container cookie__container">
    @if ($timer > 0)
     <div class="cookie__description">
-     <p style="border: none">
+     <span style="border: none">
       @if (app()->has('label_promotion_counter_title'))
        {!! app('label_promotion_counter_title') !!}
       @endif
-     </p>
-     <br><br>
+     </span>
+     <br>
      <span id="countdown" style="font-size: 30px; text-decoration:none!important"></span>
     </div>
    @endif
