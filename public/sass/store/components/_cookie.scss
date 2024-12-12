@@ -5,8 +5,14 @@
   height: 100%;
   width: 100vw;
   background-color: $lightBlack;
-  opacity: 80%;
+  opacity: 95%;
   z-index: 999;
+  display: none;
+}
+
+body.no-scroll {
+  overflow: hidden;
+  /* Prevent scrolling */
 }
 
 .cookie-btns {
