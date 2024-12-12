@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\UserPromotions;
 use App\Models\UserSessions;
 
 class StoreHeader extends Component
@@ -48,38 +49,83 @@ class StoreHeader extends Component
     ];
     return view('livewire.store-header', $data);
   }
+
   public function mount()
   {
     $this->session_id = $this->getSessionId();
 
-    if ($this->promotion->first()) {
-      $firstPromotion = $this->promotion->first();
+    $counterpromo = $this->promotion->first();
+    if (!$counterpromo) {
+      return;
+    }
 
-      if ($firstPromotion['cookieid'] && $firstPromotion['cookie_time']) {
-        $promotionCookieId = $firstPromotion['cookieid'];
+    $period = app()->has('global_cookie_max_ages') ? app('global_cookie_max_ages') : 30;
 
-        $existingCookieId = request()->cookie('pcid');
+    if ($counterpromo['cookieid']) {
+      $promotionCookieId = $counterpromo['cookieid'];
+      $existingCookieId = request()->cookie('pcid');
+      $promotionCooldown = $counterpromo['cooldown_timer'];
+      $expirationDate = now()->addMinutes($promotionCooldown);
 
-        if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
-          cookie()->queue(
-            'pcid',
-            $promotionCookieId,
-            60 * $firstPromotion['cookie_time']
-          );
+      $user = UserSessions::where('sessions', $this->session_id)->first();
 
-          $promotionCooldown = $firstPromotion['cooldown_timer'];
-          $expirationDate = now()->addSeconds($promotionCooldown * 60);
+      if (!$user) {
+        return;
+      }
 
-          UserSessions::where('sessions', $this->session_id)->update([
-            "promotion_cookieid" => $promotionCookieId,
-            "promotion_start_date" => now(),
-            "promotion_cooldown_timer" => $promotionCooldown,
-            "promotion_expiration_date" => $expirationDate,
-          ]);
+      $existingPromotion = optional($user->promotions)
+        ->where('promotion_type', 'counter')
+        ->first();
+
+      if (!$existingCookieId || $existingCookieId !== $promotionCookieId) {
+        if ($existingPromotion) {
+          if ($existingPromotion->promotion_cookieid !== $promotionCookieId) {
+            $existingPromotion->update([
+              "promotion_cookieid" => $promotionCookieId,
+              "promotion_start_date" => now(),
+              "promotion_cooldown_timer" => $promotionCooldown,
+              "promotion_expiration_date" => $expirationDate,
+              "promotion_value" => $counterpromo['promotion_value'],
+              "promotion_percent" => $counterpromo['promotion_percent'],
+            ]);
+          }
+        } else {
+          $this->createPromotion($user->id, $counterpromo, $promotionCookieId, $promotionCooldown, $expirationDate);
         }
+
+        cookie()->queue('pcid', $promotionCookieId, $period * 60);
+      } elseif (!$existingPromotion) {
+        $this->createPromotion($user->id, $counterpromo, $promotionCookieId, $promotionCooldown, $expirationDate);
       }
     }
   }
+  /**
+   * Create a new promotion record in the database.
+   *
+   * @param int $userId
+   * @param array $counterpromo
+   * @param string $promotionCookieId
+   * @param int $promotionCooldown
+   * @param \Illuminate\Support\Carbon $expirationDate
+   * @return void
+   */
+  private function createPromotion($userId, $counterpromo, $promotionCookieId, $promotionCooldown, $expirationDate)
+  {
+    UserPromotions::create([
+      "session_id" => $userId,
+      "promotion_id" => $counterpromo['id'],
+      "promotion_type" => $counterpromo['type'],
+      "promotion_cookieid" => $promotionCookieId,
+      "promotion_start_date" => now(),
+      "promotion_cooldown_timer" => $promotionCooldown,
+      "promotion_expiration_date" => $expirationDate,
+      "promotion_value" => $counterpromo['promotion_value'],
+      "promotion_percent" => $counterpromo['promotion_percent'],
+      "active" => true
+    ]);
+  }
+
+
 
 
   public function getCartProperty()

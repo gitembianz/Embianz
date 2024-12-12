@@ -58,8 +58,12 @@
  <meta property="twitter:description" content="{{ $description }}" />
 
 
+
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
+ @endif
+ @if (app()->has('global_confetti') && app('global_confetti') === 'true')
+  <script src="/script/confetti.js"></script>
  @endif
  @livewireStyles
 </head>

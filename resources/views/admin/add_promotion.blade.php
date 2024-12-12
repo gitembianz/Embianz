@@ -31,17 +31,14 @@
   </button>
  </nav>
 
- {{-- Tabs Body (Details) --}}
  <section style="height: calc(100% - 107.5px);" class="tabs__content details__view active">
   @csrf
 
-  {{-- Name --}}
   <div class="input__tabs">
    <input type="text" name="name" value="{{ old('name') }}">
    <label>Name</label>
   </div>
 
-  {{-- Type --}}
   <div class="input__tabs">
    <select name="type" value="{{ old('type') }}">
     <option selected value="counter">counter</option>
@@ -50,56 +47,43 @@
    <label>Type</label>
   </div>
 
-  {{-- Details --}}
   <div class="textarea__tabs details__long">
    <textarea name="details">{{ old('details') }}</textarea>
    <label>Details</label>
   </div>
-  {{-- Percent --}}
+
   <div class="input__tabs">
    <input type="number" name="percent" value="{{ old('percent') }}">
    <label>Percent %</label>
   </div>
 
-  {{-- Value --}}
   <div class="input__tabs">
    <input type="number" name="value" value="{{ old('value') }}">
    <label>Value</label>
   </div>
   <div class="details__checkboxes">
 
-   {{-- promotion Start Date --}}
    <div class="input__tabs">
     <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
     <label>Start Date</label>
    </div>
 
-   {{-- promotion End Date --}}
    <div class="input__tabs">
     <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
     <label>End Date</label>
    </div>
   </div>
 
-
-  {{-- promotion Popularity --}}
   <div class="input__tabs">
    <input type="number" min="0" name="cooldown" value="{{ old('cooldown') }}">
    <label>Cooldowm Timer(min)</label>
   </div>
-  {{-- promotion Popularity --}}
   <div class="input__tabs">
    <input type="number" min="0" name="amount" value="{{ old('amount') }}">
    <label>Cart Amount</label>
   </div>
 
-  <div class="input__tabs">
-   <input type="number" min="0" name="cookie" value="{{ old('cookie') }}">
-   <label>Cookie time(days)</label>
-  </div>
   <div class="details__checkboxes">
-
-   {{-- promotion Active --}}
    <div class="checkbox__details ">
     <input type="checkbox" id="active" name="active" value="{{ old('active') }}" />
     <label for="active">Active</label>

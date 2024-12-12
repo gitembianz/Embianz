@@ -140,6 +140,20 @@
      <label for="isNew3">Is New</label>
     @endif
    </div>
+   <div class="checkbox__details">
+    @if ($editproduct === null)
+     @if ($product->low_stock)
+      <input type="checkbox" id="Lowstock1" checked class="disabled" disabled />
+      <label for="Lowstock1" class="disabled">Low Stock</label>
+     @else
+      <input type="checkbox" id="Lowstock2" class="disabled" disabled />
+      <label for="Lowstock2" class="disabled">Low Stock</label>
+     @endif
+    @else
+     <input type="checkbox" id="Lowstock3" wire:model.defer="prod.low_stock" />
+     <label for="Lowstock3">Low Stock</label>
+    @endif
+   </div>
    {{-- Product IsNew --}}
   </div>
   {{-- Product Brand --}}
@@ -186,6 +200,7 @@
    <label for="product__name">Popularity</label>
   </div>
   <div class="details__checkboxes">
+
    {{-- Product SKU --}}
    <div class="input__tabs">
     @if ($editproduct === null)

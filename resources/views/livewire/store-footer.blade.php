@@ -1,7 +1,18 @@
 <div>
  <section id="cookie-banner" style="display: none">
-  {{-- style="top: 0; z-index:400" --}}
   <div class="container cookie__container">
+   @if ($timer > 0)
+    <div class="cookie__description">
+     <span style="border: none">
+      @if (app()->has('label_promotion_counter_title'))
+       {!! app('label_promotion_counter_title') !!}
+      @endif
+     </span>
+     <br>
+     <span id="countdown" style="font-size: 30px; text-decoration:none!important"></span>
+    </div>
+   @endif
+
    <div class="cookie__description">
     <span>
      @if (app()->has('label_cookie_description'))
@@ -72,84 +83,88 @@
     </div>
    </div>
   </div>
-  {{-- <div class="container cookie__container" style="margin-top: 200px !important">
-   <div class="cookie__description">
 
-    <span id="countdown" style="font-size: 30px;">timer</span>
-   </div>
-  </div> --}}
 
  </section>
- {{-- @php
-  $timer = 500;
- @endphp
  <script>
-  const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds
-  let ticker;
+  document.addEventListener('DOMContentLoaded', function() {
+   const cookieBanner = document.getElementById('cookie-banner');
+   const body = document.body;
+   const acceptCookies = document.getElementById('accept-cookies');
 
-  function startTimer() {
-   ticker = setInterval(tick, 1000);
-  }
+   acceptCookies.addEventListener('click', function() {
+    body.classList.remove('no-scroll');
+   });
 
-  function tick() {
-   // Retrieve remaining time from localStorage
-   let timeLeft = parseInt(localStorage.getItem("timeLeft"), 10);
-
-   // If time is still left, decrement and update the display
-   if (timeLeft > 0) {
-    timeLeft--;
-    localStorage.setItem("timeLeft", timeLeft);
+   if (window.getComputedStyle(cookieBanner).display === 'block') {
+    body.classList.add('no-scroll');
    } else {
-    clearInterval(ticker); // Stop ticking when the timer reaches 0
-    document.getElementById("countdown").innerHTML = "0s";
-    return;
+    body.classList.remove('no-scroll');
    }
+  });
+ </script>
+ @if ($timer > 0)
+  <script>
+   document.addEventListener("DOMContentLoaded", function() {
+    const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
+    let ticker;
 
-   // Calculate days, hours, minutes, and seconds
-   const days = Math.floor(timeLeft / 86400);
-   timeLeft %= 86400;
-   const hours = Math.floor(timeLeft / 3600);
-   timeLeft %= 3600;
-   const mins = Math.floor(timeLeft / 60);
-   const secs = timeLeft % 60;
+    function startTimer(endTime) {
+     ticker = setInterval(() => tick(endTime), 1000);
+    }
 
-   // Build the display string dynamically
-   let pretty = "";
-   if (days > 0) pretty += days + "d ";
-   if (hours > 0 || days > 0) pretty += hours + "h ";
-   if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
-   pretty += secs + "s";
+    function tick(endTime) {
+     const now = Math.floor(Date.now() / 1000);
+     let timeLeft = Math.max(endTime - now, 0);
+     if (timeLeft > 0) {
+      const days = Math.floor(timeLeft / 86400);
+      timeLeft %= 86400;
+      const hours = Math.floor(timeLeft / 3600);
+      timeLeft %= 3600;
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      let pretty = "";
+      if (days > 0) pretty += days + "d ";
+      if (hours > 0 || days > 0) pretty += hours + "h ";
+      if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+      pretty += secs + "s";
+      document.getElementById("countdown").innerHTML = pretty;
+     } else {
+      clearInterval(ticker);
+      document.getElementById("countdown").innerHTML = "0s";
+      @this.call('timmerexpired');
+     }
+    }
 
-   document.getElementById("countdown").innerHTML = pretty;
-  }
+    function initTimer() {
+     const now = Math.floor(Date.now() / 1000);
+     const endTime = now + cooldownPeriod;
+     if (cooldownPeriod > 0) {
+      startTimer(endTime);
+     } else {
+      document.getElementById("countdown").innerHTML = "0s";
+      @this.call('timmerexpired');
+     }
+    }
+    initTimer();
+   });
+  </script>
+ @endif
 
-  function initTimer() {
-   const now = Math.floor(Date.now() / 1000); // Current time in seconds
-   const startTime = localStorage.getItem("startTime");
-   let timeLeft = localStorage.getItem("timeLeft");
 
-   if (!startTime) {
-    // First-time visit: Initialize startTime and remaining time
-    localStorage.setItem("startTime", now);
-    localStorage.setItem("timeLeft", cooldownPeriod);
-    timeLeft = cooldownPeriod;
+ <script>
+  document.addEventListener('DOMContentLoaded', function() {
+   const cookieBanner = document.getElementById('cookie-banner');
+   const body = document.body;
+   // When the banner is displayed (e.g., with `display: block` in the script)
+   // Add 'no-scroll' class to the body to prevent scrolling
+   if (cookieBanner.style.display === 'block') {
+    body.classList.add('no-scroll');
    } else {
-    // Calculate the remaining time based on the elapsed time
-    const elapsed = now - startTime;
-    timeLeft = Math.max(cooldownPeriod - elapsed, 0);
-    localStorage.setItem("timeLeft", timeLeft);
+    body.classList.remove('no-scroll');
    }
-
-   if (timeLeft > 0) {
-    startTimer(); // Start ticking only if there's time left
-   } else {
-    document.getElementById("countdown").innerHTML = "0s";
-   }
-  }
-
-  initTimer();
- </script> --}}
-
+  });
+ </script>
 
  <x-alert-newsletter />
 
@@ -237,4 +252,3 @@
    </span>
   </div>
  </footer>
-</div>

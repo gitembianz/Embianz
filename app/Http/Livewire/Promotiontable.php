@@ -163,8 +163,7 @@ class Promotiontable extends Component
             'end_date' => $record->end_date,
             'active' => $record->active == 1 ? true : false,
             'cooldown_timer' => $record->cooldown_timer,
-            'cart_amount' => $record->cart_amount,
-            'cookie_time' => $record->cookie_time
+            'cart_amount' => $record->cart_amount
         ];
     }
     public function canceledit()
@@ -217,13 +216,6 @@ class Promotiontable extends Component
                     $new->cart_amount = $record['cart_amount'];
                 }
             }
-            if (array_key_exists('cookie_time', $record)) {
-                if ($record['cookie_time'] == "") {
-                    $new->cookie_time = 0;
-                } else {
-                    $new->cookie_time = $record['cookie_time'];
-                }
-            }
             $new->save();
             if ($new->type == "counter" && $new->active) {
                 Promotion::where('active', true)->where('id', '!=', $new->id)->where('type', 'counter')->update(['active' => false]);
@@ -249,6 +241,7 @@ class Promotiontable extends Component
         $newCookieId = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
 
         Promotion::where('id', $id)->update(['cookieid' => $newCookieId]);
+        Cache::forget('promotions');
 
         session()->flash('notification', [
             'message' => 'Cookie ID updated successfully!',
@@ -264,6 +257,7 @@ class Promotiontable extends Component
             $promotion->cookieid = $newCookieId;
             $promotion->save();
         }
+        Cache::forget('promotions');
 
         session()->flash('notification', [
             'message' => 'All cookie IDs have been refreshed successfully!',
