@@ -322,23 +322,13 @@
             <label for="disabled2"></label>
            </div>
           @endif
-         @elseif ($column === 'long_description')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'short_description')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'seo_id')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'seo_title')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'meta_description')
+         @elseif (
+             $column === 'long_description' ||
+                 $column === 'short_description' ||
+                 $column === 'seo_id' ||
+                 $column === 'seo_title' ||
+                 $column === 'meta_description' ||
+                 $column === 'long_description_bottom')
           <span class="show-less">
            {!! $category->$column !!}
           </span>
