@@ -21,6 +21,7 @@ class CartProductsList extends Component
     public $cartmodified = false;
     public $session_id;
     public $timer = 0;
+    private $confettiTriggered = false;
 
     protected $listeners = [
         'showcart' => 'cartshow',
@@ -438,13 +439,17 @@ class CartProductsList extends Component
         }
         $this->checkpromotions();
     }
+
     private function createPromotion($userId, $promo)
     {
+        if ($this->confettiTriggered) {
+            return; // Exit if the event was already triggered
+        }
+
         $existingPromotion = UserPromotions::where('session_id', $userId)
             ->where('promotion_id', $promo['id'])
             ->first();
 
-        // Create or update the promotion
         $promotion = UserPromotions::updateOrCreate(
             [
                 'session_id' => $userId,
@@ -467,7 +472,12 @@ class CartProductsList extends Component
             $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
 
             $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
-            usleep(100000);
+
+            $this->confettiTriggered = true;
+
+            usleep(200000);
+
+            $this->confettiTriggered = false;
         }
     }
 }
