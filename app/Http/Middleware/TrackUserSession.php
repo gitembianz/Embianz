@@ -19,7 +19,7 @@ class TrackUserSession
         $sessionId = request()->cookie('sessionId') ?? Session::getId();
         $ipAddress = ServerRequest::ip();
         $userAgent = ServerRequest::header('User-Agent');
-        $httpReferer = $request->headers->get('referer');
+        $httpReferer = ServerRequest::header('referer');
 
         DB::table('user_sessions')->upsert(
             [
@@ -28,7 +28,7 @@ class TrackUserSession
                 'updated_at' => now(),
                 'ip_address' => $ipAddress,
                 'user_agent' => $userAgent,
-                // 'http_referer' => $httpReferer,
+                'http_referer' => $httpReferer,
             ],
             ['sessions'],
             ['updated_at']
