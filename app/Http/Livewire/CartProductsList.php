@@ -369,13 +369,6 @@ class CartProductsList extends Component
         }
     }
 
-    private function updateCartTotals()
-    {
-        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value;
-        $this->cart->status_id = app('global_cart_new');
-        $this->cart->save();
-        $this->emit('cartUpdated');
-    }
     public function increment($id)
     {
         if ($this->cart) {
@@ -447,7 +440,6 @@ class CartProductsList extends Component
     }
     private function createPromotion($userId, $promo)
     {
-        // Check if the promotion already exists
         $existingPromotion = UserPromotions::where('session_id', $userId)
             ->where('promotion_id', $promo['id'])
             ->first();
@@ -471,11 +463,11 @@ class CartProductsList extends Component
             ]
         );
 
-        // If the promotion was newly created, emit the event
         if (!$existingPromotion) {
             $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
 
             $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
+            usleep(100000);
         }
     }
 }
