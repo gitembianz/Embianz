@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('sessions')->unique();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->dateTime('last_activity')->nullable();
+            $table->longText('http_referer')->nullable();
             $table->timestamps();
         });
     }
