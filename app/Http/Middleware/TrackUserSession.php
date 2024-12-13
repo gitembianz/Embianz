@@ -28,7 +28,7 @@ class TrackUserSession
                 'updated_at' => now(),
                 'ip_address' => $ipAddress,
                 'user_agent' => $userAgent,
-                'http_referer' => $httpReferer,
+                // 'http_referer' => $httpReferer,
             ],
             ['sessions'],
             ['updated_at']
