@@ -202,6 +202,7 @@ class CartProductsList extends Component
                     $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
                 }
 
+                // Update only the timer, do not call mount()
                 $this->timer = $expirationDate->greaterThan($now)
                     ? $expirationDate->diffInSeconds($now)
                     : 0;
@@ -227,9 +228,10 @@ class CartProductsList extends Component
                 'promotion_value' => $value
             ]);
 
-            $this->mount();
+            // Do not reset the component state here
         }
     }
+
 
 
     public function seen()
