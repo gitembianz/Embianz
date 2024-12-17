@@ -20,6 +20,9 @@ class ShowOrder extends Component
     public $statuses;
     public $invoice_sdatabase;
     public $storno_sdatabase;
+    protected $listeners = [
+        'refreshComponent' => '$refresh'
+    ];
 
 
     public function generate_invoice_number()
@@ -665,6 +668,14 @@ class ShowOrder extends Component
             $orderitem->delete();
         }
 
+        $invoices = Invoice::where('order_id', $this->orderId)->get();
+        foreach ($invoices as $invoice) {
+            $del = Invoice::find($invoice->id);
+            if (File::exists($del->path)) {
+                File::delete($del->path);
+            }
+            $del->delete();
+        }
         $order->delete();
         $this->delete = false;
         return redirect()->route('orders')->with('notification', [

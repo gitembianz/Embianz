@@ -214,8 +214,24 @@
         </td>
        @endif
        @if ($this->showColumn('Quantity'))
-        <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $product->quantity }}
+        <td class="hidden" wire:click="expandRow({{ $index }})"
+         style="display: flex; align-items: center; text-align: center;  flex-direction: column;">
+         <div
+          style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; width: 30%; align-items: center;">
+
+          <svg wire:click="decrement({{ $product->id }})">
+           <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+
+          <span>
+
+           {{ $product->quantity }}
+          </span>
+          <svg wire:click="increment({{ $product->id }})">
+           <line x1="12" y1="5" x2="12" y2="19"></line>
+           <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+         </div>
         </td>
        @endif
        @if ($this->showColumn('VAT'))

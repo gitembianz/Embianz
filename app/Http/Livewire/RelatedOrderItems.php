@@ -120,19 +120,51 @@ class RelatedOrderItems extends Component
     }
     public function deleteSingleRecord()
     {
-        $id = $this->idbeingremoved;
-        $item = Order_Item::findOrFail($id);
+        $item = Order_Item::findOrFail($this->idbeingremoved);
         $this->order->quantity_amount -= $item->quantity;
+        $this->order->sum_amount -= $item->price;
+        $this->order->save();
+        $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
+        if ($this->order->sum_amount == 0) {
+            $this->order->final_amount = 0;
+        }
         $this->order->save();
         $item->delete();
-        $this->checked = array_diff($this->checked, [$id]);
+        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->emit('orderUpdated');
+    }
+    public function increment($id)
+    {
+        $item = Order_Item::findOrFail($id);
+        $item->quantity += 1;
+        $item->save();
+        $this->order->quantity_amount += 1;
+        $this->order->sum_amount += $item->price;
+        $this->order->save();
+        $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
+        $this->order->save();
+    }
+    public function decrement($id)
+    {
+
+        $item = Order_Item::findOrFail($id);
+        if ($item->quantity > 1) {
+            $item->quantity -= 1;
+            $item->save();
+            $this->order->quantity_amount -= 1;
+            $this->order->sum_amount -= $item->price;
+            $this->order->save();
+            $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
+            $this->order->save();
+        } else {
+            $this->idbeingremoved = $item->id;
+            $this->deleteSingleRecord();
+        }
     }
     public function deleteRecords()
     {
@@ -141,6 +173,12 @@ class RelatedOrderItems extends Component
             $id = $item->id;
             $del = Order_Item::find($id);
             $this->order->quantity_amount -= $del->quantity;
+            $this->order->sum_amount -= $del->price;
+            $this->order->save();
+            $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
+            if ($this->order->sum_amount == 0) {
+                $this->order->final_amount = 0;
+            }
             $this->order->save();
             $del->delete();
         }
@@ -153,7 +191,6 @@ class RelatedOrderItems extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->emit('orderUpdated');
     }
     public function confirmItemRemoval($id)
     {
