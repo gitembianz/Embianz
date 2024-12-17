@@ -36,12 +36,12 @@
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
   </button>
-  <!-- <button class="button button--secondary">
-        <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
-    </button> -->
+  <button wire:click="addorderitems()" class="button button--secondary">
+   <svg>
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+   </svg>
+  </button>
  </div>
 
 
@@ -143,7 +143,7 @@
       </th>
      @endif
      @if ($this->showColumn('Quantity'))
-      <th class="hidden">
+      <th>
        <button wire:click="sortBy('quantity')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
         Quantity
         <svg>
@@ -214,8 +214,22 @@
         </td>
        @endif
        @if ($this->showColumn('Quantity'))
-        <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $product->quantity }}
+        <td wire:click="expandRow({{ $index }})"
+         style="display: flex; align-items: center; text-align: center;  flex-direction: column;">
+         <div
+          style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; width: 100px; align-items: center;">
+
+          <svg wire:click="decrement({{ $product->id }})">
+           <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+
+
+          {{ $product->quantity }}
+          <svg wire:click="increment({{ $product->id }})">
+           <line x1="12" y1="5" x2="12" y2="19"></line>
+           <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+         </div>
         </td>
        @endif
        @if ($this->showColumn('VAT'))
@@ -241,18 +255,7 @@
       <tr class="details-row  @if ($row === $i) active @endif">
        <td colspan="{{ count($columns) + 2 }}">
         <div class="details">
-         @if ($this->showColumn('Id'))
-          <p>
-           <bold>Id</bold>
-           {{ $product->id }}
-          </p>
-         @endif
-         @if ($this->showColumn('Product'))
-          <p>
-           <bold>Product</bold>
-           <a href="{{ route('show_product', ['id' => $product->product->id]) }}">{{ $product->product->name }}</a>
-          </p>
-         @endif
+
          @if ($this->showColumn('Price'))
           <p>
            <bold>Price</bold>
