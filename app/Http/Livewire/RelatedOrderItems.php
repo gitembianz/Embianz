@@ -42,7 +42,7 @@ class RelatedOrderItems extends Component
 
     public function saveitems()
     {
-        foreach ($this->productsAndValues as  $array) {
+        foreach ($this->productsAndValues as $index =>  $array) {
             if (isset($array['product']['quantity']) && isset($array['product']['idrel'])) {
                 Order_Item::create([
                     'order_id' => $this->orderId,
@@ -56,6 +56,9 @@ class RelatedOrderItems extends Component
                 $this->order->save();
                 $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
                 $this->order->save();
+                unset($this->productsAndValues[$index]);
+
+                $this->productsAndValues = array_values($this->productsAndValues);
             } else {
                 session()->flash('notification', [
                     'message' => 'Please provide values',
@@ -142,7 +145,7 @@ class RelatedOrderItems extends Component
             'product' => ['name' => null, 'quantity' => 1]
         ];
         $this->row = 1;
-        $this->showTable = false;
+        $this->additems = false;
     }
     public function getProductsProperty()
     {
