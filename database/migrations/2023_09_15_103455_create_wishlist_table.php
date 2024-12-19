@@ -11,14 +11,17 @@ return new class extends Migration
    */
   public function up()
   {
-    Schema::create('wishlist', function (Blueprint $table) {
-      $table->id();
-      $table->string('session_id');
-      $table->unsignedBigInteger('product_id');
-      $table->unique(['session_id', 'product_id']);
-      $table->foreign('product_id')->references('id')->on('products');
-      $table->timestamps();
-    });
+    if (!Schema::hasTable('wishlist')) {
+
+      Schema::create('wishlist', function (Blueprint $table) {
+        $table->id();
+        $table->string('session_id');
+        $table->unsignedBigInteger('product_id');
+        $table->unique(['session_id', 'product_id']);
+        $table->foreign('product_id')->references('id')->on('products');
+        $table->timestamps();
+      });
+    }
   }
 
   /**

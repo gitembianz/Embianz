@@ -11,25 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_promotions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('session_id')->index()->nullable();
-            $table->foreign('session_id')->references('id')->on('user_sessions')->onDelete('cascade');
-            $table->unsignedBigInteger('promotion_id')->index()->nullable();
-            $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
-            $table->string('promotion_type')->nullable();
-            $table->string('promotion_cookieid')->nullable();
-            $table->dateTime('promotion_start_date')->nullable();
-            $table->dateTime('promotion_expiration_date')->nullable();
-            $table->integer('promotion_cooldown_timer')->nullable();
-            $table->integer('promotion_cart_amount')->nullable();
-            $table->integer('promotion_value')->nullable();
-            $table->integer('promotion_percent')->nullable();
-            $table->boolean('active')->nullable()->default(
-                true
-            );
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('user_promotions')) {
+
+            Schema::create('user_promotions', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('session_id')->index()->nullable();
+                $table->foreign('session_id')->references('id')->on('user_sessions')->onDelete('cascade');
+                $table->unsignedBigInteger('promotion_id')->index()->nullable();
+                $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
+                $table->string('promotion_type')->nullable();
+                $table->string('promotion_cookieid')->nullable();
+                $table->dateTime('promotion_start_date')->nullable();
+                $table->dateTime('promotion_expiration_date')->nullable();
+                $table->integer('promotion_cooldown_timer')->nullable();
+                $table->integer('promotion_cart_amount')->nullable();
+                $table->integer('promotion_value')->nullable();
+                $table->integer('promotion_percent')->nullable();
+                $table->boolean('active')->nullable()->default(
+                    true
+                );
+                $table->timestamps();
+            });
+        }
     }
 
     /**

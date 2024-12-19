@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreign('brand_id')->references('id')->on('brands');
-        });
+        if (!Schema::hasColumn('products', 'brand_id')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreign('brand_id')->references('id')->on('brands');
+            });
+        }
     }
 
     /**
