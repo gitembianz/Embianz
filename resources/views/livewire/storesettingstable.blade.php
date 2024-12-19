@@ -73,7 +73,14 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  <button class="button button--primary button--centered display--desktop" tooltip="Update product prices" tooltip-top
+   wire:click.prevent="refreshprices">
+   <svg>
+    <line x1="12" y1="1" x2="12" y2="23"></line>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+   </svg>
 
+  </button>
   <button class="button button--primary button--centered display--desktop" tooltip="Reset cached filters" tooltip-top
    wire:click.prevent="refreshfilters">
    <svg>
@@ -194,6 +201,25 @@
        <path d="M19.94 11l0 .01" />
       </svg>
       <span>Refresh table</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="refreshprices">
+      <svg>
+       <line x1="12" y1="1" x2="12" y2="23"></line>
+       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      <span>Update Prices</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="refreshfilters">
+      <svg>
+       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+      </svg>
+      <span>Update Filters</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="seedreviews">
+      <svg>
+       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Seed reviews</span>
      </button>
      <button class="button button--primary button--fill button--flexed" wire:click="actualizeaza">
       <svg>
