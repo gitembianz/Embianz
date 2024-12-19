@@ -211,9 +211,22 @@
       </div>
      </div>
     @endforeach
-    <x-lazy />
+    @unless (app()->has('global_pagination') && app('global_pagination') === 'links')
+     <x-lazy />
+    @endunless
    @endif
   </section>
+  @if (app()->has('global_pagination') && app('global_pagination') === 'links')
+   <section class="container" style="margin-bottom: 20px">
+    {{ $products->links() }}
+   </section>
+  @else
+   @if ($products->total() >= $loadAmount)
+    <section class="container">
+     <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+    </section>
+   @endif
+  @endif
 
  @endif
 

@@ -11,19 +11,22 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('vouchers', function (Blueprint $table) {
-      $table->id();
-      $table->string('name');
-      $table->string('code')->unique();
-      $table->decimal('percent', 5, 2)->nullable();
-      $table->decimal('value', 10, 2)->nullable();
-      $table->unsignedBigInteger('status_id')->index()->nullable();
-      $table->foreign('status_id')->references('id')->on('statuses');
-      $table->boolean('single_use')->default(true);
-      $table->string('start_date')->nullable();
-      $table->string('end_date')->nullable();
-      $table->timestamps();
-    });
+    if (!Schema::hasTable('vouchers')) {
+
+      Schema::create('vouchers', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('code')->unique();
+        $table->decimal('percent', 5, 2)->nullable();
+        $table->decimal('value', 10, 2)->nullable();
+        $table->unsignedBigInteger('status_id')->index()->nullable();
+        $table->foreign('status_id')->references('id')->on('statuses');
+        $table->boolean('single_use')->default(true);
+        $table->string('start_date')->nullable();
+        $table->string('end_date')->nullable();
+        $table->timestamps();
+      });
+    }
   }
 
   /**
