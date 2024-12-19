@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->longText('description')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('brands')) {
+            Schema::create('brands', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->longText('description')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -24,6 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brands');
+        // Drop the table if it exists
+        if (Schema::hasTable('brands')) {
+            Schema::dropIfExists('brands');
+        }
     }
 };

@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_brands', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('brand_id')->index()->nullable();
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('product_brands')) {
+
+            Schema::create('product_brands', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('brand_id')->index()->nullable();
+                $table->foreign('brand_id')->references('id')->on('brands');
+                $table->unsignedBigInteger('product_id')->nullable();
+                $table->foreign('product_id')->references('id')->on('products');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
