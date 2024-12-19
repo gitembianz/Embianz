@@ -335,16 +335,11 @@ class ShowOrder extends Component
         </tbody>
     </table>
     <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
-    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
+    <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
 
-        session()->flash('notification', [
-            'message' => 'Invoice generated successfully!',
-            'type' => 'success',
-            'title' => 'Invoice Created'
-        ]);
         Invoice::create([
             'account_id' => $this->order->account_id,
             'order_id' => $this->order->id,
@@ -551,17 +546,13 @@ class ShowOrder extends Component
         $htmlContent .= "
         </tbody>
     </table>
-    <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . -number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
-    <p>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
+    <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . -number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') .
+            "</strong></p><br>
+    <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
 
-        session()->flash('notification', [
-            'message' => 'Invoice generated successfully!',
-            'type' => 'success',
-            'title' => 'Invoice Created'
-        ]);
         Invoice::create([
             'account_id' => $this->order->account_id,
             'order_id' => $this->order->id,
