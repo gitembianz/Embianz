@@ -62,7 +62,7 @@
      return;
     }
 
-    const particleCount = Math.floor(50 * (timeLeft / duration)); // Dynamic particle count
+    const particleCount = Math.floor(25 * (timeLeft / duration)); // Dynamic particle count
 
     // Generate colors
     const {
