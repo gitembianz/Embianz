@@ -318,11 +318,27 @@ class Storesettingstable extends Component
   public function refreshprices()
   {
     $prices = PricelistEntries::get();
+
     foreach ($prices as $price) {
-      if ($price->value && $price->value_no_vat == null) {
-        dd($price);
+      if ($price->value_no_vat && $price->value == null) {
+        $price->value_no_discount = $price->value_no_vat + (0.01 * $price->vat * $price->value_no_vat); // Calculate value_no_discount
+        $price->value = $price->value_no_discount - (0.01 * $price->value_no_discount * $price->discount); // Calculate value
+      } else {
+        if ($price->value && $price->discount != 0) {
+          $price->value_no_discount = $price->value / (1 - ($price->discount / 100));
+        } else if ($price->value && $price->discount == 0) {
+          $price->value_no_discount = $price->value_no_vat + (0.01 * $price->vat * $price->value_no_vat);
+        }
+        $price->value_no_vat = $price->value / (1 + ($price->vat / 100));
       }
+
+      $price->save();
     }
+    session()->flash('notification', [
+      'message' => 'Price corected successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   public function initializeSitemap()
