@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Category;
+use App\Models\PricelistEntries;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -312,6 +313,16 @@ class Storesettingstable extends Component
   {
     $this->editindex = null;
     $this->settings = [];
+  }
+
+  public function refreshprices()
+  {
+    $prices = PricelistEntries::get();
+    foreach ($prices as $price) {
+      if ($price->value && $price->value_no_vat == null) {
+        dd($price);
+      }
+    }
   }
 
   public function initializeSitemap()
