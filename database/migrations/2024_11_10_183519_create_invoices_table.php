@@ -11,20 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('invoices')) {
-
-            Schema::create('invoices', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('order_id');
-                $table->foreign('order_id')->references('id')->on('orders');
-                $table->unsignedBigInteger('account_id');
-                $table->foreign('account_id')->references('id')->on('accounts');
-                $table->date('date')->nullable();
-                $table->string('type')->nullable();
-                $table->longText('path')->nullable();
-                $table->timestamps();
-            });
-        }
+        Schema::create('invoices', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->unsignedBigInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts');
+            $table->date('date')->nullable();
+            $table->string('type')->nullable();
+            $table->longText('path')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

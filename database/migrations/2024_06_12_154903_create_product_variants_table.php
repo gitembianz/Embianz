@@ -11,24 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('product_variants')) {
-
-            Schema::create('product_variants', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedBigInteger('parent_id')->index();
-                $table->foreign('parent_id')->references('id')->on('products');
-                $table->unsignedBigInteger('product_id')->index();
-                $table->foreign('product_id')->references('id')->on('products');
-                $table->unsignedBigInteger('variant_id')->index();
-                $table->foreign('variant_id')->references('id')->on('variants');
-                $table->string('value')->nullable();
-                $table->boolean('default_variant')->nullable()->default(
-                    false
-                );
-                $table->string('displayed')->nullable();
-                $table->timestamps();
-            });
-        }
+        Schema::create('product_variants', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('parent_id')->index();
+            $table->foreign('parent_id')->references('id')->on('products');
+            $table->unsignedBigInteger('product_id')->index();
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('variant_id')->index();
+            $table->foreign('variant_id')->references('id')->on('variants');
+            $table->string('value')->nullable();
+            $table->boolean('default_variant')->nullable()->default(
+                false
+            );
+            $table->string('displayed')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

@@ -11,11 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class Dashboard extends Component
 {
-    protected $listeners = [
-        'cartCountUpdated' => '$refresh',
-        'orderCountUpdated' => '$refresh'
-
-    ];
+    protected $listeners = ['cartCountUpdated' => '$refresh'];
 
     public function render()
     {

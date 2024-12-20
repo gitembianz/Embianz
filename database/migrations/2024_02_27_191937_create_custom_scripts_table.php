@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('custom_scripts')) {
-
-            Schema::create('custom_scripts', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->nullable();
-                $table->string('type')->nullable();
-                $table->longText('content')->nullable();
-                $table->boolean('active')->nullable();
-                $table->timestamps();
-            });
-        }
+        Schema::create('custom_scripts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('type')->nullable();
+            $table->longText('content')->nullable();
+            $table->boolean('active')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

@@ -13,46 +13,40 @@ return new class extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('products')) {
+    Schema::create('products', function (Blueprint $table) {
+      $table->id();
+      $table->integer('innerid')->nullable();
+      $table->string('name')->nullable();
+      $table->unsignedBigInteger('brand_id')->index()->nullable();
 
-      Schema::create('products', function (Blueprint $table) {
-        $table->id();
-        $table->integer('innerid')->nullable();
-        $table->string('name')->nullable();
-        $table->unsignedBigInteger('brand_id')->index()->nullable();
-
-        $table->string('brand')->nullable()->default(
-          'noren'
-        );
-        $table->string('type')->nullable()->default(
-          'standard'
-        );
-        $table->unsignedBigInteger('parent_id')->nullable()->index();
-        $table->foreign('parent_id')->references('id')->on('products');
-        $table->string('sku')->nullable()->unique();
-        $table->string('ean')->nullable()->unique();
-        $table->boolean('active');
-        $table->boolean('is_new')->nullable()->default(
-          false
-        );
-        $table->integer('popularity')->nullable();
-        $table->longText('comments')->nullable();
-        $table->longText('long_description')->nullable();
-        $table->string('short_description')->nullable();
-        $table->string('meta_description')->nullable();
-        $table->integer('quantity')->nullable();
-        $table->boolean('low_stock')->nullable()->default(
-          false
-        );
-        $table->date('start_date')->nullable();
-        $table->date('end_date')->nullable();
-        $table->string('seo_title')->nullable();
-        $table->string('seo_id')->unique()->nullable();
-        $table->string('created_by')->nullable();
-        $table->string('last_modified_by')->nullable();
-        $table->timestamps();
-      });
-    }
+      $table->string('brand')->nullable()->default(
+        'noren'
+      );
+      $table->string('type')->nullable()->default(
+        'standard'
+      );
+      $table->unsignedBigInteger('parent_id')->nullable()->index();
+      $table->foreign('parent_id')->references('id')->on('products');
+      $table->string('sku')->nullable()->unique();
+      $table->string('ean')->nullable()->unique();
+      $table->boolean('active');
+      $table->boolean('is_new')->nullable()->default(
+        false
+      );
+      $table->integer('popularity')->nullable();
+      $table->longText('comments')->nullable();
+      $table->longText('long_description')->nullable();
+      $table->string('short_description')->nullable();
+      $table->string('meta_description')->nullable();
+      $table->integer('quantity')->nullable();
+      $table->date('start_date')->nullable();
+      $table->date('end_date')->nullable();
+      $table->string('seo_title')->nullable();
+      $table->string('seo_id')->unique()->nullable();
+      $table->string('created_by')->nullable();
+      $table->string('last_modified_by')->nullable();
+      $table->timestamps();
+    });
   }
 
   /**

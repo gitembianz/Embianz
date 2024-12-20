@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('products', 'low_stock')) {
-
-            Schema::table('products', function (Blueprint $table) {
-                $table->boolean('low_stock')->nullable()->default(
-                    false
-                )->after('quantity');
-            });
-        }
+        Schema::table('products', function (Blueprint $table) {
+            $table->boolean('low_stock')->nullable()->default(
+                false
+            )->after('quantity');
+        });
     }
 
     /**

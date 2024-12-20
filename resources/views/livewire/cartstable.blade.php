@@ -314,7 +314,7 @@
           @endif
          @elseif ($column === 'order_id')
           @if ($cart->order_id)
-           <a href="{{ route('show_order', ['id' => $cart->order_id]) }}">{{ optional($cart->order)->name }}</a>
+           <a href="{{ route('show_order', ['id' => $cart->order_id]) }}">{{ $cart->order->name }}</a>
           @endif
          @else
           {{ $cart->$column }}

@@ -10,22 +10,19 @@ export function tabs(detailsButtonID, relatedButtonID, detailsContentID, related
     return;
   }
 
-  if (typeof Livewire !== 'undefined') {
-    // Function to activate the details content
-    detailsButton.addEventListener('click', function () {
-      detailsContent.classList.add('active');
-      Livewire.emit('refreshComponent'); // Replace 'refreshComponent' with your Livewire method/event name
-      detailsButton.classList.add('button--active');
-      relatedContent.classList.remove('active');
-      relatedButton.classList.remove('button--active');
-    });
+  // Funcția pentru activarea detaliilor
+  detailsButton.addEventListener('click', function () {
+    detailsContent.classList.add('active');
+    detailsButton.classList.add('button--active');
+    relatedContent.classList.remove('active');
+    relatedButton.classList.remove('button--active');
+  });
 
-    // Function to activate the related content
-    relatedButton.addEventListener('click', function () {
-      relatedContent.classList.add('active');
-      relatedButton.classList.add('button--active');
-      detailsContent.classList.remove('active');
-      detailsButton.classList.remove('button--active');
-    });
-  }
+  // Funcția pentru activarea conținutului asociat
+  relatedButton.addEventListener('click', function () {
+    relatedContent.classList.add('active');
+    relatedButton.classList.add('button--active');
+    detailsContent.classList.remove('active');
+    detailsButton.classList.remove('button--active');
+  });
 }

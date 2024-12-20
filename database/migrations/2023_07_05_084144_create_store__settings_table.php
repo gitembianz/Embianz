@@ -11,18 +11,15 @@ return new class extends Migration
    */
   public function up(): void
   {
-    if (!Schema::hasTable('store__settings')) {
-
-      Schema::create('store__settings', function (Blueprint $table) {
-        $table->id();
-        $table->string('parameter');
-        $table->longText('value');
-        $table->longText('description')->nullable();
-        $table->string('createdby')->nullable();
-        $table->string('lastmodifiedby')->nullable();
-        $table->timestamps();
-      });
-    }
+    Schema::create('store__settings', function (Blueprint $table) {
+      $table->id();
+      $table->string('parameter');
+      $table->longText('value');
+      $table->longText('description')->nullable();
+      $table->string('createdby')->nullable();
+      $table->string('lastmodifiedby')->nullable();
+      $table->timestamps();
+    });
   }
 
   /**

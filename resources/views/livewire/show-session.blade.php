@@ -63,12 +63,30 @@
    <span class="disabled">{{ $session->user_agent }}</span>
    <label>User Agent</label>
   </div>
-  <div class="input__tabs details__long">
-   <span class="disabled">{{ $session->http_referer }}</span>
-   <label>Http Referer</label>
+
+  <div class="input__tabs">
+   <span class="disabled">{{ $session->promotion_cookiedid }}</span>
+   <label>Promotion CookieID</label>
   </div>
 
+  <div class="input__tabs">
+   <span class="disabled">{{ $session->promotion_start_date }}</span>
+   <label>Promotion Start Date</label>
+  </div>
 
+  <div class="input__tabs">
+   <span class="disabled">{{ $session->promotion_expiration_date }}</span>
+   <label>Promotion Expiration Date</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $session->promotion_cooldown_timer }}</span>
+   <label>Promotion Cooldown Timer</label>
+  </div>
+
+  <div class="input__tabs">
+   <span class="disabled">{{ $session->last_activity }}</span>
+   <label>Last Activity</label>
+  </div>
 
   <div class="input__tabs">
    <span class="disabled">{{ $session->created_at }}</span>

@@ -11,19 +11,16 @@ return new class extends Migration
    */
   public function up(): void
   {
-    if (!Schema::hasTable('price_lists')) {
-
-      Schema::create('price_lists', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->boolean('active');
-        $table->unsignedBigInteger('currency_id')->index()->nullable();
-        $table->foreign('currency_id')->references('id')->on('currencies');
-        $table->string('createdby')->nullable();
-        $table->string('lastmodifiedby')->nullable();
-        $table->timestamps();
-      });
-    }
+    Schema::create('price_lists', function (Blueprint $table) {
+      $table->id();
+      $table->string('name');
+      $table->boolean('active');
+      $table->unsignedBigInteger('currency_id')->index()->nullable();
+      $table->foreign('currency_id')->references('id')->on('currencies');
+      $table->string('createdby')->nullable();
+      $table->string('lastmodifiedby')->nullable();
+      $table->timestamps();
+    });
   }
 
   /**

@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('sessions', 'innersession')) {
-
-            Schema::table('sessions', function (Blueprint $table) {
-                $table->string('innersession')->nullable()->after('id');
-            });
-        }
+        Schema::table('sessions', function (Blueprint $table) {
+            $table->string('innersession')->nullable()->after('id');
+        });
     }
 
     /**

@@ -95,7 +95,8 @@ class Sessionstable extends Component
             return DB::table($this->tableName)
                 ->where(function ($query) {
                     $query->where('id', 'like', '%' . $this->search . '%')
-                        ->orWhere('user_agent', 'like', '%' . $this->search . '%');
+                        ->orWhere('user_agent', 'like', '%' . $this->search . '%')
+                        ->orWhere('last_activity', 'like', '%' . $this->search . '%');
                 })
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
                 ->paginate($this->loadAmount);
