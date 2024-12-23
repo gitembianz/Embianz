@@ -111,7 +111,9 @@
          {{ $productsAndValue['itemselected'] }}
         </td>
         <td wire:click="expandRow2({{ $index }})">
-         {{ $productsAndValue['price'] }}
+         <input type="number" placeholder="Product price" required class="input button--fill button--xs"
+          wire:model.defer="productsAndValues.{{ $index }}.price">
+
         </td>
         <td class="hidden">
          @if ($productsAndValue['allow'])
@@ -462,7 +464,14 @@
        @endif
        @if ($this->showColumn('Price'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $product->price }}
+         @if ($editindex !== $index)
+          {{ $product->price }}
+         @else
+          <div class="searchable">
+           <input type="text" required class="input__searchable"
+            wire:model.defer="order_item.{{ $index }}.price">
+          </div>
+         @endif
         </td>
        @endif
        @if ($this->showColumn('Quantity'))
@@ -494,15 +503,42 @@
          {{ $product->created_at }}
         </td>
        @endif
-       <td>
-        <button wire:click.prevent="confirmItemRemoval({{ $product->id }})"
-         class="button button--secondary button--sm">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+       <td style="border-right: none">
+        <div style="display:flex;">
+         @if ($editindex !== $index)
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $index }}, {{ $product->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button wire:click.prevent="confirmItemRemoval({{ $product->id }})"
+           class="button button--secondary button--sm">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         @else
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }} , {{ $product->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         @endif
+        </div>
        </td>
+
       </tr>
       <tr class="details-row  @if ($rand === $i) active @endif">
        <td colspan="{{ count($columns) + 2 }}">

@@ -29,6 +29,7 @@ class RelatedOrderItems extends Component
     public $order;
     public $rand = null;
     public $rind2 = null;
+    public $order_item = [];
 
     public $single = false;
     public $multiple = false;
@@ -39,6 +40,75 @@ class RelatedOrderItems extends Component
     public $showTable = false;
     public $loadAmount = 20;
     public $row = 1;
+    public $editindex = null;
+
+    public function edititem($index, $id)
+    {
+        $this->editindex = $index;
+        $this->row = $index;
+        $record = Order_Item::find($id);
+        $this->order_item[$index] = [
+            'price' => $record->price
+        ];
+    }
+    public function canceledit()
+    {
+        $this->editindex = null;
+        $this->order_item = [];
+    }
+    public function saveitem($index, $id)
+    {
+        $record = $this->order_item[$index] ?? null;
+
+        if (is_null($record)) {
+            session()->flash('notification', [
+                'message' => 'Nothing was edited!',
+                'type' => 'warning',
+                'title' => 'Warning'
+            ]);
+            return;
+        }
+
+        $orderItem = Order_Item::find($id);
+
+        if (!$orderItem) {
+            session()->flash('notification', [
+                'message' => 'Order item not found!',
+                'type' => 'error',
+                'title' => 'Error'
+            ]);
+            return;
+        }
+
+        $oldPrice = $orderItem->price;
+        $newPrice = $record['price'] ?? $oldPrice;
+
+        // Update the order item price
+        $orderItem->price = $newPrice;
+        $orderItem->save();
+
+        // Recalculate order totals
+        $this->order->sum_amount -= ($oldPrice * $orderItem->quantity); // Subtract old amount
+        $this->order->sum_amount += ($newPrice * $orderItem->quantity); // Add new amount
+
+        $this->order->final_amount = $this->order->sum_amount
+            + $this->order->delivery_price
+            - $this->order->promotion_value
+            - $this->order->voucher_value;
+
+        $this->order->save();
+
+        // Flash success message
+        session()->flash('notification', [
+            'message' => 'Record edited successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+
+        // Reset properties
+        $this->editindex = null;
+        $this->order_item = [];
+    }
 
     public function saveitems()
     {
