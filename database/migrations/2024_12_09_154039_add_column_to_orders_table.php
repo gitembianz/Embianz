@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('orders', 'promotion_value')) {
-
-            Schema::table('orders', function (Blueprint $table) {
-                $table->decimal('promotion_value', 10, 2)->default(0)->after('voucher_value');
-            });
-        }
+        Schema::table('orders', function (Blueprint $table) {
+            $table->decimal('promotion_value', 10, 2)->default(0)->after('voucher_value');
+        });
     }
 
     /**

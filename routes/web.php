@@ -108,6 +108,8 @@
       route::post('/add_voucher', [AdminController::class, 'store_voucher'])->name('add_voucher');
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
+      route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
+      route::post('/add_setting', [AdminController::class, 'store_setting'])->name('add_setting');
 
       route::view('/labels', 'admin.labels')->name('labels');
       route::view('/variants', 'admin.variants')->name('variants');

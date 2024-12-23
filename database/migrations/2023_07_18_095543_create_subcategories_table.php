@@ -11,17 +11,14 @@ return new class extends Migration
    */
   public function up(): void
   {
-    if (!Schema::hasTable('subcategories')) {
-
-      Schema::create('subcategories', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('parent_id')->index();
-        $table->foreign('parent_id')->references('id')->on('categories');
-        $table->unsignedBigInteger('category_id')->nullable();
-        $table->foreign('category_id')->references('id')->on('categories');
-        $table->timestamps();
-      });
-    }
+    Schema::create('subcategories', function (Blueprint $table) {
+      $table->id();
+      $table->unsignedBigInteger('parent_id')->index();
+      $table->foreign('parent_id')->references('id')->on('categories');
+      $table->unsignedBigInteger('category_id')->nullable();
+      $table->foreign('category_id')->references('id')->on('categories');
+      $table->timestamps();
+    });
   }
 
   /**

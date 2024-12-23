@@ -34,7 +34,7 @@
     Your browser does not support iframes. Please download the file
     <a href="/{{ $previewurl }}">here</a>.
    </iframe>
-   <button class="button button--danger button--fill" wire:click="cancel_preview()">
+   <button class="button button--danger button--long" wire:click="cancel_preview()">
     <span>Cancel</span>
    </button>
   </div>

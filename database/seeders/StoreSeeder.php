@@ -72,7 +72,6 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'promotion_on', 'value' => 'true', 'description' => 'promotion on', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'cookie_max_ages', 'value' => '365', 'description' => 'Cookie expire days', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'confetti', 'value' => 'true', 'description' => 'Confetti sistem', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'customer_cart_notification', 'value' => 'false', 'description' => 'Cart notification display to cusstomer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];

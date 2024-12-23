@@ -11,24 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('accounts')) {
-
-            Schema::create('accounts', function (Blueprint $table) {
-                $table->id();
-                $table->string('name')->nullable();
-                $table->string('type'); // 'individual' or 'juridic'
-                $table->string('first_name')->nullable();
-                $table->string('last_name')->nullable();
-                $table->string('phone')->nullable();
-                $table->string('email')->nullable();
-                $table->string('company_name')->nullable();
-                $table->string('registration_code')->nullable();
-                $table->string('registration_number')->nullable();
-                $table->string('bank_name')->nullable();
-                $table->string('account')->nullable();
-                $table->timestamps();
-            });
-        }
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->string('type'); // 'individual' or 'juridic'
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('registration_code')->nullable();
+            $table->string('registration_number')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('account')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
