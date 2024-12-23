@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Category;
-use App\Models\PricelistEntries;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -340,6 +339,7 @@ class Storesettingstable extends Component
       'title' => 'Success'
     ]);
   }
+
 
   public function initializeSitemap()
   {

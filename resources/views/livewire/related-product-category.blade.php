@@ -1,6 +1,5 @@
 <div class="accordion @if ($showrelateitems) active @endif">
  {{-- ASIDES --}}
- <x-alert />
  {{-- Delete Record || Delete Records --}}
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
@@ -280,13 +279,6 @@
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
       <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-     </svg>
-    </button>
-    <button wire:click.prevent="relatedproducts()" class="button button--primary button--centered"
-     tooltip="Get related products" tooltip-left>
-     <svg>
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
      </svg>
     </button>
     {{-- Dropdown Content --}}
