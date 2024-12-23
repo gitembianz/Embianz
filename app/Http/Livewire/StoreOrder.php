@@ -16,7 +16,8 @@ use App\Models\UserSessions;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
-
+use App\Mail\ConfirmationOrder;
+use Illuminate\Support\Facades\Mail;
 
 class StoreOrder extends Component
 {
@@ -1176,6 +1177,7 @@ class StoreOrder extends Component
         $this->orderNumber = $order->order_number;
         return redirect()->to($session->url);
       }
+      // Mail::to($order->account->email)->send(new ConfirmationOrder($order));
     }
   }
 }
