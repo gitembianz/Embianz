@@ -26,9 +26,220 @@ class RelatedOrderItems extends Component
     public $columns = ['Id', 'Price', 'Quantity', 'VAT'];
     public $selectedColumns = [];
     public $order;
+    public $rand = null;
+    public $rind2 = null;
+    public $order_item = [];
+
+    public $single = false;
+    public $multiple = false;
+    public $additems = false;
+    //add declaration
+    public $productsAndValues = [];
+    public $searchadd = '';
+    public $showTable = false;
+    public $loadAmount = 20;
+    public $row = 1;
+    public $editindex = null;
+
+    public function edititem($index, $id)
+    {
+        $this->editindex = $index;
+        $this->row = $index;
+        $record = Order_Item::find($id);
+        $this->order_item[$index] = [
+            'price' => $record->price
+        ];
+    }
+    public function canceledit()
+    {
+        $this->editindex = null;
+        $this->order_item = [];
+    }
+    public function saveitem($index, $id)
+    {
+        $record = $this->order_item[$index] ?? null;
+
+        if (is_null($record)) {
+            session()->flash('notification', [
+                'message' => 'Nothing was edited!',
+                'type' => 'warning',
+                'title' => 'Warning'
+            ]);
+            return;
+        }
+
+        $orderItem = Order_Item::find($id);
+
+        if (!$orderItem) {
+            session()->flash('notification', [
+                'message' => 'Order item not found!',
+                'type' => 'error',
+                'title' => 'Error'
+            ]);
+            return;
+        }
+
+        $oldPrice = $orderItem->price;
+        $newPrice = $record['price'] ?? $oldPrice;
+
+        // Update the order item price
+        $orderItem->price = $newPrice;
+        $orderItem->save();
+
+        // Recalculate order totals
+        $this->order->sum_amount -= ($oldPrice * $orderItem->quantity); // Subtract old amount
+        $this->order->sum_amount += ($newPrice * $orderItem->quantity); // Add new amount
+
+        $this->order->final_amount = $this->order->sum_amount
+            + $this->order->delivery_price
+            - $this->order->promotion_value
+            - $this->order->voucher_value;
+
+        $this->order->save();
+
+        // Flash success message
+        session()->flash('notification', [
+            'message' => 'Record edited successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+
+        // Reset properties
+        $this->editindex = null;
+        $this->order_item = [];
+    }
+
+    public function saveitems()
+    {
+        foreach ($this->productsAndValues as $index =>  $array) {
+            if (isset($array['product']['quantity']) && isset($array['product']['idrel'])) {
+                Order_Item::create([
+                    'order_id' => $this->orderId,
+                    'product_id' => $array['product']['idrel'],
+                    'price' => $array['price'],
+                    'quantity' => $array['product']['quantity'],
+                    'vat' => $array['vat']
+                ]);
+                $this->order->quantity_amount += $array['product']['quantity'];
+                $this->order->sum_amount += ($array['price'] * $array['product']['quantity']);
+                $this->order->save();
+                $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
+                $this->order->save();
+                unset($this->productsAndValues[$index]);
+
+                $this->productsAndValues = array_values($this->productsAndValues);
+            } else {
+                session()->flash('notification', [
+                    'message' => 'Please provide values',
+                    'type' => 'warning',
+                    'title' => 'Missing Values'
+                ]);
+                return;
+            }
+        }
+
+        $this->productsAndValues = [];
+        $this->row = 1;
+        $this->additems = false;
+
+        session()->flash('notification', [
+            'message' => 'Record related successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+
+    public function dennyselect($index)
+    {
+        $this->productsAndValues[$index]['allow'] = false;
+        $this->searchadd = '';
+    }
+    public function selectitem($index, $id, $name, $price, $vat)
+    {
+        $this->productsAndValues[$index]['itemselected'] = $name;
+        $this->productsAndValues[$index]['price'] = $price;
+        $this->productsAndValues[$index]['vat'] = $vat;
+
+        $this->productsAndValues[$index]['product']['idrel'] = $id;
+        $this->productsAndValues[$index]['allow'] = false;
+        $this->searchadd = '';
+    }
+    public function plus()
+    {
+        $this->row++;
+        $this->productsAndValues[] = [
+            'allow' => false,
+            'itemselected' => null,
+            'price' => null,
+            'vat' => null,
+            'product' => ['name' => null, 'quantity' => 1]
+        ];
+    }
+    public function clear($index)
+    {
+        unset($this->productsAndValues[$index]);
+
+        $this->productsAndValues = array_values($this->productsAndValues);
+
+        $this->row--;
+        if ($this->row < 1) {
+            $this->showTable = false;
+            $this->productsAndValues[] = [
+                'allow' => false,
+                'itemselected' => null,
+                'price' => null,
+                'vat' => null,
+                'product' => ['name' => null, 'quantity' => 1]
+            ];
+            $this->additems = false;
+            $this->row = 1;
+        }
+    }
+    public function allowselect($index)
+    {
+        foreach ($this->productsAndValues as &$item) {
+            $item['allow'] = false;
+        }
+        $this->productsAndValues[$index]['allow'] = true;
+        $this->searchadd = $this->productsAndValues[$index]['itemselected'];
+    }
+    public function closemodal()
+    {
+        $this->productsAndValues = [];
+        $this->productsAndValues[] = [
+            'allow' => false,
+            'itemselected' => null,
+            'price' => null,
+            'vat' => null,
+            'product' => ['name' => null, 'quantity' => 1]
+        ];
+        $this->row = 1;
+        $this->additems = false;
+    }
+    public function getProductsProperty()
+    {
+        $relatedIds = $this->order->orders->pluck('product_id')->toArray();
+
+        // Start the query for products not in the relatedIds and not of type 'parent'
+        $unrelatedQuery = Product::whereNotIn('id', $relatedIds)
+            ->where('type', '!=', 'parent')
+            ->whereHas('product_prices', function ($query) {
+                $query->whereNotNull('value') // Ensure the price value is not null
+                    ->where('value', '>', 0); // Ensure the price value is greater than 0
+            });
+
+        // Add the search filter if $this->searchadd is not empty
+        if (!empty($this->searchadd)) {
+            $unrelatedQuery->where('name', 'like', '%' . $this->searchadd . '%');
+        }
+
+        return $unrelatedQuery->get();
+    }
+
     public $row = null;
     public $single = false;
     public $multiple = false;
+
 
     public function expandRow($index)
     {
