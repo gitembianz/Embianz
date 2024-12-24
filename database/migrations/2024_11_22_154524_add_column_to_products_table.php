@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('carts', 'promotion_value')) {
+        if (!Schema::hasColumn('products', 'brand_id')) {
 
-            Schema::table('carts', function (Blueprint $table) {
-                $table->decimal('promotion_value', 10, 2)->default(0)->after('voucher_value');
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreign('brand_id')->references('id')->on('brands');
             });
         }
     }
 
-    /**.
+    /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             //
         });
     }

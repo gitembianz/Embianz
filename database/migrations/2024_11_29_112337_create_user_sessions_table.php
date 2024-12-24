@@ -11,25 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('text_labels')) {
+        if (!Schema::hasTable('user_sessions')) {
 
-            Schema::create('text_labels', function (Blueprint $table) {
+            Schema::create('user_sessions', function (Blueprint $table) {
                 $table->id();
-                $table->string('parameter');
-                $table->longText('value');
-                $table->longText('description')->nullable();
-                $table->string('createdby')->nullable();
-                $table->string('lastmodifiedby')->nullable();
+                $table->string('sessions')->unique();
+                $table->string('ip_address', 45)->nullable();
+                $table->text('user_agent')->nullable();
+                $table->longText('http_referer')->nullable();
                 $table->timestamps();
             });
         }
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('text_labels');
+        Schema::dropIfExists('user_sessions');
     }
 };

@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('todolists', function (Blueprint $table) {
-            $table->id();
-            $table->string('content');
-            $table->string('created_by')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('todolists')) {
+
+            Schema::create('todolists', function (Blueprint $table) {
+                $table->id();
+                $table->string('content');
+                $table->string('created_by')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -73,14 +73,12 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
-
   <button class="button button--primary button--centered display--desktop" tooltip="Update product prices" tooltip-top
    wire:click.prevent="refreshprices">
    <svg>
     <line x1="12" y1="1" x2="12" y2="23"></line>
     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
    </svg>
-
 
   </button>
   <button class="button button--primary button--centered display--desktop" tooltip="Reset cached filters" tooltip-top
@@ -204,7 +202,6 @@
       </svg>
       <span>Refresh table</span>
      </button>
-
      <button class="button button--primary button--fill button--flexed" wire:click="refreshprices">
       <svg>
        <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -224,7 +221,6 @@
       </svg>
       <span>Seed reviews</span>
      </button>
-
      <button class="button button--primary button--fill button--flexed" wire:click="actualizeaza">
       <svg>
        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

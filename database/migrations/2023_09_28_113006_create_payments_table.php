@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('type')->nullable();
-            $table->string('description')->nullable();
-            $table->boolean('active');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('payments')) {
+
+            Schema::create('payments', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('type')->nullable();
+                $table->string('description')->nullable();
+                $table->boolean('active');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

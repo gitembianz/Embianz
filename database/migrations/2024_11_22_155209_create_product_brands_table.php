@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('product_reviews')) {
+        if (!Schema::hasTable('product_brands')) {
 
-            Schema::create('product_reviews', function (Blueprint $table) {
+            Schema::create('product_brands', function (Blueprint $table) {
                 $table->id();
+                $table->unsignedBigInteger('brand_id')->index()->nullable();
+                $table->foreign('brand_id')->references('id')->on('brands');
                 $table->unsignedBigInteger('product_id')->nullable();
                 $table->foreign('product_id')->references('id')->on('products');
-                $table->integer('count')->nullable()->default(0);
-                $table->decimal('value', 10, 2)->nullable()->default(5);
-
                 $table->timestamps();
             });
         }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_reviews');
+        Schema::dropIfExists('product_brands');
     }
 };
