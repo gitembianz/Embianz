@@ -597,51 +597,73 @@ class ShowOrder extends Component
         $this->record = [
             'status_id' => $this->order->status_id,
             'invoice_date' => $this->order->invoice_date,
-            'storno_date' => $this->order->storno_date
+            'storno_date' => $this->order->storno_date,
+            'promotion_value' => $this->order->promotion_value,
+            'voucher_value' => $this->order->voucher_value,
+            'delivery_price' => $this->order->delivery_price
 
         ];
         $this->edititem = true;
     }
     public function saveitem()
     {
-        $new = $this->record ?? NULL;
+        $new = $this->record ?? null;
         if (!is_null($new)) {
             $order = Order::find($this->orderId);
-            $oldstatus = $order->status_id;
-            $statusclose = Status::where('type', 'order')->where('name', 'canceled')->first()->id;
-            if (array_key_exists('invoice_date', $new)) {
-                $order->invoice_date = $new['invoice_date'];
+            $oldStatus = $order->status_id;
+            $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->first()->id;
+
+            $updatableFields = ['invoice_date', 'storno_date', 'promotion_value', 'voucher_value', 'delivery_price'];
+            foreach ($updatableFields as $field) {
+                if (array_key_exists($field, $new)) {
+                    $order->$field = $new[$field];
+                }
             }
-            if (array_key_exists('storno_date', $new)) {
-                $order->storno_date = $new['storno_date'];
+
+            if (
+                array_key_exists('promotion_value', $new) ||
+                array_key_exists('voucher_value', $new) ||
+                array_key_exists('delivery_price', $new)
+            ) {
+                $order->final_amount = max(
+                    0,
+                    $order->sum_amount + $order->delivery_price - $order->promotion_value - $order->voucher_value
+                );
             }
+
             if (array_key_exists('status_id', $new)) {
                 $order->status_id = $new['status_id'];
                 $order->updated_at = now();
-                $order->save();
-                if ($oldstatus != $new['status_id'] && $new['status_id'] == $statusclose) {
-                    foreach ($order->orders as $orderitem) {
-                        $orderitem->product->quantity += $orderitem->quantity;
-                        $orderitem->product->save();
-                    }
-                } elseif ($oldstatus == $statusclose && $new['status_id'] != $statusclose) {
-                    foreach ($order->orders as $orderitem) {
-                        $orderitem->product->quantity -= $orderitem->quantity;
-                        $orderitem->product->save();
+
+                if ($oldStatus != $new['status_id']) {
+                    if ($new['status_id'] == $statusCloseId) {
+                        foreach ($order->orders as $orderItem) {
+                            $orderItem->product->quantity += $orderItem->quantity;
+                            $orderItem->product->save();
+                        }
+                    } elseif ($oldStatus == $statusCloseId) {
+                        foreach ($order->orders as $orderItem) {
+                            $orderItem->product->quantity -= $orderItem->quantity;
+                            $orderItem->product->save();
+                        }
                     }
                 }
-                $this->emit('itemSaved');
-                session()->flash('notification', [
-                    'message' => 'Record edited successfully!',
-                    'type' => 'success',
-                    'title' => 'Success'
-                ]);
             }
+
             $order->save();
+
+            $this->emit('itemSaved');
+            session()->flash('notification', [
+                'message' => 'Record edited successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
         }
+
         $this->record = [];
         $this->edititem = null;
     }
+
     public function confirmItemRemoval()
     {
         $this->delete = true;

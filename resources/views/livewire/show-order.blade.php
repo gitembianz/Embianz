@@ -146,14 +146,25 @@
   </div>
   <div class="details__checkboxes">
 
-   {{-- Order Sum amount --}}
    <div class="input__tabs">
-    <span class="disabled">{{ $order->delivery_price }}</span>
+    @if ($edititem === null)
+     <span class="disabled">{{ $order->delivery_price }}</span>
+    @else
+     <input type="text" wire:model.defer="record.delivery_price">
+    @endif
     <label>Delivery Price </label>
+
    </div>
+   {{-- Order Sum amount --}}
+
+
    <div class="input__tabs">
-    <span class="disabled">{{ $order->promotion_value }}</span>
-    <label>Promotion Value </label>
+    @if ($edititem === null)
+     <span class="disabled">{{ $order->promotion_value }}</span>
+    @else
+     <input type="text" wire:model.defer="record.promotion_value">
+    @endif
+    <label for="category__name">Promotion Value</label>
    </div>
   </div>
   {{-- Order Currency --}}
@@ -184,13 +195,20 @@
     <a href="{{ route('vouchers') }}">{{ $order->voucher->code }}</a>
     <label for="category__name">Voucher</label>
    </div>
-  @endif
-  @if ($order->voucher_id != null)
+  @else
    <div class="input__tabs">
-    <span class="disabled">{{ $order->voucher_value }}</span>
-    <label for="category__name">Voucher Value</label>
+    <span class="disabled"></span>
+    <label for="category__name">Voucher </label>
    </div>
   @endif
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->voucher_value }}</span>
+   @else
+    <input type="text" wire:model.defer="record.voucher_value">
+   @endif
+   <label for="category__name">Voucher Value</label>
+  </div>
   {{-- Product Start Date --}}
   <div class="input__tabs">
    <span class="disabled">{{ $order->invoice_series }}</span>
