@@ -448,7 +448,7 @@ class CartProductsList extends Component
     private function createPromotion($userId, $promo)
     {
         if ($this->confettiTriggered) {
-            return; // Exit if the event was already triggered
+            return;
         }
 
         $existingPromotion = UserPromotions::where('session_id', $userId)
