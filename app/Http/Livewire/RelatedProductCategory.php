@@ -7,8 +7,6 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Products_categories;
-use App\Models\Related_Products;
-
 
 class RelatedProductCategory extends Component
 {
@@ -43,41 +41,6 @@ class RelatedProductCategory extends Component
   public $multiple = false;
   public $rind2 = null;
   public $rind = null;
-
-  public function relatedproducts()
-  {
-    $relatedProducts = $this->RelatedProducts->get();
-
-    foreach ($relatedProducts as $parentProduct) {
-      foreach ($relatedProducts as $subIndex => $childProduct) {
-        if (
-          $parentProduct->product->id !== $childProduct->id &&
-          $parentProduct->product->type != 'parent' &&
-          $childProduct->product->type != 'parent'
-        ) {
-          $exists = Related_Products::where('parent_id', $parentProduct->product->id)
-            ->where('product_id', $childProduct->product->id)
-            ->exists();
-
-          if (!$exists) {
-            Related_Products::create([
-              'parent_id' => $parentProduct->product->id,
-              'product_id' => $childProduct->product->id,
-              'sequence' => $subIndex,
-            ]);
-          }
-        }
-      }
-    }
-
-    session()->flash('notification', [
-      'message' => 'Records related successfully!',
-      'type' => 'success',
-      'title' => 'Success',
-    ]);
-  }
-
-
 
   public function expandRow2($index)
   {
@@ -152,7 +115,7 @@ class RelatedProductCategory extends Component
   public function updatedSelectPageadd($value)
   {
     if ($value) {
-      $this->checkedadd = $this->prodds->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checkedadd = [];
     }
@@ -172,7 +135,7 @@ class RelatedProductCategory extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->prodds->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getProddsProperty()
   {
@@ -233,7 +196,7 @@ class RelatedProductCategory extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedproducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -264,7 +227,7 @@ class RelatedProductCategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->RelatedProducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->RelatedProducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getRelatedProductsQueryProperty()
   {
