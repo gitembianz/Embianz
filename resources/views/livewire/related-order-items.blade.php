@@ -480,9 +480,11 @@
          <div
           style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; width: 100px; align-items: center;">
 
-          <svg wire:click="decrement({{ $product->id }})">
+          <svg style="{{ $product->quantity == 1 ? 'opacity: 50%;' : '' }}"
+           wire:click="decrement({{ $product->id }})">
            <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
+
 
 
           {{ $product->quantity }}

@@ -393,8 +393,7 @@ class RelatedOrderItems extends Component
             $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
             $this->order->save();
         } else {
-            $this->idbeingremoved = $item->id;
-            $this->deleteSingleRecord();
+            return;
         }
     }
     public function deleteRecords()
