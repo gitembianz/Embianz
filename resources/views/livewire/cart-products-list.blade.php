@@ -348,11 +348,11 @@
      @endif
     @endif
     @if ($timer > 0)
-     <h5 wire:ignore class="leftbar__total--text" style="color:red">
+     <h5 class="leftbar__total--text" style="color:red">
       @if (app()->has('label_cart_promotion_timer'))
        {!! app('label_cart_promotion_timer') !!}
       @endif
-      <span id="countdown_cart" style="color:red"></span>
+      <span wire:ignore id="countdown_cart" style="color:red"></span>
      </h5>
     @endif
 
@@ -379,61 +379,72 @@
      </a>
     @endif
    </div>
-   @if ($timer > 0 && $showcart)
+   @if ($timer > 0)
     <script>
-     const cooldownPeriod = {{ $timer }};
      let ticker;
+     const serverTimer = {{ $timer }};
+     const storageKey = 'timer_end_time';
 
-     function startTimer(endTime) {
-      ticker = setInterval(() => tick(endTime), 1000);
+     function clearExistingTimer() {
+      if (ticker) {
+       clearInterval(ticker);
+       ticker = null;
+      }
      }
 
-     function tick(endTime) {
+     function setEndTime() {
       const now = Math.floor(Date.now() / 1000);
-
-      let timeLeft = Math.max(endTime - now, 0);
-
-      if (timeLeft > 0) {
-       const days = Math.floor(timeLeft / 86400);
-       timeLeft %= 86400;
-       const hours = Math.floor(timeLeft / 3600);
-       timeLeft %= 3600;
-       const mins = Math.floor(timeLeft / 60);
-       const secs = timeLeft % 60;
-
-       let pretty = "";
-       if (days > 0) pretty += days + "d ";
-       if (hours > 0 || days > 0) pretty += hours + "h ";
-       if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
-       pretty += secs + "s";
-       if (document.getElementById("countdown_cart")) {
-
-        document.getElementById("countdown_cart").innerHTML = pretty;
-       }
-      } else {
-       clearInterval(ticker);
-       document.getElementById("countdown_cart").innerHTML = "0s";
-       @this.call('checkpromotions');
-
+      if (!localStorage.getItem(storageKey)) {
+       localStorage.setItem(storageKey, now + serverTimer);
       }
+     }
+
+     function startTimer() {
+      clearExistingTimer();
+
+      const endTime = parseInt(localStorage.getItem(storageKey));
+
+      ticker = setInterval(() => {
+       const now = Math.floor(Date.now() / 1000);
+       const timeLeft = Math.max(endTime - now, 0);
+
+       if (timeLeft > 0) {
+        displayTime(timeLeft);
+       } else {
+        clearExistingTimer();
+        localStorage.removeItem(storageKey);
+        document.getElementById("countdown_cart").innerHTML = "0s";
+        @this.call('checkpromotions');
+       }
+      }, 1000);
+     }
+
+     function displayTime(timeLeft) {
+      const days = Math.floor(timeLeft / 86400);
+      const hours = Math.floor((timeLeft % 86400) / 3600);
+      const mins = Math.floor((timeLeft % 3600) / 60);
+      const secs = timeLeft % 60;
+
+      let pretty = "";
+      if (days > 0) pretty += days + "d ";
+      if (hours > 0 || days > 0) pretty += hours + "h ";
+      if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
+      pretty += secs + "s";
+
+      document.getElementById("countdown_cart").innerHTML = pretty;
      }
 
      function initTimer() {
-      const now = Math.floor(Date.now() / 1000);
-
-      const endTime = now + cooldownPeriod;
-
-      if (cooldownPeriod > 0) {
-       startTimer(endTime);
-      } else {
-       document.getElementById("countdown_cart").innerHTML = "0s";
-       @this.call('checkpromotions');
-      }
+      setEndTime();
+      startTimer();
      }
 
-     initTimer();
+     document.addEventListener('livewire:load', initTimer);
+     document.addEventListener('livewire:update', initTimer);
     </script>
    @endif
+
+
 
    <script>
     document.getElementById('headerContinue').addEventListener('click', function() {

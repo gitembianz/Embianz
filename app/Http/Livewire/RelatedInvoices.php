@@ -169,7 +169,6 @@ class RelatedInvoices extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->emit('orderUpdated');
     }
 
     public function downloadInvoice($id)

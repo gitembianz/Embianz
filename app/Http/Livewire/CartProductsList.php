@@ -21,6 +21,7 @@ class CartProductsList extends Component
     public $cartmodified = false;
     public $session_id;
     public $timer = 0;
+    private $confettiTriggered = false;
 
     protected $listeners = [
         'showcart' => 'cartshow',
@@ -201,6 +202,7 @@ class CartProductsList extends Component
                     $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
                 }
 
+                // Update only the timer, do not call mount()
                 $this->timer = $expirationDate->greaterThan($now)
                     ? $expirationDate->diffInSeconds($now)
                     : 0;
@@ -226,9 +228,10 @@ class CartProductsList extends Component
                 'promotion_value' => $value
             ]);
 
-            $this->mount();
+            // Do not reset the component state here
         }
     }
+
 
 
     public function seen()
@@ -264,9 +267,12 @@ class CartProductsList extends Component
                         }
                         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
                         $this->cart->final_amount -= $this->cart->voucher_value;
-                        $this->cart->seen_by_customer = true;
+                        if (app()->has('global_customer_cart_notification') && app('global_customer_cart_notification') === "true") {
+
+                            $this->cart->seen_by_customer = true;
+                            $this->cartmodified = true;
+                        }
                         $this->cart->save();
-                        $this->cartmodified = true;
                         return;
                     }
                 } else {
@@ -369,13 +375,6 @@ class CartProductsList extends Component
         }
     }
 
-    private function updateCartTotals()
-    {
-        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value;
-        $this->cart->status_id = app('global_cart_new');
-        $this->cart->save();
-        $this->emit('cartUpdated');
-    }
     public function increment($id)
     {
         if ($this->cart) {
@@ -445,14 +444,17 @@ class CartProductsList extends Component
         }
         $this->checkpromotions();
     }
+
     private function createPromotion($userId, $promo)
     {
-        // Check if the promotion already exists
+        if ($this->confettiTriggered) {
+            return;
+        }
+
         $existingPromotion = UserPromotions::where('session_id', $userId)
             ->where('promotion_id', $promo['id'])
             ->first();
 
-        // Create or update the promotion
         $promotion = UserPromotions::updateOrCreate(
             [
                 'session_id' => $userId,
@@ -471,11 +473,16 @@ class CartProductsList extends Component
             ]
         );
 
-        // If the promotion was newly created, emit the event
         if (!$existingPromotion) {
             $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
 
             $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
+
+            $this->confettiTriggered = true;
+
+            usleep(200000);
+
+            $this->confettiTriggered = false;
         }
     }
 }

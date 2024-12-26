@@ -11,20 +11,23 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('media', function (Blueprint $table) {
-      $table->id();
-      $table->longText('path')->nullable();
-      $table->string('sequence')->nullable();
-      $table->string('type')->nullable();
-      $table->string('extension')->nullable();
-      $table->string('name')->nullable();
-      $table->string('width')->nullable();
-      $table->string('height')->nullable();
-      $table->string('size')->nullable();
-      $table->string('createdby')->nullable();
-      $table->string('lastmodifiedby')->nullable();
-      $table->timestamps();
-    });
+    if (!Schema::hasTable('media')) {
+
+      Schema::create('media', function (Blueprint $table) {
+        $table->id();
+        $table->longText('path')->nullable();
+        $table->string('sequence')->nullable();
+        $table->string('type')->nullable();
+        $table->string('extension')->nullable();
+        $table->string('name')->nullable();
+        $table->string('width')->nullable();
+        $table->string('height')->nullable();
+        $table->string('size')->nullable();
+        $table->string('createdby')->nullable();
+        $table->string('lastmodifiedby')->nullable();
+        $table->timestamps();
+      });
+    }
   }
 
   /**

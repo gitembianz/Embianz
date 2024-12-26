@@ -11,15 +11,17 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('item_media', function (Blueprint $table) {
-      $table->id();
-      $table->unsignedBigInteger('media_id');
-      $table->morphs('mediable'); // This creates columns: mediable_id and mediable_type
-      $table->timestamps();
+    if (!Schema::hasTable('item_media')) {
 
-      // Foreign key constraint for media_id column
-      $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
-    });
+      Schema::create('item_media', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('media_id');
+        $table->morphs('mediable');
+        $table->timestamps();
+
+        $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
+      });
+    }
   }
 
   /**

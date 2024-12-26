@@ -73,18 +73,14 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
-  {{-- Add store setting
-  <a class="button button--primary button--centered display--desktop" tooltip="Add new setting" tooltip-top
-   href="{{ route('add_storesetting') }}">
+  <button class="button button--primary button--centered display--desktop" tooltip="Update product prices" tooltip-top
+   wire:click.prevent="refreshprices">
    <svg>
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-    <polyline points="14 2 14 8 20 8"></polyline>
-    <line x1="12" y1="18" x2="12" y2="12"></line>
-    <line x1="9" y1="15" x2="15" y2="15"></line>
+    <line x1="12" y1="1" x2="12" y2="23"></line>
+    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
    </svg>
-  </a> --}}
-  {{-- Add store setting --}}
 
+  </button>
   <button class="button button--primary button--centered display--desktop" tooltip="Reset cached filters" tooltip-top
    wire:click.prevent="refreshfilters">
    <svg>
@@ -206,15 +202,25 @@
       </svg>
       <span>Refresh table</span>
      </button>
-     <a class="button button--primary button--fill button--flexed" href="{{ route('add_storesetting') }}">
+     <button class="button button--primary button--fill button--flexed" wire:click="refreshprices">
       <svg>
-       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-       <polyline points="14 2 14 8 20 8"></polyline>
-       <line x1="12" y1="18" x2="12" y2="12"></line>
-       <line x1="9" y1="15" x2="15" y2="15"></line>
+       <line x1="12" y1="1" x2="12" y2="23"></line>
+       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
       </svg>
-      <span>Add store setting</span>
-     </a>
+      <span>Update Prices</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="refreshfilters">
+      <svg>
+       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+      </svg>
+      <span>Update Filters</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="seedreviews">
+      <svg>
+       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Seed reviews</span>
+     </button>
      <button class="button button--primary button--fill button--flexed" wire:click="actualizeaza">
       <svg>
        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
