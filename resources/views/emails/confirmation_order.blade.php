@@ -293,7 +293,7 @@
      </span>
      @if ($cartItem->product->media->where('type', 'min')->first())
       <img class="cart__list--img" title="{{ $cartItem->product->name }}"
-       src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+       src="{{ config('app.url') }}/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
        alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
      @else
       <img title="default image" class="cart__list--img" src="/images/store/default/default70.webp"
