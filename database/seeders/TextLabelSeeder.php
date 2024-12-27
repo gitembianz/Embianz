@@ -260,6 +260,8 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'mail_subtitle_p2', 'value' => 'este în procesare.', 'description' => 'mail subtitle', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'mail_order_details', 'value' => 'Detalii comandă:', 'description' => 'mail order details', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'mail_footer', 'value' => 'Pentru întrebări legate de livrarea produselor sau serviciilor cumpărate, ne poți contacta la datele furnizate pe www.semintetop.ro <br>Primești acest e-mail pentru că ai comandat de la www.semintetop.ro. Te rugăm să nu răspunzi la acest mesaj, este generat automat.', 'description' => 'mail footer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mail_reducere', 'value' => 'Reducere:', 'description' => 'mail footer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'mail_delivery_details', 'value' => 'Detalii livrare:', 'description' => 'mail footer', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

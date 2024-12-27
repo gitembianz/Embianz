@@ -582,6 +582,12 @@ class StoreOrder extends Component
             CURLOPT_SSL_VERIFYPEER => false,
           ],
         ]);
+      } else {
+        try {
+          Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+        } catch (\Throwable $th) {
+          return;
+        }
       }
       session()->forget('paymentsucces');
     }
@@ -1145,6 +1151,12 @@ class StoreOrder extends Component
               CURLOPT_SSL_VERIFYPEER => false,
             ],
           ]);
+        } else {
+          try {
+            Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+          } catch (\Throwable $th) {
+            return;
+          }
         }
         $this->dispatchBrowserEvent('goup');
       } else {
@@ -1177,7 +1189,6 @@ class StoreOrder extends Component
         $this->orderNumber = $order->order_number;
         return redirect()->to($session->url);
       }
-      // Mail::to($order->account->email)->send(new ConfirmationOrder($order));
     }
   }
 }

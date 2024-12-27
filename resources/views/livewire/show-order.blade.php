@@ -119,7 +119,13 @@
   </div>
   {{-- Order Account --}}
   <div class="input__tabs">
-   <a href="{{ route('show_account', ['id' => $order->account_id]) }}">{{ $order->account->name }}</a>
+   @if ($order->account_id)
+    <a href="{{ route('show_account', ['id' => $order->account_id]) }}">
+     {{ $order->account->name ?? 'Unknown Account' }}
+    </a>
+   @else
+    <span>No Account</span>
+   @endif
    <label for="category__name">Account</label>
   </div>
   {{-- Order Cart --}}
