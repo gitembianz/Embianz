@@ -291,10 +291,14 @@
      <span class="total__quantity">
       {{ $cartItem->quantity }} x
      </span>
-     @if ($cartItem->product->media->where('type', 'min')->first())
+     @php
+      $productMedia = $cartItem->product->media->where('type', 'min')->first();
+     @endphp
+
+     @if ($productMedia)
       <img class="cart__list--img" title="{{ $cartItem->product->name }}"
-       src="{{ config('app.url') }}/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
-       alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
+       src="{{ route('/') }}/{{ $productMedia->path }}{{ $productMedia->name }}"
+       alt="{{ $productMedia->name }} {{ $cartItem->product->name }}">
      @else
       <img title="default image" class="cart__list--img" src="/images/store/default/default70.webp"
        alt="something wrong">
