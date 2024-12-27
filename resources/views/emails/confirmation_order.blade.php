@@ -297,7 +297,7 @@
 
      @if ($productMedia)
       <img class="cart__list--img" title="{{ $cartItem->product->name }}"
-       src="{{ route('/') }}/{{ $productMedia->path }}{{ $productMedia->name }}"
+       src="{{ route('home') }}/{{ $productMedia->path }}{{ $productMedia->name }}"
        alt="{{ $productMedia->name }} {{ $cartItem->product->name }}">
      @else
       <img title="default image" class="cart__list--img" src="/images/store/default/default70.webp"
