@@ -296,12 +296,10 @@
      @endphp
 
      @if ($productMedia)
-      <img class="cart__list--img" title="{{ $cartItem->product->name }}"
-       src="{{ route('home') }}/{{ $productMedia->path }}{{ $productMedia->name }}"
-       alt="{{ $productMedia->name }} {{ $cartItem->product->name }}">
+      <img src="{{ $message->embed(public_path($productMedia->path . $productMedia->name)) }}"
+       alt="{{ $cartItem->product->name }}" style="max-width: 200px;">
      @else
-      <img title="default image" class="cart__list--img" src="/images/store/default/default70.webp"
-       alt="something wrong">
+      <p>No product image available.</p>
      @endif
      {{ $cartItem->product->name }}
      <span class="total__price">
