@@ -413,13 +413,22 @@
        } else {
         clearExistingTimer();
         localStorage.removeItem(storageKey);
-        document.getElementById("countdown_cart").innerHTML = "0s";
+
+        // Safely update the countdown element if it exists
+        const countdownElement = document.getElementById("countdown_cart");
+        if (countdownElement) {
+         countdownElement.innerHTML = "0s";
+        }
+
         @this.call('checkpromotions');
        }
       }, 1000);
      }
 
      function displayTime(timeLeft) {
+      const countdownElement = document.getElementById("countdown_cart");
+      if (!countdownElement) return; // Exit if the element doesn't exist
+
       const days = Math.floor(timeLeft / 86400);
       const hours = Math.floor((timeLeft % 86400) / 3600);
       const mins = Math.floor((timeLeft % 3600) / 60);
@@ -431,7 +440,7 @@
       if (mins > 0 || hours > 0 || days > 0) pretty += mins + "m ";
       pretty += secs + "s";
 
-      document.getElementById("countdown_cart").innerHTML = pretty;
+      countdownElement.innerHTML = pretty;
      }
 
      function initTimer() {
@@ -443,6 +452,7 @@
      document.addEventListener('livewire:update', initTimer);
     </script>
    @endif
+
 
 
 
