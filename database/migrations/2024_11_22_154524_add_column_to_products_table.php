@@ -9,11 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
- public function up(): void
+    public function up(): void
     {
         if (!Schema::hasColumn('products', 'brand_id')) {
 
             Schema::table('products', function (Blueprint $table) {
+                $table->unsignedBigInteger('brand_id')->index()->nullable();
                 $table->foreign('brand_id')->references('id')->on('brands');
             });
         }
