@@ -140,6 +140,10 @@ body.no-scroll {
         &>input {
           border: 2px solid $primary;
           transform: scale(0.8);
+
+          &:not(:checked) {
+            background-color: lightgray;
+          }
         }
 
         &>input:disabled {
