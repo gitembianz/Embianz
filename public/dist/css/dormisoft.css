@@ -1571,6 +1571,9 @@ body.no-scroll {
   border: 2px solid #fafafa;
   transform: scale(0.8);
 }
+.cookie__form.show > .cookie__form--container > label > input:not(:checked) {
+  background-color: lightgray;
+}
 .cookie__form.show > .cookie__form--container > label > input:disabled {
   opacity: 0.7;
   cursor: not-allowed;
