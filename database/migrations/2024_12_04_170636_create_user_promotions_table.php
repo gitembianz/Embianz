@@ -24,9 +24,9 @@ return new class extends Migration
                 $table->dateTime('promotion_start_date')->nullable();
                 $table->dateTime('promotion_expiration_date')->nullable();
                 $table->integer('promotion_cooldown_timer')->nullable();
-                $table->integer('promotion_cart_amount')->nullable();
-                $table->integer('promotion_value')->nullable();
-                $table->integer('promotion_percent')->nullable();
+                $table->decimal('promotion_cart_amount', 10, 2)->nullable();
+                $table->decimal('promotion_value', 10, 2)->nullable();
+                $table->decimal('promotion_percent', 10, 2)->nullable();
                 $table->boolean('active')->nullable()->default(
                     true
                 );
