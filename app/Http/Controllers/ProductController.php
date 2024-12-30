@@ -255,7 +255,7 @@ private function generateCsvFeed($products, $feedType)
                 $link,
                 $image,
                 $this->sanitizeData($product->brand),
-                $this->sanitizeData($product->google_category)
+                'Home & Garden > Plants > Seeds'
             ];
         }
       ]
