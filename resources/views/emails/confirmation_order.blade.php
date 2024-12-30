@@ -14,12 +14,11 @@
 
   .container {
    width: 90%;
-   max-width: 800px;
-   margin: 20px auto;
+   max-width: 1000px;
+   margin: auto;
    background-color: #fff;
    padding: 25px;
   }
-
 
   .section__title {
    font-size: 15px;
@@ -41,6 +40,10 @@
    gap: 10px;
    margin-bottom: 15px;
    padding: 10px 0;
+   width: 100%;
+   /* Ensure full width on all viewports */
+   box-sizing: border-box;
+   /* Include padding in the width calculation */
   }
 
   .total__quantity {
@@ -60,7 +63,7 @@
   }
 
   .product__name {
-   max-width: 150px;
+   max-width: 40%;
    width: 40%;
    font-size: 14px;
    color: #333;
@@ -91,10 +94,6 @@
    gap: 5px;
    flex-grow: 1;
   }
-
-
-
-
 
   .total__item {
    display: flex;
@@ -145,7 +144,7 @@
    display: inline-block;
    padding: 10px 20px;
    font-size: 14px;
-   font-weight: 4old;
+   font-weight: bold;
    color: #fff;
    background-color: #007bff;
    text-decoration: none;
@@ -158,6 +157,33 @@
    background-color: #0056b3;
   }
 
+  /* Desktop Adjustments */
+  @media screen and (min-width: 769px) {
+   .total__product {
+    justify-content: flex-start;
+    /* Aligns items to the left */
+    gap: 20px;
+    /* Increases spacing between elements for better layout */
+   }
+
+   .total__quantity {
+    text-align: left;
+    /* Aligns quantity to the left for consistency */
+   }
+
+   .product__name {
+    text-align: left;
+    /* Aligns product name to the left */
+    flex-grow: 1;
+    /* Ensures it uses all available space */
+   }
+
+   .total__price {
+    text-align: right;
+   }
+  }
+
+  /* Mobile Adjustments */
   @media screen and (max-width: 768px) {
    .container {
     padding: 20px;
@@ -166,6 +192,7 @@
    .total__product {
     flex-wrap: nowrap;
     gap: 5px;
+    width: 100%;
    }
 
    .total__quantity {
@@ -202,7 +229,6 @@
     max-width: calc(100% - 100px);
    }
 
-
    .total__item {
     font-size: 14px;
    }
@@ -220,10 +246,12 @@
    }
   }
 
+  /* Very Small Screens */
   @media screen and (max-width: 480px) {
    .total__product {
     flex-wrap: nowrap;
     gap: 5px;
+    width: 100%;
    }
 
    .total__quantity {
@@ -275,6 +303,8 @@
    }
   }
  </style>
+
+
 </head>
 
 <body>
