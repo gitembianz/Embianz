@@ -256,7 +256,7 @@ class ShowOrder extends Component
         $i = 0;
         if ($voucherValue &&  $voucherValue != 0) {
             $vatGroups = [];
-            $amountnovoucher = $this->order->final_amount + $this->order->voucher_value - $this->order->delivery_price;
+            $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
         }
         foreach ($this->order->orders as $item) {
             $vatRate = (int) $item->vat;
@@ -468,7 +468,7 @@ class ShowOrder extends Component
         $i = 0;
         if ($voucherValue &&  $voucherValue != 0) {
             $vatGroups = [];
-            $amountnovoucher = $this->order->final_amount + $this->order->voucher_value - $this->order->delivery_price;
+            $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
         }
         foreach ($this->order->orders as $item) {
             $vatRate = (int) $item->vat;
