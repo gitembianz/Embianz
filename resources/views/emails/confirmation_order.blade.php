@@ -18,14 +18,12 @@
    margin: 20px auto;
    background-color: #fff;
    padding: 25px;
-   border-radius: 10px;
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   /* Section Header */
 
   .section__title {
-   font-size: 22px;
+   font-size: 15px;
    font-weight: 400;
    margin: 10px 0;
    text-align: center;
@@ -38,19 +36,54 @@
    padding-top: 10px;
   }
 
+  /* Updated Total Product Section */
   .total__product {
    display: flex;
    align-items: center;
    justify-content: space-between;
+   gap: 10px;
+   /* Add consistent spacing between elements */
    margin-bottom: 15px;
    padding: 10px 0;
   }
 
+  .total__quantity {
+   min-width: 50px;
+   text-align: center;
+   font-size: 14px;
+   color: #777;
+   flex-shrink: 0;
+   /* Prevent shrinking */
+  }
+
   .total__product img {
-   width: 50px;
-   height: 50px;
+   width: 100px;
+   /* Consistent size for images */
+   height: 100px;
+   /* Maintain aspect ratio */
    object-fit: cover;
+   /* Ensure images are cropped properly */
    border-radius: 6px;
+   flex-shrink: 0;
+   /* Prevent shrinking */
+  }
+
+  .product__name {
+   max-width: 150px;
+   width: 40%;
+   /* Use percentage width for responsiveness */
+   font-size: 14px;
+   color: #333;
+   word-wrap: break-word;
+   line-height: 1.4;
+  }
+
+  .total__price {
+   min-width: 100px;
+   text-align: right;
+   font-size: 14px;
+   font-weight: 400;
+   color: #333;
    flex-shrink: 0;
   }
 
@@ -69,24 +102,9 @@
    flex-grow: 1;
   }
 
-  .product__name {
-   font-size: 14px;
-   font-weight: 400;
-   color: #333;
-  }
 
-  .total__quantity {
-   font-size: 14px;
-   color: #777;
-  }
 
-  .total__price {
-   font-size: 16px;
-   font-weight: 400;
-   color: #333;
-   text-align: right;
-   white-space: nowrap;
-  }
+
 
   /* Total Items */
   .total__item {
@@ -160,15 +178,36 @@
    }
 
    .total__product {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    /* Prevent wrapping */
+    gap: 5px;
+    /* Reduce spacing for smaller screens */
+   }
+
+   .total__quantity {
+    width: 15%;
+    text-align: center;
    }
 
    .total__product img {
-    width: 45px;
-    height: 45px;
+    width: 20%;
+    max-width: 80px;
+    height: auto;
+    /* Allow height to adjust automatically */
+   }
+
+   .product__name {
+    width: 50%;
+    /* Allow product name more space */
+    max-width: 100%;
+    word-wrap: break-word;
+    /* Ensure long text wraps */
+   }
+
+   .total__price {
+    width: 20%;
+    /* Adjust width for price on mobile */
+    text-align: right;
    }
 
    .total__details {
@@ -183,14 +222,6 @@
     max-width: calc(100% - 100px);
    }
 
-   .product__name,
-   .total__quantity {
-    font-size: 14px;
-   }
-
-   .total__price {
-    font-size: 14px;
-   }
 
    .total__item {
     font-size: 14px;
@@ -211,15 +242,41 @@
 
   @media screen and (max-width: 480px) {
    .total__product {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     flex-wrap: nowrap;
+    /* Keep items in a single row */
+    gap: 5px;
+    /* Reduce spacing for tighter layout */
+   }
+
+   .total__quantity {
+    width: 15%;
+    /* Adjust width for smaller screens */
+    text-align: center;
    }
 
    .total__product img {
-    width: 40px;
-    height: 40px;
+    width: 20%;
+    /* Further reduce size for very small screens */
+    max-width: 60px;
+    /* Ensure consistent scaling */
+    height: auto;
+   }
+
+   .product__name {
+    width: 50%;
+    /* Allocate space for the name */
+    max-width: 100%;
+    word-wrap: break-word;
+    /* Ensure name text wraps */
+    font-size: 13px;
+    /* Slightly smaller font */
+   }
+
+   .total__price {
+    width: 15%;
+    /* Adjust width for price */
+    text-align: right;
+    font-size: 13px;
    }
 
    .total__details {
@@ -297,11 +354,15 @@
 
      @if ($productMedia)
       <img src="{{ $message->embed(public_path($productMedia->path . $productMedia->name)) }}"
-       alt="{{ $cartItem->product->name }}" style="max-width: 200px;">
+       alt="{{ $cartItem->product->name }}">
      @else
       <p>No product image available.</p>
      @endif
-     {{ $cartItem->product->name }}
+
+     <span class="product__name">
+      {{ $cartItem->product->name }}
+     </span>
+
      <span class="total__price">
       {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
       @if (app()->has('global_currency_primary_symbol'))
@@ -310,6 +371,7 @@
      </span>
     </div>
    @endforeach
+
    @if ($order->promotion_value > 0 || $order->voucher_value > 0)
     <div class="total__item">
      <span>
