@@ -142,6 +142,7 @@ class ProductController extends Controller
     $this->generateCsvFeed($products->where('active','=',1), 'google');
     $this->generateCsvFeed($products, 'salesforce');
     $this->generateCsvFeed($products->where('active','=',1), 'facebook');
+    $this->generateCsvFeed($products->where('active','=',1), 'tiktok');
 }
 
 private function generateCsvFeed($products, $feedType)
@@ -235,7 +236,29 @@ private function generateCsvFeed($products, $feedType)
                   $this->sanitizeData($product->google_category)
               ];
           }
-        ]
+        ],
+        'tiktok' => [
+          'fileName' => 'tiktok.csv',
+          'headers' => ['sku_id','title','description', 'availability','condition', 'price', 'link', 'image_link', 'brand', 'google_product_category'],
+          'columns' => function($product) {
+            $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
+            $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+            $image = str_replace(' ', '%20', $image);
+            $category = $this->sanitizeData($product->category_seo_title ?? '');
+            return [
+                $this->sanitizeData($product->id),
+                $this->sanitizeData($product->name),
+                strip_tags($this->sanitizeData($product->long_description)),
+                'in stock',
+                'new',
+                $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
+                $link,
+                $image,
+                $this->sanitizeData($product->brand),
+                $this->sanitizeData($product->google_category)
+            ];
+        }
+      ]
     ];
 
     // Get feed configuration
