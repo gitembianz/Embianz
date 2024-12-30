@@ -20,7 +20,6 @@
    padding: 25px;
   }
 
-  /* Section Header */
 
   .section__title {
    font-size: 15px;
@@ -30,19 +29,16 @@
    color: #555;
   }
 
-  /* Order Details */
   .total__info {
    margin: 30px 0;
    padding-top: 10px;
   }
 
-  /* Updated Total Product Section */
   .total__product {
    display: flex;
    align-items: center;
    justify-content: space-between;
    gap: 10px;
-   /* Add consistent spacing between elements */
    margin-bottom: 15px;
    padding: 10px 0;
   }
@@ -53,25 +49,19 @@
    font-size: 14px;
    color: #777;
    flex-shrink: 0;
-   /* Prevent shrinking */
   }
 
   .total__product img {
    width: 100px;
-   /* Consistent size for images */
    height: 100px;
-   /* Maintain aspect ratio */
    object-fit: cover;
-   /* Ensure images are cropped properly */
    border-radius: 6px;
    flex-shrink: 0;
-   /* Prevent shrinking */
   }
 
   .product__name {
    max-width: 150px;
    width: 40%;
-   /* Use percentage width for responsiveness */
    font-size: 14px;
    color: #333;
    word-wrap: break-word;
@@ -106,7 +96,6 @@
 
 
 
-  /* Total Items */
   .total__item {
    display: flex;
    justify-content: space-between;
@@ -130,7 +119,6 @@
    text-align: right;
   }
 
-  /* Shipping Address */
   .look__form {
    margin-top: 25px;
    padding: 20px;
@@ -153,7 +141,6 @@
    line-height: 1.6;
   }
 
-  /* Buttons */
   .button {
    display: inline-block;
    padding: 10px 20px;
@@ -171,7 +158,6 @@
    background-color: #0056b3;
   }
 
-  /* Responsive Styles */
   @media screen and (max-width: 768px) {
    .container {
     padding: 20px;
@@ -179,9 +165,7 @@
 
    .total__product {
     flex-wrap: nowrap;
-    /* Prevent wrapping */
     gap: 5px;
-    /* Reduce spacing for smaller screens */
    }
 
    .total__quantity {
@@ -193,20 +177,16 @@
     width: 20%;
     max-width: 80px;
     height: auto;
-    /* Allow height to adjust automatically */
    }
 
    .product__name {
     width: 50%;
-    /* Allow product name more space */
     max-width: 100%;
     word-wrap: break-word;
-    /* Ensure long text wraps */
    }
 
    .total__price {
     width: 20%;
-    /* Adjust width for price on mobile */
     text-align: right;
    }
 
@@ -243,38 +223,29 @@
   @media screen and (max-width: 480px) {
    .total__product {
     flex-wrap: nowrap;
-    /* Keep items in a single row */
     gap: 5px;
-    /* Reduce spacing for tighter layout */
    }
 
    .total__quantity {
     width: 15%;
-    /* Adjust width for smaller screens */
     text-align: center;
    }
 
    .total__product img {
     width: 20%;
-    /* Further reduce size for very small screens */
     max-width: 60px;
-    /* Ensure consistent scaling */
     height: auto;
    }
 
    .product__name {
     width: 50%;
-    /* Allocate space for the name */
     max-width: 100%;
     word-wrap: break-word;
-    /* Ensure name text wraps */
     font-size: 13px;
-    /* Slightly smaller font */
    }
 
    .total__price {
     width: 15%;
-    /* Adjust width for price */
     text-align: right;
     font-size: 13px;
    }
