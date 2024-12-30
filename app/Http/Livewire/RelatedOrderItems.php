@@ -353,7 +353,7 @@ class RelatedOrderItems extends Component
     {
         $item = Order_Item::findOrFail($this->idbeingremoved);
         $this->order->quantity_amount -= $item->quantity;
-        $this->order->sum_amount -= $item->price;
+        $this->order->sum_amount -= ($item->price * $item->quantity);
         $this->order->save();
         $this->order->final_amount = $this->order->sum_amount + $this->order->delivery_price - $this->order->promotion_value - $this->order->voucher_value;
         if ($this->order->sum_amount == 0) {
