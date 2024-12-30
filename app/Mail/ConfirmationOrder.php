@@ -38,7 +38,8 @@ class ConfirmationOrder extends Mailable
     {
         return new Envelope(
             subject: (app()->has('label_mail_header') ? app('label_mail_header') : 'Confirmare comanda -') . $this->order->order_number,
-            bcc: [app()->has('global_bcc_mail') ? app('global_bcc_mail') : 'iosif@szu-it.com']
+            bcc: [app()->has('global_mailserver_bcc_mail') ? app('global_mailserver_bcc_mail') : '
+        ']
         );
     }
 

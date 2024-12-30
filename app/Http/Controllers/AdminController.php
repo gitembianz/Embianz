@@ -48,11 +48,7 @@ class AdminController extends Controller
         'integer',
         'gt:0'
       ],
-      'percent' => [
-        'nullable',
-        'integer',
-        'between:1,100',
-      ],
+      'percent' => 'required|numeric|min:0|max:100',
       'value' => [
         'nullable',
         'gt:0'
@@ -64,7 +60,9 @@ class AdminController extends Controller
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
       'cart_amount' => 'The value must be bigger than 0',
       'cooldown_timer' => 'The value must be bigger than 0',
-      'cookie' => 'The value must be bigger than 0'
+      'cookie' => 'The value must be bigger than 0',
+      'percent' => 'The value must be bigger than 0'
+
 
     ];
     $this->validate(

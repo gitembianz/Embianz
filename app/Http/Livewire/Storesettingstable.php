@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\PricelistEntries;
+
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Store_Settings;
@@ -198,6 +200,56 @@ class Storesettingstable extends Component
           File::put($envPath, $content);
         }
       }
+      if ($item->parameter == 'mailserver_mail') {
+        if ($item->value != '') {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          $content = preg_replace('/^MAIL_USERNAME=.*/m', "MAIL_USERNAME=" . $item->value, $content);
+
+          File::put($envPath, $content);
+        }
+      }
+      if ($item->parameter == 'mailserver_from_mail') {
+        if ($item->value != '') {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          $content = preg_replace('/^MAIL_FROM_ADDRESS=.*/m', "MAIL_FROM_ADDRESS=" . $item->value, $content);
+
+          File::put($envPath, $content);
+        }
+      }
+      if ($item->parameter == 'mailserver_password') {
+        if ($item->value != '') {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          // Replace the MAIL_PASSWORD line with the new value wrapped in double quotes
+          $content = preg_replace(
+            '/^MAIL_PASSWORD=.*/m',
+            'MAIL_PASSWORD="' . addslashes($item->value) . '"', // Escape quotes or special characters in the password
+            $content
+          );
+
+          File::put($envPath, $content);
+        }
+      }
+      if ($item->parameter == 'mailserver_from_name') {
+        if ($item->value != '') {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          // Replace the MAIL_PASSWORD line with the new value wrapped in double quotes
+          $content = preg_replace(
+            '/^MAIL_FROM_NAME=.*/m',
+            'MAIL_FROM_NAME="' . addslashes($item->value) . '"', // Escape quotes or special characters in the password
+            $content
+          );
+
+          File::put($envPath, $content);
+        }
+      }
       if ($item->parameter == 'cache_data') {
         if ($item->value != 'true') {
           Cache::forget('cached_products');
@@ -306,163 +358,162 @@ class Storesettingstable extends Component
   private function createNewSitemap($filePath)
   {
     $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-      '</urlset>';
-    file_put_contents($filePath, $xmlString);
-    return simplexml_load_string($xmlString);
-  }
+'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+    '</urlset>';
+file_put_contents($filePath, $xmlString);
+return simplexml_load_string($xmlString);
+}
 
 
-  public function sitemap()
-  {
-    $filePath = public_path('sitemap.xml');
-    $xml = $this->initializeSitemap();
+public function sitemap()
+{
+$filePath = public_path('sitemap.xml');
+$xml = $this->initializeSitemap();
 
-    // Homepage
-    $url = $xml->addChild('url');
-    $url->addChild('loc', url('/'));
-    $url->addChild('lastmod', now()->toAtomString());
-    $url->addChild('priority', '1.0');
+// Homepage
+$url = $xml->addChild('url');
+$url->addChild('loc', url('/'));
+$url->addChild('lastmod', now()->toAtomString());
+$url->addChild('priority', '1.0');
 
-    // Static pages
-    $pages = [
-      '/faq' => '0.5',
-      '/cookie' => '0.5',
-      '/privacy' => '0.5',
-      '/contact' => '0.5',
-      '/about' => '0.5',
-      '/terms' => '0.5'
-    ];
+// Static pages
+$pages = [
+'/faq' => '0.5',
+'/cookie' => '0.5',
+'/privacy' => '0.5',
+'/contact' => '0.5',
+'/about' => '0.5',
+'/terms' => '0.5'
+];
 
-    foreach ($pages as $page => $priority) {
-      $url = $xml->addChild('url');
-      $url->addChild('loc', url($page));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', $priority);
-    }
+foreach ($pages as $page => $priority) {
+$url = $xml->addChild('url');
+$url->addChild('loc', url($page));
+$url->addChild('lastmod', now()->toAtomString());
+$url->addChild('priority', $priority);
+}
 
-    // Active Products
-    $products = Product::where('active', true)
-      ->where('type', '!=', 'parent')
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-      ->get();
+// Active Products
+$products = Product::where('active', true)
+->where('type', '!=', 'parent')
+->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+    ->get();
 
     foreach ($products as $product) {
-      $url = $xml->addChild('url');
-      $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
-      $url->addChild('loc', htmlspecialchars($productUrl));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', '0.8');
+    $url = $xml->addChild('url');
+    $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
+    $url->addChild('loc', htmlspecialchars($productUrl));
+    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('priority', '0.8');
     }
 
     // Global default category
     if (app()->has('global_default_category') && app('global_default_category') != "") {
-      $defaultCategory = Category::find(app('global_default_category'));
-      if ($defaultCategory) {
-        $this->generateCategoryPages($xml, $defaultCategory, true);
-      }
+    $defaultCategory = Category::find(app('global_default_category'));
+    if ($defaultCategory) {
+    $this->generateCategoryPages($xml, $defaultCategory, true);
+    }
     }
 
     // All other categories
     $categories = Category::where('active', true)
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-      ->get();
+    ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+        ->get();
 
-    foreach ($categories as $category) {
-      if (isset($defaultCategory) && $category->id == $defaultCategory->id) {
+        foreach ($categories as $category) {
+        if (isset($defaultCategory) && $category->id == $defaultCategory->id) {
         continue;
-      }
-      $this->generateCategoryPages($xml, $category, false);
-    }
+        }
+        $this->generateCategoryPages($xml, $category, false);
+        }
 
-    $xml->asXML($filePath);
-    chmod($filePath, 0755);
+        $xml->asXML($filePath);
+        chmod($filePath, 0755);
 
-    session()->flash('notification', [
-      'message' => 'Sitemap generated successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-
-  /**
-   * Generate paginated URLs for a category in the sitemap
-   *
-   * @param SimpleXMLElement $xml
-   * @param Category $category
-   * @param bool $isDefaultCategory
-   * @return void
-   */
-  private function generateCategoryPages(&$xml, $category, $isDefaultCategory = false)
-  {
-    // Count the products associated with the category that meet the conditions
-    $productsCount = $category->product_categories()
-      ->whereHas('product', function ($query) {
-        $query->where('active', true)
-          ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
-      })
-      ->count();
-
-    $limit = config('global.global_limit_load', 16); // Fetch the global limit, default to 16
-    $totalPages = ceil($productsCount / $limit);
-
-    for ($page = 1; $page <= $totalPages; $page++) {
-      $url = $xml->addChild('url');
-
-      // Generate the category URL with pagination
-      $categoryUrl = route('products', [
-        'categorySlug' => $category->seo_id ?? $category->id
-      ]);
-
-      if ($page > 1) {
-        $categoryUrl .= "?page=" . $page; // Append ?page=N for paginated pages
-      }
-
-      $url->addChild('loc', htmlspecialchars($categoryUrl));
-      $url->addChild('lastmod', now()->toAtomString());
-      $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
-    }
-  }
-
-
-
-  public function refreshfilters()
-  {
-    Cache::forget('cached_specifications');
-    session()->flash('notification', [
-      'message' => 'Fileters update successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-
-
-
-  public function addSettingsIfNotExist()
-  {
-    $settings = StoreSeeder::settings();
-    foreach ($settings as $setting) {
-      $exists = DB::table('store__settings')
-        ->where('parameter', $setting['parameter'])
-        ->exists();
-
-      if (!$exists) {
-        DB::table('store__settings')->insert([
-          'parameter' => $setting['parameter'],
-          'value' => $setting['value'],
-          'description' => $setting['description'],
-          'createdby' => 'admin',
-          'lastmodifiedby' => 'admin',
-          'created_at' => $setting['created_at'],
-          'updated_at' => $setting['updated_at']
+        session()->flash('notification', [
+        'message' => 'Sitemap generated successfully!',
+        'type' => 'success',
+        'title' => 'Success'
         ]);
-      }
-    }
-    Cache::forget('global_variables');
-    session()->flash('notification', [
-      'message' => 'Parameters update successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-}
+        }
+
+        /**
+        * Generate paginated URLs for a category in the sitemap
+        *
+        * @param SimpleXMLElement $xml
+        * @param Category $category
+        * @param bool $isDefaultCategory
+        * @return void
+        */
+        private function generateCategoryPages(&$xml, $category, $isDefaultCategory = false)
+        {
+        // Count the products associated with the category that meet the conditions
+        $productsCount = $category->product_categories()
+        ->whereHas('product', function ($query) {
+        $query->where('active', true)
+        ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
+            })
+            ->count();
+
+            $limit = config('global.global_limit_load', 16); // Fetch the global limit, default to 16
+            $totalPages = ceil($productsCount / $limit);
+
+            for ($page = 1; $page <= $totalPages; $page++) { $url=$xml->addChild('url');
+
+                // Generate the category URL with pagination
+                $categoryUrl = route('products', [
+                'categorySlug' => $category->seo_id ?? $category->id
+                ]);
+
+                if ($page > 1) {
+                $categoryUrl .= "?page=" . $page; // Append ?page=N for paginated pages
+                }
+
+                $url->addChild('loc', htmlspecialchars($categoryUrl));
+                $url->addChild('lastmod', now()->toAtomString());
+                $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
+                }
+                }
+
+
+
+                public function refreshfilters()
+                {
+                Cache::forget('cached_specifications');
+                session()->flash('notification', [
+                'message' => 'Fileters update successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+                ]);
+                }
+
+
+
+                public function addSettingsIfNotExist()
+                {
+                $settings = StoreSeeder::settings();
+                foreach ($settings as $setting) {
+                $exists = DB::table('store__settings')
+                ->where('parameter', $setting['parameter'])
+                ->exists();
+
+                if (!$exists) {
+                DB::table('store__settings')->insert([
+                'parameter' => $setting['parameter'],
+                'value' => $setting['value'],
+                'description' => $setting['description'],
+                'createdby' => 'admin',
+                'lastmodifiedby' => 'admin',
+                'created_at' => $setting['created_at'],
+                'updated_at' => $setting['updated_at']
+                ]);
+                }
+                }
+                Cache::forget('global_variables');
+                session()->flash('notification', [
+                'message' => 'Parameters update successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+                ]);
+                }
+                }

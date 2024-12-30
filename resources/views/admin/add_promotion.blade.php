@@ -53,7 +53,7 @@
   </div>
 
   <div class="input__tabs">
-   <input type="number" name="percent" value="{{ old('percent') }}">
+   <input type="number" name="percent" value="{{ old('percent') }}" step="0.01" min="0" max="100">
    <label>Percent %</label>
   </div>
 
