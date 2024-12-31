@@ -265,8 +265,7 @@ class CartProductsList extends Component
                         } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
                             $this->cart->voucher_value = $this->cart->voucher->value;
                         }
-                        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
-                        $this->cart->final_amount -= $this->cart->voucher_value;
+                        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value;
                         if (app()->has('global_customer_cart_notification') && app('global_customer_cart_notification') === "true") {
 
                             $this->cart->seen_by_customer = true;
