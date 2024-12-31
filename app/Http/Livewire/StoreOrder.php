@@ -465,9 +465,13 @@ class StoreOrder extends Component
 
   public function mount()
   {
+
     $this->modification = false;
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
 
+    if (app()->has("global_check_terms_order") && app('global_check_terms_order') == 'true') {
+      $this->terms = true;
+    }
     if (session()->has('paymentcancel')) {
       $this->payment_cancel = true;
       $this->step = 2;
