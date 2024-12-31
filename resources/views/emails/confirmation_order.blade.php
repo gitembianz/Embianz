@@ -14,25 +14,20 @@
 
   .container {
    width: 90%;
-   max-width: 800px;
-   margin: 20px auto;
+   max-width: 1000px;
+   margin: auto;
    background-color: #fff;
    padding: 25px;
-   border-radius: 10px;
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
-  /* Section Header */
-
   .section__title {
-   font-size: 22px;
+   font-size: 15px;
    font-weight: 400;
    margin: 10px 0;
    text-align: center;
    color: #555;
   }
 
-  /* Order Details */
   .total__info {
    margin: 30px 0;
    padding-top: 10px;
@@ -42,15 +37,46 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
+   gap: 10px;
    margin-bottom: 15px;
    padding: 10px 0;
+   width: 100%;
+   /* Ensure full width on all viewports */
+   box-sizing: border-box;
+   /* Include padding in the width calculation */
+  }
+
+  .total__quantity {
+   min-width: 50px;
+   text-align: center;
+   font-size: 14px;
+   color: #777;
+   flex-shrink: 0;
   }
 
   .total__product img {
-   width: 50px;
-   height: 50px;
+   width: 100px;
+   height: 100px;
    object-fit: cover;
    border-radius: 6px;
+   flex-shrink: 0;
+  }
+
+  .product__name {
+   max-width: 40%;
+   width: 40%;
+   font-size: 14px;
+   color: #333;
+   word-wrap: break-word;
+   line-height: 1.4;
+  }
+
+  .total__price {
+   min-width: 100px;
+   text-align: right;
+   font-size: 14px;
+   font-weight: 400;
+   color: #333;
    flex-shrink: 0;
   }
 
@@ -69,26 +95,6 @@
    flex-grow: 1;
   }
 
-  .product__name {
-   font-size: 14px;
-   font-weight: 400;
-   color: #333;
-  }
-
-  .total__quantity {
-   font-size: 14px;
-   color: #777;
-  }
-
-  .total__price {
-   font-size: 16px;
-   font-weight: 400;
-   color: #333;
-   text-align: right;
-   white-space: nowrap;
-  }
-
-  /* Total Items */
   .total__item {
    display: flex;
    justify-content: space-between;
@@ -112,7 +118,6 @@
    text-align: right;
   }
 
-  /* Shipping Address */
   .look__form {
    margin-top: 25px;
    padding: 20px;
@@ -135,12 +140,11 @@
    line-height: 1.6;
   }
 
-  /* Buttons */
   .button {
    display: inline-block;
    padding: 10px 20px;
    font-size: 14px;
-   font-weight: 4old;
+   font-weight: bold;
    color: #fff;
    background-color: #007bff;
    text-decoration: none;
@@ -153,22 +157,64 @@
    background-color: #0056b3;
   }
 
-  /* Responsive Styles */
+  /* Desktop Adjustments */
+  @media screen and (min-width: 769px) {
+   .total__product {
+    justify-content: flex-start;
+    /* Aligns items to the left */
+    gap: 20px;
+    /* Increases spacing between elements for better layout */
+   }
+
+   .total__quantity {
+    text-align: left;
+    /* Aligns quantity to the left for consistency */
+   }
+
+   .product__name {
+    text-align: left;
+    /* Aligns product name to the left */
+    flex-grow: 1;
+    /* Ensures it uses all available space */
+   }
+
+   .total__price {
+    text-align: right;
+   }
+  }
+
+  /* Mobile Adjustments */
   @media screen and (max-width: 768px) {
    .container {
     padding: 20px;
    }
 
    .total__product {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 5px;
+    width: 100%;
+   }
+
+   .total__quantity {
+    width: 15%;
+    text-align: center;
    }
 
    .total__product img {
-    width: 45px;
-    height: 45px;
+    width: 20%;
+    max-width: 80px;
+    height: auto;
+   }
+
+   .product__name {
+    width: 50%;
+    max-width: 100%;
+    word-wrap: break-word;
+   }
+
+   .total__price {
+    width: 20%;
+    text-align: right;
    }
 
    .total__details {
@@ -181,15 +227,6 @@
 
    .product__info {
     max-width: calc(100% - 100px);
-   }
-
-   .product__name,
-   .total__quantity {
-    font-size: 14px;
-   }
-
-   .total__price {
-    font-size: 14px;
    }
 
    .total__item {
@@ -209,17 +246,36 @@
    }
   }
 
+  /* Very Small Screens */
   @media screen and (max-width: 480px) {
    .total__product {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     flex-wrap: nowrap;
+    gap: 5px;
+    width: 100%;
+   }
+
+   .total__quantity {
+    width: 15%;
+    text-align: center;
    }
 
    .total__product img {
-    width: 40px;
-    height: 40px;
+    width: 20%;
+    max-width: 60px;
+    height: auto;
+   }
+
+   .product__name {
+    width: 50%;
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 13px;
+   }
+
+   .total__price {
+    width: 15%;
+    text-align: right;
+    font-size: 13px;
    }
 
    .total__details {
@@ -247,6 +303,8 @@
    }
   }
  </style>
+
+
 </head>
 
 <body>
@@ -297,11 +355,15 @@
 
      @if ($productMedia)
       <img src="{{ $message->embed(public_path($productMedia->path . $productMedia->name)) }}"
-       alt="{{ $cartItem->product->name }}" style="max-width: 200px;">
+       alt="{{ $cartItem->product->name }}">
      @else
       <p>No product image available.</p>
      @endif
-     {{ $cartItem->product->name }}
+
+     <span class="product__name">
+      {{ $cartItem->product->name }}
+     </span>
+
      <span class="total__price">
       {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
       @if (app()->has('global_currency_primary_symbol'))
@@ -310,6 +372,7 @@
      </span>
     </div>
    @endforeach
+
    @if ($order->promotion_value > 0 || $order->voucher_value > 0)
     <div class="total__item">
      <span>

@@ -17,10 +17,16 @@ class TrackUserSession
     public function handle(Request $request, Closure $next)
     {
         if (Schema::hasTable('user_sessions')) {
-            $sessionId = request()->cookie('sessionId') ?? Session::getId();
+            $sessionId = $request->cookie('sessionId') ?? Session::getId();
             $ipAddress = ServerRequest::ip();
             $userAgent = ServerRequest::header('User-Agent');
             $httpReferer = $request->headers->get('referer');
+
+            // Check if User-Agent contains bot or crawler keywords
+            if ($this->isBot($userAgent)) {
+                return $next($request);
+            }
+
             DB::table('user_sessions')->upsert(
                 [
                     'sessions' => $sessionId,
@@ -36,5 +42,44 @@ class TrackUserSession
         }
 
         return $next($request);
+    }
+
+    /**
+     * Determine if the User-Agent indicates a bot or crawler.
+     *
+     * @param string|null $userAgent
+     * @return bool
+     */
+    private function isBot(?string $userAgent): bool
+    {
+        if (is_null($userAgent)) {
+            return false;
+        }
+
+        $botKeywords = [
+            'bot',
+            'crawl',
+            'spider',
+            'slurp',
+            'search',
+            'bingpreview',
+            'yandex',
+            'duckduckgo',
+            'baidu',
+            'sogou',
+            'mediapartners', // Google AdSense bot
+            'facebookexternalhit',
+            'linkedinbot',
+            'twitterbot',
+            'whatsapp',
+        ];
+
+        foreach ($botKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
