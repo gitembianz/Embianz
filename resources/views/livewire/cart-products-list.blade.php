@@ -67,7 +67,14 @@
          $nonquantity[$index] = true;
          $isdisabled = true;
      }
+     
+     $discount = false;
+     
+     if (optional($cartItem->product->product_prices->first())->value) {
+         $discount = $cartItem->product->product_prices->first()->discount != 0 ? true : false;
+     }
      ?>
+
 
      <li class="leftbar__item">
       @if ($nonquantity[$index])
@@ -156,7 +163,7 @@
           @endif
           <div class="leftbar__link--text">
            <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
-           <span class="leftbar__link--price">
+           <span class="leftbar__link--price" @if ($discount) style="display: flex; gap:5px" @endif>
             @php
              if (optional($cartItem->product->product_prices->first())->value) {
                  $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
@@ -165,8 +172,26 @@
              }
             @endphp
             @if ($price && $price != null)
-             {{ $price }} @if (app()->has('global_currency_primary_symbol'))
-              {!! app('global_currency_primary_symbol') !!}
+             @if ($discount)
+              <span class="card-price discount">
+               {{ $price }}
+               @if (app()->has('global_currency_primary_symbol'))
+                {!! app('global_currency_primary_symbol') !!}
+               @endif
+              </span>
+              <span class="card-price oldprice">
+               {{ number_format($cartItem->product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+               @if (app()->has('global_currency_primary_symbol'))
+                {!! app('global_currency_primary_symbol') !!}
+               @endif
+              </span>
+             @else
+              <span>
+               {{ $price }}
+               @if (app()->has('global_currency_primary_symbol'))
+                {!! app('global_currency_primary_symbol') !!}
+               @endif
+              </span>
              @endif
             @else
              @if (app()->has('label_product_status_indisponible'))

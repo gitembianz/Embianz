@@ -119,7 +119,7 @@ class CartProductsList extends Component
                                                 $query->select('path', 'name', 'type')->where('type', 'min');
                                             },
                                             'product_prices' => function ($query) {
-                                                $query->select('product_id', 'value');
+                                                $query->select('product_id', 'value', 'discount', 'value_no_discount');
                                             },
                                         ]);
                                 }
