@@ -272,7 +272,6 @@ class CartProductsList extends Component
                             $this->cartmodified = true;
                         }
                         $this->cart->save();
-                        return;
                     }
                 } else {
                     continue;
