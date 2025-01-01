@@ -129,6 +129,7 @@ class ProductController extends Controller
     \DB::raw('MIN(media.path) as media_path'),  // Select first media path
     \DB::raw('MIN(media.name) as media_name'),  // Select first media name
     \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
+    \DB::raw('MAX(pricelist_entries.value_no_discount) as value_no_discount'),  // Aggregate value_no_discount
     \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
     \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
     \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
@@ -151,12 +152,18 @@ private function generateCsvFeed($products, $feedType)
     $feeds = [
         'google' => [
             'fileName' => 'google.csv',
-            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand','custom_label_0','google_product_category'],
+            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price','sale_price','availability', 'brand','custom_label_0','google_product_category'],
             'columns' => function($product) {
                 $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
                 $image = str_replace(' ', '%20', $image);
                 $category = $this->sanitizeData($product->short_description);
+                $price=$this->sanitizeData($product->value_no_discount)." ".$this->sanitizeData($product->currency_name);
+                if($product->value_no_discount!=$product->price){
+                $sale_price = $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name);
+                }else{
+                  $sale_price='';
+                }
                 return [
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->id),
@@ -167,7 +174,8 @@ private function generateCsvFeed($products, $feedType)
                     $link,
                     $image,
                     'new',
-                    $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
+                    $price,
+                    $sale_price,
                     'in_stock',
                     $this->sanitizeData($product->brand),
                     $this->sanitizeData($product->short_description),
