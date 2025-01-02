@@ -404,10 +404,10 @@
      </a>
     @endif
    </div>
+   <input type="hidden" value={{ $timer }} id="remaningtime">
    @if ($timer > 0)
     <script>
      let ticker;
-     const serverTimer = {{ $timer }};
      const storageKey = 'timer_end_time';
 
      function clearExistingTimer() {
@@ -417,11 +417,9 @@
       }
      }
 
-     function setEndTime() {
+     function setEndTime(serverTimer) {
       const now = Math.floor(Date.now() / 1000);
-      if (!localStorage.getItem(storageKey)) {
-       localStorage.setItem(storageKey, now + serverTimer);
-      }
+      localStorage.setItem(storageKey, now + serverTimer);
      }
 
      function startTimer() {
@@ -439,7 +437,6 @@
         clearExistingTimer();
         localStorage.removeItem(storageKey);
 
-        // Safely update the countdown element if it exists
         const countdownElement = document.getElementById("countdown_cart");
         if (countdownElement) {
          countdownElement.innerHTML = "0s";
@@ -452,7 +449,7 @@
 
      function displayTime(timeLeft) {
       const countdownElement = document.getElementById("countdown_cart");
-      if (!countdownElement) return; // Exit if the element doesn't exist
+      if (!countdownElement) return;
 
       const days = Math.floor(timeLeft / 86400);
       const hours = Math.floor((timeLeft % 86400) / 3600);
@@ -468,18 +465,22 @@
       countdownElement.innerHTML = pretty;
      }
 
-     function initTimer() {
-      setEndTime();
+     function initTimer(serverTimer) {
+      setEndTime(serverTimer);
       startTimer();
      }
 
-     document.addEventListener('livewire:load', initTimer);
-     document.addEventListener('livewire:update', initTimer);
+     document.addEventListener('livewire:update', () => {
+      const remainingTimeElement = document.getElementById("remaningtime");
+
+      if (remainingTimeElement) {
+       const newTimer = parseInt(remainingTimeElement.value, 10);
+       setEndTime(newTimer);
+       startTimer();
+      }
+     });
     </script>
    @endif
-
-
-
 
    <script>
     document.getElementById('headerContinue').addEventListener('click', function() {
