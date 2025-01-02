@@ -79,4 +79,8 @@ class BeeingInOrder extends Component
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
             ->paginate($this->loadAmount); // Paginate the results
     }
+    public function loadMore()
+    {
+        $this->loadAmount += 10;
+    }
 }

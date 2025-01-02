@@ -119,7 +119,7 @@
    </tbody>
   </table>
   @if (count($orders) >= 10)
-   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
+   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
     Load more
    </button>
   @endif
