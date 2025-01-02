@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Schema;
 class BeeingInOrder extends Component
 {
     use WithPagination;
-    public $perPage = 10;
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
@@ -19,7 +18,7 @@ class BeeingInOrder extends Component
     public $selectedColumns = [];
     public $columns = [];
     public $row = null;
-    public $loadAmount = 15;
+    public $loadAmount = 10;
     public $showrelated = false;
 
     public function render()

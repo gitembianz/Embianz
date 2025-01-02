@@ -4,7 +4,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('Beeing in orders ') }}({{ $orders->count() }})
+   {{ __('Beeing in orders ') }}({{ $orders->total() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -118,7 +118,7 @@
     @endif
    </tbody>
   </table>
-  @if (count($orders) >= 10)
+  @if ($orders->total() > $loadAmount)
    <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
     Load more
    </button>
