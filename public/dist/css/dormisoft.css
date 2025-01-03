@@ -2459,7 +2459,7 @@ body.no-scroll {
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: #012758;
+  background-color: #012758;
   color: #fafafa;
   font-size: 14px;
   font-weight: 400;
@@ -4481,6 +4481,22 @@ h2.section__title {
   border-top: 1px solid #efefef;
 }
 .footer__copyright > a {
+  font-weight: 500;
+  line-height: 150%;
+  color: #efefef;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.footer__order {
+  width: 100%;
+  font-weight: 500;
+  line-height: 150%;
+  color: #efefef;
+  font-size: 14px;
+  text-align: center;
+}
+.footer__order > a {
   font-weight: 500;
   line-height: 150%;
   color: #efefef;

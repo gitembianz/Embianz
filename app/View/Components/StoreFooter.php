@@ -8,12 +8,14 @@ use Illuminate\View\Component;
 
 class StoreFooter extends Component
 {
+    public $page;
+
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($page = "",)
     {
-        //
+        $this->page = $page;
     }
 
     /**
@@ -21,6 +23,8 @@ class StoreFooter extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.store-footer');
+        return view('components.store-footer', [
+            'page' => $this->page
+        ]);
     }
 }

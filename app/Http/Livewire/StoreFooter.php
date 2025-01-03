@@ -16,13 +16,15 @@ class StoreFooter extends Component
   public $ischecked = false;
   public $session_id;
   public $timer = 0;
+  public $page;
 
   public function render()
   {
     return view('livewire.store-footer');
   }
-  public function mount()
+  public function mount($page = "")
   {
+    $this->page = $page;
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
       $this->session_id = request()->cookie('sessionId') ?? session()->getId();
       $user = UserSessions::where('sessions', $this->session_id)->first();
