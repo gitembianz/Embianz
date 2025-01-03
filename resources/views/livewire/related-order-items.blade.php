@@ -134,7 +134,7 @@
              @if (count($products) >= 1)
               @foreach ($products as $product)
                <button class="item__searchable"
-                wire:click.prevent="selectitem({{ $index }}, {{ $product->id }}, '{{ $product->name }}', '{{ $product->product_prices->first()->value }}','{{ $product->product_prices->first()->vat }}')">
+                wire:click.prevent="selectitem({{ $index }}, {{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->product_prices->first()->value }}', '{{ $product->product_prices->first()->vat }}')">
                 {{ $product->name }}
                 ({{ number_format($product->product_prices->first()->value, 2, ',', '.') . app('global_currency_primary_symbol') }})
                </button>
