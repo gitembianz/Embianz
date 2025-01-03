@@ -211,6 +211,16 @@
     </svg>
     <span>Currency</span>
    </a>
+   <a
+    class="button button--fill button--flexed button--primary @if ($active == 'countries') button--active @endif"
+    href="{{ route('countries') }}">
+    <svg>
+     <circle cx="12" cy="12" r="10"></circle>
+     <line x1="2" y1="12" x2="22" y2="12"></line>
+     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span>Countries</span>
+   </a>
    {{-- custom scripts --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'scripts') button--active @endif"
@@ -471,6 +481,16 @@
     <path d="M3 11c0 .888 .772 1.45 2 2" />
    </svg>
    <span>Currency</span>
+  </a>
+  <a
+   class="button button--long button--flexed button--primary @if ($active == 'countries') button--secondary @endif"
+   href="{{ route('countries') }}">
+   <svg>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+   </svg>
+   <span>Countries</span>
   </a>
   {{-- custom scripts desktop --}}
   <a
