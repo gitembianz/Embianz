@@ -4488,6 +4488,22 @@ h2.section__title {
   text-decoration: underline;
 }
 
+.footer__order {
+  width: 100%;
+  font-weight: 500;
+  line-height: 150%;
+  color: #efefef;
+  font-size: 14px;
+  text-align: center;
+}
+.footer__order > a {
+  font-weight: 500;
+  line-height: 150%;
+  color: #efefef;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
 .footer__checkbox {
   width: 100%;
   display: flex;
