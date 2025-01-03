@@ -115,6 +115,9 @@
       route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
 
 
+      route::view('/countries', 'admin.countries')->name('countries');
+
+
 
 
       //specific routes
