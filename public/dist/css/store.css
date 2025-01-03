@@ -2459,7 +2459,7 @@ body.no-scroll {
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: #333333;
+  background-color: #0f0f0f;
   color: #fafafa;
   font-size: 14px;
   font-weight: 400;

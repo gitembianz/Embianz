@@ -42,7 +42,7 @@
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: $lightBlack;
+  background-color: $ctadark;
   color: $primary;
   font-size: $textSize;
   font-weight: 400;
@@ -55,10 +55,10 @@
 
   @media (hover: hover) {
     &:hover {
-      background: lighten($lightBlack,20%);
+      background: lighten($lightBlack, 20%);
       color: $primary;
 
-      & > svg {
+      &>svg {
         stroke: $primary;
       }
     }
@@ -69,7 +69,7 @@
       background: $primary;
       color: $lightBlack;
 
-      & > svg {
+      &>svg {
         stroke: $primary;
       }
     }
@@ -80,7 +80,7 @@
     padding: 0 5px;
     width: 100%;
 
-    & > svg {
+    &>svg {
       transform: scale(0.7);
       transition: all 0.3s ease-in-out;
     }
@@ -88,14 +88,14 @@
 
   &.active {
     background: $primary;
-      color: $lightBlack;
+    color: $lightBlack;
 
-    & > svg {
+    &>svg {
       stroke: $primary;
     }
   }
 
-  & > svg {
+  &>svg {
     stroke: $primary;
   }
 }
@@ -166,7 +166,7 @@
   border-radius: 5px;
   gap: 10px;
 
-  & > h3 {
+  &>h3 {
     color: $lightBlack;
     font-size: $inputSize;
     font-weight: $lightWeight;
@@ -196,7 +196,7 @@
     grid-column: 1/3;
   }
 
-  & > span {
+  &>span {
     position: absolute;
     top: 50%;
     left: 0;
@@ -213,7 +213,7 @@
     font-weight: $lightWeight;
   }
 
-  & > h3 {
+  &>h3 {
     color: $lightBlack;
     font-size: $inputSize;
     font-weight: $lightWeight;
@@ -233,20 +233,20 @@
       color: $darkRed;
     }
 
-    & > input {
+    &>input {
       background: lighten($darkRed, 35%);
     }
 
-    & > span {
+    &>span {
       font-size: $textSize;
     }
 
-    & > label {
+    &>label {
       color: $darkRed;
     }
   }
 
-  & > input,
+  &>input,
   textarea {
     position: relative;
     width: 100%;
@@ -279,7 +279,7 @@
       user-select: none;
     }
 
-    & ~ label {
+    &~label {
       position: absolute;
       font-size: $inputSize;
       font-weight: $lightWeight;
@@ -296,16 +296,16 @@
       text-wrap: balance;
     }
 
-    &:focus ~ label,
-    &:active ~ label,
-    &:not(:placeholder-shown) ~ label {
+    &:focus~label,
+    &:active~label,
+    &:not(:placeholder-shown)~label {
       top: -28px;
       left: 0;
       font-size: $spanSize;
     }
   }
 
-  & > span {
+  &>span {
     font-size: 0px;
     font-weight: $lightWeight;
     color: $darkRed;
@@ -330,7 +330,7 @@
     align-items: center;
   }
 
-  & > input {
+  &>input {
     padding-left: 20px;
   }
 }
@@ -346,7 +346,7 @@
   border-radius: 5px;
   grid-column: 1/3;
 
-  & > span {
+  &>span {
     color: $lightBlack;
     font-size: $inputSize;
     font-weight: $lightWeight;
@@ -366,21 +366,21 @@
   grid-column: 1/3;
   scroll-margin-top: 150px;
 
-  & > span {
+  &>span {
     color: $darkGray;
     font-size: $inputSize;
     font-weight: $lightWeight;
     flex: 1;
     text-decoration: none;
 
-    & > a {
+    &>a {
       color: $lightBlack;
       text-decoration: underline;
       font-weight: 600;
     }
   }
 
-  & > input:checked ~ a {
+  &>input:checked~a {
     color: $lightBlack;
   }
 
@@ -388,10 +388,10 @@
     background: lighten($darkRed, 44%);
     border: 1px solid $darkRed;
 
-    & > span {
+    &>span {
       color: $darkRed;
 
-      & > a {
+      &>a {
         color: $darkRed;
       }
     }
