@@ -1,4 +1,4 @@
-<livewire:store-footer />
+<livewire:store-footer :page="$page" />
 <script src="/script/store/general.js" defer></script>
 @livewireScripts
 @if (app()->has('global_script_body-bottom'))

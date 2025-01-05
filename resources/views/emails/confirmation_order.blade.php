@@ -69,6 +69,7 @@
    color: #333;
    word-wrap: break-word;
    line-height: 1.4;
+   margin-left: 5px;
   }
 
   .total__price {
@@ -438,8 +439,8 @@
     @if (app()->has('label_order_fullname'))
      {!! app('label_order_fullname') !!}
     @endif
-    {{ $order->account->addresses->where('type', 'shipping')->first()->first_name }}
     {{ $order->account->addresses->where('type', 'shipping')->first()->last_name }}
+    {{ $order->account->addresses->where('type', 'shipping')->first()->first_name }}
    </span><br>
    <span class="total__message">
     @if (app()->has('label_order_phone'))

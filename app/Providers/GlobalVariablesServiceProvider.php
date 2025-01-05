@@ -15,6 +15,7 @@ use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -39,6 +40,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
+        $this->loadActiveCountries();
 
         if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
 
@@ -87,6 +89,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             foreach ($labelVariables as $key => $value) {
                 $this->app->instance('label_' . $key, $value);
             }
+        }
+    }
+    private function loadActiveCountries()
+    {
+        if (Schema::hasTable('countries')) {
+
+            $activeCountries = Cache::rememberForever('active_countries', function () {
+                return DB::table('countries')
+                    ->select(['id', 'name'])
+                    ->where('status', true)
+                    ->get();
+            });
+
+            $this->app->instance('active_countries', $activeCountries);
         }
     }
     private function loadGlobalCustomScripts()
