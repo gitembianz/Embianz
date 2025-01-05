@@ -24,10 +24,12 @@ class ShowProduct extends Component
   public $editproduct = null;
   public $delete = false;
   public $prod;
+  public $interimQuantity;
 
   public function mount($productId)
   {
     $this->productId = $productId;
+    $this->calculateInterimQuantity();
   }
   public function confirmProductRemoval($id)
   {
@@ -68,6 +70,17 @@ class ShowProduct extends Component
   public function getProductProperty()
   {
     return Product::find($this->productId);
+  }
+  public function calculateInterimQuantity()
+  {
+    $this->interimQuantity = Product::query()
+      ->leftJoin('order__items as oi', 'products.id', '=', 'oi.product_id')
+      ->leftJoin('orders as o', 'oi.order_id', '=', 'o.id')
+      ->where('products.id', $this->productId)
+      ->where('o.status_id', 31)
+      ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
+      ->groupBy('products.id', 'products.quantity')
+      ->value('interim_quantity');
   }
   private function generateUniqueSeoId($name)
   {

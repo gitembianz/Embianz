@@ -189,6 +189,12 @@
    @endif
    <label for="product__name">Quantity</label>
   </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $interimQuantity }}</span>
+   <label for="product__name">Quantity Internim</label>
+
+  </div>
+
 
   {{-- Product Popularity --}}
   <div class="input__tabs">
