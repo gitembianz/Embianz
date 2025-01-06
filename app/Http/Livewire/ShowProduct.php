@@ -80,7 +80,7 @@ class ShowProduct extends Component
       ->where('o.status_id', 31)
       ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
       ->groupBy('products.id', 'products.quantity')
-      ->value('interim_quantity');
+      ->value('interim_quantity') ?? $this->product->quantity;
   }
   private function generateUniqueSeoId($name)
   {
