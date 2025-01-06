@@ -7,6 +7,8 @@ use App\Models\Order_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class Orderstable extends Component
 {
@@ -53,7 +55,23 @@ class Orderstable extends Component
     }
     public function getOrdersQueryProperty()
     {
-        return Order::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+        return Order::search($this->search)
+            ->with([
+                'orders.product' => function ($query) {
+                    $query->withCount(['orders_item as interim_quantity' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('status_id', 31);
+                        })->select(DB::raw('sum(quantity)'));
+                    }]);
+                },
+                'status',
+                'account',
+                'cart',
+                'currency',
+                'voucher',
+                'payment'
+            ])
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function showColumn($column)
     {

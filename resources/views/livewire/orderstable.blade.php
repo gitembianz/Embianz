@@ -272,8 +272,27 @@
       $i = 0;
      @endphp
      @foreach ($orders as $nr => $order)
+      @if ($order->status_id === app('global_order_processing'))
+       @php
+        $class = 'process'; // Default to process unless condition fails
+       @endphp
+       @foreach ($order->orders as $orderItem)
+        @php
+         $product = $orderItem->product;
+         $interimQuantity = $product->quantity + $product->interim_quantity;
+
+         if ($interimQuantity < $orderItem->quantity) {
+             $class = 'notprocess';
+         }
+        @endphp
+       @endforeach
+      @else
+       @php
+        $class = '';
+       @endphp
+      @endif
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($order->id)) active @endif">
+       class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}" wire:model="checked">

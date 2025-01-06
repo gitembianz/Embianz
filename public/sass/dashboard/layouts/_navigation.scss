@@ -6,6 +6,7 @@ nav.nav--header {
   justify-content: center;
   gap: $gap;
 }
+
 nav.nav--controls,
 nav.nav--tabs {
   width: 100%;
@@ -14,6 +15,12 @@ nav.nav--tabs {
   align-items: center;
   gap: $gap;
   margin-top: $margin;
+
+  .circle {
+    width: 25px;
+    border-radius: 50%;
+    height: 25px;
+  }
 }
 
 nav.nav--home {

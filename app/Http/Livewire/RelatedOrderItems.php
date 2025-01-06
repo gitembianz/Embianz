@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Order_Item;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class RelatedOrderItems extends Component
 {
@@ -114,13 +115,15 @@ class RelatedOrderItems extends Component
     {
         foreach ($this->productsAndValues as $index =>  $array) {
             if (isset($array['product']['quantity']) && isset($array['product']['idrel'])) {
-                Order_Item::create([
+                $orderitem = Order_Item::create([
                     'order_id' => $this->orderId,
                     'product_id' => $array['product']['idrel'],
                     'price' => $array['price'],
                     'quantity' => $array['product']['quantity'],
                     'vat' => $array['vat']
                 ]);
+                $orderitem->product->quantity -= $array['product']['quantity'];
+                $orderitem->product->save();
                 $this->order->quantity_amount += $array['product']['quantity'];
                 $this->order->sum_amount += ($array['price'] * $array['product']['quantity']);
                 $this->order->save();
@@ -346,7 +349,15 @@ class RelatedOrderItems extends Component
     }
     public function getOrderproductsQueryProperty()
     {
-        return Order_Item::where('order_id', $this->orderId)
+        return Order_Item::with([
+            'product' => function ($query) {
+                $query->withCount(['orders_item as interim_quantity' => function ($query) {
+                    $query->whereHas('order', function ($q) {
+                        $q->where('status_id', 31);
+                    })->select(DB::raw('sum(quantity)'));
+                }]);
+            }
+        ])->where('order_id', $this->orderId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function deleteSingleRecord()
@@ -360,6 +371,8 @@ class RelatedOrderItems extends Component
             $this->order->final_amount = 0;
         }
         $this->order->save();
+        $item->product->quantity += $item->quantity;
+        $item->product->save();
         $item->delete();
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
@@ -374,6 +387,8 @@ class RelatedOrderItems extends Component
         $item = Order_Item::findOrFail($id);
         $item->quantity += 1;
         $item->save();
+        $item->product->quantity -= 1;
+        $item->product->save();
         $this->order->quantity_amount += 1;
         $this->order->sum_amount += $item->price;
         $this->order->save();
@@ -387,6 +402,8 @@ class RelatedOrderItems extends Component
         if ($item->quantity > 1) {
             $item->quantity -= 1;
             $item->save();
+            $item->product->quantity += 1;
+            $item->product->save();
             $this->order->quantity_amount -= 1;
             $this->order->sum_amount -= $item->price;
             $this->order->save();
@@ -410,6 +427,8 @@ class RelatedOrderItems extends Component
                 $this->order->final_amount = 0;
             }
             $this->order->save();
+            $del->product->quantity += $del->quantity;
+            $del->product->save();
             $del->delete();
         }
 

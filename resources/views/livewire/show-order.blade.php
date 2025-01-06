@@ -18,6 +18,7 @@
  </aside>
  {{-- Navigation --}}
  <nav class="nav--controls">
+  <div class="circle" style="background: {{ $circle }}"></div>
   <h1 class="table--name">Order: {{ $order->name }}</h1>
   {{-- Refresh Button --}}
   <a class="button button--primary button--centered" tooltip="Back to Order" tooltip-top href="{{ route('orders') }}">
