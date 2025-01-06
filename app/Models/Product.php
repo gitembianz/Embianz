@@ -125,6 +125,10 @@ class Product extends Model
   {
     return $this->hasMany(Order_Item::class, 'product_id');
   }
+  public function order_suppliers()
+  {
+    return $this->hasMany(Order_Supplier_Item::class, 'product_id');
+  }
 
   public function media()
   {
