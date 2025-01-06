@@ -1907,6 +1907,12 @@ nav.nav--tabs {
   gap: 7.5px;
   margin-top: 7.5px;
 }
+nav.nav--controls .circle,
+nav.nav--tabs .circle {
+  width: 25px;
+  border-radius: 50%;
+  height: 25px;
+}
 
 nav.nav--home {
   width: 100%;
@@ -2229,10 +2235,18 @@ nav.nav--home {
 .expandable-table > tbody td:last-child {
   width: 0% !important;
 }
+.expandable-table > tbody tr.process {
+  background: #37583b !important;
+}
+.expandable-table > tbody tr.notprocess {
+  background: #4a0a0f !important;
+}
 .expandable-table > tbody tr:nth-child(4n+1) {
   background: #2a353c;
 }
-.expandable-table input:not(.input__searchable), .expandable-table select, .expandable-table textarea {
+.expandable-table input:not(.input__searchable),
+.expandable-table select,
+.expandable-table textarea {
   min-width: 150px;
   width: 100%;
   vertical-align: middle;

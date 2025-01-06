@@ -20,6 +20,7 @@ class ShowOrder extends Component
     public $statuses;
     public $invoice_sdatabase;
     public $storno_sdatabase;
+    public $circle;
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
@@ -580,11 +581,35 @@ class ShowOrder extends Component
     }
     public function getOrderQueryProperty()
     {
-        return Order::with('account', 'currency', 'status', 'cart', 'orders')->find($this->orderId);
+        return Order::with([
+            'orders.product' => function ($query) {
+                $query->withCount(['orders_item as interim_quantity' => function ($query) {
+                    $query->whereHas('order', function ($q) {
+                        $q->where('status_id', 31);
+                    })->select(DB::raw('sum(quantity)'));
+                }]);
+            },
+            'status',
+            'account',
+            'cart',
+            'currency',
+            'voucher',
+            'payment'
+        ])->find($this->orderId);
     }
     public function mount($orderId)
     {
+        $this->circle = "#37583b";
         $this->orderId = $orderId;
+        foreach ($this->order->orders as $orderItem) {
+
+            $product = $orderItem->product;
+            $interimQuantity = $product->quantity + $product->interim_quantity;
+
+            if ($interimQuantity < $orderItem->quantity) {
+                $this->circle = "#4a0a0f";
+            }
+        }
     }
     public function canceledit()
     {
