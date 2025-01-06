@@ -405,6 +405,10 @@
         </svg>
        </button>
       </th>
+      <th> <button class="table--btn">
+        Interim Quantity
+
+       </button></th>
      @endif
      @if ($this->showColumn('VAT'))
       <th class="hidden">
@@ -503,6 +507,7 @@
           </svg>
          </div>
         </td>
+        <td wire:click="expandRow({{ $index }})"> {{ $interimQuantity }}</td>
        @endif
        @if ($this->showColumn('VAT'))
         <td class="hidden" wire:click="expandRow({{ $index }})">

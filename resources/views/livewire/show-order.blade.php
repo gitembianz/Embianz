@@ -18,7 +18,9 @@
  </aside>
  {{-- Navigation --}}
  <nav class="nav--controls">
-  <div class="circle" style="background: {{ $circle }}"></div>
+  @if ($order->status_id === app('global_order_processing'))
+   <div class="circle" style="background: {{ $circle }}"></div>
+  @endif
   <h1 class="table--name">Order: {{ $order->name }}</h1>
   {{-- Refresh Button --}}
   <a class="button button--primary button--centered" tooltip="Back to Order" tooltip-top href="{{ route('orders') }}">
