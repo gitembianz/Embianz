@@ -274,15 +274,19 @@
      @foreach ($orders as $nr => $order)
       @if ($order->status_id === app('global_order_processing'))
        @php
-        $class = 'process'; // Default to process unless condition fails
+        $class = 'process';
+        $productDetails = [];
        @endphp
+
        @foreach ($order->orders as $orderItem)
         @php
          $product = $orderItem->product;
          $interimQuantity = $product->quantity + $product->interim_quantity;
 
+         // Check if interimQuantity is less than the order quantity
          if ($interimQuantity < $orderItem->quantity) {
              $class = 'notprocess';
+             $productDetails[] = "{$product->name} x" . ($orderItem->quantity - $interimQuantity);
          }
         @endphp
        @endforeach
@@ -292,6 +296,7 @@
        @endphp
       @endif
       <tr @if ($loop->last) id="last_record" @endif
+       @if ($class === 'notprocess') data-tooltip="{{ implode(', ', $productDetails) }}" @endif
        class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
@@ -399,6 +404,47 @@
   </table>
 
   <x-admin-lazyload />
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'row-tooltip';
+    document.body.appendChild(tooltip);
+
+    function attachTooltipListeners() {
+     document.querySelectorAll('.expandable-row.notprocess').forEach(row => {
+      row.addEventListener('mouseenter', function() {
+       tooltip.innerHTML = row.getAttribute('data-tooltip');
+       tooltip.style.display = 'flex';
+       tooltip.style.position = 'fixed';
+       tooltip.style.color = 'white';
+       tooltip.style.backgroundColor = '#333'; // Background color for the tooltip
+       tooltip.style.border = '1px solid #fff'; // Border color
+       tooltip.style.borderRadius = '6px'; // Rounded corners
+       tooltip.style.padding = '8px 12px'; // Padding inside the tooltip
+       tooltip.style.fontSize = '14px'; // Font size for the tooltip
+       tooltip.style.maxWidth = '200px'; // Maximum width
+       tooltip.style.wordWrap = 'break-word'; // Ensure long text wraps
+      });
+
+      row.addEventListener('mousemove', function(event) {
+       tooltip.style.left = `${event.pageX + 15}px`; // Offset the tooltip to the right of the cursor
+       tooltip.style.top = `${event.pageY + 15}px`; // Offset the tooltip below the cursor
+      });
+
+      row.addEventListener('mouseleave', function() {
+       tooltip.style.display = 'none'; // Hide the tooltip when the mouse leaves the row
+      });
+     });
+    }
+
+    // Call the function initially
+    attachTooltipListeners();
+
+    // Reattach tooltips after Livewire updates
+    window.addEventListener('livewire:load', attachTooltipListeners);
+    window.addEventListener('livewire:update', attachTooltipListeners);
+   });
+  </script>
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($orders))
