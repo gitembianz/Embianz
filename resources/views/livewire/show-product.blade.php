@@ -179,22 +179,23 @@
    @endif
    <label for="product__name">Type</label>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product Quantity --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->quantity }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
-   @endif
-   <label for="product__name">Quantity</label>
+   {{-- Product Quantity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->quantity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
+    @endif
+    <label for="product__name">Quantity</label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $interimQuantity }}</span>
+    <label for="product__name">Quantity Interim</label>
+
+   </div>
   </div>
-  <div class="input__tabs">
-   <span class="disabled">{{ $interimQuantity }}</span>
-   <label for="product__name">Quantity Interim</label>
-
-  </div>
-
 
   {{-- Product Popularity --}}
   <div class="input__tabs">
