@@ -286,7 +286,7 @@
          // Check if interimQuantity is less than the order quantity
          if ($interimQuantity < $orderItem->quantity) {
              $class = 'notprocess';
-             $productDetails[] = "{$product->name} x" . ($orderItem->quantity - $interimQuantity);
+             $productDetails[] = $orderItem->quantity - $interimQuantity . " x {$product->name} <br>";
          }
         @endphp
        @endforeach
@@ -296,7 +296,7 @@
        @endphp
       @endif
       <tr @if ($loop->last) id="last_record" @endif
-       @if ($class === 'notprocess') data-tooltip="{{ implode(', ', $productDetails) }}" @endif
+       @if ($class === 'notprocess') data-tooltip="{{ implode('<br>', $productDetails) }}" @endif
        class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
@@ -417,30 +417,28 @@
        tooltip.style.display = 'flex';
        tooltip.style.position = 'fixed';
        tooltip.style.color = 'white';
-       tooltip.style.backgroundColor = '#333'; // Background color for the tooltip
-       tooltip.style.border = '1px solid #fff'; // Border color
-       tooltip.style.borderRadius = '6px'; // Rounded corners
-       tooltip.style.padding = '8px 12px'; // Padding inside the tooltip
-       tooltip.style.fontSize = '14px'; // Font size for the tooltip
-       tooltip.style.maxWidth = '200px'; // Maximum width
-       tooltip.style.wordWrap = 'break-word'; // Ensure long text wraps
+       tooltip.style.backgroundColor = '#333';
+       tooltip.style.border = '1px solid #fff';
+       tooltip.style.borderRadius = '6px';
+       tooltip.style.padding = '8px 12px';
+       tooltip.style.fontSize = '11px';
+       tooltip.style.maxWidth = '400px';
+       tooltip.style.wordWrap = 'break-word';
       });
 
       row.addEventListener('mousemove', function(event) {
-       tooltip.style.left = `${event.pageX + 15}px`; // Offset the tooltip to the right of the cursor
-       tooltip.style.top = `${event.pageY + 15}px`; // Offset the tooltip below the cursor
+       tooltip.style.left = `${event.pageX + 15}px`;
+       tooltip.style.top = `${event.pageY + 15}px`;
       });
 
       row.addEventListener('mouseleave', function() {
-       tooltip.style.display = 'none'; // Hide the tooltip when the mouse leaves the row
+       tooltip.style.display = 'none';
       });
      });
     }
 
-    // Call the function initially
     attachTooltipListeners();
 
-    // Reattach tooltips after Livewire updates
     window.addEventListener('livewire:load', attachTooltipListeners);
     window.addEventListener('livewire:update', attachTooltipListeners);
    });
