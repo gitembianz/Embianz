@@ -191,7 +191,7 @@
   </div>
   <div class="input__tabs">
    <span class="disabled">{{ $interimQuantity }}</span>
-   <label for="product__name">Quantity Internim</label>
+   <label for="product__name">Quantity Interim</label>
 
   </div>
 
