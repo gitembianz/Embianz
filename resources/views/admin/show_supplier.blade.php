@@ -5,4 +5,3 @@
 <livewire:show-supplier itemId="{{ $data->id }}" />
 
 <x-dashboardfooter />
-p
