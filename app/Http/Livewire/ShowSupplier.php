@@ -88,15 +88,13 @@ class ShowSupplier extends Component
                     foreach ($this->supplier->items as $item) {
                         $product = $item->product;
 
-                        // Calculate the interim quantity using existing logic
                         $interimQuantity = $product->orders_item()
                             ->whereHas('order', function ($q) {
                                 $q->where('status_id', 31);
                             })->sum('quantity');
 
-                        // Update product's actual quantity and interim quantity
                         $item->product_quantity_interim = $item->product->quantity + $interimQuantity;
-                        $item->product_quantity = $item->product->quantity; // Adding order quantity to product's quantity
+                        $item->product_quantity = $item->product->quantity;
                         $item->save();
                     }
                 }
