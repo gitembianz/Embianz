@@ -7,7 +7,7 @@
  <nav class="nav--controls">
   <h1 class="table--name">New Order Supplier</h1>
   {{-- Refresh Button --}}
-  <a class="button button--primary button--centered" tooltip="Back to Price Lists" tooltip-top
+  <a class="button button--primary button--centered" tooltip="Back to Order Supplier Lists" tooltip-top
    href="{{ route('suppliers') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
