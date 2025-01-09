@@ -21,6 +21,6 @@ class Order_Supplier extends Model
     }
     public function items()
     {
-        return $this->hasMany(Order_Supplier::class, 'order__supplier_id');
+        return $this->hasMany(Order_Supplier_Item::class, 'order__supplier_id');
     }
 }

@@ -111,7 +111,7 @@
     @else
      <select wire:model.defer="record.status">
       <option value="draft">draft</option>
-      <option value="send">send</option>
+      <option value="send">pending</option>
       <option value="closed">closed</option>
      </select>
     @endif
@@ -166,6 +166,6 @@
 
  {{-- Tabs Body (Related) --}}
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-  {{-- @livewire('related-productson-supplier', ['priceId' => $supplier->id]) --}}
+  @livewire('related-order-supplier', ['supplierId' => $supplier->id])
  </div>
 </section>
