@@ -116,6 +116,9 @@ class Supplierstable extends Component
     {
         $id = $this->idbeingremoved;
         $record = Order_Supplier::findOrFail($id);
+        foreach ($record->items as $item) {
+            $item->delete();
+        }
         $record->delete();
         $this->checked = array_diff($this->checked, [$id]);
         $this->single = false;
@@ -129,9 +132,10 @@ class Supplierstable extends Component
     {
         $records = Order_Supplier::whereKey($this->checked)->get();
         foreach ($records as $record) {
-            $id = $record->id;
-            $item = Order_Supplier::find($id);
-            $item->delete();
+            foreach ($record->items as $item) {
+                $item->delete();
+            }
+            $record->delete();
         }
         $this->checked = [];
         $this->selectPage = false;
