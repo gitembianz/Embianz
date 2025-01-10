@@ -111,7 +111,7 @@
     @else
      <select wire:model.defer="record.status">
       <option value="draft">draft</option>
-      <option value="send">pending</option>
+      <option value="pending">pending</option>
       <option value="closed">closed</option>
      </select>
     @endif
