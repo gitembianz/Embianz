@@ -196,15 +196,22 @@
 
    </div>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product Popularity --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->popularity }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
-   @endif
-   <label for="product__name">Popularity</label>
+   {{-- Product Popularity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->popularity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+    @endif
+    <label for="product__name">Popularity</label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $product->quantity_supplier_ordered }}</span>
+    <label for="product__name">Quantity Supplier Ordered</label>
+
+   </div>
   </div>
   <div class="details__checkboxes">
 
