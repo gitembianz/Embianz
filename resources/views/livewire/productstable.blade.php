@@ -398,6 +398,10 @@
             <label for="disabled2"></label>
            </div>
           @endif
+         @elseif($column === 'interim_quantity')
+          <span>
+           {{ $product->quantity + $product->$column }}
+          </span>
          @elseif($column === 'long_description')
           <span class="show-less">
            {!! $product->$column !!}

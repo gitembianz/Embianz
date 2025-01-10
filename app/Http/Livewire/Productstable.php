@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 use Illuminate\Support\Facades\Storage;
@@ -283,6 +284,13 @@ class Productstable extends Component
   public function mount($tableName)
   {
     $this->columns = Schema::getColumnListing($tableName);
+
+    $quantityIndex = array_search('quantity', $this->columns);
+
+    if ($quantityIndex !== false) {
+      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
+    }
+
     $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
@@ -326,8 +334,16 @@ class Productstable extends Component
   public function getProductsQueryProperty()
   {
     return Product::search($this->search)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+      ->withCount([
+        'orders_item as interim_quantity' => function ($query) {
+          $query->whereHas('order', function ($q) {
+            $q->where('status_id', 31);
+          })->select(DB::raw('SUM(quantity)'));
+        }
+      ])
+      ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
   }
+
   public function loadMore()
   {
     $this->loadAmount += 10;
