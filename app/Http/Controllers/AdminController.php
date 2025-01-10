@@ -14,6 +14,7 @@ use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Order_Supplier;
 use App\Models\ProductReviews as ModelsProductReviews;
 use App\Models\Promotion;
 use App\Models\UserSessions;
@@ -26,6 +27,41 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+
+  public function store_supplier(Request $request)
+  {
+    $rules = [
+      'name' => 'required',
+      'date' => 'required|date'
+    ];
+    $messages = [
+      'name' => 'name is required',
+      'date' => 'date is required'
+    ];
+    $this->validate(
+      $request,
+      $rules,
+      $messages
+    );
+
+    $values = array(
+      "name" => $request->name,
+      "date" => $request->date,
+      "status" => "draft",
+      "created_by" => Auth::user()->name,
+      "last_modified_by" => Auth::user()->name,
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Order_Supplier::insert($values);
+
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
 
   public function store_promotion(Request $request)
   {
@@ -106,6 +142,12 @@ class AdminController extends Controller
       'type' => 'success',
       'title' => 'Success'
     ]);
+  }
+
+  public function show_supplier($id)
+  {
+    $data = Order_Supplier::find($id);
+    return view('admin.show_supplier', compact('data'));
   }
   public function show_cart($id)
   {
