@@ -297,7 +297,7 @@ class ShowOrder extends Component
                 $htmlContent .= "
                     <tr>
                         <td>" . ($i + 1) . "</td>
-                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere Voucher') . " - " . $vatRate . "%</td>
+                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere')."</td>
                         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                         <td>" . $vatRate . "</td>
                         <td>1</td>
@@ -509,7 +509,7 @@ class ShowOrder extends Component
                 $htmlContent .= "
                     <tr>
                         <td>" . ($i + 1) . "</td>
-                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere Voucher') . " - " . $vatRate . "%</td>
+                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
                         <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                         <td>" . $vatRate . "</td>
                         <td>-1</td>
