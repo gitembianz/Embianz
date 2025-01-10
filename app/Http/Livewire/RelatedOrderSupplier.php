@@ -97,6 +97,7 @@ class RelatedOrderSupplier extends Component
 
             if (!is_null($newQuantityReceived)) {
                 $product->quantity += ($newQuantityReceived - $orderItem->getOriginal('quantity_received'));
+                $product->quantity_supplier_ordered -= ($newQuantityReceived - $orderItem->getOriginal('quantity_received'));
             }
 
             if (!is_null($newQuantity)) {
