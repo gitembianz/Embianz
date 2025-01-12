@@ -86,6 +86,7 @@
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Orders') }} ({{ $orders->total() }})</h1>
+ <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;" wire:model="status31Only"> Show Processing Only</div>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
