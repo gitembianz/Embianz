@@ -13,7 +13,7 @@ class ShowAccount extends Component
     public $delete = false;
     public $edititem = null;
     protected $listeners = [
-        'itemSaved' => 'mount'
+        'itemSaved' => 'hasbeededited'
     ];
 
     public function render()
@@ -23,6 +23,10 @@ class ShowAccount extends Component
         ]);
     }
 
+    public function hasbeededited()
+    {
+        $this->mount($this->accountId);
+    }
 
     public function getAccountProperty()
     {

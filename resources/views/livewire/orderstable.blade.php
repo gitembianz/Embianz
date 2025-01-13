@@ -86,6 +86,7 @@
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Orders') }} ({{ $orders->total() }})</h1>
+ <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;" wire:model="status31Only"> Show Processing Only</div>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
@@ -241,7 +242,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 16) class="hidden" @endif>
+       <th @if ($index > 2) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ str_replace('_id', '', $column) }}
@@ -272,8 +273,32 @@
       $i = 0;
      @endphp
      @foreach ($orders as $nr => $order)
+      @if ($order->status_id === app('global_order_processing'))
+       @php
+        $class = 'process';
+        $productDetails = [];
+       @endphp
+
+       @foreach ($order->orders as $orderItem)
+        @php
+         $product = $orderItem->product;
+         $interimQuantity = $product->quantity + $product->interim_quantity;
+
+         // Check if interimQuantity is less than the order quantity
+         if ($interimQuantity < $orderItem->quantity) {
+             $class = 'notprocess';
+             $productDetails[] = $orderItem->quantity - $interimQuantity . " x {$product->name} <br>";
+         }
+        @endphp
+       @endforeach
+      @else
+       @php
+        $class = '';
+       @endphp
+      @endif
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($order->id)) active @endif">
+       @if ($class === 'notprocess') data-tooltip="{{ implode('<br>', $productDetails) }}" @endif
+       class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}" wire:model="checked">
@@ -281,7 +306,7 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 16) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 2) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_order', ['id' => $order->id]) }}">{{ $order->name }}</a>
@@ -289,6 +314,8 @@
           @if ($order->account_id)
            <a href="{{ route('show_account', ['id' => $order->account_id]) }}">{{ $order->account->name }}</a>
           @endif
+         @elseif($column === 'session_id')
+          <a href="{{ route('show_session', ['id' => $order->session_id]) }}">{{ $order->$column }}</a>
          @elseif ($column === 'cart_id')
           @if ($order->cart_id)
            <a href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>
@@ -321,13 +348,8 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 15)
-           @if ($column === 'name')
-            <p>
-             <bold>{{ $column }}:</bold>
-             <a href="{{ route('show_order', ['id' => $order->id]) }}">{{ $order->name }}</a>
-            </p>
-           @elseif ($column === 'account_id')
+          @if ($index > 2)
+           @if ($column === 'account_id')
             @if ($order->account_id)
              <p>
               <bold>{{ str_replace('_id', '', $column) }}:</bold>
@@ -383,6 +405,45 @@
   </table>
 
   <x-admin-lazyload />
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'row-tooltip';
+    document.body.appendChild(tooltip);
+
+    function attachTooltipListeners() {
+     document.querySelectorAll('.expandable-row.notprocess').forEach(row => {
+      row.addEventListener('mouseenter', function() {
+       tooltip.innerHTML = row.getAttribute('data-tooltip');
+       tooltip.style.display = 'flex';
+       tooltip.style.position = 'fixed';
+       tooltip.style.color = 'white';
+       tooltip.style.backgroundColor = '#333';
+       tooltip.style.border = '1px solid #fff';
+       tooltip.style.borderRadius = '6px';
+       tooltip.style.padding = '8px 12px';
+       tooltip.style.fontSize = '11px';
+       tooltip.style.maxWidth = '400px';
+       tooltip.style.wordWrap = 'break-word';
+      });
+
+      row.addEventListener('mousemove', function(event) {
+       tooltip.style.left = `${event.pageX + 15}px`;
+       tooltip.style.top = `${event.pageY + 15}px`;
+      });
+
+      row.addEventListener('mouseleave', function() {
+       tooltip.style.display = 'none';
+      });
+     });
+    }
+
+    attachTooltipListeners();
+
+    window.addEventListener('livewire:load', attachTooltipListeners);
+    window.addEventListener('livewire:update', attachTooltipListeners);
+   });
+  </script>
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($orders))

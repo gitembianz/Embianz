@@ -11,17 +11,21 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('cart__items', function (Blueprint $table) {
-      $table->id();
-      $table->unsignedBigInteger('cart_id');
-      $table->foreign('cart_id')->references('id')->on('carts');
-      $table->unsignedBigInteger('product_id');
-      $table->foreign('product_id')->references('id')->on('products');
-      $table->decimal('price', 10, 2)->default(0);
-      $table->integer('quantity')->default(0);
-      $table->decimal('delivery_price', 10, 2)->nullable();
-      $table->timestamps();
-    });
+    if (!Schema::hasTable('cart__items')) {
+
+      Schema::create('cart__items', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('cart_id');
+        $table->foreign('cart_id')->references('id')->on('carts');
+        $table->unsignedBigInteger('product_id');
+        $table->foreign('product_id')->references('id')->on('products');
+        $table->decimal('price', 10, 2)->default(0);
+        $table->integer('quantity')->default(0);
+        $table->decimal('delivery_price', 10, 2)->nullable();
+        $table->decimal('vat', 5, 2)->nullable();
+        $table->timestamps();
+      });
+    }
   }
 
   /**

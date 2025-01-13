@@ -34,14 +34,6 @@ class WishlistProductsList extends Component
         $this->message = null;
     }
 
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            return session()->getId();
-        }
-    }
 
     public function wishshow()
     {
@@ -51,7 +43,8 @@ class WishlistProductsList extends Component
 
     public function mount()
     {
-        $this->session_id = $this->getSessionId();
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
         $this->message = null;
     }
 

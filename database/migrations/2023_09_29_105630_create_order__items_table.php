@@ -11,16 +11,20 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('order__items', function (Blueprint $table) {
-      $table->id();
-      $table->unsignedBigInteger('order_id');
-      $table->foreign('order_id')->references('id')->on('orders');
-      $table->unsignedBigInteger('product_id');
-      $table->foreign('product_id')->references('id')->on('products');
-      $table->decimal('price', 10, 2)->default(0);
-      $table->integer('quantity')->default(0);
-      $table->timestamps();
-    });
+    if (!Schema::hasTable('order__items')) {
+
+      Schema::create('order__items', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('order_id');
+        $table->foreign('order_id')->references('id')->on('orders');
+        $table->unsignedBigInteger('product_id');
+        $table->foreign('product_id')->references('id')->on('products');
+        $table->decimal('price', 10, 2)->default(0);
+        $table->integer('quantity')->default(0);
+        $table->decimal('vat', 5, 2)->nullable();
+        $table->timestamps();
+      });
+    }
   }
 
   /**

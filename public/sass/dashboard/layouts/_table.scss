@@ -1,4 +1,4 @@
-.table{
+.table {
   width: 100%;
   height: calc(100% - 100px);
   border-radius: $border-radius;
@@ -6,12 +6,13 @@
   margin: $margin 0;
   overflow: auto;
 
-  &--empty{
+  &--empty {
     padding: $padding 0 !important;
     text-align: center !important;
     border: none !important;
   }
-  &--name{
+
+  &--name {
     height: $height;
     width: 100%;
     display: flex;
@@ -27,7 +28,7 @@
     margin-top: $margin;
     flex: 1;
 
-    &::after{
+    &::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -42,7 +43,7 @@
 
 
 
-.table--btn{
+.table--btn {
   font-size: 12px;
   font-weight: 400;
   display: grid;
@@ -55,13 +56,13 @@
   color: $white;
   margin: 0 auto;
 
-  & svg{
+  & svg {
     transform: scale(0.7);
     transition: $transition;
   }
 
-  &.active{
-    & svg{
+  &.active {
+    & svg {
       transform: scale(0.7) rotateX(180deg);
     }
   }
@@ -74,7 +75,7 @@
   // outline: 1px solid $secondary;
   border-radius: $border-radius;
 
-  & > thead {
+  &>thead {
     position: sticky;
     top: 0;
     left: 0;
@@ -86,25 +87,27 @@
     font-size: 14px;
     font-weight: 700;
 
-    & th{
+    & th {
       background-color: darken($primary, 10%);
       border: none;
       text-align: center;
       border-right: 1px solid #797979;
 
-      &:first-child{
+      &:first-child {
         width: 0% !important;
       }
-      &:last-child{
+
+      &:last-child {
         width: 0% !important;
       }
     }
   }
 
-  & > tbody {
+  &>tbody {
     // box-shadow: rgba(0, 0, 0, 1) 0px 0px 13px -5px;
     border-top: 1px solid $secondary;
     border-bottom: 1px solid $secondary;
+
     td {
       font-size: 12px;
       font-weight: 400;
@@ -113,7 +116,7 @@
       line-height: $line-height;
       // word-break: break-all !important;
 
-      & a{
+      & a {
         font-size: 12px;
         font-weight: 400;
         color: $white;
@@ -121,12 +124,21 @@
         line-height: $line-height;
       }
 
-      &:first-child{
+      &:first-child {
         width: 0% !important;
       }
-      &:last-child{
+
+      &:last-child {
         width: 0% !important;
       }
+    }
+
+    & tr.process {
+      background: #37583b !important;
+    }
+
+    & tr.notprocess {
+      background: #4a0a0f !important;
     }
 
     & tr:nth-child(4n + 1) {
@@ -134,7 +146,9 @@
     }
   }
 
-  & input:not(.input__searchable), select, textarea  {
+  & input:not(.input__searchable),
+  select,
+  textarea {
     min-width: 150px;
     // min-height: 150px;
     width: 100%;
@@ -146,7 +160,7 @@
     padding: 0 $padding;
   }
 
-  & > .dropdown__content{
+  &>.dropdown__content {
     z-index: 500;
   }
 
@@ -156,7 +170,7 @@
     padding: 0 3px;
     color: $white;
     text-align: left;
-    word-wrap: break-word;
+    //word-wrap: break-word;
     text-wrap: balance;
   }
 
@@ -164,8 +178,8 @@
     background-color: $primary;
   }
 
-  td{
-    word-break: break-all !important;
+  td {
+    // word-break: break-all !important;
     // border-top: 1px solid $secondary;
     // border-right: 1px solid $secondary;
     width: auto;
@@ -179,22 +193,22 @@
       background-color: darken($primary, 15%);
     }
 
-    &.active{
+    &.active {
       background: $secondary;
 
-      & td{
+      & td {
         color: $primary;
         border-color: $primary;
 
-        & a{
+        & a {
           color: $primary;
         }
 
-        & .checkbox span::before{
+        & .checkbox span::before {
           border-color: $primary;
         }
 
-        & .button{
+        & .button {
           background-color: $primary;
           color: $secondary;
         }
@@ -240,6 +254,7 @@
       border-right: none;
       padding: $padding;
     }
+
     @media (min-width: map-get($grid-breakpoints, xxl)) {
       display: none !important;
 
@@ -249,11 +264,13 @@
     }
   }
 }
+
 @media (max-width: map-get($grid-breakpoints, xxl)) {
   .hidden {
     display: none;
   }
 }
+
 @media (min-width: map-get($grid-breakpoints, xxl)) {
   .unhidden {
     display: none;
@@ -261,7 +278,7 @@
 }
 
 
-.show-less{
+.show-less {
   text-decoration: none;
   text-overflow: ellipsis;
   display: block;

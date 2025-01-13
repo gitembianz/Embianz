@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
 use Livewire\Component;
+use App\Models\Cart_Item;
+use App\Models\UserSessions;
+use App\Models\UserPromotions;
 
 class ProductDetails extends Component
 {
@@ -15,6 +17,7 @@ class ProductDetails extends Component
     public $product;
     public $session_id;
     public $prodid;
+    public $wishlistItems;
     public $is_in_wishlist;
 
     public function render()
@@ -23,23 +26,23 @@ class ProductDetails extends Component
             'variants' => $this->variants
         ]);
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            return session()->getId();
-        }
-    }
     public function mount($product)
     {
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
         $prodid = $this->product->id;
-        $this->product = $product->select('id', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
-            ->with([
-                'product_prices' => function ($query) {
-                    $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
+
+        if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+            $cachedProduct = app()->make('cached_products')->firstWhere('id', $prodid);
+
+
+            $cachedProduct->with([
+                'media' => function ($query) {
+                    $query->select('name', 'path', 'type', 'sequence')
+                        ->whereIn('type', ['full', 'original'])
+                        ->orderBy('sequence');
                 },
-                'wishlists',
+                'product_prices',
                 'parent' => function ($query) {
                     $query->with(['variants' => function ($query) {
                         $query->distinct('variant_id')->with(['product' => function ($query) {
@@ -49,18 +52,52 @@ class ProductDetails extends Component
                                 ->with([
                                     'media' => function ($query) {
                                         $query->select('path', 'name')->where('type', 'min');
-                                    }
+                                    },
+                                    'beeingvariants'
                                 ]);
                         }]);
                     }]);
                 },
                 'beeingvariants'
-            ])
-            ->findOrFail($prodid);
+            ]);
+
+            $this->product = $cachedProduct;
+        } else {
+            $this->product = $product->select('id', 'end_date', 'sku', 'brand', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
+                ->with([
+                    'product_prices' => function ($query) {
+                        $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
+                    },
+                    'wishlists' => function ($query) {
+                        $query->where('session_id', $this->session_id);
+                    },
+                    'parent' => function ($query) {
+                        $query->with(['variants' => function ($query) {
+                            $query->distinct('variant_id')->with(['product' => function ($query) {
+                                $query->where('active', true)
+                                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                                    ->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name')->where('type', 'min');
+                                        },
+                                        'beeingvariants'
+                                    ]);
+                            }]);
+                        }]);
+                    },
+                    'beeingvariants',
+                    'reviews' => function ($query) {
+                        $query->select('product_id', 'count', 'value');
+                    }
+                ])
+                ->findOrFail($prodid);
+        }
+
         $this->quantity = 1;
-        $this->session_id = $this->getSessionId();
-        $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
+        $this->is_in_wishlist = in_array($prodid, $this->wishlistItems);
     }
+
 
     public function getVariantsProperty()
     {
@@ -116,7 +153,7 @@ class ProductDetails extends Component
     public function incrementCounter()
     {
         $this->limit = $this->product->quantity;
-        if ($this->quantity >= $this->limit) {
+        if ($this->quantity >= $this->limit && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
             $this->maxlimit = true;
             $this->quantity = $this->limit;
         } else {
@@ -163,7 +200,8 @@ class ProductDetails extends Component
                 'cart_id' => $cart->id,
                 'product_id' => $productId,
                 'price' => $this->product->product_prices->first()->value,
-                'quantity' => $this->quantity
+                'quantity' => $this->quantity,
+                'vat' => $this->product->product_prices->first()->vat,
             ]);
 
             $cart->quantity_amount += $this->quantity;
@@ -174,9 +212,10 @@ class ProductDetails extends Component
             }
             $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
             $cart->final_amount -= $cart->voucher_value;
+            $cart->save();
             $this->maxlimit = false;
         } else {
-            if (($cartItem->quantity + $this->quantity) <= $this->product->quantity) {
+            if (($cartItem->quantity + $this->quantity) <= $this->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
                 $cartItem->quantity += $this->quantity;
                 $cartItem->save();
                 $cart->quantity_amount += $this->quantity;
@@ -200,6 +239,11 @@ class ProductDetails extends Component
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
                 $this->maxlimit = false;
+                if (!$cartItem->vat) {
+                    $cartItem->vat = $this->product->product_prices->first()->vat;
+                    $cartItem->save();
+                }
+                $cart->save();
             } else {
                 $this->maxlimit = true;
                 $this->quantity = 1;
@@ -210,6 +254,61 @@ class ProductDetails extends Component
         $cart->status_id = app('global_cart_new');
         $cart->save();
         $this->quantity = 1;
+        foreach ($this->promotions as $promo) {
+            if ($cart->sum_amount >= $promo['cart_amount']) {
+                $user = UserSessions::where('sessions', $this->session_id)->first();
+
+                $this->createPromotion($user->id, $promo);
+            }
+        }
         $this->emit('cartUpdated');
+    }
+    public function getPromotionsProperty()
+    {
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+            return collect(app()->make('promotions'))
+                ->filter(function ($promotion) {
+                    return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+                        $promotion['start_date'] <= now()->format('Y-m-d') &&
+                        $promotion['end_date'] >= now()->format('Y-m-d') &&
+                        $promotion['type'] === 'amount';
+                });
+        } else {
+            return collect();
+        }
+    }
+    private function createPromotion($userId, $promo)
+    {
+        // Check if the promotion already exists
+        $existingPromotion = UserPromotions::where('session_id', $userId)
+            ->where('promotion_id', $promo['id'])
+            ->first();
+
+        // Create or update the promotion
+        $promotion = UserPromotions::updateOrCreate(
+            [
+                'session_id' => $userId,
+                'promotion_id' => $promo['id'],
+            ],
+            [
+                "promotion_type" => $promo['type'],
+                "promotion_cookieid" => $promo['cookieid'],
+                "promotion_start_date" => $promo['start_date'],
+                "promotion_expiration_date" => $promo['end_date'],
+                "promotion_cooldown_timer" => $promo['cooldown_timer'],
+                "promotion_cart_amount" => $promo['cart_amount'],
+                "promotion_value" => $promo['promotion_value'],
+                "promotion_percent" => $promo['promotion_percent'],
+                "active" => true, // Always set 'active' to true
+            ]
+        );
+
+        // If the promotion was newly created, emit the event
+        if (!$existingPromotion) {
+            $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
+
+            $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
+        }
     }
 }

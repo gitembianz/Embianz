@@ -25,17 +25,10 @@ class StoreCart extends Component
     'cartUpdated' => 'mount',
   ];
 
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      return session()->getId();
-    }
-  }
   public function mount()
   {
-    $this->session_id = $this->getSessionId();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
   public function isInWishlist($productId)
@@ -137,8 +130,8 @@ class StoreCart extends Component
   public function increment($id)
   {
     if ($this->cart) {
-      $cartitem_to_increment = $this->cart->cartItems->where('id', $id)->first();
-      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity) {
+      $cartitem_to_increment = $this->cart->cartItems()->where('id', $id)->first();
+      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
         $cartitem_to_increment->increment('quantity');
         $this->cart->increment('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
@@ -295,7 +288,7 @@ class StoreCart extends Component
 
     if ($this->cart->quantity_amount != 0) {
       foreach ($this->cart->cartItems as $item) {
-        if ($item->quantity > $item->product->quantity) {
+        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
           $validateQuantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;

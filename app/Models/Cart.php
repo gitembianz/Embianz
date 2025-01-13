@@ -9,7 +9,7 @@ class Cart extends Model
 {
   use HasFactory;
   protected $table = 'carts';
-  protected $fillable = ['session_id', 'voucher_value', 'final_amount', 'voucher_id', 'name', 'delivery_price', 'quantity_amount', 'sum_amount', 'status_id', 'order_id', 'currency_id'];
+  protected $fillable = ['session_id', 'voucher_value', 'promotion_value', 'final_amount', 'voucher_id', 'name', 'delivery_price', 'quantity_amount', 'sum_amount', 'status_id', 'order_id', 'currency_id'];
 
   public function cartItems()
   {
@@ -37,7 +37,6 @@ class Cart extends Model
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('session_id', 'like', '%' . $search . '%')
       ->orWhere('quantity_amount', 'like', '%' . $search . '%')
-      ->orWhere('status_id', 'like', '%' . $search . '%')
       ->orWhere('sum_amount', 'like', '%' . $search . '%');
   }
 }

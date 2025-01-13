@@ -1,6 +1,8 @@
 <div class="accordion @if ($showrelateitems) active @endif">
- {{-- ASIDES --}}
- {{-- Delete Record || Delete Records --}}
+
+ <x-alert />
+
+ {{-- Delete Record|s --}}
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
   <div class="aside aside--confirm @if ($single || $multiple) active @endif">
@@ -26,34 +28,7 @@
   </div>
  </aside>
 
- {{-- Link Record || Link Records --}}
- <aside>
-  <div class="background background--center @if ($linksingle || $linkmultiple) active @endif" style="z-index: 1100;">
-  </div>
-  <div class="aside aside--confirm @if ($linksingle || $linkmultiple) active @endif" style="z-index: 1100;">
-   <span>
-    @if ($linksingle)
-     Are you sure to link this record?
-    @else
-     Are you sure to link those records?
-    @endif
-   </span>
-   @if ($linksingle)
-    <button class="button button--primary button--long" wire:click="linkSingleRecord">
-     <span>Confirm</span>
-    </button>
-   @else
-    <button class="button button--primary button--long" wire:click="linkRecords()">
-     <span>Confirm</span>
-    </button>
-   @endif
-   <button class="button button--danger button--long" wire:click="cancel_link()">
-    <span>Cancel</span>
-   </button>
-  </div>
- </aside>
-
- {{-- Table Add Multiple --}}
+ {{-- add Related Items --}}
  <aside>
   <div class="background background--center @if ($showTable) active @endif"></div>
   <div class="aside aside--table @if ($showTable) active @endif">
@@ -62,6 +37,14 @@
     <h1 class="table--name">
      {{ __('Add related categories') }}
     </h1>
+    <button class="button button--primary button--centered" wire:click.prevent="saveitems()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
     <button class="button button--danger button--centered" wire:click="closemodal" tooltip="Close Modal" tooltip-left>
      <svg>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -72,39 +55,6 @@
      </svg>
     </button>
    </nav>
-   <nav class="nav--controls" style="margin-top: 10px">
-    <input class="input input--long" type="text" wire:model.debounce.300ms="searchadd" placeholder="Search...">
-    @if ($selectPageadd || $selectAlladd || $checkedadd)
-     <button class="button button--primary button--centered" wire:click.prevent="confirmItemsLink()"
-      tooltip="Link Multiple" tooltip-left>
-      <svg>
-       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-       <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-       <g id="SVGRepo_iconCarrier">
-        <path
-         d="M12.7917 15.7991L14.2223 14.3676C16.5926 11.9959 16.5926 8.15054 14.2223 5.7788C11.8521 3.40707 8.0091 3.40707 5.63885 5.7788L2.77769 8.64174C0.407436 11.0135 0.407436 14.8588 2.77769 17.2306C3.87688 18.3304 5.29279 18.9202 6.73165 19"
-         stroke="#000000" stroke-width="1.5" stroke-linecap="round"></path>
-        <path
-         d="M11.2083 8.20092L9.77769 9.63239C7.40744 12.0041 7.40744 15.8495 9.77769 18.2212C12.1479 20.5929 15.9909 20.5929 18.3612 18.2212L21.2223 15.3583C23.5926 12.9865 23.5926 9.14118 21.2223 6.76945C20.1231 5.66957 18.7072 5.07976 17.2683 5"
-         stroke="#000000" stroke-width="1.5" stroke-linecap="round"></path>
-       </g>
-      </svg>
-     </button>
-    @endif
-
-   </nav>
-
-   {{-- Select All? --}}
-   @if ($selectPageadd && $selectAlladd)
-    <button class="button button--fill button--primary" style="margin-top: 10px;">
-     You selected {{ count($checkedadd) }} items.
-    </button>
-   @elseif($selectPageadd)
-    <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click.prevent="selectAlladd">
-     You selected {{ count($checkedadd) }} items, select all?
-    </button>
-   @endif
-
 
    {{-- Tabel --}}
    <div class="table" style="height: calc(100% - 60px);">
@@ -112,38 +62,49 @@
      <thead>
       <tr>
        <th>
-        <div class="checkbox--primary">
-         <input type="checkbox" id="selectPageadd10" wire:model="selectPageadd" />
-         <label for="selectPageadd10"></label>
+        <div style="display: flex; align-items: center; justify-content: center;">
+
+         <button class="table--btn">
+          Product
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
         </div>
        </th>
        <th>
         <button class="table--btn">
-         Category Name
-        </button>
-       </th>
-       <th>
-        <button class="table--btn">
-         Category Description
+         Category
         </button>
        </th>
        <th class="hidden">
         <button class="table--btn">
-         Category displayed elements
+         Select a category
         </button>
        </th>
        <th class="hidden">
         <button class="table--btn">
-         Category is active?
+         Is primary category?
         </button>
        </th>
        <th>
-        <button class="button button--secondary button--sm" style="opacity: 0">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+        <div style="display: flex;">
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
        </th>
       </tr>
      </thead>
@@ -151,65 +112,178 @@
       @php
        $k = 0;
       @endphp
-      @foreach ($cats as $index => $category)
+      @foreach ($productsAndValues as $index => $productsAndValue)
        <tr class="expandable-row">
-        <td style="border-left: none" data-title="Check">
-         <div class="checkbox--primary">
-          <input type="checkbox" value="{{ $category->id }}" id="{{ $category->id }}" wire:model="checkedadd">
-          <label for="{{ $category->id }}"></label>
+        <td style="width: auto !important;" wire:click="expandRow2({{ $index }})">
+         <div style="display: flex; align-items: center; justify-content: center;">
+          {{ $product->name }}
+          <button class="button button--secondary button--sm" style="opacity: 0">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
          </div>
         </td>
         <td wire:click="expandRow2({{ $index }})">
-         {{ strip_tags($category->name) }}
-        </td>
-        <td wire:click="expandRow2({{ $index }})">
-         {{ $category->short_description }}
+         {{ $productsAndValue['itemselected'] }}
         </td>
         <td class="hidden">
-         {{ $category->accepted_items }}
-        </td>
-        <td class="hidden">
-         @if ($category->active)
-          <div class="checkbox--secondary disabled">
-           <input type="checkbox" id="disabled1" disabled checked>
-           <label for="disabled1"></label>
+         @if ($productsAndValue['allow'])
+          <div class="searchable active">
+           {{-- Dropdown Header --}}
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+           {{-- Dropdown Content --}}
+           <div class="content__searchable">
+            <div class="list__searchable">
+             @if (count($cats) >= 1)
+              @foreach ($cats as $category)
+               <button class="item__searchable"
+                wire:click.prevent="selectitem({{ $index }}, {{ $category->id }}, '{{ $category->name }}')">
+                {{ $category->name }}
+               </button>
+              @endforeach
+             @else
+              <button class="item__searchable">{{ __('No record found') }}</button>
+             @endif
+            </div>
+           </div>
           </div>
          @else
-          <div class="checkbox--secondary disabled">
-           <input type="checkbox" id="disabled2" disabled>
-           <label for="disabled2"></label>
+          <div class="searchable">
+           {{-- Dropdown Show Selected || Select now --}}
+           <button class="input__searchable">
+            @if ($productsAndValue['itemselected'])
+             {{ $productsAndValue['itemselected'] }}
+            @else
+             {{ __('Select a category') }}
+            @endif
+           </button>
+           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
           </div>
          @endif
+         <input type="hidden" wire:model.defer="productsAndValues.{{ $index }}.product.name">
         </td>
+
+        <td class="hidden" data-title="Check">
+         <div class="checkbox--primary">
+          <input type="checkbox" id="{{ $index }}pri"
+           wire:model.defer="productsAndValues.{{ $index }}.product.primary">
+          <label for="{{ $index }}pri"></label>
+         </div>
+        </td>
+
         <td>
-         <button class="button button--secondary button--sm" wire:click.prevent="confirmItemLink({{ $category->id }})">
-          <svg>
-           <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-           <line x1="8" y1="12" x2="16" y2="12"></line>
-          </svg>
-         </button>
+         <div style="display: flex;">
+          @if ($index == $row - 1)
+           <button class="button button--secondary button--sm" wire:click="plus">
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19">
+             </line>
+             <line x1="5" y1="12" x2="19" y2="12">
+             </line>
+            </svg>
+           </button>
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+          @if ($index != $row - 1)
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+         </div>
         </td>
        </tr>
        <tr class="details-row  @if ($rind2 === $k) active @endif">
         <td colspan="3">
          <div class="details">
           <p>
-           <bold>Category accepted items</bold>
-           {{ $category->accepted_items }}
-          </p>
-          <p>
-           <bold>Category is active?</bold>
-           @if ($category->active)
-            <div class="checkbox--secondary disabled">
-             <input type="checkbox" id="disabled3" disabled checked>
-             <label for="disabled3"></label>
+           <bold>Related Product Name</bold>
+           @if ($productsAndValue['allow'])
+            <div class="searchable active">
+             {{-- Dropdown Header --}}
+             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+             <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
+             {{-- Dropdown Content --}}
+             <div class="content__searchable">
+              <div class="list__searchable">
+               @if (count($cats) >= 1)
+                @foreach ($cats as $category)
+                 <button class="item__searchable"
+                  wire:click.prevent="selectitem({{ $index }}, {{ $category->id }}, '{{ $category->name }}')">
+                  {{ $category->name }}
+                 </button>
+                @endforeach
+               @else
+                <button class="item__searchable">{{ __('No record found') }}</button>
+               @endif
+              </div>
+             </div>
             </div>
            @else
-            <div class="checkbox--secondary disabled">
-             <input type="checkbox" id="disabled4" disabled>
-             <label for="disabled4"></label>
+            <div class="searchable">
+             {{-- Dropdown Show Selected || Select now --}}
+             <button class="input__searchable">
+              @if ($productsAndValue['itemselected'])
+               {{ $productsAndValue['itemselected'] }}
+              @else
+               {{ __('Select a category') }}
+              @endif
+             </button>
+             <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
             </div>
            @endif
+           <input type="hidden" wire:model.defer="productsAndValues.{{ $index }}.product.name">
+          </p>
+
+          <p>
+           <bold>Sequence</bold>
+          <div class="checkbox--primary">
+           <input type="checkbox" id="{{ $k }}pri"
+            wire:model.defer="productsAndValues.{{ $index }}.product.primary">
+           <label for="{{ $k }}pri"></label>
+          </div>
           </p>
          </div>
         </td>
@@ -220,22 +294,11 @@
       @endforeach
      </tbody>
     </table>
-
-
-    {{-- Load More Manual --}}
-    @if ($loadAmount < $cats->total())
-     <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
-      Load more
-     </button>
-    @endif
    </div>
-
-
   </div>
  </aside>
 
-
- {{-- Accordion Header --}}
+ {{-- Related Items --}}
  <div class="accordion__header">
   <button
    class="button button--flexed button--fill button--primary @if ($showrelateitems) button--secondary active @endif"
@@ -252,10 +315,6 @@
    </svg>
   </button>
  </div>
-
-
-
- {{-- Accordion Body --}}
  <div class="accordion__body">
   {{-- Navigation --}}
   <nav class="nav--controls">
@@ -300,8 +359,6 @@
     </div>
    </div>
   </nav>
-
-
   {{-- Select All? --}}
   @if ($selectPage && $selectAll)
    <button class="button button--fill button--primary">
@@ -312,8 +369,6 @@
     You selected {{ count($checked) }} items, select all?
    </button>
   @endif
-
-
   {{-- Table --}}
   <table class="expandable-table">
    <thead>
@@ -384,6 +439,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Is primary category?'))
+      <th class="hidden">
+       <button class="table--btn">
+        Is primary category?
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created At'))
       <th class="hidden">
        <button class="table--btn">
@@ -428,18 +493,12 @@
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $related->id }}" id="{{ $related->id }}" wire:model="checked">
-         <lable for="{{ $related->id }}"></lable>
-         </d>
+         <label for="{{ $related->id }}"></label>
+        </div>
        </td>
 
        @if ($this->showColumn('Id'))
-        <td wire:click="expandRow({{ $index }})">{{ $related->id }}</td>
-       @endif
-       @if ($this->showColumn('Product Name'))
-        <td data-title="Name" wire:click="expandRow({{ $index }})">
-         <a href="{{ route('show_product', ['id' => $product->id]) }}">
-          {{ $product->name }}</a>
-        </td>
+        <td wire:click="expandRow({{ $index }})">{{ $related->category->id }}</td>
        @endif
        @if ($this->showColumn('Category Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">
@@ -472,24 +531,69 @@
          @endif
         </td>
        @endif
+       @if ($this->showColumn('Is primary category?'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          @if ($related->primary_category)
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled9" disabled checked>
+            <label id="disabled9"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled10" disabled>
+            <label id="disabled10"></label>
+           </div>
+          @endif
+         @else
+          <input type="checkbox" id="primary" wire:model="var.{{ $index }}.primary">
+         @endif
+        </td>
+       @endif
        @if ($this->showColumn('Created At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $related->created_at }}
+         {{ $related->category->created_at }}
         </td>
        @endif
        @if ($this->showColumn('Updated At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $related->updated_at }}
+         {{ $related->category->updated_at }}
         </td>
        @endif
        <td>
-        <button class="button button--secondary button--sm"
-         wire:click.prevent="confirmItemRemoval({{ $related->id }})">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+        @if ($editindex !== $index)
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $index }}, {{ $related->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $related->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        @else
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }},{{ $related->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+           </svg>
+          </button>
+         </div>
+        @endif
        </td>
       </tr>
       <tr class="details-row  @if ($rind === $i) active @endif">
@@ -524,16 +628,32 @@
            @endif
           </p>
          @endif
+         @if ($this->showColumn('Is primary category?'))
+          <p>
+           <bold>Is primary category?</bold>
+           @if ($related->primary_category)
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled7" disabled checked>
+             <label for="disabled7"></label>
+            </div>
+           @else
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled8" disabled>
+             <label for="disabled8"></label>
+            </div>
+           @endif
+          </p>
+         @endif
          @if ($this->showColumn('Created At'))
           <p>
            <bold>Created At</bold>
-           {{ $related->created_at }}
+           {{ $related->category->created_at }}
           </p>
          @endif
          @if ($this->showColumn('Updated At'))
           <p>
            <bold>Updated At</bold>
-           {{ $related->updated_at }}
+           {{ $related->category->updated_at }}
           </p>
          @endif
         </div>
@@ -546,8 +666,6 @@
     @endif
    </tbody>
   </table>
-
-
   {{-- Load More --}}
   @if ($loadAmount < $relatedcats->total())
    <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
@@ -555,4 +673,5 @@
    </button>
   @endif
  </div>
+
 </div>

@@ -29,7 +29,26 @@
   </div>
  </aside>
 
-
+ {{-- CSV Upload --}}
+ <aside>
+  <div class="background background--center @if ($uploadcsv == true) active @endif"></div>
+  <div class="aside aside--confirm @if ($uploadcsv == true) active @endif">
+   <span>
+    Please select the CSV file
+   </span>
+   <input style="display: none;" id="CSVMedia" wire:model="csvFile" type="file" accept="csv/*">
+   <label class="button button--primary button--long" type="button" for="CSVMedia">
+    <span>
+     Select CSV
+    </span>
+   </label>
+   <button class="button button--danger button--long" wire:click.prevent="$set('uploadcsv', false)">
+    <span>
+     Close
+    </span>
+   </button>
+  </div>
+ </aside>
  {{-- Asides --}}
  <aside>
   <div class="background background--right" wire:ignore id="sort__backdrop"></div>
@@ -89,6 +108,7 @@
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+
   {{-- Refresh Button --}}
   <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
    wire:click="$refresh">
@@ -102,6 +122,15 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  {{-- import images from csv --}}
+  <button class="button button--primary button--centered display--desktop" tooltip="Import media from csv" tooltip-top
+   wire:click.prevent="$set('uploadcsv', true)">
+   <svg>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+    <polyline points="21 15 16 10 5 21"></polyline>
+   </svg>
+  </button>
   {{-- Add Product --}}
   <a class="button button--primary button--centered display--desktop" tooltip="Add new product" tooltip-top
    href="{{ route('add_product') }}">
@@ -112,6 +141,26 @@
     <line x1="9" y1="15" x2="15" y2="15"></line>
    </svg>
   </a>
+  {{-- schuffle --}}
+  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle products innerids"
+   tooltip-top wire:click.prevent="ProductshuffledIds">
+   <svg>
+    <polyline points="16 3 21 3 21 8"></polyline>
+    <line x1="4" y1="20" x2="21" y2="3"></line>
+    <polyline points="21 16 21 21 16 21"></polyline>
+    <line x1="15" y1="15" x2="21" y2="21"></line>
+    <line x1="4" y1="4" x2="9" y2="9"></line>
+   </svg>
+  </button>
+  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle sequence on related"
+   tooltip-top wire:click.prevent="Relatedshuffleseq">
+   <svg>
+    <polyline points="17 1 21 5 17 9"></polyline>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+    <polyline points="7 23 3 19 7 15"></polyline>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+   </svg>
+  </button>
   {{-- IF CHECKED --}}
   <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
@@ -202,6 +251,14 @@
       </svg>
       <span>Refresh table</span>
      </button>
+     <button class="button button--primary button--fill button--flexed" wire:click.prevent="$set('uploadcsv', true)">
+      <svg>
+       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+       <circle cx="8.5" cy="8.5" r="1.5"></circle>
+       <polyline points="21 15 16 10 5 21"></polyline>
+      </svg>
+      <span>Media from CSV</span>
+     </button>
      <a class="button button--primary button--fill button--flexed" href="{{ route('add_product') }}">
       <svg>
        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -211,6 +268,25 @@
       </svg>
       <span>Add Product</span>
      </a>
+     <button class="button button--primary button--fill button--flexed" wire:click="ProductshuffledIds">
+      <svg>
+       <polyline points="16 3 21 3 21 8"></polyline>
+       <line x1="4" y1="20" x2="21" y2="3"></line>
+       <polyline points="21 16 21 21 16 21"></polyline>
+       <line x1="15" y1="15" x2="21" y2="21"></line>
+       <line x1="4" y1="4" x2="9" y2="9"></line>
+      </svg>
+      <span>Schuffle innerids</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="Relatedshuffleseq">
+      <svg>
+       <polyline points="17 1 21 5 17 9"></polyline>
+       <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+       <polyline points="7 23 3 19 7 15"></polyline>
+       <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+      </svg>
+      <span>Schuffle sequences</span>
+     </button>
      <button class="button button--primary button--fill button--flexed" id="sort__open">
       <svg>
        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -310,7 +386,7 @@
           @else
            {{ $product->$column }}
           @endif
-         @elseif ($column === 'active' || $column === 'is_new')
+         @elseif ($column === 'active' || $column === 'is_new' || $column === 'low_stock')
           @if ($product->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled1" disabled checked>
@@ -322,7 +398,15 @@
             <label for="disabled2"></label>
            </div>
           @endif
+         @elseif($column === 'interim_quantity')
+          <span>
+           {{ $product->quantity + $product->$column }}
+          </span>
          @elseif($column === 'long_description')
+          <span class="show-less">
+           {!! $product->$column !!}
+          </span>
+         @elseif($column === 'comments')
           <span class="show-less">
            {!! $product->$column !!}
           </span>
@@ -362,7 +446,7 @@
          @foreach ($selectedColumns as $index => $column)
           @if ($index >= count($selectedColumns) - 18)
            <p>
-            @if ($column === 'active' || $column === 'is_new')
+            @if ($column === 'active' || $column === 'is_new' || $column === 'low_stock')
              <bold>{{ $column }}:</bold>
              @if ($product->$column)
               <div class="checkbox--secondary disabled">

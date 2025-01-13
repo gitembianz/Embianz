@@ -9,7 +9,6 @@ use App\Models\Wishlist;
 
 class StoreMain extends Component
 {
-  public $quantity;
   public $session_id;
   public $wishlistItems;
 
@@ -31,37 +30,39 @@ class StoreMain extends Component
     return in_array($productId, $this->wishlistItems);
   }
 
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      return session()->getId();
-    }
-  }
-
   public function getPopProductsProperty()
   {
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
       return app()->make('cached_products')->filter(function ($product) {
         return $product->type != 'parent';
-      })->sortByDesc('popularity')->take(app('global_limit_slideritems'));
+      })->sortByDesc('popularity')->sortByDesc('innerid')->take(app('global_limit_slideritems'));
     } else {
       return Product::with([
         'media' => function ($query) {
           $query->select('path', 'name', 'type')->where('type', 'main');
         },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
+        },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
+        'product_categories' => function ($query) {
+          $query->select('product_id', 'category_id', 'primary_category')
+            ->where('primary_category', true);
+          $query->with(['category' => function ($query) {
+            $query->select('id', 'short_description', 'seo_id');
+          }]);
+        }
       ])
-        ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'low_stock', 'innerid', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
-        ->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'))
-        ->orderBy('popularity', 'desc')
+        ->where('start_date', '<=', now()->format('Y-m-d'))
+        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->orderBy('popularity', 'DESC')
+        ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
     }
@@ -76,24 +77,36 @@ class StoreMain extends Component
           return $product->type != 'parent' && $product->is_new == true;
         })
         ->sortByDesc('popularity')
+        ->sortByDesc('innerid')
         ->take(app('global_limit_slideritems'));
     } else {
       return Product::with([
         'media' => function ($query) {
           $query->select('path', 'name', 'type')->where('type', 'main');
         },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
+        },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
+        'product_categories' => function ($query) {
+          $query->select('product_id', 'category_id', 'primary_category')
+            ->where('primary_category', true);
+          $query->with(['category' => function ($query) {
+            $query->select('id', 'short_description', 'seo_id');
+          }]);
+        }
 
       ])
-        ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'innerid', 'name', 'seo_id', 'ean', 'low_stock', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))
         ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->where('is_new', true)
-        ->orderBy('popularity', 'desc')
+        ->orderBy('popularity', 'DESC')
+        ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
     }
@@ -113,8 +126,7 @@ class StoreMain extends Component
   }
   public function mount()
   {
-    $this->session_id = $this->getSessionId();
-    $this->quantity = app('global_low_stock');
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
 }

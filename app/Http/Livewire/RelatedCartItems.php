@@ -22,7 +22,7 @@ class RelatedCartItems extends Component
     public $showrelatedprod = false;
     public $cartId;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Price', 'Quantity'];
+    public $columns = ['Id', 'Price', 'Quantity', 'VAT'];
     public $selectedColumns = [];
     public $cart;
     public $row = null;
@@ -72,7 +72,7 @@ class RelatedCartItems extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->cartproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->cartproducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -103,7 +103,7 @@ class RelatedCartItems extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->cartproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->cartproductsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function load()
     {

@@ -53,15 +53,12 @@ class Accountstable extends Component
     }
     public function showColumn($column)
     {
-        if ($column === 'name') {
-            return true;
-        }
         return in_array($column, $this->selectedColumns);
     }
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->accounts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->accounts->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -88,7 +85,7 @@ class Accountstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->accountsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->accountsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function getAccountsProperty()
     {
@@ -103,6 +100,7 @@ class Accountstable extends Component
         return Account::search($this->search)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
+
     public function deleteRecords()
     {
         $accounts = Account::whereKey($this->checked)->get();

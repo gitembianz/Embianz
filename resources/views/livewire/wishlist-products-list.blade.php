@@ -2,11 +2,20 @@
  <button class="leftbar__hidden--close" id="wishHidden" wire:click="$set('showwis', false)"></button>
  <div class="leftbar__content" id="wishContent">
   <div class="leftbar__top">
-   <a class="leftbar__button" href="/wishlist">
+
+    <!-- MAKE DYNAMIC -->
+
+   <!-- <a class="leftbar__button" href="/wishlist">
     @if (app()->has('label_wishlist_title'))
      {!! app('label_wishlist_title') !!}
     @endif
-   </a>
+   </a> -->
+   <span>@if (app()->has('label_wishlist_page_title'))
+    {!! app('label_wishlist_page_title') !!}
+    @endif
+</span>
+   <!-- MAKE DYNAMIC -->
+
    <button class="leftbar__close" wire:click="$set('showwis', false)" id="wishClose" href="#">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -52,7 +61,7 @@
        @if ($item->product->media->where('type', 'min')->first())
         <img title="{{ $item->product->name }}" loading="eager" class="cart__list--img"
          src="/{{ $item->product->media->where('type', 'min')->first()->path }}{{ $item->product->media->where('type', 'min')->first()->name }}"
-         alt="{{ $item->product->media->where('type', 'min')->first()->name }} {{ $item->product->name }}">
+         alt="{{ $item->product->name }}">
        @else
         <img title="Default image" loading="eager" class="heart__list--img" src="/images/store/default/default70.webp"
          alt="something wrong">

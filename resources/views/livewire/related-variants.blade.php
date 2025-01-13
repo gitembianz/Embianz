@@ -357,7 +357,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showvariant) button--secondary active @endif"
    wire:click.prevent="@if ($showvariant === false) $set('showvariant', true) @else $set('showvariant', false) @endif">
-   {{ __('Products Variants ') }}({{ $item->variants->count() }})
+   {{ __('Variants ') }}({{ $item->variants->count() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>

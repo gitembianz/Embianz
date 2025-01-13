@@ -15,6 +15,7 @@
     <h3>Menu</h3>
    </div>
    <span class="aside--line"></span>
+   {{-- dashboard --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'dashboard') button--active @endif"
     href="{{ route('dashboard') }}">
     <svg>
@@ -25,6 +26,7 @@
     </svg>
     <span>Dashboard</span>
    </a>
+   {{-- categories --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'category') button--active @endif"
     href="{{ route('category') }}">
     <svg>
@@ -36,6 +38,7 @@
     </svg>
     <span>Categories</span>
    </a>
+   {{-- products --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'product') button--active @endif"
     href="{{ route('all_products') }}">
     <svg>
@@ -48,6 +51,33 @@
     </svg>
     <span>Products</span>
    </a>
+   {{-- Promotions --}}
+   <a class="button button--fill button--flexed button--primary @if ($active == 'promotion') button--active @endif"
+    href="{{ route('all_promotions') }}">
+    <svg>
+     <g id="SVGRepo_bgCarrier" stroke-width="0" />
+     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+     <g id="SVGRepo_iconCarrier">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+       d="M20.0848 16.9323C20.5298 12.6556 20.5298 8.34432 20.0848 4.06762C19.9261 2.54257 18.1678 1.77006 16.9372 2.68478L12.8336 5.73519C11.5831 6.6647 10.0665 7.16665 8.5084 7.16665H4.6792C3.98884 7.16665 3.4292 7.72629 3.4292 8.41664V12.5833C3.4292 13.2737 3.98884 13.8333 4.6792 13.8333H5.30348L4.45812 16.9882C4.36392 17.3398 4.53573 17.7082 4.86559 17.8621L8.54674 19.5787C8.74766 19.6724 8.97974 19.6724 9.18067 19.5787C9.3816 19.485 9.53078 19.3072 9.58815 19.093L10.8508 14.3806C10.8643 14.3306 10.8723 14.2803 10.8753 14.2305C11.5727 14.4714 12.2338 14.8189 12.8336 15.2648L16.9372 18.3152C18.1677 19.2299 19.9261 18.4574 20.0848 16.9323ZM18.5928 4.22285C19.0271 8.39634 19.0271 12.6036 18.5928 16.7771C18.5545 17.1457 18.1295 17.3324 17.8321 17.1114L13.7284 14.0609C12.2193 12.9391 10.3888 12.3333 8.50839 12.3333L4.9292 12.3333L4.9292 8.66665H8.5084C10.3888 8.66665 12.2193 8.06085 13.7284 6.93902L17.8321 3.88861C18.1295 3.66752 18.5545 3.85424 18.5928 4.22285ZM9.43615 13.8929C9.12975 13.8534 8.8199 13.8333 8.50839 13.8333H6.85639L6.06989 16.7686L8.3706 17.8415L9.40196 13.9924C9.41118 13.958 9.42264 13.9248 9.43615 13.8929Z"
+       fill="#000000" />
+     </g>
+    </svg>
+    <span>Promotions</span>
+   </a>
+   {{-- Brands --}}
+   <a class="button button--fill button--flexed button--primary @if ($active == 'brand') button--active @endif"
+    href="{{ route('all_brands') }}">
+    <svg>
+     <path
+      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+     </path>
+     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+     <line x1="12" y1="22.08" x2="12" y2="12"></line>
+    </svg>
+    <span>Brands</span>
+   </a>
+   {{-- vouchers --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'voucher') button--active @endif"
     href="{{ route('vouchers') }}">
     <svg>
@@ -59,6 +89,7 @@
     </svg>
     <span>Vouchers</span>
    </a>
+   {{-- accounts --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'account') button--active @endif"
     href="{{ route('accounts') }}">
     <svg>
@@ -70,6 +101,7 @@
     </svg>
     <span>Accounts</span>
    </a>
+   {{-- carts --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'cart') button--active @endif"
     href="{{ route('carts') }}">
     <svg>
@@ -81,6 +113,7 @@
     </svg>
     <span>Carts</span>
    </a>
+   {{-- orders --}}
    <a class="button button--fill button--flexed button--primary @if ($active == 'order') button--active @endif"
     href="{{ route('orders') }}">
     <svg>
@@ -92,7 +125,21 @@
     </svg>
     <span>Orders</span>
    </a>
-   <a class="button button--fill button--flexed button--primary @if ($active == 'price') button--active @endif"
+   <a class="button button--fill button--flexed button--primary @if ($active == 'supplier') button--active @endif"
+    href="{{ route('suppliers') }}">
+    <svg>
+     <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+     <path
+      d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+     </path>
+     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+     <line x1="12" y1="22.08" x2="12" y2="12"></line>
+    </svg>
+    <span>Order Suppliers</span>
+   </a>
+   {{-- pricelists --}}
+   <a
+    class="button button--fill button--flexed button--primary @if ($active == 'price') button--active @endif"
     href="{{ route('pricelists') }}">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -101,7 +148,9 @@
     </svg>
     <span>Price List</span>
    </a>
-   <a class="button button--fill button--flexed button--primary @if ($active == 'spec') button--active @endif"
+   {{-- specifications --}}
+   <a
+    class="button button--fill button--flexed button--primary @if ($active == 'spec') button--active @endif"
     href="{{ route('specs') }}">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -113,7 +162,9 @@
     </svg>
     <span>Specifications</span>
    </a>
-   <a class="button button--fill button--flexed button--primary @if ($active == 'wishlist') button--active @endif"
+   {{-- wishlists --}}
+   <a
+    class="button button--fill button--flexed button--primary @if ($active == 'wishlist') button--active @endif"
     href="{{ route('wishlists') }}">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -126,6 +177,7 @@
     </svg>
     <span>Wishlists</span>
    </a>
+   {{-- sessions --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'session') button--active @endif"
     href="{{ route('sessions') }}">
@@ -137,6 +189,7 @@
     </svg>
     <span>Sessions</span>
    </a>
+   {{-- storesettings --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'store_settings') button--active @endif"
     href="{{ route('storesettings') }}">
@@ -156,6 +209,7 @@
     </svg>
     <span>Store settings</span>
    </a>
+   {{-- currencies --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'currency') button--active @endif"
     href="{{ route('currencies') }}">
@@ -171,6 +225,17 @@
     <span>Currency</span>
    </a>
    <a
+    class="button button--fill button--flexed button--primary @if ($active == 'countries') button--active @endif"
+    href="{{ route('countries') }}">
+    <svg>
+     <circle cx="12" cy="12" r="10"></circle>
+     <line x1="2" y1="12" x2="22" y2="12"></line>
+     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span>Countries</span>
+   </a>
+   {{-- custom scripts --}}
+   <a
     class="button button--fill button--flexed button--primary @if ($active == 'scripts') button--active @endif"
     href="{{ route('customscripts') }}">
     <svg>
@@ -179,6 +244,7 @@
     </svg>
     <span>Custom Script</span>
    </a>
+   {{-- payments --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'payment') button--active @endif"
     href="{{ route('payments') }}">
@@ -190,6 +256,7 @@
     </svg>
     <span>Payment</span>
    </a>
+   {{-- labels --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'labels') button--active @endif"
     href="{{ route('labels') }}">
@@ -199,6 +266,7 @@
     </svg>
     <span>Labels</span>
    </a>
+   {{-- variants --}}
    <a
     class="button button--fill button--flexed button--primary @if ($active == 'variant') button--active @endif"
     href="{{ route('variants') }}">
@@ -221,6 +289,7 @@
    </svg>
    <span>Menu</span>
   </button>
+  {{-- dashboard desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'dashboard') button--secondary @endif"
    href="{{ route('dashboard') }}">
@@ -232,6 +301,7 @@
    </svg>
    <span>Dashboard</span>
   </a>
+  {{-- categories desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'category') button--secondary @endif"
    href="{{ route('category') }}">
@@ -244,6 +314,7 @@
    </svg>
    <span>Categories</span>
   </a>
+  {{-- products desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'product') button--secondary @endif"
    href="{{ route('all_products') }}">
@@ -257,6 +328,35 @@
    </svg>
    <span>Products</span>
   </a>
+  {{-- promotions desktop --}}
+  <a
+   class="button button--long button--flexed button--primary @if ($active == 'promotion') button--secondary @endif"
+   href="{{ route('all_promotions') }}">
+   <svg>
+    <g id="SVGRepo_bgCarrier" />
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+    <g id="SVGRepo_iconCarrier">
+     <path fill-rule="evenodd" clip-rule="evenodd"
+      d="M20.0848 16.9323C20.5298 12.6556 20.5298 8.34432 20.0848 4.06762C19.9261 2.54257 18.1678 1.77006 16.9372 2.68478L12.8336 5.73519C11.5831 6.6647 10.0665 7.16665 8.5084 7.16665H4.6792C3.98884 7.16665 3.4292 7.72629 3.4292 8.41664V12.5833C3.4292 13.2737 3.98884 13.8333 4.6792 13.8333H5.30348L4.45812 16.9882C4.36392 17.3398 4.53573 17.7082 4.86559 17.8621L8.54674 19.5787C8.74766 19.6724 8.97974 19.6724 9.18067 19.5787C9.3816 19.485 9.53078 19.3072 9.58815 19.093L10.8508 14.3806C10.8643 14.3306 10.8723 14.2803 10.8753 14.2305C11.5727 14.4714 12.2338 14.8189 12.8336 15.2648L16.9372 18.3152C18.1677 19.2299 19.9261 18.4574 20.0848 16.9323ZM18.5928 4.22285C19.0271 8.39634 19.0271 12.6036 18.5928 16.7771C18.5545 17.1457 18.1295 17.3324 17.8321 17.1114L13.7284 14.0609C12.2193 12.9391 10.3888 12.3333 8.50839 12.3333L4.9292 12.3333L4.9292 8.66665H8.5084C10.3888 8.66665 12.2193 8.06085 13.7284 6.93902L17.8321 3.88861C18.1295 3.66752 18.5545 3.85424 18.5928 4.22285ZM9.43615 13.8929C9.12975 13.8534 8.8199 13.8333 8.50839 13.8333H6.85639L6.06989 16.7686L8.3706 17.8415L9.40196 13.9924C9.41118 13.958 9.42264 13.9248 9.43615 13.8929Z"
+      fill="#000000" />
+    </g>
+   </svg>
+   <span>Promotions</span>
+  </a>
+  {{-- brands desktop --}}
+  <a
+   class="button button--long button--flexed button--primary @if ($active == 'brand') button--secondary @endif"
+   href="{{ route('all_brands') }}">
+   <svg>
+    <path
+     d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+    </path>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+   </svg>
+   <span>Brands</span>
+  </a>
+  {{-- vouchers desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'voucher') button--secondary @endif"
    href="{{ route('vouchers') }}">
@@ -269,6 +369,7 @@
    </svg>
    <span>Vouchers</span>
   </a>
+  {{-- accounts desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'account') button--secondary @endif"
    href="{{ route('accounts') }}">
@@ -281,6 +382,7 @@
    </svg>
    <span>Accounts</span>
   </a>
+  {{-- carts desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'cart') button--secondary @endif"
    href="{{ route('carts') }}">
@@ -293,6 +395,7 @@
    </svg>
    <span>Carts</span>
   </a>
+  {{-- orders molbile --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'order') button--secondary @endif"
    href="{{ route('orders') }}">
@@ -306,6 +409,20 @@
    <span>Orders</span>
   </a>
   <a
+   class="button button--long button--flexed button--primary @if ($active == 'supplier') button--secondary @endif"
+   href="{{ route('suppliers') }}">
+   <svg>
+    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+    <path
+     d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+    </path>
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+   </svg>
+   <span>Order Suppliers</span>
+  </a>
+  {{-- pricelist desktop --}}
+  <a
    class="button button--long button--flexed button--primary @if ($active == 'price') button--secondary @endif"
    href="{{ route('pricelists') }}">
    <svg>
@@ -315,6 +432,7 @@
    </svg>
    <span>Price List</span>
   </a>
+  {{-- specification desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'spec') button--secondary @endif"
    href="{{ route('specs') }}">
@@ -328,6 +446,7 @@
    </svg>
    <span>Specifications</span>
   </a>
+  {{-- wistlist desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'wishlist') button--secondary @endif"
    href="{{ route('wishlists') }}">
@@ -342,6 +461,7 @@
    </svg>
    <span>Wishlists</span>
   </a>
+  {{-- session desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'session') button--secondary @endif"
    href="{{ route('sessions') }}">
@@ -353,6 +473,7 @@
    </svg>
    <span>Sessions</span>
   </a>
+  {{-- storesettings desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'store_settings') button--secondary @endif"
    href="{{ route('storesettings') }}">
@@ -372,6 +493,7 @@
    </svg>
    <span>Store settings</span>
   </a>
+  {{-- currencies desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'currency') button--secondary @endif"
    href="{{ route('currencies') }}">
@@ -387,6 +509,17 @@
    <span>Currency</span>
   </a>
   <a
+   class="button button--long button--flexed button--primary @if ($active == 'countries') button--secondary @endif"
+   href="{{ route('countries') }}">
+   <svg>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+   </svg>
+   <span>Countries</span>
+  </a>
+  {{-- custom scripts desktop --}}
+  <a
    class="button button--long button--flexed button--primary @if ($active == 'scripts') button--secondary @endif"
    href="{{ route('customscripts') }}">
    <svg>
@@ -395,6 +528,7 @@
    </svg>
    <span>Custom Scripts</span>
   </a>
+  {{-- payments desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'payment') button--secondary @endif"
    href="{{ route('payments') }}">
@@ -406,6 +540,7 @@
    </svg>
    <span>Payment</span>
   </a>
+  {{-- labels desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'labels') button--secondary @endif"
    href="{{ route('labels') }}">
@@ -415,6 +550,7 @@
    </svg>
    <span>Labels</span>
   </a>
+  {{-- variants desktop --}}
   <a
    class="button button--long button--flexed button--primary @if ($active == 'variant') button--secondary @endif"
    href="{{ route('variants') }}">
@@ -422,45 +558,42 @@
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
    </svg>
-   <span>Product Variants</span>
+   <span>Variants References</span>
   </a>
  </div>
  {{-- Script for Leftbar --}}
-  <script>
-        const leftbar2 = document.getElementById('leftbar');
-        const buttons2 = leftbar2.querySelectorAll('a');
-        const closeButton2 = leftbar2.querySelector('button');
+ <script>
+  const leftbar2 = document.getElementById('leftbar');
+  const buttons2 = leftbar2.querySelectorAll('a');
+  const closeButton2 = leftbar2.querySelector('button');
 
-        // Funcția pentru inițializarea stării componentului pe baza localStorage
-        function initializeComponentState() {
-            const isActive = localStorage.getItem('leftbarActive') === 'true';
-            if (isActive) {
-                leftbar2.classList.add('active');
-            } else {
-                leftbar2.classList.remove('active'); // Asigură-te că clasa 'active' nu este prezentă inițial
-            }
-        }
+  function initializeComponentState() {
+   const isActive = localStorage.getItem('leftbarActive') === 'true';
+   if (isActive) {
+    leftbar2.classList.add('active');
+   } else {
+    leftbar2.classList.remove('active');
+   }
+  }
 
-        // Salvăm starea în localStorage la fiecare modificare a clasei
-        function saveComponentState() {
-            const isActive = leftbar2.classList.contains('active');
-            localStorage.setItem('leftbarActive', isActive);
-        }
+  function saveComponentState() {
+   const isActive = leftbar2.classList.contains('active');
+   localStorage.setItem('leftbarActive', isActive);
+  }
 
-        // Inițializează starea componentului la încărcarea paginii
-        initializeComponentState();
+  initializeComponentState();
 
-        // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
-        function addTransition() {
-            leftbar2.style.transition = 'all 0.25s ease';
-            closeButton2.style.transition = 'all 0.25s ease';
-            buttons2.forEach((button) => {
-                button.style.transition = 'all 0.25s ease';
-            });
-        }
-        setTimeout(addTransition, 500);
-
-        // Observăm schimbările clasei și salvăm starea
-        const observer2 = new MutationObserver(saveComponentState);
-        observer2.observe(leftbar2, { attributes: true, attributeFilter: ['class'] });
-  </script>
+  function addTransition() {
+   leftbar2.style.transition = 'all 0.25s ease';
+   closeButton2.style.transition = 'all 0.25s ease';
+   buttons2.forEach((button) => {
+    button.style.transition = 'all 0.25s ease';
+   });
+  }
+  setTimeout(addTransition, 500);
+  const observer2 = new MutationObserver(saveComponentState);
+  observer2.observe(leftbar2, {
+   attributes: true,
+   attributeFilter: ['class']
+  });
+ </script>

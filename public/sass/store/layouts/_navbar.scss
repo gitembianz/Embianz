@@ -6,7 +6,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   gap: 15px;
 
   @media (max-width: map-get($grid-breakpoints, xl)) {
@@ -29,7 +29,7 @@
   text-align: center;
 
   & > svg {
-    width: 35px;
+    width: 24px;
     stroke: $lightBlack;
   }
 
@@ -83,6 +83,9 @@
   transition: all 0.3s ease-in-out;
   opacity: 0;
   visibility: hidden;
+  list-style: none;
+  max-height:400px;
+  overflow-y:auto;
 }
 
 .dropdown__item {

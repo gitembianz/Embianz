@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Account;
+use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
 use App\Models\CustomScript;
@@ -12,6 +13,11 @@ use Illuminate\Http\Request;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Order_Supplier;
+use App\Models\ProductReviews as ModelsProductReviews;
+use App\Models\Promotion;
+use App\Models\UserSessions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -21,10 +27,152 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+
+  public function store_supplier(Request $request)
+  {
+    $rules = [
+      'name' => 'required',
+      'date' => 'required|date'
+    ];
+    $messages = [
+      'name' => 'name is required',
+      'date' => 'date is required'
+    ];
+    $this->validate(
+      $request,
+      $rules,
+      $messages
+    );
+
+    $values = array(
+      "name" => $request->name,
+      "date" => $request->date,
+      "status" => "draft",
+      "created_by" => Auth::user()->name,
+      "last_modified_by" => Auth::user()->name,
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Order_Supplier::insert($values);
+
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+  public function store_promotion(Request $request)
+  {
+    $rules = [
+      'name' => 'required',
+      'end_date' => 'required|date|after_or_equal:start_date',
+      'cart_amount' => [
+        'nullable',
+        'integer',
+        'gt:0'
+
+      ],
+      'cooldown_timer' => [
+        'nullable',
+        'integer',
+        'gt:0'
+      ],
+      'cookie' => [
+        'nullable',
+        'integer',
+        'gt:0'
+      ],
+      'percent' => 'required|numeric|min:0|max:100',
+      'value' => [
+        'nullable',
+        'gt:0'
+      ]
+    ];
+    $messages = [
+      'name' => ' Promotion name is required',
+      'end_date' => 'The end date is required.',
+      'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
+      'cart_amount' => 'The value must be bigger than 0',
+      'cooldown_timer' => 'The value must be bigger than 0',
+      'cookie' => 'The value must be bigger than 0',
+      'percent' => 'The value must be bigger than 0'
+
+
+    ];
+    $this->validate(
+      $request,
+      $rules,
+      $messages
+    );
+    if ($request->filled('percent') && $request->filled('value')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'The promotion accepts either a percent or a value, not both!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $innerid = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 15);
+    if ($request->type == "counter" && $request->has('active')) {
+      Promotion::where('active', true)->where('type', 'counter')->update(['active' => false]);
+    }
+    $values = array(
+      "name" => $request->name,
+      "type" => $request->type,
+      "promotion_percent" => $request->percent ?? null,
+      "promotion_value" => $request->value ?? null,
+      "start_date" => $request->start_date,
+      "end_date" => $request->end_date,
+      "cooldown_timer" => $request->cooldown,
+      "cart_amount" => $request->amount,
+      "cookieid" => $innerid,
+      "active" => $request->has('active'),
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Promotion::insert($values);
+    Cache::forget('promotions');
+
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+  public function show_supplier($id)
+  {
+    $data = Order_Supplier::find($id);
+    return view('admin.show_supplier', compact('data'));
+  }
   public function show_cart($id)
   {
     $data = Cart::find($id);
     return view('admin.show_cart', compact('data'));
+  }
+  public function show_session($id)
+  {
+    $data = UserSessions::where('sessions', $id)->first();
+    if ($data) {
+
+      return view('admin.show_session', compact('data'));
+    } else {
+      return redirect()->back()->with('notification', [
+        'message' => 'Record not found!',
+        'type' => 'warning',
+        'title' => 'warning'
+      ]);
+    }
+  }
+
+  public function show_brand($id)
+  {
+    $data = Brand::find($id);
+    return view('admin.show_brand', compact('data'));
   }
 
   function correctMediaSequence()
@@ -181,6 +329,8 @@ class AdminController extends Controller
     ]);
   }
 
+
+  // sadasdasdasd
   public function store_voucher(Request $request)
   {
     $rules = [
@@ -227,6 +377,8 @@ class AdminController extends Controller
     $voucher->end_date = $request->end_date;
     $voucher->single_use = $request->has('single_use');
     $voucher->save();
+    Cache::forget('promotions');
+
 
     return redirect()->back()->with([
       'notification' => [
@@ -241,5 +393,40 @@ class AdminController extends Controller
   {
     $data = Order::find($id);
     return view('admin.show_order', compact('data'));
+  }
+
+  // seed reviews
+  public function seedreviews()
+  {
+    $prods = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+
+    foreach ($prods as $product) {
+      if (!$product->reviews->first()) {
+        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+
+        ModelsProductReviews::create([
+          'product_id' => $product->id,
+          'count' => 1,
+          'value' => $value
+        ]);
+      }
+    }
+    return Redirect::to('/');
+  }
+  public function updatereviews()
+  {
+    $prods = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+
+    foreach ($prods as $product) {
+      $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+      ModelsProductReviews::where('product_id', $product->id)->update([
+        'value' => $value,
+      ]);
+    }
+    return Redirect::to('/');
   }
 }

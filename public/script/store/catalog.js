@@ -17,9 +17,9 @@ function dropmenus(menuID, setActive = false) {
         menu.classList.toggle("active");
         list.classList.toggle("active");
 
-        if (menu.classList.contains("active")) {
-          menu.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        // if (menu.classList.contains("active")) {
+        //   menu.scrollIntoView({ behavior: "smooth", block: "start" });
+        // }
       });
     } else {
       return;
@@ -100,7 +100,7 @@ function filterLive(idOpen, idClose, idList, idContent) {
   }
 }
 
-function closeWithEsc(id){
+function closeWithEsc(id) {
   document.addEventListener('keydown', handleKey);
   function handleKey(event) {
     if (event.keyCode === 27) {
@@ -119,11 +119,13 @@ function applyFilter(Close, Reset) {
   const buttonClose = document.getElementById(Close);
   const buttonReset = document.getElementById(Reset);
   const body = document.querySelector("body");
+  const list = document.getElementById("filterList");
 
   if (!buttonClose || !buttonReset) {
     return;
   } else {
     buttonClose.addEventListener("click", () => {
+      list.classList.remove("active");
       body.style.overflow = "auto";
     });
     buttonReset.addEventListener("click", () => {
@@ -165,46 +167,46 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product");
 
-    // Function
-    function add_to_cart(product) {
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ ecommerce: null });
-        window.dataLayer.push({
-            event: "add_to_cart",
-            ecommerce: {
-                currency: product.currency,
-                value: product.price * product.quantity,
-                items: [
-                    {
-                        item_name: product.name,
-                        price: product.price,
-                        quantity: product.quantity
-                    }
-                ]
-            }
-        });
+  // Function
+  function add_to_cart(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity
+          }
+        ]
+      }
+    });
 
-        // console.log('Product added to cart:', product);
-    }
-    // Variables
-    const dlv_name = target_parent.querySelector(".dlv_name").innerText.trim();
-    const dlv_price = parseFloat(target_parent.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
-    const dlv_currency = target_parent.querySelector(".dlv_currency").innerText.trim();
-    const dlv_quantity = 1;
-    // Product
-    const product = {
-      name: dlv_name,
-      price: dlv_price,
-      quantity: dlv_quantity,
-      currency: dlv_currency
-    };
-    // Function call
-    add_to_cart(product);
+    // console.log('Product added to cart:', product);
+  }
+  // Variables
+  const dlv_name = target_parent.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(target_parent.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_currency = target_parent.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency
+  };
+  // Function call
+  add_to_cart(product);
 
 
-  if(!button.classList.contains('in')) {
-      button.classList.add('in');
-      setTimeout(() => button.classList.remove('in'), 1500);
+  if (!button.classList.contains('in')) {
+    button.classList.add('in');
+    setTimeout(() => button.classList.remove('in'), 1500);
   }
 
   if (!target_parent) {
@@ -245,13 +247,13 @@ function flyToCart(button) {
   }, 1500);
 
   // Number Cart upscale
-  if(!numberCart) {
+  if (!numberCart) {
     return;
   } else {
-      numberCart.style.scale = 1.5;
-      setTimeout(() => {
-          numberCart.style.scale = 1;
-      }, 1500);
+    numberCart.style.scale = 1.5;
+    setTimeout(() => {
+      numberCart.style.scale = 1;
+    }, 1500);
   }
 }
 function addWishList(button) {
@@ -262,22 +264,22 @@ function addWishList(button) {
   function add_to_wishlist(product) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
-      window.dataLayer.push({
-          event: "add_to_wishlist",
-          ecommerce: {
-              currency: product.currency,
-              value: product.price * product.quantity,
-              items: [
-                  {
-                      item_name: product.name,
-                      price: product.price,
-                      quantity: product.quantity
-                  }
-              ]
+    window.dataLayer.push({
+      event: "add_to_wishlist",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity
           }
-      });
+        ]
+      }
+    });
 
-      // console.log('Product added to wishlist:', product);
+    // console.log('Product added to wishlist:', product);
   }
   // Variables
   const dlv_name = target_parent.querySelector(".dlv_name").innerText.trim();
@@ -305,7 +307,7 @@ function addWishList(button) {
   // } else {
   //   console.log('dataLayer is not defined');
   // }
-  if(!wish) {
+  if (!wish) {
     return;
   } else {
     wish.style.scale = 1.5;
@@ -320,6 +322,8 @@ function addWishList(button) {
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
+leftbar("filterOpen", "filterClose", "filterList", "filterContent");
+
 dropmenus(".dropfilter", false);
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");

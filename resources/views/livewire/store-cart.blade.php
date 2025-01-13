@@ -1,5 +1,5 @@
 <div>
- <script rel="preload" src="script/store/checkout.js" as="script"></script>
+
  <x-store-alert />
  @php
   if (app()->has('global_numberformat_element')) {
@@ -51,17 +51,16 @@
       $disabled[$index] = false;
       $nonquantity[$index] = false;
       
-      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
+      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || ($cartItem->product->end_date < now()->format('Y-m-d') || ($cartItem->product->quantity < 0 && (app()->has('global_preorder') && app('global_preorder') != 'true')))) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-      
       if (!optional($cartItem->product->product_prices->first())->value) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
       
-      if ($cartItem->product->quantity < $cartItem->quantity) {
+      if ($cartItem->product->quantity > 0 && $cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
@@ -136,7 +135,9 @@
           <span class="quantity__input product__quantity">
            {{ $cartItem->quantity }}
           </span>
-          <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif"
+          <button class="quantity__arrow @if (
+              $cartItem->quantity >= $cartItem->product->quantity &&
+                  (app()->has('global_preorder') && app('global_preorder') != 'true')) disabled @endif"
            style="width: 48px; height: 48px" aria-label="Increase quantity"
            wire:click="increment({{ $cartItem->id }})">
            <svg>
@@ -182,7 +183,7 @@
      @endforeach
     @endif
    </div>
-   @if ($cart->quantity_amount != 0)
+   @if ($cart != null && $cart->quantity_amount != 0)
     <div class="details">
      <div class="details__content">
       <h2 class="details__title">
@@ -202,24 +203,27 @@
         @endif
        </span>
       </div>
-      <div class="details__text">
-       <h3>
-        @if (app()->has('label_cart_delivery_tag'))
-         {!! app('label_cart_delivery_tag') !!}
-        @endif
-       </h3>
-       <span>
-        @if ($cart->delivery_price == 0)
-         @if (app()->has('label_cart_delivery_free'))
-          {!! app('label_cart_delivery_free') !!}
+      @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+
+       <div class="details__text">
+        <h3>
+         @if (app()->has('label_cart_delivery_tag'))
+          {!! app('label_cart_delivery_tag') !!}
          @endif
-        @else
-         {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
-          {!! app('global_currency_primary_symbol') !!}
+        </h3>
+        <span>
+         @if ($cart->delivery_price == 0)
+          @if (app()->has('label_cart_delivery_free'))
+           {!! app('label_cart_delivery_free') !!}
+          @endif
+         @else
+          {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
          @endif
-        @endif
-       </span>
-      </div>
+        </span>
+       </div>
+      @endif
       @if ($cart->voucher_id != null)
        <div class="details__text">
         <h3>
@@ -250,7 +254,12 @@
         @endif
        </h3>
        <span id="detailsTotal">
-        {{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+        @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+         {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
+        @else
+         {{ number_format($cart->final_amount - app('global_delivery_price'), 2, $decimal, $mill) }}
+        @endif
+        @if (app()->has('global_currency_primary_symbol'))
          {!! app('global_currency_primary_symbol') !!}
         @endif
        </span>
@@ -259,15 +268,20 @@
        <p class="voucher__error">{{ $message }}</p>
       @endif
       @if ($cart->voucher_id == null)
-       <div class="voucher">
-        <input type="text" wire:model="voucher" maxlength="100" name="voucher"
+
+      <!-- CHANGE TO DYNAMIC -->
+
+       <!-- <div class="voucher">
+         <input type="text" wire:model="voucher" maxlength="100" name="voucher"
          placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
         <button type="submit" wire:click="checkvoucher">
          @if (app()->has('label_cart_voucher_apply'))
           {!! app('label_cart_voucher_apply') !!}
          @endif
         </button>
-       </div>
+       </div> -->
+
+       <!-- CHANGE TO DYNAMIC -->
       @endif
       @if ($aplicabble_voucher)
        <div class="voucher__question">
@@ -317,10 +331,9 @@
     </div>
    @endif
    <!----------------- End Basket Continue ---------------->
-   <!------------------------------------------------------>
   </div>
  </section>
- @if ($cart->quantity_amount != 0)
+ @if ($cart != null && $cart->quantity_amount != 0)
   <div class="dlv" style="display: none">
    <span class="dlv_currency">
     @if (app()->has('global_currency_primary_symbol'))
@@ -398,11 +411,5 @@
   </script>
  @endif
 
-
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
-
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
- <script src="/script/store/checkout.js" defer></script>
+ <script src="/script/store/sickycartinfo.js" defer></script>
 </div>

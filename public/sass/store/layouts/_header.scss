@@ -44,10 +44,42 @@ header {
   @media (max-width: map-get($grid-breakpoints, xl)) {
     padding: 0;
     width: 100%;
-    gap: 25px;
+   /// gap: 30px;
   }
+
+
+> .head__button__left {
+  
+display:none;
+
+
+
+
+@media (max-width: map-get($grid-breakpoints, xl)) {
+  display: flex;
+  gap:15px;
+  max-width:250px;
+  width: 50%;
+  align-items: center;
 }
 
+}
+
+> .head__button__right {
+  width: 50%;
+  display:flex;
+  max-width:200px;
+  justify-content: space-between;
+  align-items: center;
+  gap:10px;
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    width: 100%;
+   /// gap: 30px;
+  }  
+
+}
+}
 .header__btn {
   background: transparent;
   border: none;

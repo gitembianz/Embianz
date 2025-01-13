@@ -1,21 +1,26 @@
 <div>
  <!------------------------Breadcrumbs----------------------->
- <div class="breadcrumbs container">
-  <a class="breadcrumbs__link" href="{{ url('/') }}">
-   @if (app()->has('label_breadcrumbs_home_page'))
-    {!! app('label_breadcrumbs_home_page') !!}
-   @endif
-  </a>
-  <a class="breadcrumbs__link" href="{{ url('/search') }}">
-   @if (app()->has('label_breadcrumbs_search'))
-    {!! app('label_breadcrumbs_search') !!}
-   @endif
-  </a>
- </div>
+ <ol class="breadcrumbs container">
+  <li>
+   <a class="breadcrumbs__link" href="{{ url('/') }}">
+    @if (app()->has('label_breadcrumbs_home_page'))
+     {!! app('label_breadcrumbs_home_page') !!}
+    @endif
+   </a>
+  </li>
+  <li>
+   <a class="breadcrumbs__link" href="{{ url('/search') }}">
+    @if (app()->has('label_breadcrumbs_search'))
+     {!! app('label_breadcrumbs_search') !!}
+    @endif
+   </a>
+  </li>
+ </ol>
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"
-   wire:model="search" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+   wire:model.live.debounce.500ms="search"
+   placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
   <h2 class="section__title">
    @if (app()->has('label_search_title'))
     {!! app('label_search_title') !!}
@@ -72,10 +77,13 @@
       <div @if ($loop->last) id="last_record" @endif class="card">
        <a
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-        @if ($product->media->first() != null)
+        @if ($product->media->where('type', 'main')->first() != null)
          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-          src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-          alt="{{ $product->media->first()->name }} {{ $product->name }}">
+          src="/{{ $product->media->where('type', 'main')->first()->path }}{{ $product->media->where('type', 'main')->first()->name }}"
+          alt="{{ $product->name }}">
+        @else
+         <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+          alt="something wrong">
         @endif
        </a>
        <?php if ($product->product_prices->count() != 0) {
@@ -88,19 +96,21 @@
        ?>
 
        @if ($price)
-        {{-- Out- negru // save - rosu --}}
-        @if ($product->quantity < $quantity && $product->quantity > 0)
-         <p class="card-status out">
+        @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
+         <p
+          class="card-status @if ($discount) save-secondary
+          @else
+             save @endif ">
           @if (app()->has('label_product_status_stock'))
            {!! app('label_product_status_stock') !!}
           @endif
          </p>
          @if ($discount)
-          <p class="card-status save-secondary">
+          <p class="card-status save">
            -{{ $product->product_prices->first()->discount }}%
           </p>
          @endif
-        @elseif($product->quantity == 0)
+        @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
          <p class="card-status save">
           @if (app()->has('label_product_status_indisponible'))
            {!! app('label_product_status_indisponible') !!}
@@ -113,6 +123,7 @@
           </p>
          @endif
         @endif
+        {{-- tagul de discount --}}
        @else
         <p class="card-status save">
          @if (app()->has('label_product_status_coming_soon'))
@@ -132,13 +143,24 @@
 
        <div class="card-info">
         <div class="card-text">
-         <span><a style="text-decoration: none; font-weight:500"
-           href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></span>
-        </div>
-        <div class="card-text">
-         <h3 class="card-title"><a style="text-decoration: none; font-weight:500"
+         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
-         </h3>
+         </h2>
+         @php
+          if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+              $primaryCategory = $product->product_categories->where('primary_category', true)->first();
+          } else {
+              $primaryCategory = $product->product_categories->first();
+          }
+         @endphp
+
+         @if ($primaryCategory && $primaryCategory->category)
+          <a class="categorylink"
+           href="{{ route('products', ['categorySlug' => $primaryCategory->category->seo_id !== null && $primaryCategory->category->seo_id !== '' ? $primaryCategory->category->seo_id : $primaryCategory->category->id]) }}">
+           {{ $primaryCategory->category->short_description }}
+          </a>
+         @endif
+
          <p class="card-price">
           @if ($discount)
            <span class="card-price discount">
@@ -166,15 +188,45 @@
            </span>
           @endif
          </p>
+         <div style="display: none">
+          <span class="dlv_name">{{ $product->name }}</span>
+          <span class="dlv_price">{{ $price }}</span>
+          <span class="dlv_currency">
+           @if (app()->has('global_currency_primary_name'))
+            {!! app('global_currency_primary_name') !!}
+           @endif
+          </span>
+         </div>
         </div>
-        @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+        @if ($price)
+         @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+        @else
+         <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+          @if (app()->has('label_add_to_cart_button_indisponibil'))
+           {!! app('label_add_to_cart_button_indisponibil') !!}
+          @endif
+         </button>
+        @endif
        </div>
       </div>
      </div>
     @endforeach
-    <x-lazy />
+    @unless (app()->has('global_pagination') && app('global_pagination') === 'links')
+     <x-lazy />
+    @endunless
    @endif
   </section>
+  @if (app()->has('global_pagination') && app('global_pagination') === 'links')
+   <section class="container" style="margin-bottom: 20px">
+    {{ $products->links() }}
+   </section>
+  @else
+   @if ($products->total() >= $loadAmount)
+    <section class="container">
+     <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+    </section>
+   @endif
+  @endif
 
  @endif
 
@@ -195,7 +247,7 @@
         @if ($category->media->first() != null)
          <img title="{{ strip_tags($category->name) }}" loading="eager" class="card-image"
           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-          alt="{{ $category->media->first()->name }} {{ strip_tags($category->name) }}">
+          alt="{{ strip_tags($category->name) }}">
         @endif
        </div>
        <div class="card-info">

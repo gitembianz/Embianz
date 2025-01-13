@@ -7,6 +7,8 @@ use App\Models\Order_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class Orderstable extends Component
 {
@@ -25,6 +27,7 @@ class Orderstable extends Component
     public $single = false;
     public $multiple = false;
     public $row = null;
+    public $status31Only = false;
 
     public function expandRow($index)
     {
@@ -52,9 +55,31 @@ class Orderstable extends Component
         return $this->ordersQuery->paginate($this->loadAmount);
     }
     public function getOrdersQueryProperty()
-    {
-        return Order::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+{
+    $query = Order::search($this->search)
+        ->with([
+            'orders.product' => function ($query) {
+                $query->withCount(['orders_item as interim_quantity' => function ($query) {
+                    $query->whereHas('order', function ($q) {
+                        $q->where('status_id', 31);
+                    })->select(DB::raw('sum(quantity)'));
+                }]);
+            },
+            'status',
+            'account',
+            'cart',
+            'currency',
+            'voucher',
+            'payment'
+        ])
+        ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+
+    if ($this->status31Only) {
+        $query = $query->where('status_id', 31);
     }
+
+    return $query; // Ensure to return the modified query
+}
     public function showColumn($column)
     {
         if ($column === 'id') {
@@ -65,7 +90,7 @@ class Orderstable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->orders->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->orders->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -96,7 +121,7 @@ class Orderstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->ordersQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->ordersQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function loadMore()
     {
@@ -105,16 +130,14 @@ class Orderstable extends Component
     public function deleteSingleRecord()
     {
         $id = $this->idbeingremoved;
-        $item = Order::findOrFail($id);
-        $order_items = Order_Item::where('order_id', $id)->get();
-
-        if ($order_items != NULL) {
-            foreach ($order_items as $order_item) {
-
-                $order_item->delete();
-            }
+        $order = Order::findOrFail($id);
+        foreach ($order->orders as $orderitem) {
+            $orderitem->product->quantity += $orderitem->quantity;
+            $orderitem->product->save();
+            $orderitem->delete();
         }
-        $item->delete();
+
+        $order->delete();
         $this->checked = array_diff($this->checked, [$id]);
         $this->single = false;
         session()->flash('notification', [
@@ -141,17 +164,13 @@ class Orderstable extends Component
     {
         $orders = Order::whereKey($this->checked)->get();
         foreach ($orders as $order) {
-            $id = $order->id;
-            $item = Order::find($id);
-            $order_items = Order_Item::where('order_id', $id)->get();
-
-            if ($order_items != NULL) {
-                foreach ($order_items as $order_item) {
-
-                    $order_item->delete();
-                }
+            foreach ($order->orders as $orderitem) {
+                $orderitem->product->quantity += $orderitem->quantity;
+                $orderitem->product->save();
+                $orderitem->delete();
             }
-            $item->delete();
+
+            $order->delete();
         }
         $this->checked = [];
         $this->selectPage = false;

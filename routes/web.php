@@ -46,6 +46,22 @@
       route::view('/add_product', 'admin.add_products')->name('add_product');
       route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
+      route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');
+
+      // all_promotions
+      route::view('/promotions', 'admin.promotions')->name('all_promotions');
+      route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
+      route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
+
+
+
+      // brands routes
+      route::view('/brands', 'admin.brands')->name('all_brands');
+      route::view('/add_brand', 'admin.add_brand')->name('add_brand');
+      route::get('/show_brand/{id}/', [AdminController::class, 'show_brand'])->name('show_brand');
+
+      route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
+
 
       //todolist routes
       // route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
@@ -92,13 +108,18 @@
       route::post('/add_voucher', [AdminController::class, 'store_voucher'])->name('add_voucher');
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
-      route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
-      route::post('/add_setting', [AdminController::class, 'store_setting'])->name('add_setting');
 
       route::view('/labels', 'admin.labels')->name('labels');
       route::view('/variants', 'admin.variants')->name('variants');
       route::view('/newvariant', 'admin.add_variant')->name('newvariant');
       route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+
+
+      route::view('/countries', 'admin.countries')->name('countries');
+      route::view('/suppliers', 'admin.suppliers')->name('suppliers');
+      route::view('/add_supplier', 'admin.add_supplier')->name('add_supplier');
+      route::post('/new_supplier', [AdminController::class, 'store_supplier'])->name('new_supplier');
+      route::get('/show_supplier/{id}/', [AdminController::class, 'show_supplier'])->name('show_supplier');
 
 
 
@@ -126,12 +147,11 @@
         Artisan::call('db:seed');
         echo 'Database seeded';
       });
+      route::get('/seedreviews', [AdminController::class, 'seedreviews']);
+      route::get('/updatereviews', [AdminController::class, 'updatereviews']);
 
       route::get('/clear-cache', function () {
-        Cache::forget('global_variables');
-        Cache::forget('global_statuses');
-        Cache::forget('global_payments');
-        Cache::forget('global_scripts');
+        Artisan::call('cache:clear');
         echo 'Cache cleared for global variables';
       });
     });

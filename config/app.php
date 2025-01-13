@@ -82,7 +82,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LANG'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -198,6 +199,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\GlobalVariablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
 
     ],
@@ -214,6 +216,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'PDF' => Barryvdh\DomPDF\Facade\PDF::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
 
     ])->toArray(),

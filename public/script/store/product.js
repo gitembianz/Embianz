@@ -234,7 +234,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
@@ -299,9 +299,9 @@ function sliderProduct(sliderId, modalId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    if (swipeDistance > 150 && index > 0) {
+    if (swipeDistance > 50 && index > 0) {
       currentIndex = index - 1;
-    } else if (swipeDistance < -150 && index < slides.length - 1) {
+    } else if (swipeDistance < -50 && index < slides.length - 1) {
       currentIndex = index + 1;
     }
 
@@ -316,7 +316,8 @@ function sliderProduct(sliderId, modalId) {
 
     slide.addEventListener("touchstart", (event) => {
       touchStartX = event.touches[0].clientX;
-    });
+    }
+      , { passive: false });
 
     slide.addEventListener("touchmove", (event) => {
       if (touchStartX) {
@@ -332,7 +333,7 @@ function sliderProduct(sliderId, modalId) {
           event.preventDefault();
         }
       }
-    });
+    }, { passive: false });
 
     slide.addEventListener("touchend", (event) => {
       if (isSwiping) {
@@ -376,7 +377,7 @@ function sliderProduct(sliderId, modalId) {
     if (mouseStartX) {
       const dragDistance = event.clientX - mouseStartX;
 
-      if (Math.abs(dragDistance) > 150 && !isScrolling()) {
+      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -388,10 +389,10 @@ function sliderProduct(sliderId, modalId) {
       const mouseEndX = event.clientX;
       const dragDistance = mouseEndX - mouseStartX;
 
-      if (dragDistance > 150 && currentIndex > 0) {
+      if (dragDistance > 50 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (dragDistance < -150 && currentIndex < slides.length - 1) {
+      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -404,7 +405,7 @@ function sliderProduct(sliderId, modalId) {
   // Funcție pentru gesturi de touch pe modalContent
   modalContent.addEventListener("touchstart", (event) => {
     touchStartX = event.touches[0].clientX;
-  });
+  }, { passive: false });
 
   modalContent.addEventListener("touchmove", (event) => {
     if (touchStartX) {
@@ -415,22 +416,22 @@ function sliderProduct(sliderId, modalId) {
         return; // Ignoră acțiunea dacă utilizatorul face zoom
       }
 
-      if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
+      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
     }
-  });
+  }, { passive: false });
 
   modalContent.addEventListener("touchend", (event) => {
     if (isDragging) {
       const touchEndX = event.changedTouches[0].clientX;
       const swipeDistance = touchEndX - touchStartX;
 
-      if (swipeDistance > 150 && currentIndex > 0) {
+      if (swipeDistance > 50 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (swipeDistance < -150 && currentIndex < slides.length - 1) {
+      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -455,7 +456,7 @@ function relatedSlider() {
 
     function updateCardWidth() {
       const cards = wrapper.querySelectorAll(".card");
-      const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
+      const cardWidth = cards[0].offsetWidth + 16; // adăugăm 16px pentru gap-ul dintre card-uri
       return cardWidth;
     }
 
@@ -529,6 +530,92 @@ function relatedSlider() {
   }
 }
 //<------------------------- End Related-Slider ------------------------>
+
+function lastseenSlider() {
+  const slider = document.getElementById("lastseenSlider");
+
+  if (!slider) {
+    return;
+  } else {
+    const wrapper = slider.querySelector(".related__wrapperlast");
+    const left = slider.querySelector(".related__btnlast.prev");
+    const right = slider.querySelector(".related__btnlast.next");
+
+    function updateCardWidth() {
+      const cards = wrapper.querySelectorAll(".card");
+      const cardWidth = cards[0].offsetWidth + 16; // adăugăm 16px pentru gap-ul dintre card-uri
+      return cardWidth;
+    }
+
+    function scrollSlider(distance) {
+      wrapper.scrollBy({
+        left: distance,
+        behavior: "smooth",
+      });
+    }
+
+    function toggleButtonsVisibility(entries) {
+      const hasVerticalScrollbar = wrapper.scrollHeight > wrapper.clientHeight;
+      const hasHorizontalScrollbar = wrapper.scrollWidth > wrapper.clientWidth;
+
+      // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
+      if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+        left.style.display = "flex";
+        right.style.display = "flex";
+      } else {
+        left.style.display = "none";
+        right.style.display = "none";
+      }
+    }
+
+    function updateButtonStates() {
+      const scrollLeft = wrapper.scrollLeft;
+      const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
+
+      if (scrollLeft <= 0) {
+        left.classList.add("disabled");
+      } else {
+        left.classList.remove("disabled");
+      }
+
+      if (scrollLeft >= maxScrollLeft) {
+        right.classList.add("disabled");
+      } else {
+        right.classList.remove("disabled");
+      }
+    }
+
+    // Creăm un nou ResizeObserver
+    const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
+
+    // Observăm schimbările în dimensiunile wrapper-ului
+    resizeObserver.observe(wrapper);
+
+    left.addEventListener("click", () => {
+      if (!left.classList.contains("disabled")) {
+        scrollSlider(-updateCardWidth());
+      }
+    });
+
+    right.addEventListener("click", () => {
+      if (!right.classList.contains("disabled")) {
+        scrollSlider(updateCardWidth());
+      }
+    });
+
+    wrapper.addEventListener("scroll", updateButtonStates);
+
+    window.addEventListener("resize", () => {
+      const cardWidth = updateCardWidth();
+      window.cardWidth = cardWidth;
+    });
+
+    window.cardWidth = updateCardWidth();
+
+    // Actualizăm starea butoanelor la încărcarea paginii
+    updateButtonStates();
+  }
+}
 //<--------------------------------------------------------------------->
 //<---------------------------- Fly-To-Cart ---------------------------->
 function flyToCart(button) {
@@ -710,6 +797,7 @@ function miniSlider(sliderId, wrapperId, navLeftId, navRightId) {
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider", ".product-modal");
 relatedSlider();
+lastseenSlider();
 miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->

@@ -140,7 +140,30 @@
      <label for="isNew3">Is New</label>
     @endif
    </div>
+   <div class="checkbox__details">
+    @if ($editproduct === null)
+     @if ($product->low_stock)
+      <input type="checkbox" id="Lowstock1" checked class="disabled" disabled />
+      <label for="Lowstock1" class="disabled">Low Stock</label>
+     @else
+      <input type="checkbox" id="Lowstock2" class="disabled" disabled />
+      <label for="Lowstock2" class="disabled">Low Stock</label>
+     @endif
+    @else
+     <input type="checkbox" id="Lowstock3" wire:model.defer="prod.low_stock" />
+     <label for="Lowstock3">Low Stock</label>
+    @endif
+   </div>
    {{-- Product IsNew --}}
+  </div>
+  {{-- Product Brand --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->brand }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__brand" wire:model.defer="prod.brand" required>
+   @endif
+   <label for="product__name">Brand</label>
   </div>
 
   {{-- Product Type --}}
@@ -156,45 +179,61 @@
    @endif
    <label for="product__name">Type</label>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product Quantity --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->quantity }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
-   @endif
-   <label for="product__name">Quantity</label>
+   {{-- Product Quantity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->quantity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
+    @endif
+    <label for="product__name">Quantity</label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $interimQuantity }}</span>
+    <label for="product__name">Quantity Interim</label>
+
+   </div>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product Popularity --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->popularity }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
-   @endif
-   <label for="product__name">Popularity</label>
+   {{-- Product Popularity --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->popularity }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+    @endif
+    <label for="product__name">Popularity</label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $product->quantity_supplier_ordered }}</span>
+    <label for="product__name">Quantity Supplier Ordered</label>
+
+   </div>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Product SKU --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->sku }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.sku" required>
-   @endif
-   <label for="product__name">SKU</label>
-  </div>
+   {{-- Product SKU --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->sku }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.sku" required>
+    @endif
+    <label for="product__name">SKU</label>
+   </div>
 
-  {{-- Product EAN --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->ean }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.ean" required>
-   @endif
-   <label for="product__name">EAN</label>
+   {{-- Product EAN --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->ean }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.ean" required>
+    @endif
+    <label for="product__name">EAN</label>
+   </div>
   </div>
 
   {{-- Product Short Description --}}
@@ -237,7 +276,15 @@
    <label for="product__name">Meta Description</label>
   </div>
 
-
+  {{-- Product Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->comments }}</span>
+   @else
+    <textarea type="text" placeholder=" " name="product__name" wire:model.defer="prod.comments"></textarea>
+   @endif
+   <label for="product__name">Comments</label>
+  </div>
 
   {{-- Product Long Description --}}
   <div class="textarea__tabs details__long">
@@ -311,5 +358,8 @@
   @livewire('related-products', ['product' => $product])
   @livewire('related-spec-product', ['product' => $product])
   @livewire('related-pricelist', ['product' => $product])
+  @livewire('product-reviews', ['product' => $product, 'tableName' => 'product_reviews'])
+  @livewire('beeing-in-order', ['productid' => $product->id])
+
  </div>
 </section>

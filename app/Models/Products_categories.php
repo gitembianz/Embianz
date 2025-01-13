@@ -18,4 +18,9 @@ class Products_categories extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    protected $fillable = [
+        'product_id',
+        'category_id',
+        'primary_category'
+    ];
 }

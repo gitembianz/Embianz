@@ -6,13 +6,17 @@ use App\Models\Category;
 use App\Models\Status;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Product_Spec;
 use App\Models\PriceList;
 use App\Models\TextLabel;
 use App\Models\CustomScript;
+use App\Models\Promotion;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\DB;
+
 
 class GlobalVariablesServiceProvider extends ServiceProvider
 {
@@ -23,9 +27,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         ///
     }
-
-
-
     /**
      * Bootstrap services.
      */
@@ -38,6 +39,13 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
+        $this->loadAllSpecificationsIntoCache();
+        $this->loadActiveCountries();
+
+        if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
+
+            $this->loadAllPromotionsIntoCache();
+        }
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
             $this->loadAllProductsIntoCache();
@@ -81,6 +89,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             foreach ($labelVariables as $key => $value) {
                 $this->app->instance('label_' . $key, $value);
             }
+        }
+    }
+    private function loadActiveCountries()
+    {
+        if (Schema::hasTable('countries')) {
+
+            $activeCountries = Cache::rememberForever('active_countries', function () {
+                return DB::table('countries')
+                    ->select(['id', 'name'])
+                    ->where('status', true)
+                    ->get();
+            });
+
+            $this->app->instance('active_countries', $activeCountries);
         }
     }
     private function loadGlobalCustomScripts()
@@ -164,11 +186,58 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 ->where('start_date', '<=', now()->format('Y-m-d'))
                 ->where('end_date', '>=', now()->format('Y-m-d'))
                 ->with([
-                    'product_categories',
-                    'product_specs',
-                    'related_product',
+                    'product_categories' => function ($query) {
+                        $query->select('product_id', 'category_id', 'primary_category');
+                        $query->with(['category' => function ($query) {
+                            $query->select('id', 'short_description', 'seo_id');
+                        }]);
+                    },
+                    'reviews' => function ($query) {
+                        $query->select('product_id', 'count', 'value');
+                    },
+                    'product_specs' => function ($query) {
+                        $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
+                    },
+                    'related_product' => function ($query) {
+                        $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
+                            'product' => function ($query) {
+                                $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name', 'type')->where('type', 'main');
+                                        },
+                                        'reviews' => function ($query) {
+                                            $query->select('product_id', 'count', 'value');
+                                        },
+                                        'product_prices' => function ($query) {
+                                            $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                                        },
+                                        'product_categories' => function ($query) {
+                                            $query->select('product_id', 'category_id', 'primary_category');
+                                            $query->with(['category' => function ($query) {
+                                                $query->select('id', 'short_description', 'seo_id');
+                                            }]);
+                                        }
+                                    ]);
+                            }
+                        ]);
+                    },
                     'variants',
-                    'parent',
+                    'parent' => function ($query) {
+                        $query->with(['variants' => function ($query) {
+                            $query->distinct('variant_id')->with(['product' => function ($query) {
+                                $query->where('active', true)
+                                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                                    ->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name')->where('type', 'min');
+                                        },
+                                        'beeingvariants'
+                                    ]);
+                            }]);
+                        }]);
+                    },
                     'beeingvariants',
                     'product_prices' => function ($query) {
                         $query->select('product_id', 'value', 'discount', 'value_no_discount');
@@ -182,11 +251,30 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadAllCategoriesIntoCache()
     {
+        $defaultCategoryId = app('global_default_category');
+        $defaultCategory = Category::with([
+            'media' => function ($query) {
+                $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
+            },
+            'parent',
+            'subcategory' => function ($query) {
+                $query->with([
+                    'category' => function ($query) {
+                        $query->select('id', 'name', 'seo_id', 'sequence')->with([
+                            'media' => function ($query) {
+                                $query->select('media_id', 'path', 'name');
+                            }
+                        ]);
+                    }
+                ]);
+            }
+        ])->find($defaultCategoryId);
         $categories = Cache::rememberForever('cached_categories', function () {
             return Category::with([
                 'media' => function ($query) {
                     $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
                 },
+                'parent',
                 'subcategory' => function ($query) {
                     $query->whereHas('category', function ($query) {
                         $this->applySubcategoryConditions($query);
@@ -223,10 +311,12 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 ->where('end_date', '>=', now()->format('Y-m-d'))
                 ->get();
         });
+        if ($defaultCategory && !$categories->contains('id', $defaultCategoryId)) {
+            $categories->push($defaultCategory);
+        }
 
         $this->app->instance('cached_categories', $categories);
     }
-
     protected function applySubcategoryConditions($query)
     {
         $query->where('active', 1)
@@ -234,5 +324,84 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             ->where('start_date', '<=', now()->format('Y-m-d'))
             ->where('end_date', '>=', now()->format('Y-m-d'))
             ->orderBy('sequence');
+    }
+    private function loadAllSpecificationsIntoCache()
+    {
+        $productSpecs = Cache::rememberForever('cached_specifications', function () {
+            $productSpecs = Product_Spec::select('value', 'spec_id', 'product_id')
+                ->with([
+                    'spec' => function ($query) {
+                        $query->select('id', 'name', 'sequence');
+                    },
+                    'product' => function ($query) {
+                        $query->select('id', 'type', 'parent_id')->whereHas('product_categories');
+                    }
+                ])
+                ->whereHas('spec', function ($query) {
+                    $query->where('mark_as_filter', true);
+                })
+                ->whereHas('product', function ($query) {
+                    $query->where('active', true)
+                        ->where('type', '!=', 'parent')
+                        ->where('start_date', '<=', now()->format('Y-m-d'))
+                        ->where('end_date', '>=', now()->format('Y-m-d'))
+                        ->whereHas('product_categories');
+                })
+                ->get();
+
+            $formattedSpecs = $productSpecs->groupBy('spec_id')->map(function ($specs) {
+                $firstSpec = $specs->first();
+
+                $uniqueValues = $specs->groupBy('value')->map(function ($items) {
+
+                    $productsWithCategories = $items->map(function ($item) {
+                        $categoryIds = $item->product->product_categories->pluck('category_id')->toArray();
+                        $parentId = $item->product->type === 'variant' ? $item->product->parent_id : null;
+
+                        return [
+                            'product_id' => $item->product_id,
+                            'categories' => $categoryIds,
+                            'parent_id' => $parentId,
+                            'type' => $item->product->type,
+                        ];
+                    });
+
+                    $uniqueCategories = $items->flatMap(function ($item) {
+                        return $item->product->product_categories->pluck('category_id');
+                    })->unique();
+
+                    return [
+                        'products' => $productsWithCategories->toArray(),
+                        'categories' => $uniqueCategories->toArray(),
+                    ];
+                });
+
+                return [
+                    'spec' => $firstSpec->spec->name,
+                    'sequence' => $firstSpec->spec->sequence,
+                    'values' => $uniqueValues,
+                ];
+            })->sortBy('sequence')->values();
+
+            return $formattedSpecs->toArray();
+        });
+
+        $this->app->instance('cached_specifications', $productSpecs);
+    }
+
+    private function loadAllPromotionsIntoCache()
+    {
+        if (Schema::hasTable('promotions')) {
+            $promotions = Cache::rememberForever('promotions', function () {
+                $promotions = Promotion::where('active', true)
+                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                    ->get();
+
+                return $promotions->toArray();
+            });
+
+            $this->app->instance('promotions', $promotions);
+        }
     }
 }

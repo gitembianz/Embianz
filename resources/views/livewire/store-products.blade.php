@@ -1,5 +1,6 @@
 <div>
- <!------------------------Breadcrumbs----------------------->
+ <x-confettialert />
+
  @php
   if (app()->has('global_numberformat_element')) {
       if (app('global_numberformat_element') === '.') {
@@ -14,35 +15,43 @@
       $decimal = ',';
   }
  @endphp
- <div class="breadcrumbs container">
-  <a class="breadcrumbs__link" href="{{ url('/') }}">
-   @if (app()->has('label_breadcrumbs_home_page'))
-    {!! app('label_breadcrumbs_home_page') !!}
-   @endif
-  </a>
-  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
-   <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    @if (app()->has('label_breadcrumbs_allproducts'))
-     {!! app('label_breadcrumbs_allproducts') !!}
+ <ol class="breadcrumbs container">
+  <li>
+   <a class="breadcrumbs__link" href="{{ url('/') }}">
+    @if (app()->has('label_breadcrumbs_home_page'))
+     {!! app('label_breadcrumbs_home_page') !!}
     @endif
    </a>
+  </li>
+  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
+   <li>
+    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+     @if (app()->has('label_breadcrumbs_allproducts'))
+      {!! app('label_breadcrumbs_allproducts') !!}
+     @endif
+    </a>
+   </li>
   @endif
   <!-------------------If Category is appear------------------>
   @if ($category != null && $category->id != app('global_default_category'))
    @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
     @if ($breadcrumb['name'] === $category->name)
-     <a class="breadcrumbs__link"
-      href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-      {!! $category->name !!}
-     </a>
+     <li>
+      <a class="breadcrumbs__link"
+       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+       {!! $category->name !!}
+      </a>
+     </li>
     @else
-     <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
-      {{ $breadcrumb['name'] }}
-     </a>
+     <li>
+      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
+       {{ $breadcrumb['name'] }}
+      </a>
+     </li>
     @endif
    @endforeach
   @endif
- </div>
+ </ol>
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
@@ -60,15 +69,15 @@
  @endif
 
  <!---------------------------Filter------------------------->
- <section class="controls container">
-  <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
-   aria-label="Open filter button">
+ <section class="controls container" id="productlist">
+  <button class="controls__button" id="filterOpen" aria-label="Open filter button">
    <svg>
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
   </button>
-  <input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search"
-   autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+  <input class="controls__search" maxlength="100" type="text" name="search" id="search"
+   wire:model.live.debounce.500ms="search" autocomplete="off"
+   placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
   <button class="controls__button" id="sortOpen" aria-label="Open sort button">
    <svg>
     <line x1="21" y1="10" x2="7" y2="10"></line>
@@ -79,11 +88,11 @@
   </button>
  </section>
  <!---------------------------- Display filters-------------------------->
- @if (!empty($selectedSpecNames))
+ @if (!empty($selectedfilters))
   <section class="tag container">
-   @foreach ($selectedSpecNames as $key => $name)
-    <button class="tag__button" wire:click="removeSpec('{{ $key }}')">
-     {{ $name }}: {{ $key }}
+   @foreach ($selectedfilters as $key => $specname)
+    <button class="tag__button" wire:click="removeSpec('{{ $key }}', '{{ $specname }}')">
+     {{ $specname }}: {{ $key }}
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -102,7 +111,6 @@
   </section>
  @endif
  <!-------------------------Catalogue------------------------>
- <h2></h2>
  <section class="catalogue container">
   @if ($products->isEmpty())
    <p>
@@ -112,54 +120,31 @@
    </p>
   @else
    @foreach ($products as $index => $product)
+
     @php
      if ($product->type == 'parent') {
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
-                 $matchesFilter = true;
-                 foreach ($selectedSpecValues as $values) {
-                     foreach ($values as $value => $isSelected) {
-                         if (
-                             $isSelected &&
-                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
-                         ) {
-                             $matchesFilter = false;
-                             break;
-                         }
-                     }
-                     if (!$matchesFilter) {
-                         break;
-                     }
-                 }
-                 return $matchesFilter;
-             });
-
-             if ($filteredVariants->isEmpty()) {
-                 continue;
-             }
-
-             if ($filteredVariants->where('default_variant', true)->first()) {
-                 $element = $filteredVariants->where('default_variant', true)->first()->product;
+             if ($product->variants->where('default_variant', true)->first()) {
+                 $element = $product->variants->where('default_variant', true)->first()->product;
              } else {
-                 $element = $filteredVariants->first()->product;
+                 $element = $product->variants->first()->product;
              }
          }
      } else {
          $element = $product;
      }
     @endphp
-    <div class="product">
+    <div wire:key="product-{{ $element->id }}" class="product">
      <div @if ($loop->last) id="last_record" @endif class="card">
       <a
        href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
        @if ($element->media->first() != null)
-        <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
-         alt="{{ $element->media->first()->name }} {{ $element->name }}">
+        <img title="{{ $product->name }}, {{ $product->short_description }}" loading="lazy" class="card-image"
+         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}" alt="{{ $element->name }}">
        @else
-        <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+        <img title="Default image" loading="lazy" class="card-image" src="/images/store/default/default300.webp"
          alt="something wrong">
        @endif
       </a>
@@ -175,19 +160,21 @@
        }
       @endphp
       @if ($price)
-       {{-- Out- negru // save - rosu --}}
-       @if ($element->quantity < $quantity && $element->quantity > 0)
-        <p class="card-status out">
+       @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
+        <p
+         class="card-status @if ($discount) save-secondary
+          @else
+             save @endif ">
          @if (app()->has('label_product_status_stock'))
           {!! app('label_product_status_stock') !!}
          @endif
         </p>
         @if ($discount)
-         <p class="card-status save-secondary">
-          -{{ $element->product_prices->first()->discount }}%
+         <p class="card-status save">
+          -{{ $product->product_prices->first()->discount }}%
          </p>
         @endif
-       @elseif($element->quantity == 0)
+       @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
         <p class="card-status save">
          @if (app()->has('label_product_status_indisponible'))
           {!! app('label_product_status_indisponible') !!}
@@ -196,7 +183,7 @@
        @else
         @if ($discount)
          <p class="card-status save">
-          -{{ $element->product_prices->first()->discount }}%
+          -{{ $product->product_prices->first()->discount }}%
          </p>
         @endif
        @endif
@@ -211,55 +198,115 @@
       @livewire(
           'product-wishlist-button',
           [
-              'productId' => $product->id,
+              'productId' => $element->id,
               'class' => 'card__action',
-              'is_in_wishlist' => $this->isInWishlist($product->id),
+              'is_in_wishlist' => $this->isInWishlist($element->id),
           ],
-          key($product->id)
+          key('w' . $element->id)
       )
 
       <div class="card-info">
        <div class="card-text">
-        <span><a style="text-decoration: none; font-weight:500"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a></span>
-       </div>
-       <div class="card-text">
-        <h3 class="card-title"><a style="text-decoration: none; font-weight:500"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
-        </h3>
+        <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
+          @if ($element->type === 'variant' && $category->accepted_items === 'parents')
+           {{ $element->parent->name }}
+          @else
+           {{ $element->name }}
+          @endif
+         </a>
+        </h2>
+        @php
+         if ($element->type === 'variant' && $category->accepted_items === 'parents') {
+             $corectproduct = $element->parent;
+         } else {
+             $corectproduct = $element;
+         }
+         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+             $primaryCategory = $corectproduct->product_categories->where('primary_category', true)->first();
+         } else {
+             $primaryCategory = $corectproduct->product_categories->first();
+         }
+        @endphp
+
+        @if ($primaryCategory && $primaryCategory->category)
+         <a class="categorylink"
+          href="{{ route('products', ['categorySlug' => $primaryCategory->category->seo_id !== null && $primaryCategory->category->seo_id !== '' ? $primaryCategory->category->seo_id : $primaryCategory->category->id]) }}">
+          {{ $primaryCategory->category->short_description }}
+         </a>
+        @endif
         <p class="card-price">
+         {{-- label price from --}}
          @if (
-             $product->type == 'parent' &&
+             $category->display_variant_price == true &&
+                 ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
                  app()->has('global_variant_price_from') &&
+                 app()->has('global_variant_add_to_cart') &&
+                 app('global_variant_add_to_cart') === 'true' &&
                  app()->has('label_product_price_from') &&
                  app('global_variant_price_from') === 'true')
           {!! app('label_product_price_from') !!}
          @endif
-         @if ($discount)
-          <span class="card-price discount">
-           @if ($element->product_prices->first())
-            {{ $price }}
-            @if (app()->has('global_currency_primary_symbol'))
-             {!! app('global_currency_primary_symbol') !!}
-            @endif
+         {{-- price --}}
+         @if ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents'))
+          @if (
+              $category->display_variant_price == true &&
+                  app()->has('global_variant_add_to_cart') &&
+                  app('global_variant_add_to_cart') === 'true')
+           @if ($discount)
+            <span class="card-price discount">
+             @if ($element->product_prices->first())
+              {{ $price }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
+             @endif
+            </span>
+            <span class="card-price oldprice">
+             {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            </span>
+           @else
+            <span>
+             @if ($element->product_prices->first())
+              {{ $price }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
+             @endif
+            </span>
            @endif
-          </span>
-          <span class="card-price oldprice">
-           {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
-           @if (app()->has('global_currency_primary_symbol'))
-            {!! app('global_currency_primary_symbol') !!}
-           @endif
-          </span>
+          @endif
          @else
-          <span>
-           @if ($element->product_prices->first())
-            {{ $price }}
+          @if ($discount)
+           <span class="card-price discount">
+            @if ($element->product_prices->first())
+             {{ $price }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            @endif
+           </span>
+           <span class="card-price oldprice">
+            {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
             @if (app()->has('global_currency_primary_symbol'))
              {!! app('global_currency_primary_symbol') !!}
             @endif
-           @endif
-          </span>
+           </span>
+          @else
+           <span>
+            @if ($element->product_prices->first())
+             {{ $price }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            @endif
+           </span>
+          @endif
          @endif
+        </p>
         <div style="display: none">
          <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
@@ -269,14 +316,15 @@
           @endif
          </span>
         </div>
-        </p>
        </div>
        @if (
-           $product->type == 'parent' &&
+           ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
                app()->has('global_variant_add_to_cart') &&
-               app('global_variant_add_to_cart') === 'true')
-        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parent')
+               app('global_variant_add_to_cart') === 'true' &&
+               $price &&
+               $category->display_variant_price == true)
+        @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
+       @elseif(($price && $element->type == 'parent') || ($element->type === 'variant' && $category->accepted_items === 'parents'))
         <div class="card__button--wrapper">
          <button class="card__button">
 
@@ -289,27 +337,51 @@
           </a>
          </button>
         </div>
+       @elseif ($price)
+        @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
        @else
-        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+        <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+         @if (app()->has('label_add_to_cart_button_indisponibil'))
+          {!! app('label_add_to_cart_button_indisponibil') !!}
+         @endif
+        </button>
        @endif
       </div>
      </div>
+     <div style="display: none" class="json-ld-data" data-product-json='@json($element)'></div>
     </div>
    @endforeach
-   <x-lazy />
+   @unless (app()->has('global_pagination') && app('global_pagination') === 'links')
+    <x-lazy />
+   @endunless
   @endif
  </section>
  <!-----------------------Load more---------------------->
- @if ($products->total() >= $loadAmount)
+ @if (app()->has('global_pagination') && app('global_pagination') === 'links')
   <section class="container">
-   <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+   {{ $products->links() }}
+  </section>
+ @else
+  @if ($products->total() >= $loadAmount)
+   <section class="container">
+    <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+   </section>
+  @endif
+ @endif
+ <!----------------------Categorie + detalii--------------------->
+ @if ($category)
+  <section class="section__header container">
+   <p class="section__text">
+    {!! $category->long_description_bottom !!}
+   </p>
   </section>
  @endif
+
  <!---------------------------Filters------------------------->
- <div class="filter @if ($showspecfilter) active @endif" id="filterList">
+ <div class="filter" id="filterList" wire:ignore>
   <div class="filter__content" id="filterContent">
    <div class="filter__top">
-    <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
+    <button class="filter__apply" id="resetFilter" wire:click.prevent="clearall">
      @if (app()->has('label_remove_all_filters'))
       {!! app('label_remove_all_filters') !!}
      @endif
@@ -319,46 +391,67 @@
       <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
      </svg>
     </button>
-    <button class="filter__reset" wire:click="$set('showspecfilter', false)" id="filterClose" href="#">
+    <button class="filter__reset" id="filterClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
-   <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
+   <button class="filter__top filter__top--button" id="closeFilter">
     @if (app()->has('label_display_filters_results'))
      {!! app('label_display_filters_results') !!}
-    @endif <span>{{ $products->total() }}</span>
+    @endif
+    <span>{{ $products->total() }}</span>
    </button>
-   <div wire:ignore class="filter__list">
-    @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
+   <div class="filter__list">
+    @foreach ($filtervalues as $values)
      <div class="dropfilter">
       <div class="dropfilter__button">
-       <button class="dropfilter__open" href="#">
-        <h4>{{ $values->first()->spec->name }}</h4>
+       <button class="dropfilter__open">
+        <h4>{{ $values['spec'] }}</h4>
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
        </button>
       </div>
       <div class="dropfilter__list">
-       @foreach ($values->sortBy('sequence') as $value)
+       @foreach ($values['values'] as $value => $productData)
         @php
-         $key = str_replace('.', '_', $value->value);
+         $productsString = collect($productData['product_data'])
+             ->map(function ($product) {
+                 if (isset($product['parent_id'])) {
+                     return implode('|', [$product['product_id'], $product['parent_id']]);
+                 } else {
+                     return implode([$product['product_id']]);
+                 }
+             })
+             ->implode(',');
+         $sanitizedValue = str_replace('.', ',', $value);
         @endphp
-        <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
-         <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
-          wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
-         <h4>{{ $value->value }}</h4>
+        <label class="dropfilter__link" for="{{ $sanitizedValue }}">
+         <input type="checkbox"
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $sanitizedValue }}.{{ $productsString }}"
+          wire:change="applyFilter" id="{{ $sanitizedValue }}">
+         <h4>{{ $value }}</h4>
         </label>
        @endforeach
       </div>
      </div>
     @endforeach
+
+
    </div>
   </div>
-  <button class="filter__close-modal" wire:click="$set('showspecfilter', false)"></button>
+  <button id="filterClose" class="filter__close-modal"></button>
+  <script>
+   document.addEventListener('livewire:load', function() {
+    Livewire.on('filtersApplied', function(selectedCount, totalCount) {
+     const filterButton = document.querySelector('.filter__top--button span');
+     filterButton.textContent = selectedCount > 0 ? selectedCount : totalCount;
+    });
+   });
+  </script>
  </div>
  <!-------------------------Sorting----------------------->
  <div class="filter" id="sortList">
@@ -369,13 +462,14 @@
       {!! app('label_sort_title') !!}
      @endif
     </div>
-    <button class="filter__reset" id="sortClose" href="#">
+    <button class="filter__reset" id="sortClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
+   {{-- orderby --}}
    <div class="filter__list">
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"
@@ -470,6 +564,89 @@
    </div>
   </div>
  </div>
+ <!---------------------- Support Center -------------------->
+ <x-support />
+ <script>
+  document.addEventListener("livewire:load", function() {
+   injectJsonLd();
+   Livewire.hook('message.processed', (message, component) => {
+    injectJsonLd();
+   });
 
+   function injectJsonLd() {
+    let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    existingScripts.forEach(script => script.remove());
+
+    let jsonLdElements = document.querySelectorAll('.json-ld-data');
+    jsonLdElements.forEach(element => {
+     let productData = element.dataset.productJson;
+     let product = JSON.parse(productData);
+
+     let currencyElement = document.querySelector('.dlv_currency');
+     let price = (product.product_prices && product.product_prices.length > 0) ?
+      `${product.product_prices[0].value}` : `0`;
+     let ratingValue = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].value}` : `0`;
+     let reviewCount = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].count}` : `0`;
+     let currency = currencyElement.textContent.trim();
+     let media = (product.media && product.media.length > 0) ?
+      `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
+      `${window.location.origin}/images/store/default/default300.webp`;
+     if (price != '0' || (ratingValue != '0') && (reviewCount != 0)) {
+      let jsonLd = {
+       "@context": "https://schema.org/",
+       "@type": "Product",
+       "name": product.name,
+       "image": media,
+       "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
+       "brand": {
+        "@type": "Brand",
+        "name": product.brand
+       },
+       "sku": product.sku,
+       "offers": {
+        "@type": "Offer",
+        "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
+        "priceCurrency": currency,
+        "price": price,
+        "availability": `https://schema.org/InStock`,
+        "priceValidUntil": product.end_date,
+        "hasMerchantReturnPolicy": {
+         "value": true
+        },
+        "shippingDetails": {
+         "type": "FreeShipping",
+         "price": "0"
+        },
+        "aggregateRating": {
+         "@type": "AggregateRating",
+         "ratingValue": ratingValue,
+         "reviewCount": reviewCount
+        },
+        "review": {
+         "@type": "Review",
+         "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": ratingValue,
+          "bestRating": 5
+         },
+         "author": {
+          "@type": "Person",
+          "name": "anonim"
+         }
+        },
+       }
+      };
+
+      let script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(jsonLd);
+      document.head.appendChild(script);
+     }
+    });
+   }
+  });
+ </script>
  <script src="/script/store/catalog.js" defer></script>
 </div>

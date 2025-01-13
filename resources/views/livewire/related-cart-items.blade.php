@@ -31,7 +31,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelatedprod) button--secondary active @endif"
    wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-   {{ __('Cart Items ') }}({{ $cart->carts->count() }})
+   {{ __('Cart Items ') }}({{ $cart->cartitems->count() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -152,6 +152,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('VAT'))
+      <th class="hidden">
+       <button class="table--btn">
+        VAT
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created At'))
       <th class="hidden">
        <button wire:click="sortBy('created_at')" class="table--btn @if ($productBy === $column && $productAsc === '1') active @endif">
@@ -208,6 +218,11 @@
          {{ $product->quantity }}
         </td>
        @endif
+       @if ($this->showColumn('VAT'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $product->vat }}
+        </td>
+       @endif
        @if ($this->showColumn('Created At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
          {{ $product->created_at }}
@@ -226,18 +241,6 @@
       <tr class="details-row  @if ($row === $i) active @endif">
        <td colspan="{{ count($columns) + 2 }}">
         <div class="details">
-         @if ($this->showColumn('Id'))
-          <p>
-           <bold>Id</bold>
-           {{ $product->id }}
-          </p>
-         @endif
-         @if ($this->showColumn('Product'))
-          <p>
-           <bold>Product</bold>
-           <a href="{{ route('show_product', ['id' => $product->product->id]) }}">{{ $product->product->name }}</a>
-          </p>
-         @endif
          @if ($this->showColumn('Price'))
           <p>
            <bold>Price</bold>
@@ -248,6 +251,12 @@
           <p>
            <bold>Quantity</bold>
            {{ $product->quantity }}
+          </p>
+         @endif
+         @if ($this->showColumn('VAT'))
+          <p>
+           <bold>VAT</bold>
+           {{ $product->vat }}
           </p>
          @endif
          @if ($this->showColumn('Created At'))

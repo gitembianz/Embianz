@@ -340,11 +340,11 @@
 
 @mixin checkbox-styles($size, $uncheckedColor, $checkedColor, $checkmarkColor) {
   // Calculate dimensions for the pseudo-element based on the size
-  $checkmark-width: $size / 4.4;
-  $checkmark-height: $size / 2.44;
-  $checkmark-left: $size / 2.75;
-  $checkmark-top: $size / 4.4;
-  $checkmark-border-width: $size / 11;
+  $checkmark-width: calc($size / 4.4);
+  $checkmark-height: calc($size / 2.44);
+  $checkmark-left: calc($size / 2.75);
+  $checkmark-top: calc($size / 4.4);
+  $checkmark-border-width: calc($size / 11);
 
   display: table;
   cursor: pointer;

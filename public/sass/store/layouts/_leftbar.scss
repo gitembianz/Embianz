@@ -44,10 +44,11 @@
       transform: translateX(0%);
     }
   }
-  &.problem{
-   &> .leftbar__problem{
-    transform: translateX(0%);
-   }
+
+  &.problem {
+    &>.leftbar__problem {
+      transform: translateX(0%);
+    }
   }
 }
 
@@ -201,19 +202,19 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  background-color: transparent;
+  background-color: $lightBlack;
 
   &:hover {
-    background: $lightBlack;
-    color: $background;
+    background: $primary;
+    color: $lightBlack;
 
     &>svg {
-      stroke: $background;
+      stroke: $lightBlack;
     }
   }
 
   &>svg {
-    stroke: $lightBlack;
+    stroke: $primary;
   }
 }
 
@@ -222,7 +223,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 15px;
+  gap: 5px;
 }
 
 .leftbar__button {
@@ -236,15 +237,14 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: $lightWeight;
-  background-color: transparent;
-  color: $lightBlack;
+  font-weight: 500;
+  background-color: $ctadark;
+  color: $primary;
   flex: 1;
   font-size: $textSize;
 
   &:hover {
-    background: $lightBlack;
-    color: $background;
+    background: lighten($ctadark, 10%);
 
     &>svg {
       stroke: $background;
@@ -264,6 +264,7 @@
 #basketList .leftbar__list {
   height: unset;
 }
+
 .leftbar__list {
   list-style: none;
   display: flex;
@@ -315,7 +316,7 @@
 
 .leftbar__item {
   width: 100%;
-  min-height: 70px;
+  //min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -328,12 +329,8 @@
   gap: 5px;
   // margin-bottom: 20px;
 
-  &:hover {
-    background: $secondary;
-  }
-
   &:not(:last-child) {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 
     &::after {
       content: "";
@@ -347,20 +344,22 @@
   }
 
   // Deleting animation
-  &.deleting{
+  &.deleting {
     animation: deleting 0.5s ease-in-out forwards;
   }
 
-  @keyframes deleting{
-    0%{
+  @keyframes deleting {
+    0% {
       opacity: 1;
       transform: translateX(0%) scale(1);
     }
-    80%{
+
+    80% {
       opacity: 0;
       transform: translateX(105%) scale(0);
     }
-    100%{
+
+    100% {
       min-height: 0;
       height: 0;
       padding: 0;
@@ -450,7 +449,7 @@
     font-size: $textSize;
     color: $lightBlack;
     font-weight: $lightWeight;
-    text-transform: uppercase;
+    //text-transform: uppercase;
   }
 }
 
@@ -481,12 +480,13 @@
 
 .leftbar__total {
   width: 100%;
-  min-height: 220px;
+  //min-height: 220px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
   padding-top: 15px;
+  padding-bottom: 15px;
   gap: 10px;
   border-top: 1px solid $lightBlack;
 }
@@ -550,4 +550,53 @@
   // transform: translateX(-150%);
   // opacity: 0;
   animation: delete 2.5s ease-in-out forwards;
+}
+
+/* Spinner Container */
+.wire-loading-container {
+  position: absolute;
+  /* Position relative to parent */
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Full width of the parent */
+  height: 100%;
+  /* Full height of the parent */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Dark, semi-transparent background */
+  z-index: 9999;
+  /* Ensure it appears above other content */
+}
+
+/* Spinner */
+.spinner {
+  position: absolute;
+  /* Position relative to parent container */
+  top: 50%;
+  /* Move to the vertical center */
+  left: 50%;
+  /* Move to the horizontal center */
+  transform: translate(-50%, -50%);
+  /* Adjust for element's own dimensions */
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  /* Light border */
+  border-top-color: #ffffff;
+  /* White color for animation */
+  border-radius: 50%;
+  /* Makes it circular */
+  animation: spin 1s linear infinite;
+  /* Spin animation */
+}
+
+/* Keyframes for spin */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

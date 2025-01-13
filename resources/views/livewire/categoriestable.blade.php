@@ -305,7 +305,12 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parent')
+         @elseif (
+             $column === 'active' ||
+                 $column === 'display_variant_price' ||
+                 $column === 'store_tab' ||
+                 $column === 'has_parent' ||
+                 $column === 'preload_image')
           @if ($category->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled2" disabled checked>
@@ -317,23 +322,13 @@
             <label for="disabled2"></label>
            </div>
           @endif
-         @elseif ($column === 'long_description')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'short_description')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'seo_id')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'seo_title')
-          <span class="show-less">
-           {!! $category->$column !!}
-          </span>
-         @elseif ($column === 'meta_description')
+         @elseif (
+             $column === 'long_description' ||
+                 $column === 'short_description' ||
+                 $column === 'seo_id' ||
+                 $column === 'seo_title' ||
+                 $column === 'meta_description' ||
+                 $column === 'long_description_bottom')
           <span class="show-less">
            {!! $category->$column !!}
           </span>
@@ -362,7 +357,12 @@
              <bold>{{ $column }}:</bold>
              <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ $category->name }}</a>
             </p>
-           @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parent')
+           @elseif (
+               $column === 'active' ||
+                   $column === 'display_variant_price' ||
+                   $column === 'store_tab' ||
+                   $column === 'has_parent' ||
+                   $column === 'preload_image')
             @if ($category->$column)
              <p>
               <bold>{{ $column }}:</bold>

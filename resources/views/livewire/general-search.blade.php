@@ -8,8 +8,8 @@
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
        </svg>
       </button>
-      <input id="searchInput" name="search" wire:model="search" maxlength="100" type="text" autocomplete="off"
-       placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+      <input id="searchInput" name="search" wire:model.live.debounce.500ms="search" maxlength="100" type="text"
+       autocomplete="off" placeholder="@if (app()->has('label_breadcrumbs_search')) {!! app('label_breadcrumbs_search') !!} @endif">
      </div>
      <button class="search__close" type="button" id="searchClose" wire:click.prevent="close"
       aria-label="close search component">
@@ -41,10 +41,10 @@
          <li class="search__item">
           <a class="search__link"
            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-           @if ($product->media->first() != null)
-            <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager"
-             src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-             alt="{{ $product->media->first()->name }} {{ $product->name }}">
+           @if ($product->media->where('type', 'min')->first() != null)
+            <img title="{{ $product->name }}" loading="eager"
+             src="/{{ $product->media->where('type', 'min')->first()->path }}{{ $product->media->where('type', 'min')->first()->name }}"
+             alt="{{ $product->name }}">
            @endif
 
            <div class="search__link--text">

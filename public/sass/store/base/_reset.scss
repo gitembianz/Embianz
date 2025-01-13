@@ -67,6 +67,10 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+button{
+  font-family: "Montserrat", sans-serif;
+}
+
 .favorite__btn {
   display: flex;
   align-items: center;
@@ -145,7 +149,7 @@ label {
 }
 
 main {
-  padding-bottom: 30px;
+  //padding-bottom: 30px;
   min-height: 80vh;
 }
 

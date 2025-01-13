@@ -282,7 +282,7 @@
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $cart->id }}" id="{{ $cart->id }}" wire:model="checked">
-         <label for="{{ $cart->id }}""></label>
+         <label for="{{ $cart->id }}"></label>
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
@@ -290,6 +290,8 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_cart', ['id' => $cart->id]) }}">{{ $cart->name }}</a>
+         @elseif($column === 'session_id')
+          <a href="{{ route('show_session', ['id' => $cart->session_id]) }}">{{ $cart->$column }}</a>
          @elseif ($column === 'currency_id')
           {{ $cart->currency->name }}
          @elseif ($column === 'status_id')
@@ -312,7 +314,7 @@
           @endif
          @elseif ($column === 'order_id')
           @if ($cart->order_id)
-           <a href="{{ route('show_order', ['id' => $cart->order_id]) }}">{{ $cart->order->name }}</a>
+           <a href="{{ route('show_order', ['id' => $cart->order_id]) }}">{{ optional($cart->order)->name }}</a>
           @endif
          @else
           {{ $cart->$column }}

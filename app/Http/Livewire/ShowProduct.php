@@ -10,9 +10,12 @@ use App\Models\Product_Spec;
 use App\Models\Related_Products;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+use App\Models\ProductReviews as ModelsProductReviews;
 
 
 class ShowProduct extends Component
@@ -21,10 +24,12 @@ class ShowProduct extends Component
   public $editproduct = null;
   public $delete = false;
   public $prod;
+  public $interimQuantity;
 
   public function mount($productId)
   {
     $this->productId = $productId;
+    $this->calculateInterimQuantity();
   }
   public function confirmProductRemoval($id)
   {
@@ -34,7 +39,7 @@ class ShowProduct extends Component
   }
   public function cancelItemRemoval()
   {
-      $this->delete = false;
+    $this->delete = false;
   }
   public function editproduct()
   {
@@ -42,6 +47,7 @@ class ShowProduct extends Component
       'product_name' => $this->product->name,
       'active' => $this->product->active == 1 ? true : false,
       'is_new' => $this->product->is_new == 1 ? true : false,
+      'low_stock' => $this->product->low_stock == 1 ? true : false,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,
@@ -53,7 +59,9 @@ class ShowProduct extends Component
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
       'seo_id' => $this->product->seo_id,
-      'type' => $this->product->type
+      'type' => $this->product->type,
+      'brand' => $this->product->brand,
+      'comments' => $this->product->comments
 
     ];
     $this->editproduct = true;
@@ -62,6 +70,17 @@ class ShowProduct extends Component
   public function getProductProperty()
   {
     return Product::find($this->productId);
+  }
+  public function calculateInterimQuantity()
+  {
+    $this->interimQuantity = Product::query()
+      ->leftJoin('order__items as oi', 'products.id', '=', 'oi.product_id')
+      ->leftJoin('orders as o', 'oi.order_id', '=', 'o.id')
+      ->where('products.id', $this->productId)
+      ->where('o.status_id', 31)
+      ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
+      ->groupBy('products.id', 'products.quantity')
+      ->value('interim_quantity') ?? $this->product->quantity;
   }
   private function generateUniqueSeoId($name)
   {
@@ -95,6 +114,9 @@ class ShowProduct extends Component
       if (array_key_exists('type', $product_new)) {
         $new->type = $product_new['type'];
       }
+      if (array_key_exists('brand', $product_new)) {
+        $new->brand = $product_new['brand'];
+      }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];
       }
@@ -103,6 +125,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('is_new', $product_new)) {
         $new->is_new = $product_new['is_new'];
+      }
+      if (array_key_exists('low_stock', $product_new)) {
+        $new->low_stock = $product_new['low_stock'];
       }
       if (array_key_exists('end_date', $product_new)) {
         $new->end_date = $product_new['end_date'];
@@ -113,11 +138,29 @@ class ShowProduct extends Component
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];
       }
+      if (array_key_exists('comments', $product_new)) {
+        $new->comments = $product_new['comments'];
+      }
       if (array_key_exists('meta_description', $product_new)) {
         $new->meta_description = $product_new['meta_description'];
       }
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
+        Cache::forget('max_popularity');
+        if (!$new->reviews->first()) {
+          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
+
+          ModelsProductReviews::create([
+            'product_id' => $new->id,
+            'count' => 1,
+            'value' => $value
+          ]);
+        } else {
+          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
+          ModelsProductReviews::where('product_id', $new->id)->update([
+            'value' => $value,
+          ]);
+        }
       }
       if (array_key_exists('long_description', $product_new)) {
         $new->long_description = $product_new['long_description'];
@@ -193,6 +236,9 @@ class ShowProduct extends Component
         $this->emit('wishlistUpdated');
       }
     }
+
+    ModelsProductReviews::where('product_id', $id)->delete();
+
     $productpricelists = PricelistEntries::where('product_id', $id)->get();
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {
@@ -207,6 +253,17 @@ class ShowProduct extends Component
     $filespath = 'media/' . $productType . '/' . $product->id;
     if (File::exists($filespath)) {
       File::deleteDirectory($filespath);
+    }
+
+
+    if ($product->type == 'parent') {
+      $variants = ProductVariant::where('parent_id', $id)->get();
+      if ($variants != NULL) {
+        foreach ($variants as $variant) {
+          $variant->delete();
+        }
+        $parentids = Product::where('parent_id', $id)->update(['parent_id' => NULL]);
+      }
     }
     $product->delete();
     $this->delete = false;

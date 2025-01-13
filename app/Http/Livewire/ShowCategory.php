@@ -47,10 +47,13 @@ class ShowCategory extends Component
       'short_description' => $this->category->short_description,
       'meta_description' => $this->category->meta_description,
       'long_description' => $this->category->long_description,
+      'long_description_bottom' => $this->category->long_description_bottom,
       'seo_title' => $this->category->seo_title,
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
-      'acc_items' => $this->category->accepted_items
+      'acc_items' => $this->category->accepted_items,
+      'preload' => $this->category->preload_image,
+      'varprice' => $this->category->display_variant_price
 
     ];
     $this->editcategory = true;
@@ -100,6 +103,12 @@ class ShowCategory extends Component
       if (array_key_exists('active', $category_new)) {
         $new->active = $category_new['active'];
       }
+      if (array_key_exists('preload', $category_new)) {
+        $new->preload_image = $category_new['preload'];
+      }
+      if (array_key_exists('varprice', $category_new)) {
+        $new->display_variant_price = $category_new['varprice'];
+      }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
       }
@@ -117,6 +126,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('long_description', $category_new)) {
         $new->long_description = $category_new['long_description'];
+      }
+      if (array_key_exists('long_description_bottom', $category_new)) {
+        $new->long_description_bottom = $category_new['long_description_bottom'];
       }
       if (array_key_exists('seo_title', $category_new)) {
         $new->seo_title = $category_new['seo_title'];
@@ -136,11 +148,11 @@ class ShowCategory extends Component
   }
   public function confirmItemRemoval()
   {
-      $this->delete = true;
+    $this->delete = true;
   }
   public function cancelItemRemoval()
   {
-      $this->delete = false;
+    $this->delete = false;
   }
   public function deleteRecord()
   {
