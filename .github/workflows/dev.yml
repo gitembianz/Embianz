@@ -11,7 +11,12 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-
-        server: dev.dormisoft.md
-        username: gituser@dev.dormisoft.md
-        password: ${{ secrets.devftpds}}
+        server: ftp.eztemcorp.com
+        username: gituser@dev.embianz.com
+        password: ${{ secrets.devftp}}
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor*/**
+          .env
