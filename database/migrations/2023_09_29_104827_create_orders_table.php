@@ -33,6 +33,7 @@ return new class extends Migration
         $table->unsignedBigInteger('voucher_id')->index()->nullable();
         $table->foreign('voucher_id')->references('id')->on('vouchers');
         $table->decimal('voucher_value', 10, 2)->default(0);
+        $table->decimal('promotion_value', 10, 2)->default(0)->after('voucher_value');
         $table->date('invoice_date')->nullable();
         $table->string('invoice_series')->nullable();
         $table->string('external_invoice_number')->nullable();
