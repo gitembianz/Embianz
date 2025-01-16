@@ -21,9 +21,9 @@ return new class extends Migration
                 $table->foreign('product_id')->references('id')->on('products');
                 $table->unsignedBigInteger('category_id')->index();
                 $table->foreign('category_id')->references('id')->on('categories');
-                $table->boolean('primary_category')->nullable()->default(
-                    false
-                );
+                $table->boolean('primary_category')->nullable()->default(false);
+                $table->string('created_by')->nullable();
+                $table->string('last_modified_by')->nullable();
                 $table->timestamps();
             });
         }

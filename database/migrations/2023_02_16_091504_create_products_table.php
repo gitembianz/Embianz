@@ -28,14 +28,14 @@ return new class extends Migration
         $table->string('ean')->nullable()->unique();
         $table->boolean('active');
         $table->boolean('is_new')->nullable()->default(false);
-        $table->integer('popularity')->nullable();
+        $table->boolean('low_stock')->nullable()->default(false);
         $table->longText('comments')->nullable();
         $table->longText('long_description')->nullable();
         $table->string('short_description')->nullable();
         $table->string('meta_description')->nullable();
+        $table->integer('popularity')->nullable();
         $table->integer('quantity')->nullable();
         $table->integer('quantity_supplier_ordered')->nullable()->default(0);
-        $table->boolean('low_stock')->nullable()->default(false);
         $table->date('start_date')->nullable();
         $table->date('end_date')->nullable();
         $table->string('seo_title')->nullable();
