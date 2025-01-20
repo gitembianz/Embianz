@@ -85,12 +85,15 @@ class AddToCartButton extends Component
 
         if (!$cart) {
             $baseName = class_basename(Cart::class);
-            $cartNumber = 1;
-            $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-            while (Cart::where('name', $uniqueName)->exists()) {
-                $cartNumber++;
-                $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-            }
+
+            // Get the last cart name and calculate the next cart number
+            $lastCart = Cart::latest('id')->first();
+            $cartNumber = $lastCart ? ((int)str_replace("{$baseName}_", '', $lastCart->name) + 1) : 1;
+
+            // Generate the unique name
+            $uniqueName = "{$baseName}_" . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
+
+            // Create the cart
             $cart = Cart::create([
                 'session_id' => $this->session_id,
                 'name' => $uniqueName,

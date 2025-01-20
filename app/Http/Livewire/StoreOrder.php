@@ -936,12 +936,13 @@ class StoreOrder extends Component
       }
 
       $baseName = class_basename(Order::class);
-      $cartNumber = 1;
-      $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      while (Order::where('name', $uniqueName)->exists()) {
-        $cartNumber++;
-        $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      }
+
+      // Get the last order name and calculate the next order number
+      $lastOrder = Order::latest('id')->first();
+      $orderNumber = $lastOrder ? ((int)str_replace("{$baseName}_", '', $lastOrder->name) + 1) : 1;
+
+      // Generate the unique name
+      $uniqueName = "{$baseName}_" . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
       if ($this->payment['type'] != 'card') {
 
         $order = Order::create([
