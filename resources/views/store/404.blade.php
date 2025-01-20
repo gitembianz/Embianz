@@ -9,7 +9,7 @@
 		<h3>
 			Veți fi redirecționat la pagina principală în 5 secunde...
 		</h3>
-    <a href="{{ url("/") }}">Întoarcete la pagina principală</a>
+    <a href="{{ url("/") }}">Întoarce-te la pagina principală</a>
   </div>
   <script>
 		setTimeout(function() {
