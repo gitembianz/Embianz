@@ -97,13 +97,9 @@ class RelatedOrderSupplier extends Component
 
             if (!is_null($newQuantityReceived)) {
                 $product->quantity += ($newQuantityReceived - $orderItem->getOriginal('quantity_received'));
-                $product->quantity_supplier_ordered -= ($newQuantityReceived - $orderItem->getOriginal('quantity_received'));
             }
 
-            if (!is_null($newQuantity)) {
-                $difference = $newQuantity - $orderItem->getOriginal('quantity');
-                $product->quantity_supplier_ordered += $difference;
-            }
+
 
             $product->save();
         }
@@ -132,8 +128,6 @@ class RelatedOrderSupplier extends Component
                     'created_by' => Auth::user()->name,
                     'last_modified_by' => Auth::user()->name
                 ]);
-                $orderitem->product->quantity_supplier_ordered += $orderitem->quantity;
-                $orderitem->product->save();
                 unset($this->productsAndValues[$index]);
 
                 $this->productsAndValues = array_values($this->productsAndValues);

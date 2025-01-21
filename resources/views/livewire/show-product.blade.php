@@ -196,6 +196,16 @@
 
    </div>
   </div>
+  @if (isset($product->supplier_name))
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->supplier_name }}</span>
+    @else
+     <input type="text" name="supplier_name" wire:model.defer="prod.supplier_name" required>
+    @endif
+    <label for="supplier_name">Supplier name</label>
+   </div>
+  @endif
   <div class="details__checkboxes">
 
    {{-- Product Popularity --}}
