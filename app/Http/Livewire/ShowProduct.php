@@ -25,11 +25,13 @@ class ShowProduct extends Component
   public $delete = false;
   public $prod;
   public $interimQuantity;
+  public $quantitysupplier;
 
   public function mount($productId)
   {
     $this->productId = $productId;
     $this->calculateInterimQuantity();
+    $this->calculatequantitysupplier();
   }
   public function confirmProductRemoval($id)
   {
@@ -84,6 +86,17 @@ class ShowProduct extends Component
       ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
       ->groupBy('products.id', 'products.quantity')
       ->value('interim_quantity') ?? $this->product->quantity;
+  }
+  public function calculateQuantitySupplier()
+  {
+    $this->quantitysupplier = Product::query()
+      ->leftJoin('order__supplier__items as os', 'products.id', '=', 'os.product_id')
+      ->leftJoin('order__suppliers as o_s', 'os.order__supplier_id', '=', 'o_s.id')
+      ->where('products.id', $this->productId)
+      ->where('o_s.status', '!=', 'closed') // Adjust the status check as needed
+      ->selectRaw('COALESCE(SUM(os.quantity), 0) as quantity_supplier')
+      ->groupBy('products.id')
+      ->value('quantity_supplier') ?? 0;
   }
   private function generateUniqueSeoId($name)
   {
