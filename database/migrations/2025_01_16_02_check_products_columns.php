@@ -115,6 +115,12 @@ return new class extends Migration
                 $table->integer('quantity')->nullable()->after('popularity');
             });
         }
+        if (!Schema::hasColumn('products', 'low_stock_quantity')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->integer('low_stock_quantity')->nullable()->after('quantity');
+            });
+        }
         if (!Schema::hasColumn('products', 'quantity_supplier_ordered')) {
 
             Schema::table('products', function (Blueprint $table) {
