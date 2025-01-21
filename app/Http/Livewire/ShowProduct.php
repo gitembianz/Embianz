@@ -63,7 +63,7 @@ class ShowProduct extends Component
       'brand' => $this->product->brand,
       'comments' => $this->product->comments,
       'supplier_name' => $this->product->supplier_name,
-      'quantity_supplier_ordered' => $this->product->quantity_supplier_ordered
+      'low_stock_quantity' => $this->product->low_stock_quantity,
 
 
     ];
@@ -140,6 +140,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('quantity', $product_new)) {
         $new->quantity = $product_new['quantity'];
+      }
+      if (array_key_exists('low_stock_quantity', $product_new)) {
+        $new->low_stock_quantity = $product_new['low_stock_quantity'];
       }
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];

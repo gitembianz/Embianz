@@ -196,16 +196,24 @@
 
    </div>
   </div>
-  @if (isset($product->supplier_name))
-   <div class="input__tabs">
-    @if ($editproduct === null)
-     <span class="disabled">{{ $product->supplier_name }}</span>
-    @else
-     <input type="text" name="supplier_name" wire:model.defer="prod.supplier_name" required>
-    @endif
-    <label for="supplier_name">Supplier name</label>
-   </div>
-  @endif
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->supplier_name }}</span>
+   @else
+    <input type="text" name="supplier_name" wire:model.defer="prod.supplier_name" required>
+   @endif
+   <label for="supplier_name">Supplier name</label>
+  </div>
+
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->low_stock_quantity }}</span>
+   @else
+    <input type="number" name="low_stock_quantity" wire:model.defer="prod.low_stock_quantity" required>
+   @endif
+   <label for="low_stock_quantity">Low Stock Quantity</label>
+  </div>
+
   <div class="details__checkboxes">
 
    {{-- Product Popularity --}}
