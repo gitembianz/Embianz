@@ -402,6 +402,10 @@
           <span>
            {{ $product->quantity + $product->$column }}
           </span>
+         @elseif($column === 'quantity_supplier_ordered')
+          <span>
+           {{ $product->quantity_ordered }}
+          </span>
          @elseif($column === 'long_description')
           <span class="show-less">
            {!! $product->$column !!}

@@ -115,6 +115,12 @@ return new class extends Migration
                 $table->integer('quantity')->nullable()->after('popularity');
             });
         }
+        if (!Schema::hasColumn('products', 'low_stock_quantity')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->integer('low_stock_quantity')->nullable()->after('quantity');
+            });
+        }
         if (!Schema::hasColumn('products', 'quantity_supplier_ordered')) {
 
             Schema::table('products', function (Blueprint $table) {
@@ -155,6 +161,12 @@ return new class extends Migration
 
             Schema::table('products', function (Blueprint $table) {
                 $table->string('last_modified_by')->nullable()->after('created_by')->default('administrator');
+            });
+        }
+        if (!Schema::hasColumn('products', 'supplier_name')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->string('supplier_name')->nullable()->after('quantity_supplier_ordered');
             });
         }
     }
