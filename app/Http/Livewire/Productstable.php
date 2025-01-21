@@ -337,12 +337,18 @@ class Productstable extends Component
       ->withCount([
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', 31);
+            $q->where('status_id', 31); // Add status condition for orders
           })->select(DB::raw('SUM(quantity)'));
-        }
+        },
+        'order_suppliers as quantity_ordered' => function ($query) {
+          $query->whereHas('order', function ($q) {
+            $q->where('status', '!=', 'closed'); // Ensure status on parent is not closed
+          })->select(DB::raw('SUM(quantity)'));
+        },
       ])
       ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
   }
+
 
   public function loadMore()
   {

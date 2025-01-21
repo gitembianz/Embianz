@@ -61,7 +61,10 @@ class ShowProduct extends Component
       'seo_id' => $this->product->seo_id,
       'type' => $this->product->type,
       'brand' => $this->product->brand,
-      'comments' => $this->product->comments
+      'comments' => $this->product->comments,
+      'supplier_name' => $this->product->supplier_name,
+      'quantity_supplier_ordered' => $this->product->quantity_supplier_ordered
+
 
     ];
     $this->editproduct = true;
@@ -103,6 +106,9 @@ class ShowProduct extends Component
       $new = Product::find($this->productId);
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
+      }
+      if (array_key_exists('supplier_name', $product_new)) {
+        $new->supplier_name = $product_new['supplier_name'];
       }
       if (array_key_exists('seo_id', $product_new)) {
         if ($product_new['seo_id'] == "") {

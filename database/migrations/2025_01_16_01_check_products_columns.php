@@ -160,7 +160,7 @@ return new class extends Migration
         if (!Schema::hasColumn('products', 'supplier_name')) {
 
             Schema::table('products', function (Blueprint $table) {
-                $table->string('supplier_name')->nullable()->after('name');
+                $table->string('supplier_name')->nullable()->after('quantity_supplier_ordered');
             });
         }
     }
