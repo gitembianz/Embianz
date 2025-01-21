@@ -157,6 +157,12 @@ return new class extends Migration
                 $table->string('last_modified_by')->nullable()->after('created_by')->default('administrator');
             });
         }
+        if (!Schema::hasColumn('products', 'supplier_name')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->string('supplier_name')->nullable()->after('name');
+            });
+        }
     }
 
     /**

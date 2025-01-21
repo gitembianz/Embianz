@@ -36,6 +36,7 @@ return new class extends Migration
         $table->integer('popularity')->nullable();
         $table->integer('quantity')->nullable();
         $table->integer('quantity_supplier_ordered')->nullable()->default(0);
+        $table->string('supplier_name')->nullable();
         $table->date('start_date')->nullable();
         $table->date('end_date')->nullable();
         $table->string('seo_title')->nullable();
