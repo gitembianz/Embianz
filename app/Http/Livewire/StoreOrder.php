@@ -594,7 +594,7 @@ class StoreOrder extends Component
           $this->individual_billing_address1 = $account->addresses->where('type', 'billing')->first()->address1;
           $this->individual_billing_address2 = $account->addresses->where('type', 'billing')->first()->address2;
           $this->individual_billing_country = $account->addresses->where('type', 'billing')->first()->country;
-          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county;
+
           $this->individual_billing_city = $account->addresses->where('type', 'billing')->first()->city;
           $this->individual_billing_zipcode = $account->addresses->where('type', 'billing')->first()->zipcode;
           $this->individual_shipping_first = $account->addresses->where('type', 'shipping')->first()->first_name;
@@ -604,9 +604,12 @@ class StoreOrder extends Component
           $this->individual_shipping_address1 = $account->addresses->where('type', 'shipping')->first()->address1;
           $this->individual_shipping_address2 = $account->addresses->where('type', 'shipping')->first()->address2;
           $this->individual_shipping_country = $account->addresses->where('type', 'shipping')->first()->country;
-          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
+
+
           $this->individual_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->individual_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
+          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
+          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
         } else {
           $this->juridic = true;
           $this->individual = false;
@@ -623,7 +626,6 @@ class StoreOrder extends Component
           $this->juridic_billing_address1 = $account->addresses->where('type', 'billing')->first()->address1;
           $this->juridic_billing_address2 = $account->addresses->where('type', 'billing')->first()->address2;
           $this->juridic_billing_country = $account->addresses->where('type', 'billing')->first()->country;
-          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county;
           $this->juridic_billing_city = $account->addresses->where('type', 'billing')->first()->city;
           $this->juridic_billing_zipcode = $account->addresses->where('type', 'billing')->first()->zipcode;
           $this->juridic_shipping_first = $account->addresses->where('type', 'shipping')->first()->first_name;
@@ -633,9 +635,10 @@ class StoreOrder extends Component
           $this->juridic_shipping_address1 = $account->addresses->where('type', 'shipping')->first()->address1;
           $this->juridic_shipping_address2 = $account->addresses->where('type', 'shipping')->first()->address2;
           $this->juridic_shipping_country = $account->addresses->where('type', 'shipping')->first()->country;
-          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
           $this->juridic_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->juridic_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
+          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
+          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
         }
       }
     }
