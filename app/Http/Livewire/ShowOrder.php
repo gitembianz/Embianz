@@ -363,6 +363,11 @@ class ShowOrder extends Component
 
     public function generate_invoice_xml($valoare, $vat, $type)
     {
+        if ($type === 'invoice_xml') {
+            $date = $this->order->invoice_date;
+        } else {
+            $date = $this->order->storno_date;
+        }
         $invoiceData = [
             'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
             'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
@@ -383,8 +388,8 @@ class ShowOrder extends Component
             'ClientTelefon' => $this->order->account->phone,
             'ClientEmail' => $this->order->account->email,
             'FacturaNumar' => $this->order->invoice_series . ' - ' . $this->order->external_invoice_number,
-            'FacturaData' => $this->order->invoice_date,
-            'FacturaScadenta' =>  $this->order->invoice_date,
+            'FacturaData' => $date,
+            'FacturaScadenta' =>  $date,
             'FacturaMoneda' => $this->order->currency->name,
             'FacturaGreutate' => 0,
             'FacturaAccize' => 0,
