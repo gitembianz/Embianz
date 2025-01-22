@@ -365,9 +365,12 @@ class ShowOrder extends Component
     {
         if ($type === 'invoice_xml') {
             $date = $this->order->invoice_date;
+            $serie = $this->order->external_invoice_number;
         } else {
             $date = $this->order->storno_date;
+            $serie = $this->order->external_storno_number;
         }
+
         $invoiceData = [
             'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
             'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
@@ -377,17 +380,17 @@ class ShowOrder extends Component
             'FurnizorBanca' => '',
             'FurnizorIBAN' => '',
             'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ? app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel. 0757.527.656'),
-            'ClientNume' => strtoupper($this->order->account->name),
+            'ClientNume' => $this->order->account->name,
             'ClientInformatiiSuplimentare' => '',
             'ClientCIF' => '',
             'ClientNrRegCom' => '',
             'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
-            'ClientLocalitate' => strtoupper($this->order->account->addresses->where('type', 'billing')->first()->city),
+            'ClientLocalitate' => $this->order->account->addresses->where('type', 'billing')->first()->city,
             'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
-            'ClientAdresa' => strtoupper($this->order->account->addresses->where('type', 'billing')->first()->address1),
+            'ClientAdresa' => $this->order->account->addresses->where('type', 'billing')->first()->address1,
             'ClientTelefon' => $this->order->account->phone,
             'ClientEmail' => $this->order->account->email,
-            'FacturaNumar' => $this->order->invoice_series . ' - ' . $this->order->external_invoice_number,
+            'FacturaNumar' => $this->order->invoice_series . ' - ' . $serie,
             'FacturaData' => $date,
             'FacturaScadenta' =>  $date,
             'FacturaMoneda' => $this->order->currency->name,
@@ -415,7 +418,7 @@ class ShowOrder extends Component
 
                 $invoiceData['Detalii'][] = [
                     'LinieNrCrt' => $index + 1,
-                    'Descriere' => strtoupper($item->product->name),
+                    'Descriere' => $item->product->name,
                     'CodArticolFurnizor' => strtoupper($item->product->sku),
                     'CodArticolClient' => '',
                     'CodBare' => '',
@@ -430,7 +433,7 @@ class ShowOrder extends Component
             } else {
                 $invoiceData['Detalii'][] = [
                     'LinieNrCrt' => $index + 1,
-                    'Descriere' => strtoupper($item->product->name),
+                    'Descriere' => $item->product->name,
                     'CodArticolFurnizor' => strtoupper($item->product->sku),
                     'CodArticolClient' => '',
                     'CodBare' => '',
@@ -531,25 +534,26 @@ class ShowOrder extends Component
 
 
         // Generate XML structure
-        $xml = new \SimpleXMLElement('<Facturi/>');
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+<Facturi />');
         $factura = $xml->addChild('Factura');
         $antet = $factura->addChild('Antet');
         foreach ($invoiceData as $key => $value) {
             if (is_array($value)) continue; // Skip arrays for now
-            $antet->addChild($key, htmlspecialchars($value));
+            $antet->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
         $detalii = $factura->addChild('Detalii')->addChild('Continut');
         foreach ($invoiceData['Detalii'] as $detail) {
             $linie = $detalii->addChild('Linie');
             foreach ($detail as $key => $value) {
-                $linie->addChild($key, htmlspecialchars($value));
+                $linie->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
         }
 
         $sumar = $factura->addChild('Sumar');
         foreach ($invoiceData['Sumar'] as $key => $value) {
-            $sumar->addChild($key, htmlspecialchars(number_format($value, 2)));
+            $sumar->addChild($key, htmlspecialchars(number_format($value, 2), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
         $invoicePath = 'invoices/';
@@ -559,13 +563,17 @@ class ShowOrder extends Component
             File::makeDirectory($yearMonthPath, 0755, true);
         }
 
-        $xmlPath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".xml";
+
+        $xmlPath = $yearMonthPath . "/" . $this->order->invoice_series . $serie . "-" .
+            $this->order->order_number . ".xml";
         if (file_exists($xmlPath)) {
             $i = 1;
-            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".xml";
+            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $serie . "-" .
+                $this->order->order_number . "(" . $i . ")" . ".xml";
             while (file_exists($newpath)) {
                 $i++;
-                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".xml";
+                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $serie . "-" .
+                    $this->order->order_number . "(" . $i . ")" . ".xml";
             }
             $xmlPath = $newpath;
         }
@@ -573,7 +581,7 @@ class ShowOrder extends Component
         Invoice::create([
             'account_id' => $this->order->account_id,
             'order_id' => $this->order->id,
-            'date' => $this->order->invoice_date,
+            'date' => $date,
             'type' => $type,
             'path' => $xmlPath
         ]);
@@ -607,82 +615,96 @@ class ShowOrder extends Component
             File::makeDirectory($yearMonthPath, 0755, true);
         }
 
-        $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" . $this->order->order_number . ".pdf";
+        $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
+            $this->order->order_number . ".pdf";
         if (file_exists($filePath)) {
             $i = 1;
-            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
+                $this->order->order_number . "(" . $i . ")" . ".pdf";
             while (file_exists($newpath)) {
                 $i++;
-                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
+                    $this->order->order_number . "(" . $i . ")" . ".pdf";
             }
             $filePath = $newpath;
         }
         // generate PDF
         $htmlContent = "
-       <html>
-<head>
-  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+<html>
 
-     <style>
-    *{ font-family: DejaVu Sans !important;}
-  </style>
-      </head>
-      <body>
-        <table class='info'>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'>" . (app()->has('label_invoice_title') ? app('label_invoice_title') : 'Invoice') . "</td>
-            </tr>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
+<head>
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
+
+    <style>
+    * {
+        font-family: DejaVu Sans !important;
+    }
+    </style>
+</head>
+
+<body>
+    <table class='info'>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'>" . (app()->has('label_invoice_title') ? app('label_invoice_title') : 'Invoice') . "</td>
+        </tr>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
             (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_storno_number . "</td>
-            </tr>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'>" . (app()->has('label_invoice_date') ? app('label_invoice_date') : 'Date: ') . $this->order->storno_date . "</td>
-            </tr>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'></td>
-            </tr>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'></td>
-            </tr>
-            <tr>
-                <td class='ff'></td>
-                <td class='ff'></td>
-            </tr>
-            <tr>
-                <td class='infotd'>" . (app()->has('label_invoice_furnizor') ? app('label_invoice_furnizor') : 'Furnizor: ') . "</td>
-                <td class='infotd'>" . (app()->has('label_invoice_client') ? app('label_invoice_client') : 'Client: ') . "</td>
-            </tr>
-            <tr>
-                <td class='infotd'>" . (app()->has('global_invoice_furnizor') ? app('global_invoice_furnizor') : 'Ceva nu a mers bine, verifica setarile') . "</td>
-                <td class='infotd'>" . $this->order->account->name . "<br> " .
+        </tr>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'>" . (app()->has('label_invoice_date') ? app('label_invoice_date') : 'Date: ') .
+            $this->order->storno_date . "</td>
+        </tr>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'></td>
+        </tr>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'></td>
+        </tr>
+        <tr>
+            <td class='ff'></td>
+            <td class='ff'></td>
+        </tr>
+        <tr>
+            <td class='infotd'>" . (app()->has('label_invoice_furnizor') ? app('label_invoice_furnizor') : 'Furnizor: ')
+            . "</td>
+            <td class='infotd'>" . (app()->has('label_invoice_client') ? app('label_invoice_client') : 'Client: ') . "
+            </td>
+        </tr>
+        <tr>
+            <td class='infotd'>" . (app()->has('global_invoice_furnizor') ? app('global_invoice_furnizor') : 'Ceva nu a
+                mers bine, verifica setarile') . "</td>
+            <td class='infotd'>" . $this->order->account->name . "<br> " .
             $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
             $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
             $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
             $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
             $this->order->account->addresses->where('type', 'billing')->first()->zipcode . "</td>
-            </tr>
-         </table>
-        <br></br><br></br>
+        </tr>
+    </table>
+    <br></br><br></br>
 
     <table border='1' cellpadding='5' cellspacing='0' width='100%' style='margin-top: 20px;'>
         <thead>
             <tr>
                 <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
+                    Articol/Serviciu') . "</th>
                 <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
                 <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "
+                </th>
                 <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
                 <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') .
+            "</th>
                 <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
             </tr>
         </thead>
@@ -691,7 +713,7 @@ class ShowOrder extends Component
         $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
         $totalval = 0;
         $i = 0;
-        if ($voucherValue &&  $voucherValue != 0) {
+        if ($voucherValue && $voucherValue != 0) {
             $vatGroups = [];
             $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
         }
@@ -700,80 +722,93 @@ class ShowOrder extends Component
             $pu = $item->price / (1 + ($vatRate / 100));
             $totalval += $pu * $item->quantity;
 
-            if ($voucherValue &&  $voucherValue != 0) {
+            if ($voucherValue && $voucherValue != 0) {
                 if (!isset($vatGroups[$vatRate])) {
                     $vatGroups[$vatRate] = [
                         'totalpu' => 0,
                         'total' => 0,
                     ];
                 }
-                $vatGroups[$vatRate]['totalpu'] += (($item->price / $amountnovoucher) * $item->quantity * $voucherValue) / (1 + ($vatRate / 100));
+                $vatGroups[$vatRate]['totalpu'] += (($item->price / $amountnovoucher) * $item->quantity * $voucherValue) /
+                    (1 + ($vatRate / 100));
                 $vatGroups[$vatRate]['total'] += ($item->price / $amountnovoucher) * $item->quantity * $voucherValue;
             }
 
 
 
             $htmlContent .= "
-                <tr>
-                    <td>" . ($i + 1) . "</td>
-                    <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
-                    <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                    <td>" . $vatRate . "</td>
-                    <td>" . -$item->quantity . "</td>
-                    <td>" . number_format($pu, 2) . "</td>
-                    <td>" . -number_format($pu * $item->quantity, 2) . "</td>
-                    <td>" . -number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
-                    <td>" . -number_format($item->price * $item->quantity, 2) . "</td>
-                </tr>";
+            <tr>
+                <td>" . ($i + 1) . "</td>
+                <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
+                <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                <td>" . $vatRate . "</td>
+                <td>" . -$item->quantity . "</td>
+                <td>" . number_format($pu, 2) . "</td>
+                <td>" . -number_format($pu * $item->quantity, 2) . "</td>
+                <td>" . -number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
+                <td>" . -number_format($item->price * $item->quantity, 2) . "</td>
+            </tr>";
             $i++;
         }
-        if ($voucherValue &&  $voucherValue != 0) {
+        if ($voucherValue && $voucherValue != 0) {
             foreach ($vatGroups as $vatRate => $group) {
                 $totalval -= $group['totalpu'];
                 $htmlContent .= "
-                    <tr>
-                        <td>" . ($i + 1) . "</td>
-                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
-                        <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                        <td>" . $vatRate . "</td>
-                        <td>-1</td>
-                        <td>" . +number_format(+$group['totalpu'], 2) . "</td>
-                        <td>" . +number_format(+$group['totalpu'], 2) . "</td>
-                        <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
-                        <td>" . +number_format(+$group['total'], 2) . "</td>
-                    </tr>";
+            <tr>
+                <td>" . ($i + 1) . "</td>
+                <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
+                <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                <td>" . $vatRate . "</td>
+                <td>-1</td>
+                <td>" . +number_format(+$group['totalpu'], 2) . "</td>
+                <td>" . +number_format(+$group['totalpu'], 2) . "</td>
+                <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
+                <td>" . +number_format(+$group['total'], 2) . "</td>
+            </tr>";
                 $i++;
             }
         }
         // delivery sistem
         $htmlContent .= "
-        <tr>
-        <td>" . ($i + 1) . "</td>
-        <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
-        <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-        <td>19</td>
-        <td>-1</td>
-        <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-        <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-        <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
-        <td>" . -number_format($this->order->delivery_price, 2) . "</td>
-    </tr>";
+            <tr>
+                <td>" . ($i + 1) . "</td>
+                <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "
+                </td>
+                <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                <td>19</td>
+                <td>-1</td>
+                <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+                <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+                <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 /
+            100)))), 2) . "</td>
+                <td>" . -number_format($this->order->delivery_price, 2) . "</td>
+            </tr>";
         $totalval += $this->order->delivery_price / (1 + (19 / 100));
         // total row
         $htmlContent .= "
-        <tr>
-        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span></td>
-        <td style='font-weight: 700;'><span>" . -number_format($totalval, 2) . "</span></td>
-        <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount - $totalval, 2) . "</span></td>
-        <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount, 2) . "</span></td>
-       </tr>";
+            <tr>
+                <td colspan='6' style='font-weight: 700;text-align:right'><span>" .
+            (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span>
+                </td>
+                <td style='font-weight: 700;'><span>" . -number_format($totalval, 2) . "</span></td>
+                <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount - $totalval, 2) .
+            "</span></td>
+                <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount, 2) . "</span></td>
+            </tr>";
 
         $htmlContent .= "
         </tbody>
     </table>
-    <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . -number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') .
+    <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ?
+            app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . -number_format($this->order->final_amount, 2) .
+            " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') .
             "</strong></p><br>
-    <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
+    <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number .
+            "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer
+        label') . "</p>
+</body>
+
+</html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
