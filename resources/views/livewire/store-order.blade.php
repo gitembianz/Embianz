@@ -125,26 +125,26 @@
      ""
     @endif ,
     // county Validation
-    county_require: @if (app()->bound('label_form_county_require'))
-     "{{ app('label_form_county_require') }}"
-    @else
-     ""
-    @endif ,
-    county_min: @if (app()->bound('label_form_county_min'))
-     "{{ app('label_form_county_min') }}"
-    @else
-     ""
-    @endif ,
-    county_max: @if (app()->bound('label_form_county_max'))
-     "{{ app('label_form_county_max') }}"
-    @else
-     ""
-    @endif ,
-    county_space: @if (app()->bound('label_form_county_space'))
-     "{{ app('label_form_county_space') }}"
-    @else
-     ""
-    @endif ,
+    // county_require: @if (app()->bound('label_form_county_require'))
+    //  "{{ app('label_form_county_require') }}"
+    // @else
+    //  ""
+    // @endif ,
+    // county_min: @if (app()->bound('label_form_county_min'))
+    //  "{{ app('label_form_county_min') }}"
+    // @else
+    //  ""
+    // @endif ,
+    // county_max: @if (app()->bound('label_form_county_max'))
+    //  "{{ app('label_form_county_max') }}"
+    // @else
+    //  ""
+    // @endif ,
+    // county_space: @if (app()->bound('label_form_county_space'))
+    //  "{{ app('label_form_county_space') }}"
+    // @else
+    //  ""
+    // @endif ,
     // city Validation
     city_require: @if (app()->bound('label_form_city_require'))
      "{{ app('label_form_city_require') }}"
@@ -639,7 +639,7 @@
         </select>
        @endif
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
+       {{-- <div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
         <input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualShippingCounty">
@@ -649,7 +649,52 @@
           {!! app('label_order_county') !!}
          @endif
         </label>
-       </div>
+       </div> --}}
+       <select class="select" wire:model.defer="individual_billing_county" name="individualShippingCounty"
+        id="individualShippingCounty">
+        <option value="Alba_AB">Alba</option>
+        <option value="Arad_AR">Arad</option>
+        <option value="Arges_AG">Arges</option>
+        <option value="Bacau_BC">Bacau</option>
+        <option value="Bihor_BH">Bihor</option>
+        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
+        <option value="Botosani_BT">Botosani</option>
+        <option value="Braila_BR">Braila</option>
+        <option value="Brasov_BV">Brasov</option>
+        <option value="Bucuresti_B">Bucuresti</option>
+        <option value="Buzau_BZ">Buzau</option>
+        <option value="Caras-Severin_CS">Caras-Severin</option>
+        <option value="Calarasi_CL">Calarasi</option>
+        <option value="Cluj_CJ">Cluj</option>
+        <option value="Constanta_CT">Constanta</option>
+        <option value="Covasna_CV">Covasna</option>
+        <option value="Dambovita_DB">Dambovita</option>
+        <option value="Dolj_DJ">Dolj</option>
+        <option value="Galati_GL">Galati</option>
+        <option value="Giurgiu_GR">Giurgiu</option>
+        <option value="Gorj_GJ">Gorj</option>
+        <option value="Harghita_HR">Harghita</option>
+        <option value="Hunedoara_HD">Hunedoara</option>
+        <option value="Ialomita_IL">Ialomita</option>
+        <option value="Iasi_IS">Iasi</option>
+        <option value="Ilfov_IF">Ilfov</option>
+        <option value="Maramures_MM">Maramures</option>
+        <option value="Mehedinti_MH">Mehedinti</option>
+        <option value="Mures_MS">Mures</option>
+        <option value="Neamt_NT">Neamt</option>
+        <option value="Olt_OT">Olt</option>
+        <option value="Prahova_PH">Prahova</option>
+        <option value="Salaj_SJ">Salaj</option>
+        <option value="Satu Mare_SM">Satu Mare</option>
+        <option value="Sibiu_SB">Sibiu</option>
+        <option value="Suceava_SV">Suceava</option>
+        <option value="Teleorman_TR">Teleorman</option>
+        <option value="Timis_TM">Timis</option>
+        <option value="Tulcea_TL">Tulcea</option>
+        <option value="Valcea_VL">Valcea</option>
+        <option value="Vaslui_VS">Vaslui</option>
+        <option value="Vrancea_VN">Vrancea</option>
+       </select>
        <!---------------------------------------------------->
        <div class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
@@ -1031,7 +1076,7 @@
         </select>
        @endif
        <!---------------------------------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCountyParent">
+       {{-- <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCountyParent">
         <input type="text" wire:model.defer="individual_shipping_county" name="individualBillingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualBillingCounty">
@@ -1041,12 +1086,57 @@
           {!! app('label_order_county') !!}
          @endif
         </label>
-       </div>
+       </div> --}}
+       <select class="select" wire:model.defer="individual_shipping_county" name="individualBillingCounty"
+        id="individualBillingCounty">
+        <option value="Alba_AB">Alba</option>
+        <option value="Arad_AR">Arad</option>
+        <option value="Arges_AG">Arges</option>
+        <option value="Bacau_BC">Bacau</option>
+        <option value="Bihor_BH">Bihor</option>
+        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
+        <option value="Botosani_BT">Botosani</option>
+        <option value="Braila_BR">Braila</option>
+        <option value="Brasov_BV">Brasov</option>
+        <option value="Bucuresti_B">Bucuresti</option>
+        <option value="Buzau_BZ">Buzau</option>
+        <option value="Caras-Severin_CS">Caras-Severin</option>
+        <option value="Calarasi_CL">Calarasi</option>
+        <option value="Cluj_CJ">Cluj</option>
+        <option value="Constanta_CT">Constanta</option>
+        <option value="Covasna_CV">Covasna</option>
+        <option value="Dambovita_DB">Dambovita</option>
+        <option value="Dolj_DJ">Dolj</option>
+        <option value="Galati_GL">Galati</option>
+        <option value="Giurgiu_GR">Giurgiu</option>
+        <option value="Gorj_GJ">Gorj</option>
+        <option value="Harghita_HR">Harghita</option>
+        <option value="Hunedoara_HD">Hunedoara</option>
+        <option value="Ialomita_IL">Ialomita</option>
+        <option value="Iasi_IS">Iasi</option>
+        <option value="Ilfov_IF">Ilfov</option>
+        <option value="Maramures_MM">Maramures</option>
+        <option value="Mehedinti_MH">Mehedinti</option>
+        <option value="Mures_MS">Mures</option>
+        <option value="Neamt_NT">Neamt</option>
+        <option value="Olt_OT">Olt</option>
+        <option value="Prahova_PH">Prahova</option>
+        <option value="Salaj_SJ">Salaj</option>
+        <option value="Satu Mare_SM">Satu Mare</option>
+        <option value="Sibiu_SB">Sibiu</option>
+        <option value="Suceava_SV">Suceava</option>
+        <option value="Teleorman_TR">Teleorman</option>
+        <option value="Timis_TM">Timis</option>
+        <option value="Tulcea_TL">Tulcea</option>
+        <option value="Valcea_VL">Valcea</option>
+        <option value="Vaslui_VS">Vaslui</option>
+        <option value="Vrancea_VN">Vrancea</option>
+       </select>
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
         <input type="text" wire:model.defer="individual_shipping_city" name="individualBillingCity"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="individualBillingCity">
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off" required
+         id="individualBillingCity">
         <span></span>
         <label for="individualBillingCity">
          @if (app()->has('label_order_city'))
@@ -1478,7 +1568,7 @@
         </select>
        @endif
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
+       {{-- <div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
         <input type="text" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="juridicShippingCounty">
@@ -1488,7 +1578,52 @@
           {!! app('label_order_county') !!}
          @endif
         </label>
-       </div>
+       </div> --}}
+       <select class="select" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
+        id="juridicShippingCounty">
+        <option value="Alba_AB">Alba</option>
+        <option value="Arad_AR">Arad</option>
+        <option value="Arges_AG">Arges</option>
+        <option value="Bacau_BC">Bacau</option>
+        <option value="Bihor_BH">Bihor</option>
+        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
+        <option value="Botosani_BT">Botosani</option>
+        <option value="Braila_BR">Braila</option>
+        <option value="Brasov_BV">Brasov</option>
+        <option value="Bucuresti_B">Bucuresti</option>
+        <option value="Buzau_BZ">Buzau</option>
+        <option value="Caras-Severin_CS">Caras-Severin</option>
+        <option value="Calarasi_CL">Calarasi</option>
+        <option value="Cluj_CJ">Cluj</option>
+        <option value="Constanta_CT">Constanta</option>
+        <option value="Covasna_CV">Covasna</option>
+        <option value="Dambovita_DB">Dambovita</option>
+        <option value="Dolj_DJ">Dolj</option>
+        <option value="Galati_GL">Galati</option>
+        <option value="Giurgiu_GR">Giurgiu</option>
+        <option value="Gorj_GJ">Gorj</option>
+        <option value="Harghita_HR">Harghita</option>
+        <option value="Hunedoara_HD">Hunedoara</option>
+        <option value="Ialomita_IL">Ialomita</option>
+        <option value="Iasi_IS">Iasi</option>
+        <option value="Ilfov_IF">Ilfov</option>
+        <option value="Maramures_MM">Maramures</option>
+        <option value="Mehedinti_MH">Mehedinti</option>
+        <option value="Mures_MS">Mures</option>
+        <option value="Neamt_NT">Neamt</option>
+        <option value="Olt_OT">Olt</option>
+        <option value="Prahova_PH">Prahova</option>
+        <option value="Salaj_SJ">Salaj</option>
+        <option value="Satu Mare_SM">Satu Mare</option>
+        <option value="Sibiu_SB">Sibiu</option>
+        <option value="Suceava_SV">Suceava</option>
+        <option value="Teleorman_TR">Teleorman</option>
+        <option value="Timis_TM">Timis</option>
+        <option value="Tulcea_TL">Tulcea</option>
+        <option value="Valcea_VL">Valcea</option>
+        <option value="Vaslui_VS">Vaslui</option>
+        <option value="Vrancea_VN">Vrancea</option>
+       </select>
        <!---------------------------------------------------->
        <div class="checkout__item checkout__item--required" id="juridicShippingCityParent">
         <input type="text" wire:model.defer="juridic_billing_city" name="juridicShippingCity"
@@ -1871,7 +2006,7 @@
         </select>
        @endif
        <!---------------------------------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
+       {{-- <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
         <input type="text" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="juridicBillingCounty">
@@ -1881,7 +2016,52 @@
           {!! app('label_order_county') !!}
          @endif
         </label>
-       </div>
+       </div> --}}
+       <select class="select" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
+        id="juridicBillingCounty">
+        <option value="Alba_AB">Alba</option>
+        <option value="Arad_AR">Arad</option>
+        <option value="Arges_AG">Arges</option>
+        <option value="Bacau_BC">Bacau</option>
+        <option value="Bihor_BH">Bihor</option>
+        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
+        <option value="Botosani_BT">Botosani</option>
+        <option value="Braila_BR">Braila</option>
+        <option value="Brasov_BV">Brasov</option>
+        <option value="Bucuresti_B">Bucuresti</option>
+        <option value="Buzau_BZ">Buzau</option>
+        <option value="Caras-Severin_CS">Caras-Severin</option>
+        <option value="Calarasi_CL">Calarasi</option>
+        <option value="Cluj_CJ">Cluj</option>
+        <option value="Constanta_CT">Constanta</option>
+        <option value="Covasna_CV">Covasna</option>
+        <option value="Dambovita_DB">Dambovita</option>
+        <option value="Dolj_DJ">Dolj</option>
+        <option value="Galati_GL">Galati</option>
+        <option value="Giurgiu_GR">Giurgiu</option>
+        <option value="Gorj_GJ">Gorj</option>
+        <option value="Harghita_HR">Harghita</option>
+        <option value="Hunedoara_HD">Hunedoara</option>
+        <option value="Ialomita_IL">Ialomita</option>
+        <option value="Iasi_IS">Iasi</option>
+        <option value="Ilfov_IF">Ilfov</option>
+        <option value="Maramures_MM">Maramures</option>
+        <option value="Mehedinti_MH">Mehedinti</option>
+        <option value="Mures_MS">Mures</option>
+        <option value="Neamt_NT">Neamt</option>
+        <option value="Olt_OT">Olt</option>
+        <option value="Prahova_PH">Prahova</option>
+        <option value="Salaj_SJ">Salaj</option>
+        <option value="Satu Mare_SM">Satu Mare</option>
+        <option value="Sibiu_SB">Sibiu</option>
+        <option value="Suceava_SV">Suceava</option>
+        <option value="Teleorman_TR">Teleorman</option>
+        <option value="Timis_TM">Timis</option>
+        <option value="Tulcea_TL">Tulcea</option>
+        <option value="Valcea_VL">Valcea</option>
+        <option value="Vaslui_VS">Vaslui</option>
+        <option value="Vrancea_VN">Vrancea</option>
+       </select>
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
         <input type="text" wire:model.defer="juridic_shipping_city" name="juridicBillingCity"
@@ -1992,7 +2172,7 @@
       applyValidations("individualShippingEmailParent", emailValidation, false);
       applyValidations("individualShippingPhoneParent", phoneValidation, false);
       applyValidations("individualShippingAddressParent", addressValidations, false);
-      applyValidations("individualShippingCountyParent", countyValidations, false);
+      //   applyValidations("individualShippingCountyParent", countyValidations, false);
       applyValidations("individualShippingCityParent", cityValidations, false);
       // applyValidations("individualShippingPostalParent", zipcodeValidations, false);
       applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
@@ -2000,7 +2180,7 @@
       applyValidations("individualBillingEmailParent", emailValidation, false);
       applyValidations("individualBillingPhoneParent", phoneValidation, false);
       applyValidations("individualBillingAddressParent", addressValidations, false);
-      applyValidations("individualBillingCountyParent", countyValidations, false);
+      //   applyValidations("individualBillingCountyParent", countyValidations, false);
       applyValidations("individualBillingCityParent", cityValidations, false);
       // applyValidations("individualBillingPostalParent", zipcodeValidations, false);
       // ----------------------------------------------------------------------------
@@ -2009,7 +2189,7 @@
       applyValidations("juridicShippingEmailParent", emailValidation, false);
       applyValidations("juridicShippingPhoneParent", phoneValidation, false);
       applyValidations("juridicShippingAddressParent", addressValidations, false);
-      applyValidations("juridicShippingCountyParent", countyValidations, false);
+      //   applyValidations("juridicShippingCountyParent", countyValidations, false);
       applyValidations("juridicShippingCityParent", cityValidations, false);
       // applyValidations("juridicShippingPostalParent", zipcodeValidations, false);
       applyValidations("companyNameParent", companyName, false);
@@ -2020,7 +2200,7 @@
       applyValidations("juridicBillingEmailParent", emailValidation, false);
       applyValidations("juridicBillingPhoneParent", phoneValidation, false);
       applyValidations("juridicBillingAddressParent", addressValidations, false);
-      applyValidations("juridicBillingCountyParent", countyValidations, false);
+      //   applyValidations("juridicBillingCountyParent", countyValidations, false);
       applyValidations("juridicBillingCityParent", cityValidations, false);
       // applyValidations("juridicBillingPostalParent", zipcodeValidations, false);
      </script>
