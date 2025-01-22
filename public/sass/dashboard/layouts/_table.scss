@@ -287,3 +287,11 @@
   max-width: 80px;
   height: 32px;
 }
+
+.xml-preview pre {
+  font-family: monospace;
+  white-space: pre-wrap;
+  /* Ensure line breaks are respected */
+  word-wrap: break-word;
+  /* Wrap long lines */
+}

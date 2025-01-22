@@ -10,6 +10,8 @@ use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class ShowOrder extends Component
 {
@@ -174,26 +176,26 @@ class ShowOrder extends Component
         }
         // generate PDF
         $htmlContent = "
-     <html>
-<head>
-  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
+         <html>
+        <head>
+        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
 
-     <style>
-    *{ font-family: DejaVu Sans !important;
+        <style>
+        *{ font-family: DejaVu Sans !important;
         font-size:12px;
-    }
-    table {
+            }
+        table {
                 width: 100%;
                 border-collapse: collapse;
             }
-      th, td {
+            th, td {
                 padding: 8px;
                 word-wrap: break-word; 
             }
           
-  </style>
-      </head>
-      <body>
+        </style>
+         </head>
+        <body>
         <table class='info'>
             <tr>
 
@@ -234,23 +236,23 @@ class ShowOrder extends Component
             $this->order->account->addresses->where('type', 'billing')->first()->zipcode . "</td>
             </tr>
          </table>
-        <br></br><br></br>
+            <br></br><br></br>
 
-    <table border='1' cellpadding='5' cellspacing='0' width='100%' style='margin-top: 20px;'>
-        <thead>
-            <tr>
-                <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
-                <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
-                <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
-                <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
-                <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
-                <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
-                <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
-                <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
-            </tr>
-        </thead>
-        <tbody>";
+            <table border='1' cellpadding='5' cellspacing='0' width='100%' style='margin-top: 20px;'>
+                <thead>
+                    <tr>
+                        <th>" . (app()->has('label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
+                        <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire Articol/Serviciu') . "</th>
+                        <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
+                        <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
+                        <th>" . (app()->has('label_invoice_th_quantity') ? app('label_invoice_th_quantity') : 'Cantitate') . "</th>
+                        <th>" . (app()->has('label_invoice_th_pu') ? app('label_invoice_th_pu') : 'Pret Unitar - RON') . "</th>
+                        <th>" . (app()->has('label_invoice_th_val') ? app('label_invoice_th_val') : 'Valoare - RON') . "</th>
+                        <th>" . (app()->has('label_invoice_th_valvat') ? app('label_invoice_th_valvat') : 'Valoare TVA - RON') . "</th>
+                        <th>" . (app()->has('label_invoice_th_total') ? app('label_invoice_th_total') : 'Total') . "</th>
+                    </tr>
+                </thead>
+            <tbody>";
 
         $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
         $totalval = 0;
@@ -278,65 +280,65 @@ class ShowOrder extends Component
 
 
             $htmlContent .= "
-                <tr>
-                    <td>" . ($i + 1) . "</td>
-                    <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
-                    <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                    <td>" . $vatRate . "</td>
-                    <td>" . $item->quantity . "</td>
-                    <td>" . number_format($pu, 2) . "</td>
-                    <td>" . number_format($pu * $item->quantity, 2) . "</td>
-                    <td>" . number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
-                    <td>" . number_format($item->price * $item->quantity, 2) . "</td>
-                </tr>";
+                        <tr>
+                            <td>" . ($i + 1) . "</td>
+                            <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
+                            <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                            <td>" . $vatRate . "</td>
+                            <td>" . $item->quantity . "</td>
+                            <td>" . number_format($pu, 2) . "</td>
+                            <td>" . number_format($pu * $item->quantity, 2) . "</td>
+                            <td>" . number_format(($item->price - $pu) * $item->quantity, 2) . "</td>
+                            <td>" . number_format($item->price * $item->quantity, 2) . "</td>
+                        </tr>";
             $i++;
         }
         if ($voucherValue &&  $voucherValue != 0) {
             foreach ($vatGroups as $vatRate => $group) {
                 $totalval -= $group['totalpu'];
                 $htmlContent .= "
-                    <tr>
-                        <td>" . ($i + 1) . "</td>
-                        <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere')."</td>
-                        <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                        <td>" . $vatRate . "</td>
-                        <td>1</td>
-                        <td>" . number_format(-$group['totalpu'], 2) . "</td>
-                        <td>" . number_format(-$group['totalpu'], 2) . "</td>
-                        <td>" . number_format(- ($group['total'] - $group['totalpu']), 2) . "</td>
-                        <td>" . number_format(-$group['total'], 2) . "</td>
-                    </tr>";
+                            <tr>
+                                <td>" . ($i + 1) . "</td>
+                                <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
+                                <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                                <td>" . $vatRate . "</td>
+                                <td>1</td>
+                                <td>" . number_format(-$group['totalpu'], 2) . "</td>
+                                <td>" . number_format(-$group['totalpu'], 2) . "</td>
+                                <td>" . number_format(- ($group['total'] - $group['totalpu']), 2) . "</td>
+                                <td>" . number_format(-$group['total'], 2) . "</td>
+                            </tr>";
                 $i++;
             }
         }
         // delivery sistem
         $htmlContent .= "
-        <tr>
-        <td>" . ($i + 1) . "</td>
-        <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
-        <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-        <td>19</td>
-        <td>1</td>
-        <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-        <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-        <td>" . number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
-        <td>" . number_format($this->order->delivery_price, 2) . "</td>
-    </tr>";
+                <tr>
+                    <td>" . ($i + 1) . "</td>
+                    <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
+                    <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
+                    <td>19</td>
+                    <td>1</td>
+                    <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+                    <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
+                    <td>" . number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
+                    <td>" . number_format($this->order->delivery_price, 2) . "</td>
+                </tr>";
         $totalval += $this->order->delivery_price / (1 + (19 / 100));
         // total row
         $htmlContent .= "
-        <tr>
-        <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span></td>
-        <td style='font-weight: 700;'><span>" . number_format($totalval, 2) . "</span></td>
-        <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount - $totalval, 2) . "</span></td>
-        <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount, 2) . "</span></td>
-       </tr>";
+                <tr>
+                    <td colspan='6' style='font-weight: 700;text-align:right'><span>" . (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span></td>
+                    <td style='font-weight: 700;'><span>" . number_format($totalval, 2) . "</span></td>
+                    <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount - $totalval, 2) . "</span></td>
+                    <td style='font-weight: 700;'><span>" . number_format($this->order->final_amount, 2) . "</span></td>
+                </tr>";
 
         $htmlContent .= "
-        </tbody>
-    </table>
-    <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
-    <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
+            </tbody>
+        </table>
+        <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ? app('label_invoice_th_totalfinal') : 'Total Plata ') . " " . number_format($this->order->final_amount, 2) . " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') . "</strong></p><br>
+        <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
         $pdf = PDF::loadHTML($htmlContent);
         $pdf->save($filePath);
@@ -348,6 +350,9 @@ class ShowOrder extends Component
             'type' => 'invoice',
             'path' => $filePath
         ]);
+        $vat = $this->order->final_amount - $totalval;
+        $type = 'invoice_xml';
+        $this->generate_invoice_xml($totalval, $vat, $type);
 
         session()->flash('notification', [
             'message' => 'Invoice generate successfully!',
@@ -355,6 +360,220 @@ class ShowOrder extends Component
             'title' => 'Success'
         ]);
     }
+
+    public function generate_invoice_xml($valoare, $vat, $type)
+    {
+        $invoiceData = [
+            'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
+            'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
+            'FurnizorNrRegCom' => (app()->has('label_xml_FurnizorNrRegCom') ? app('label_xml_FurnizorNrRegCom') : 'J40/15607/2019'),
+            'FurnizorCapital' => (app()->has('label_xml_FurnizorCapital') ? app('label_xml_FurnizorCapital') : '200.00'),
+            'FurnizorAdresa' => (app()->has('label_xml_FurnizorAdresa') ? app('label_xml_FurnizorAdresa') : 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
+            'FurnizorBanca' => '',
+            'FurnizorIBAN' => '',
+            'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ? app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel. 0757.527.656'),
+            'ClientNume' => strtoupper($this->order->account->name),
+            'ClientInformatiiSuplimentare' => '',
+            'ClientCIF' => '',
+            'ClientNrRegCom' => '',
+            'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
+            'ClientLocalitate' => strtoupper($this->order->account->addresses->where('type', 'billing')->first()->city),
+            'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
+            'ClientAdresa' => strtoupper($this->order->account->addresses->where('type', 'billing')->first()->address1),
+            'ClientTelefon' => $this->order->account->phone,
+            'ClientEmail' => $this->order->account->email,
+            'FacturaNumar' => $this->order->invoice_series . ' - ' . $this->order->external_invoice_number,
+            'FacturaData' => $this->order->invoice_date,
+            'FacturaScadenta' =>  $this->order->invoice_date,
+            'FacturaMoneda' => $this->order->currency->name,
+            'FacturaGreutate' => 0,
+            'FacturaAccize' => 0,
+            'FacturaIndexSPV' => '',
+            'Detalii' => [],
+            'Sumar' => [
+                'TotalValoare' => $valoare,
+                'TotalTVA' => $vat,
+                'Total' => $this->order->final_amount,
+            ],
+        ];
+
+        foreach ($this->order->orders as $index => $item) {
+            $vatRate = (int) $item->vat;
+            $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
+
+            // Accumulate subtotals by VAT rate
+            if (!isset($vatSubtotals[$vatRate])) {
+                $vatSubtotals[$vatRate] = 0;
+            }
+            $vatSubtotals[$vatRate] += $item->price * $item->quantity;
+            if ($type === 'invoice_xml') {
+
+                $invoiceData['Detalii'][] = [
+                    'LinieNrCrt' => $index + 1,
+                    'Descriere' => strtoupper($item->product->name),
+                    'CodArticolFurnizor' => strtoupper($item->product->sku),
+                    'CodArticolClient' => '',
+                    'CodBare' => '',
+                    'InformatiiSuplimentare' => '',
+                    'UM' => 'BUC',
+                    'Cantitate' => number_format($item->quantity, 4),
+                    'Pret' => number_format($priceWithoutVAT, 4),
+                    'Valoare' => number_format($priceWithoutVAT * $item->quantity, 4),
+                    'ProcTVA' => number_format($vatRate, 4),
+                    'TVA' => number_format(($item->price - $priceWithoutVAT) * $item->quantity, 4),
+                ];
+            } else {
+                $invoiceData['Detalii'][] = [
+                    'LinieNrCrt' => $index + 1,
+                    'Descriere' => strtoupper($item->product->name),
+                    'CodArticolFurnizor' => strtoupper($item->product->sku),
+                    'CodArticolClient' => '',
+                    'CodBare' => '',
+                    'InformatiiSuplimentare' => '',
+                    'UM' => 'BUC',
+                    'Cantitate' => '-' . number_format($item->quantity, 4),
+                    'Pret' => number_format($priceWithoutVAT, 4),
+                    'Valoare' => '-' . number_format($priceWithoutVAT * $item->quantity, 4),
+                    'ProcTVA' => number_format($vatRate, 4),
+                    'TVA' => '-' . number_format(($item->price - $priceWithoutVAT) * $item->quantity, 4),
+                ];
+            }
+        }
+        // Add delivery line
+        $deliveryPrice = $this->order->delivery_price;
+        $deliveryPriceWithoutVAT = $deliveryPrice / (1 + (19 / 100));
+
+        if ($deliveryPrice > 0) {
+            if ($type === 'invoice_xml') {
+
+                $invoiceData['Detalii'][] = [
+                    'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
+                    'Descriere' => 'TRANSPORT',
+                    'CodArticolFurnizor' => '',
+                    'CodArticolClient' => '',
+                    'CodBare' => '',
+                    'InformatiiSuplimentare' => '',
+                    'UM' => 'BUC',
+                    'Cantitate' => '1.0000',
+                    'Pret' => number_format($deliveryPriceWithoutVAT, 4),
+                    'Valoare' => number_format($deliveryPriceWithoutVAT, 4),
+                    'ProcTVA' => number_format(19, 2),
+                    'TVA' => number_format($this->order->delivery_price - $deliveryPriceWithoutVAT, 4),
+                ];
+            } else {
+                $invoiceData['Detalii'][] = [
+                    'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
+                    'Descriere' => 'TRANSPORT',
+                    'CodArticolFurnizor' => '',
+                    'CodArticolClient' => '',
+                    'CodBare' => '',
+                    'InformatiiSuplimentare' => '',
+                    'UM' => 'BUC',
+                    'Cantitate' => '-' . '1.0000',
+                    'Pret' => number_format($deliveryPriceWithoutVAT, 4),
+                    'Valoare' => '-' . number_format($deliveryPriceWithoutVAT, 4),
+                    'ProcTVA' => number_format(19, 2),
+                    'TVA' => '-' . number_format($this->order->delivery_price - $deliveryPriceWithoutVAT, 4),
+                ];
+            }
+        }
+        // Add voucher lines proportionally by VAT rate
+        $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
+        if ($voucherValue > 0) {
+            $amountNoVoucher = array_sum($vatSubtotals); // Total amount without voucher
+            $vatGroups = [];
+
+            foreach ($this->order->orders as $item) {
+                $vatRate = (int) $item->vat;
+                $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
+
+                if (!isset($vatGroups[$vatRate])) {
+                    $vatGroups[$vatRate] = [
+                        'totalNet' => 0,
+                        'totalVoucherNet' => 0,
+                        'totalVoucher' => 0,
+                    ];
+                }
+
+                // Calculate the proportional voucher value for the VAT rate
+                $voucherImpactNet = (($item->price / $amountNoVoucher) * $item->quantity * $voucherValue) / (1 + ($vatRate / 100));
+                $voucherImpactTotal = ($item->price / $amountNoVoucher) * $item->quantity * $voucherValue;
+
+                $vatGroups[$vatRate]['totalNet'] += $priceWithoutVAT * $item->quantity;
+                $vatGroups[$vatRate]['totalVoucherNet'] += $voucherImpactNet;
+                $vatGroups[$vatRate]['totalVoucher'] += $voucherImpactTotal;
+            }
+
+            // Add voucher lines to the XML
+            foreach ($vatGroups as $vatRate => $group) {
+                $invoiceData['Detalii'][] = [
+                    'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
+                    'Descriere' => 'DISCOUNT ACORDAT',
+                    'CodArticolFurnizor' => '',
+                    'CodArticolClient' => '',
+                    'CodBare' => '',
+                    'InformatiiSuplimentare' => '',
+                    'UM' => 'BUC',
+                    'Cantitate' => '1.0000',
+                    'Pret' => '-' . number_format($group['totalVoucherNet'], 4),
+                    'Valoare' => '-' . number_format($group['totalVoucherNet'], 4),
+                    'ProcTVA' => number_format($vatRate, 4),
+                    'TVA' => '-' . number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
+                ];
+            }
+        }
+
+
+
+        // Generate XML structure
+        $xml = new \SimpleXMLElement('<Facturi/>');
+        $factura = $xml->addChild('Factura');
+        $antet = $factura->addChild('Antet');
+        foreach ($invoiceData as $key => $value) {
+            if (is_array($value)) continue; // Skip arrays for now
+            $antet->addChild($key, htmlspecialchars($value));
+        }
+
+        $detalii = $factura->addChild('Detalii')->addChild('Continut');
+        foreach ($invoiceData['Detalii'] as $detail) {
+            $linie = $detalii->addChild('Linie');
+            foreach ($detail as $key => $value) {
+                $linie->addChild($key, htmlspecialchars($value));
+            }
+        }
+
+        $sumar = $factura->addChild('Sumar');
+        foreach ($invoiceData['Sumar'] as $key => $value) {
+            $sumar->addChild($key, htmlspecialchars(number_format($value, 2)));
+        }
+
+        $invoicePath = 'invoices/';
+        $yearMonthPath = $invoicePath . Carbon::now()->year . '/' . Carbon::now()->format('F');
+
+        if (!File::exists($yearMonthPath)) {
+            File::makeDirectory($yearMonthPath, 0755, true);
+        }
+
+        $xmlPath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".xml";
+        if (file_exists($xmlPath)) {
+            $i = 1;
+            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".xml";
+            while (file_exists($newpath)) {
+                $i++;
+                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".xml";
+            }
+            $xmlPath = $newpath;
+        }
+        Storage::disk('public_upload')->put($xmlPath, $xml->asXML());
+        Invoice::create([
+            'account_id' => $this->order->account_id,
+            'order_id' => $this->order->id,
+            'date' => $this->order->invoice_date,
+            'type' => $type,
+            'path' => $xmlPath
+        ]);
+    }
+
     public function generate_storno()
     {
         if (!$this->order->external_storno_number) {
@@ -561,6 +780,10 @@ class ShowOrder extends Component
             'type' => 'storno',
             'path' => $filePath
         ]);
+
+        $vat = $this->order->final_amount - $totalval;
+        $type = 'storno_xml';
+        $this->generate_invoice_xml($totalval, $vat, $type);
 
         session()->flash('notification', [
             'message' => 'Storno generate successfully!',

@@ -2356,6 +2356,14 @@ nav.nav--home {
   height: 32px;
 }
 
+.xml-preview pre {
+  font-family: monospace;
+  white-space: pre-wrap;
+  /* Ensure line breaks are respected */
+  word-wrap: break-word;
+  /* Wrap long lines */
+}
+
 .tabs__content {
   width: 100%;
   display: none;

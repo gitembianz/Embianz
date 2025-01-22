@@ -32,7 +32,7 @@ class RelatedInvoices extends Component
     public $single = false;
     public $multiple = false;
     public $previewurl = null;
-
+    public $previewContent = null;
     public function render()
     {
         $invoices = $this->invoices
@@ -191,6 +191,7 @@ class RelatedInvoices extends Component
     {
         $item = Invoice::findOrFail($id);
         $filePath = $item->path;
+
         if (!file_exists($filePath)) {
             session()->flash('notification', [
                 'message' => 'The requested file does not exist.',
@@ -198,13 +199,35 @@ class RelatedInvoices extends Component
                 'title' => 'Error',
             ]);
             return;
+        }
+
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        if ($fileExtension === 'xml') {
+            $xmlContent = file_get_contents($filePath);
+
+            // Format XML
+            $dom = new \DOMDocument();
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+            $dom->loadXML($xmlContent);
+
+            $this->previewContent = $dom->saveXML();
+        } elseif ($fileExtension === 'pdf') {
+            $this->previewurl = $filePath;
         } else {
-            $this->previewurl = $item->path;
+            session()->flash('notification', [
+                'message' => 'Unsupported file type.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
             return;
         }
     }
+
     public function cancel_preview()
     {
         $this->previewurl = null;
+        $this->previewContent = null;
     }
 }
