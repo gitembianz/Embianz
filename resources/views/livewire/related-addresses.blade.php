@@ -203,10 +203,30 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Country ISO'))
+      <th class="hidden">
+       <button wire:click="sortBy('country_iso')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Country ISO
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('County'))
       <th class="hidden">
        <button wire:click="sortBy('county')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
         County
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('County ISO'))
+      <th class="hidden">
+       <button wire:click="sortBy('county_iso')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        County ISO
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -352,12 +372,30 @@
          @endif
         </td>
        @endif
+       @if ($this->showColumn('Country ISO'))
+        <td wire:click="expandRow({{ $index }})" class="hidden">
+         @if ($editindex !== $index)
+          {{ $address->country_iso }}
+         @else
+          <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country_iso">
+         @endif
+        </td>
+       @endif
        @if ($this->showColumn('County'))
         <td wire:click="expandRow({{ $index }})" class="hidden">
          @if ($editindex !== $index)
           {{ $address->county }}
          @else
           <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('County ISO'))
+        <td wire:click="expandRow({{ $index }})" class="hidden">
+         @if ($editindex !== $index)
+          {{ $address->county_iso }}
+         @else
+          <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county_iso">
          @endif
         </td>
        @endif
@@ -503,6 +541,16 @@
            @endif
           </p>
          @endif
+         @if ($this->showColumn('Country ISO'))
+          <p>
+           @if ($editindex !== $index)
+            <bold>Country ISO:</bold>{{ $address->country_iso }}
+           @else
+            <bold>Country ISO:</bold><input type="text" required class="input"
+             wire:model.defer="adress.{{ $index }}.country_iso">
+           @endif
+          </p>
+         @endif
          @if ($this->showColumn('County'))
           <p>
            @if ($editindex !== $index)
@@ -510,6 +558,16 @@
            @else
             <bold>County:</bold><input type="text" required class="input"
              wire:model.defer="adress.{{ $index }}.county">
+           @endif
+          </p>
+         @endif
+         @if ($this->showColumn('County ISO'))
+          <p>
+           @if ($editindex !== $index)
+            <bold>County ISO:</bold>{{ $address->county_iso }}
+           @else
+            <bold>County ISO:</bold><input type="text" required class="input"
+             wire:model.defer="adress.{{ $index }}.county_iso">
            @endif
           </p>
          @endif
