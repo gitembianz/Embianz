@@ -43,6 +43,13 @@ class Supplierstable extends Component
     public function mount($tableName)
     {
         $this->columns = Schema::getColumnListing($tableName);
+
+        $quantityIndex = array_search('currency', $this->columns);
+
+        if ($quantityIndex !== false) {
+            array_splice($this->columns, $quantityIndex + 1, 0, ['price']);
+        }
+
         $this->selectedColumns = $this->columns;
     }
     public function showColumn($column)
@@ -87,13 +94,25 @@ class Supplierstable extends Component
     }
     public function getSuppliersProperty()
     {
-        return $this->suppliersQuery->paginate($this->loadAmount);
+        return $this->suppliersQuery->paginate($this->loadAmount)->map(function ($supplier) {
+            // Calculate the total price for each supplier
+            $supplier->totalPrice = $supplier->items->sum(function ($item) {
+                return (int) $item->price;
+            });
+
+            return $supplier;
+        });
     }
+
     public function getSuppliersQueryProperty()
     {
         return Order_Supplier::search($this->search)
+            ->with('items') // Eager load the items relation
+            ->withCount('items') // Include the count of related items
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
+
+
     public function confirmItemRemoval($id)
     {
         $this->idbeingremoved = $id;

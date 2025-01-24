@@ -3,30 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Account;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
+use App\Models\Currency;
+use App\Models\Promotion;
 use App\Models\CustomScript;
+use App\Models\UserSessions;
 use Illuminate\Http\Request;
+use App\Models\Order_Supplier;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
-use App\Models\Order_Supplier;
-use App\Models\ProductReviews as ModelsProductReviews;
-use App\Models\Promotion;
-use App\Models\UserSessions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\ProductReviews as ModelsProductReviews;
 
 
 
 class AdminController extends Controller
 {
+
+
+  public function add_supplier()
+  {
+    $currencies = Currency::all();
+    return view('admin.add_supplier', compact('currencies'));
+  }
 
   public function store_supplier(Request $request)
   {
@@ -48,6 +56,7 @@ class AdminController extends Controller
       "name" => $request->name,
       "date" => $request->date,
       "status" => "draft",
+      'currency' => $request->currency,
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
       "created_at" => now(),

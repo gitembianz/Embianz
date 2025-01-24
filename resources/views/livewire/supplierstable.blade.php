@@ -85,7 +85,7 @@
 
 
  {{-- Navigation --}}
- <h1 class="table--name">{{ __('Supplier Orders') }} ({{ $suppliers->total() }})</h1>
+ <h1 class="table--name">{{ __('Supplier Orders') }} ({{ $suppliers->count() }})</h1>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
@@ -305,6 +305,8 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_supplier', ['id' => $supplier->id]) }}">{{ strip_tags($supplier->name) }}</a>
+         @elseif ($column === 'price')
+          {{ $supplier->totalPrice }}
          @else
           {{ $supplier->$column }}
          @endif
