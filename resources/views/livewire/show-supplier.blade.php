@@ -104,30 +104,46 @@
    @endif
    <label>Name</label>
   </div>
-  <div class="details__checkboxes">
-   <div class="input__tabs">
-    @if ($edititem === null)
-     <span class="disabled">{{ $supplier->status }}</span>
-    @else
-     <select wire:model.defer="record.status">
-      <option value="draft">draft</option>
-      <option value="pending">pending</option>
-      <option value="closed">closed</option>
-     </select>
-    @endif
-    <label>status</label>
-   </div>
-   <div class="input__tabs">
-    @if ($edititem === null)
-     <span class="disabled">{{ $supplier->date }}</span>
-    @else
-     <input type="date" wire:model.defer="record.date">
-    @endif
-    <label>Date</label>
-   </div>
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $supplier->status }}</span>
+   @else
+    <select wire:model.defer="record.status">
+     <option value="draft">draft</option>
+     <option value="pending">pending</option>
+     <option value="closed">closed</option>
+    </select>
+   @endif
+   <label>status</label>
+  </div>
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $supplier->date }}</span>
+   @else
+    <input type="date" wire:model.defer="record.date">
+   @endif
+   <label>Date</label>
+  </div>
+  {{-- Price List Currency --}}
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $supplier->currency }}</span>
+   @else
+    <select wire:model.defer="record.currency">
+     @foreach ($currencies as $currency)
+      <option value="{{ $currency->name }}">{{ $currency->name }}</option>
+     @endforeach
+    </select>
+   @endif
+   <label>Currency</label>
   </div>
 
 
+  {{-- Price List Create by --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $totalPrice }} {{ $supplier->currency }}</span>
+   <label>Total amount</label>
+  </div>
 
   {{-- Price List Create by --}}
   <div class="input__tabs">

@@ -26,7 +26,7 @@ class RelatedOrderSupplier extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Created by', 'Updated by', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'Created by', 'Updated by', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $supplier;
     public $rand = null;
@@ -51,7 +51,8 @@ class RelatedOrderSupplier extends Component
         $record = Order_Supplier_Item::find($id);
         $this->order_item[$index] = [
             'quantity_received' => $record->quantity_received,
-            'quantity' => $record->quantity
+            'quantity' => $record->quantity,
+            'price' => $record->price
         ];
     }
     public function canceledit()
@@ -103,6 +104,7 @@ class RelatedOrderSupplier extends Component
 
             $product->save();
         }
+        $orderItem->price = $record['price'];
 
         $orderItem->save();
 
@@ -125,6 +127,7 @@ class RelatedOrderSupplier extends Component
                     'order__supplier_id' => $this->supplierId,
                     'product_id' => $array['product']['idrel'],
                     'quantity' => $array['product']['quantity'],
+                    'price' => $array['product']['price'],
                     'created_by' => Auth::user()->name,
                     'last_modified_by' => Auth::user()->name
                 ]);
@@ -171,7 +174,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
         ];
     }
     public function clear($index)
@@ -186,7 +189,7 @@ class RelatedOrderSupplier extends Component
             $this->productsAndValues[] = [
                 'allow' => false,
                 'itemselected' => null,
-                'product' => ['name' => null, 'quantity' => 1]
+                'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
             ];
             $this->additems = false;
             $this->row = 1;
@@ -206,7 +209,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
         ];
         $this->row = 1;
         $this->additems = false;
@@ -277,7 +280,7 @@ class RelatedOrderSupplier extends Component
             'itemselected' => null,
             'price' => null,
             'vat' => null,
-            'product' => ['name' => null, 'quantity' => 1]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
         ];
     }
     public function showColumn($column)

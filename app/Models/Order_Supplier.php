@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order_Supplier extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'status', 'date' . 'created_by', 'last_modified_by'];
+    protected $fillable = ['name', 'status', 'date', 'currency', 'created_by', 'last_modified_by'];
 
     public static function search($search)
     {

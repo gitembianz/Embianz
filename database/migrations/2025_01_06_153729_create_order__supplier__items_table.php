@@ -23,6 +23,7 @@ return new class extends Migration
                 $table->integer('product_quantity_interim')->nullable();
                 $table->integer('quantity')->default(0)->nullable();
                 $table->integer('quantity_received')->nullable()->default(0);
+                $table->decimal('price', 10, 4)->nullable();
                 $table->string('created_by')->nullable();
                 $table->string('last_modified_by')->nullable();
                 $table->timestamps();

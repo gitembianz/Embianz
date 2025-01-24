@@ -28,6 +28,24 @@ class Orderstable extends Component
     public $multiple = false;
     public $row = null;
     public $status31Only = false;
+    public $xmlinvoicesmodal = false;
+    public $xmlstornomodal = false;
+
+    public function xmlinvoices()
+    {
+        $this->xmlinvoicesmodal = true;
+    }
+
+    public function xmlstorno()
+    {
+        $this->xmlstornomodal = true;
+    }
+
+    public function cancel_xml()
+    {
+        $this->xmlstornomodal = false;
+        $this->xmlinvoicesmodal = false;
+    }
 
     public function expandRow($index)
     {
@@ -55,31 +73,31 @@ class Orderstable extends Component
         return $this->ordersQuery->paginate($this->loadAmount);
     }
     public function getOrdersQueryProperty()
-{
-    $query = Order::search($this->search)
-        ->with([
-            'orders.product' => function ($query) {
-                $query->withCount(['orders_item as interim_quantity' => function ($query) {
-                    $query->whereHas('order', function ($q) {
-                        $q->where('status_id', 31);
-                    })->select(DB::raw('sum(quantity)'));
-                }]);
-            },
-            'status',
-            'account',
-            'cart',
-            'currency',
-            'voucher',
-            'payment'
-        ])
-        ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    {
+        $query = Order::search($this->search)
+            ->with([
+                'orders.product' => function ($query) {
+                    $query->withCount(['orders_item as interim_quantity' => function ($query) {
+                        $query->whereHas('order', function ($q) {
+                            $q->where('status_id', 31);
+                        })->select(DB::raw('sum(quantity)'));
+                    }]);
+                },
+                'status',
+                'account',
+                'cart',
+                'currency',
+                'voucher',
+                'payment'
+            ])
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
 
-    if ($this->status31Only) {
-        $query = $query->where('status_id', 31);
+        if ($this->status31Only) {
+            $query = $query->where('status_id', 31);
+        }
+
+        return $query; // Ensure to return the modified query
     }
-
-    return $query; // Ensure to return the modified query
-}
     public function showColumn($column)
     {
         if ($column === 'id') {
