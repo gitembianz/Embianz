@@ -66,6 +66,33 @@
    </button>
   </div>
  </aside>
+ {{-- xml invoice --}}
+ <aside>
+  <div class="background background--center @if ($filteractive) active @endif"></div>
+  <div class="aside aside--confirm @if ($filteractive) active @endif"
+   style="min-width: 400px;min-height:250px">
+   <span>
+    Select the dates
+   </span>
+   <div class="input__tabs">
+    <input type="date" id="start_date" wire:model.defer="start_date_filter" name="start_date">
+    <label>Start Date</label>
+   </div>
+
+   {{-- Product End Date --}}
+   <div class="input__tabs">
+    <input type="date" id="end_date" wire:model.defer="end_date_filter" name="end_date">
+    <label>End Date</label>
+   </div>
+
+   <button class="button button--primary button--long" wire:click="filter_order()">
+    <span>Filter</span>
+   </button>
+   <button class="button button--danger button--long" wire:click="cancel_filter()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
 
 
  {{-- Asides --}}
@@ -124,6 +151,7 @@
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Orders') }} ({{ $orders->total() }})</h1>
+
  <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;"
    wire:model="status31Only"> Show Processing Only</div>
  <nav class="nav--controls">
@@ -140,6 +168,11 @@
     <path d="M16.84 18.37l0 .01" />
     <path d="M19.37 15.1l0 .01" />
     <path d="M19.94 11l0 .01" />
+   </svg>
+  </button>
+  <button class="button button--secondary" tooltip="Filter by invoice date" tooltip-top wire:click="filter">
+   <svg>
+    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
   </button>
   {{-- IF CHECKED --}}
