@@ -30,10 +30,19 @@ class Orderstable extends Component
     public $status31Only = false;
     public $xmlinvoicesmodal = false;
     public $xmlstornomodal = false;
+    public $filteractive = false;
+    public $start_date_filter;
+    public $end_date_filter;
+
 
     public function xmlinvoices()
     {
         $this->xmlinvoicesmodal = true;
+    }
+
+    public function filter()
+    {
+        $this->filteractive = true;
     }
 
     public function xmlstorno()
@@ -58,6 +67,11 @@ class Orderstable extends Component
         }
     }
 
+    public function cancel_filter()
+    {
+        $this->filteractive = false;
+    }
+
     public function render()
     {
         return view('livewire.orderstable', ['orders' => $this->orders]);
@@ -67,6 +81,19 @@ class Orderstable extends Component
         $this->tableName = $tableName;
         $this->columns = Schema::getColumnListing($this->tableName);
         $this->selectedColumns = $this->columns;
+    }
+    public function filter_order()
+    {
+        $this->validate([
+            'start_date_filter' => 'nullable|date',
+            'end_date_filter' => 'nullable|date|after_or_equal:start_date_filter',
+        ]);
+
+        // Set the query to filter by date range
+        $this->orders->when($this->start_date_filter && $this->end_date_filter, function ($query) {
+            $query->whereBetween('invoice_date', [$this->start_date_filter, $this->end_date_filter]);
+        });
+        $this->filteractive = false;
     }
     public function getOrdersProperty()
     {
@@ -96,8 +123,13 @@ class Orderstable extends Component
             $query = $query->where('status_id', 31);
         }
 
-        return $query; // Ensure to return the modified query
+        if ($this->start_date_filter && $this->end_date_filter) {
+            $query = $query->whereBetween('invoice_date', [$this->start_date_filter, $this->end_date_filter]);
+        }
+
+        return $query;
     }
+
     public function showColumn($column)
     {
         if ($column === 'id') {
