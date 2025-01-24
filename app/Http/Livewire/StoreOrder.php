@@ -46,7 +46,7 @@ class StoreOrder extends Component
   public $individual_billing_address1;
   public $individual_billing_address2;
   public $individual_billing_country;
-  public $individual_billing_county;
+  public $individual_billing_county = 'Alba_AB';
   public $individual_billing_county_iso;
   public $individual_billing_city;
   public $individual_billing_zipcode;
@@ -57,7 +57,7 @@ class StoreOrder extends Component
   public $individual_shipping_address1;
   public $individual_shipping_address2;
   public $individual_shipping_country;
-  public $individual_shipping_county;
+  public $individual_shipping_county = 'Alba_AB';
   public $individual_shipping_county_iso;
   public $individual_shipping_city;
   public $individual_shipping_zipcode;
@@ -77,7 +77,7 @@ class StoreOrder extends Component
   public $juridic_billing_address1;
   public $juridic_billing_address2;
   public $juridic_billing_country;
-  public $juridic_billing_county;
+  public $juridic_billing_county = 'Alba_AB';
   public $juridic_billing_county_iso;
   public $juridic_billing_city;
   public $juridic_billing_zipcode;
@@ -88,7 +88,7 @@ class StoreOrder extends Component
   public $juridic_shipping_address1;
   public $juridic_shipping_address2;
   public $juridic_shipping_country;
-  public $juridic_shipping_county;
+  public $juridic_shipping_county = 'Alba_AB';
   public $juridic_shipping_county_iso;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
