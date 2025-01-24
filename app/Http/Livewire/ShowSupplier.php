@@ -2,8 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Order_Supplier;
 use Livewire\Component;
+use App\Models\Currency;
+use App\Models\Order_Supplier;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -13,6 +14,8 @@ class ShowSupplier extends Component
     public $edititem = null;
     public $delete = false;
     public $record;
+    public $currencies;
+    public $totalPrice;
 
     public function render()
     {
@@ -34,18 +37,30 @@ class ShowSupplier extends Component
     }
     public function getSupplierQueryProperty()
     {
-        return Order_Supplier::find($this->itemId);
+        $supplier = Order_Supplier::with('items')->find($this->itemId);
+
+        if ($supplier) {
+            $this->totalPrice = $supplier->items->sum(function ($item) {
+                return (int) $item->price;
+            }) ?? 0;
+        }
+
+        return $supplier;
     }
+
     public function getSupplierProperty()
     {
         return $this->supplierQuery;
     }
     public function edititem()
     {
+        $this->currencies = Currency::all();
+
         $this->record = [
             'name' => $this->supplier->name,
             'date' => $this->supplier->date,
             'status' => $this->supplier->status,
+            'currency' => $this->supplier->currency
         ];
         $this->edititem = true;
     }
@@ -69,6 +84,9 @@ class ShowSupplier extends Component
                     ]);
                     return;
                 }
+            }
+            if (array_key_exists('currency', $rec)) {
+                $this->supplier->currency = $rec['currency'];
             }
             if (array_key_exists('date', $rec)) {
                 if (!empty($rec['date'])) {
