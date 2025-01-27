@@ -41,31 +41,37 @@
      Select the storno start and end date
     @endif
    </span>
-   <div class="input__tabs">
-    <input type="date" id="start_date" wire:model.defer="start_date" name="start_date">
-    <label>Start Date</label>
-   </div>
+   <form method="POST" wire:submit.prevent="handleSubmission">
+    @csrf
+    <div class="input__tabs">
+     <input type="date" id="start_date" wire:model.defer="start_date" name="start_date">
+     <label>Start Date</label>
+    </div>
 
-   {{-- Product End Date --}}
-   <div class="input__tabs">
-    <input type="date" id="end_date" wire:model.defer="end_date" name="end_date">
-    <label>End Date</label>
-   </div>
+    {{-- End Date --}}
+    <div class="input__tabs">
+     <input type="date" id="end_date" wire:model.defer="end_date" name="end_date">
+     <label>End Date</label>
+    </div>
 
-   @if ($xmlinvoicesmodal)
-    <button class="button button--primary button--long" wire:click="generate_xml_invoice()">
-     <span>Generate XML</span>
+    {{-- Buttons for Submit --}}
+    <div class="button-group">
+     <button type="button" class="button button--primary button--long" wire:click="generate_xml_invoice">
+      <span>Generate XML Invoice</span>
+     </button>
+     <button type="button" class="button button--secondary button--long" wire:click="generate_xml_storno">
+      <span>Generate XML Storno</span>
+     </button>
+    </div>
+
+    {{-- Cancel Button --}}
+    <button type="button" class="button button--danger button--long" wire:click="cancel_xml">
+     <span>Cancel</span>
     </button>
-   @else
-    <button class="button button--primary button--long" wire:click="generate_xml_storno()">
-     <span>Generate XML</span>
-    </button>
-   @endif
-   <button class="button button--danger button--long" wire:click="cancel_xml()">
-    <span>Cancel</span>
-   </button>
+   </form>
   </div>
  </aside>
+
  {{-- xml invoice --}}
  <aside>
   <div class="background background--center @if ($filteractive) active @endif"></div>

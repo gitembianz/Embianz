@@ -638,7 +638,7 @@ class ShowOrder extends Component
 
         // Folder system
         $StornoPath = 'invoices/';
-        $stornoDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date); // Parse the invoice_date
+        $stornoDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date); // Parse the invoice_date
         $yearMonthPath = $StornoPath . $stornoDate->year . '/' . $stornoDate->format('F');
 
         if (!File::exists($yearMonthPath)) {

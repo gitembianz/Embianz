@@ -3,11 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
-use App\Models\Order_Item;
 use Livewire\Component;
+use App\Models\Order_Item;
+use Illuminate\Http\Request;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class Orderstable extends Component
@@ -33,7 +34,50 @@ class Orderstable extends Component
     public $filteractive = false;
     public $start_date_filter;
     public $end_date_filter;
+    public $start_date;
+    public $end_date;
 
+    protected $rules = [
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after_or_equal:start_date',
+    ];
+
+    protected $messages = [
+        'start_date.required' => 'Start date is required.',
+        'end_date.required' => 'The end date is required.',
+        'end_date.after_or_equal' => 'The end date must be after or equal to the start date.',
+    ];
+
+    // Validate and generate XML for invoices
+    public function generate_xml_invoice()
+    {
+        $this->validate();
+        // Handle logic to generate XML for invoices
+        session()->flash('message', 'XML Invoice generated successfully.');
+        $this->resetModal();
+    }
+
+    // Validate and generate XML for storno
+    public function generate_xml_storno()
+    {
+        $this->validate();
+        // Handle logic to generate XML for storno
+        session()->flash('message', 'XML Storno generated successfully.');
+        $this->resetModal();
+    }
+
+    // Cancel and reset modal
+    public function cancel_xml()
+    {
+        $this->resetModal();
+    }
+
+    private function resetModal()
+    {
+        $this->xmlinvoicesmodal = false;
+        $this->xmlstornomodal = false;
+        $this->reset(['start_date', 'end_date']);
+    }
 
     public function xmlinvoices()
     {
@@ -50,11 +94,7 @@ class Orderstable extends Component
         $this->xmlstornomodal = true;
     }
 
-    public function cancel_xml()
-    {
-        $this->xmlstornomodal = false;
-        $this->xmlinvoicesmodal = false;
-    }
+
 
     public function expandRow($index)
     {
