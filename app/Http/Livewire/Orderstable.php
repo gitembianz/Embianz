@@ -52,32 +52,26 @@ class Orderstable extends Component
         'end_date.after_or_equal' => 'The end date must be after or equal to the start date.',
     ];
 
-    // Validate and generate XML for invoices
     public function generate_xml_invoice()
     {
         $this->validate();
 
-        // Ensure $this->orders is a query, such as a model or builder instance
         $ordersQuery = \App\Models\Order::query();
 
         if ($this->start_date && $this->end_date) {
             $ordersQuery->whereBetween('invoice_date', [$this->start_date, $this->end_date]);
         }
 
-        // Fetch the orders based on the filtered query
         $orders = $ordersQuery->get();
         $type = 'invoice_xml';
         $path = $this->generate_invoice_xml($orders, $type);
-        // Debug or further process the orders
 
-        // Handle logic to generate XML for invoices
         session()->flash('message', 'XML Invoice generated successfully.');
         $this->resetModal();
         return response()->download($path);
     }
     public function generate_invoice_xml($orders, $type)
     {
-        // Validate that there are orders to process
         if ($orders->isEmpty()) {
             session()->flash('notification', [
                 'message' => 'No orders found for the specified criteria!',
@@ -87,12 +81,10 @@ class Orderstable extends Component
             return;
         }
 
-        // Initialize XML structure
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <Facturi />');
 
         foreach ($orders as $order) {
-            // Determine date and series based on type
             if ($type === 'invoice_xml') {
                 $date = Carbon::createFromFormat('Y-m-d', $order->invoice_date)->format('d-m-Y');
                 $serie = $order->external_invoice_number;
@@ -108,7 +100,6 @@ class Orderstable extends Component
                 $pu += $priceWithoutVAT;
                 $va += ($item->price - $priceWithoutVAT);
             }
-            // Build invoice data for each order
             $invoiceData = [
                 'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
                 'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
@@ -139,8 +130,8 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                 'FacturaIndexSPV' => '',
                 'Detalii' => [],
                 'Sumar' => [
-                    'TotalValoare' => $pu, // Ensure $pu is a float
-                    'TotalTVA' => $va, // Ensure $va is a float
+                    'TotalValoare' => $pu,
+                    'TotalTVA' => $va,
                     'Total' => $order->final_amount,
                 ],
 
@@ -152,7 +143,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                 $vatRate = (int) $item->vat;
                 $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
 
-                // Accumulate subtotals by VAT rate
                 if (!isset($vatSubtotals[$vatRate])) {
                     $vatSubtotals[$vatRate] = 0;
                 }
@@ -190,7 +180,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                     ];
                 }
             }
-            // Add delivery line
             $deliveryPrice = $order->delivery_price;
             $deliveryPriceWithoutVAT = $deliveryPrice / (1 + (19 / 100));
 
@@ -236,7 +225,7 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
             }
             $voucherValue = $order->voucher_value + $order->promotion_value;
             if ($voucherValue > 0) {
-                $amountNoVoucher = array_sum($vatSubtotals); // Total amount without voucher
+                $amountNoVoucher = array_sum($vatSubtotals);
                 $vatGroups = [];
 
                 foreach ($order->orders as $item) {
@@ -251,7 +240,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                         ];
                     }
 
-                    // Calculate the proportional voucher value for the VAT rate
                     $voucherImpactNet = (($item->price / $amountNoVoucher) * $item->quantity * $voucherValue) / (1 + ($vatRate / 100));
                     $voucherImpactTotal = ($item->price / $amountNoVoucher) * $item->quantity * $voucherValue;
 
@@ -260,7 +248,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                     $vatGroups[$vatRate]['totalVoucher'] += $voucherImpactTotal;
                 }
 
-                // Add voucher lines to the XML
                 foreach ($vatGroups as $vatRate => $group) {
                     $invoiceData['Detalii'][] = [
                         'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
@@ -280,11 +267,10 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
             }
 
 
-            // Add each order to the XML as a `Factura` node
             $factura = $xml->addChild('Factura');
             $antet = $factura->addChild('Antet');
             foreach ($invoiceData as $key => $value) {
-                if (is_array($value)) continue; // Skip arrays for now
+                if (is_array($value)) continue;
                 $antet->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
 
@@ -302,7 +288,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
             }
         }
 
-        // Save XML file
         $invoicePath = 'invoices/';
         if ($type === 'invoice_xml') {
             $pref = 'invoice';
@@ -329,28 +314,23 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
 
 
 
-    // Validate and generate XML for storno
     public function generate_xml_storno()
     {
         $this->validate();
 
-        // Ensure $this->orders is a query, such as a model or builder instance
         $ordersQuery = \App\Models\Order::query();
 
         if ($this->start_date && $this->end_date) {
             $ordersQuery->whereBetween('storno_date', [$this->start_date, $this->end_date]);
         }
 
-        // Fetch the orders based on the filtered query
         $orders = $ordersQuery->get();
         if ($orders) {
 
 
             $type = 'storno_xml';
             $path = $this->generate_invoice_xml($orders, $type);
-            // Debug or further process the orders
 
-            // Handle logic to generate XML for invoices
             session()->flash('message', 'XML Invoice generated successfully.');
             $this->resetModal();
             return response()->download($path);
@@ -361,7 +341,6 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
         }
     }
 
-    // Cancel and reset modal
     public function cancel_xml()
     {
         $this->resetModal();

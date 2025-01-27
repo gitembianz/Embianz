@@ -220,7 +220,7 @@ class ShowOrder extends Component
             </tr>
             <tr>
                 <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
-            (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
+            $this->order->invoice_series . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_invoice_number . "</td>
             </tr>
@@ -427,7 +427,6 @@ class ShowOrder extends Component
             $vatRate = (int) $item->vat;
             $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
 
-            // Accumulate subtotals by VAT rate
             if (!isset($vatSubtotals[$vatRate])) {
                 $vatSubtotals[$vatRate] = 0;
             }
@@ -465,7 +464,6 @@ class ShowOrder extends Component
                 ];
             }
         }
-        // Add delivery line
         $deliveryPrice = $this->order->delivery_price;
         $deliveryPriceWithoutVAT = $deliveryPrice / (1 + (19 / 100));
 
@@ -503,7 +501,6 @@ class ShowOrder extends Component
                 ];
             }
         }
-        // Add voucher lines proportionally by VAT rate
         $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
         if ($voucherValue > 0) {
             $amountNoVoucher = array_sum($vatSubtotals); // Total amount without voucher
@@ -521,7 +518,6 @@ class ShowOrder extends Component
                     ];
                 }
 
-                // Calculate the proportional voucher value for the VAT rate
                 $voucherImpactNet = (($item->price / $amountNoVoucher) * $item->quantity * $voucherValue) / (1 + ($vatRate / 100));
                 $voucherImpactTotal = ($item->price / $amountNoVoucher) * $item->quantity * $voucherValue;
 
@@ -530,7 +526,6 @@ class ShowOrder extends Component
                 $vatGroups[$vatRate]['totalVoucher'] += $voucherImpactTotal;
             }
 
-            // Add voucher lines to the XML
             foreach ($vatGroups as $vatRate => $group) {
                 $invoiceData['Detalii'][] = [
                     'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
@@ -551,7 +546,6 @@ class ShowOrder extends Component
 
 
 
-        // Generate XML structure
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <Facturi />');
         $factura = $xml->addChild('Factura');
@@ -686,7 +680,7 @@ class ShowOrder extends Component
         <tr>
             <td class='ff'></td>
             <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
-            (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
+            $this->order->invoice_series . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_storno_number . "</td>
         </tr>
