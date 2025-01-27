@@ -163,16 +163,34 @@ class ShowOrder extends Component
             File::makeDirectory($yearMonthPath, 0755, true);
         }
 
-        $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".pdf";
+        $date = $invoiceDate->format('d-m-Y');
+
+        $filePath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+            $this->order->invoice_series . "_" . $this->order->external_invoice_number . "_" . $date . ".pdf";
         if (file_exists($filePath)) {
             $i = 1;
-            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+            $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+                $this->order->invoice_series . "_" . $this->order->external_invoice_number . "_" . $date . "(" . $i . ")" . ".pdf";
             while (file_exists($newpath)) {
                 $i++;
-                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+                $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+                    $this->order->invoice_series . "_" . $this->order->external_invoice_number . "_" . $date . "(" . $i . ")" . ".pdf";
             }
             $filePath = $newpath;
         }
+
+
+
+        // $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".pdf";
+        // if (file_exists($filePath)) {
+        //     $i = 1;
+        //     $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+        //     while (file_exists($newpath)) {
+        //         $i++;
+        //         $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
+        //     }
+        //     $filePath = $newpath;
+        // }
         // generate PDF
         $htmlContent = "
          <html>
@@ -627,19 +645,24 @@ class ShowOrder extends Component
             File::makeDirectory($yearMonthPath, 0755, true);
         }
 
-        $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
-            $this->order->order_number . ".pdf";
+
+
+        $date = $stornoDate->format('d-m-Y');
+
+        $filePath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+            $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . ".pdf";
         if (file_exists($filePath)) {
             $i = 1;
-            $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
-                $this->order->order_number . "(" . $i . ")" . ".pdf";
+            $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+                $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
             while (file_exists($newpath)) {
                 $i++;
-                $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_storno_number . "-" .
-                    $this->order->order_number . "(" . $i . ")" . ".pdf";
+                $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+                    $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
             }
             $filePath = $newpath;
         }
+
         // generate PDF
         $htmlContent = "
 <html>
