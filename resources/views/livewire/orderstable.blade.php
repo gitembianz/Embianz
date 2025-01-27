@@ -55,19 +55,22 @@
     </div>
 
     {{-- Buttons for Submit --}}
-    <div class="button-group">
-     <button type="button" class="button button--primary button--long" wire:click="generate_xml_invoice">
-      <span>Generate XML Invoice</span>
-     </button>
-     <button type="button" class="button button--secondary button--long" wire:click="generate_xml_storno">
-      <span>Generate XML Storno</span>
+    <div class="button-group" style="margin-top: 10px">
+     @if ($xmlinvoicesmodal)
+      <button type="button" class="button button--primary button--long" wire:click="generate_xml_invoice">
+       <span>Generate XML Invoice</span>
+      </button>
+     @else
+      <button type="button" class="button button--primary button--long" wire:click="generate_xml_storno">
+       <span>Generate XML Storno</span>
+      </button>
+     @endif
+     {{-- Cancel Button --}}
+     <button type="button" class="button button--danger button--long" wire:click="cancel_xml">
+      <span>Cancel</span>
      </button>
     </div>
 
-    {{-- Cancel Button --}}
-    <button type="button" class="button button--danger button--long" wire:click="cancel_xml">
-     <span>Cancel</span>
-    </button>
    </form>
   </div>
  </aside>
