@@ -268,6 +268,7 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'xml_FurnizorCapital', 'value' => '200.00', 'description' => 'XML', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'xml_FurnizorAdresa', 'value' => 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64', 'description' => 'XML', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'xml_FurnizorInformatiiSuplimentare', 'value' => 'Tel. 0757.527.656', 'description' => 'XML', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'xml_filename', 'value' => 'F_41903669', 'description' => 'XML file prefix', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
