@@ -220,7 +220,7 @@ class ShowOrder extends Component
             </tr>
             <tr>
                 <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
-            (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
+            $this->order->invoice_series . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_invoice_number . "</td>
             </tr>
@@ -680,7 +680,7 @@ class ShowOrder extends Component
         <tr>
             <td class='ff'></td>
             <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
-            (app()->has('global_invoice_series') ? app('global_invoice_series') : 'Number:') . " - " .
+            $this->order->invoice_series . " - " .
             (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
             $this->order->external_storno_number . "</td>
         </tr>
