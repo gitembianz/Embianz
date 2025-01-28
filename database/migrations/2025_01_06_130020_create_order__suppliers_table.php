@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('status');
                 $table->date('date')->nullable();
+                $table->string('currency ')->nullable();
                 $table->string('created_by')->nullable();
                 $table->string('last_modified_by')->nullable();
                 $table->timestamps();

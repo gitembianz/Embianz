@@ -198,6 +198,31 @@
   </div>
   <div class="details__checkboxes">
 
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->supplier_name }}</span>
+    @else
+     <input type="text" name="supplier_name" wire:model.defer="prod.supplier_name" required>
+    @endif
+    <label for="supplier_name">Supplier name</label>
+   </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $quantitysupplier }}</span>
+    <label for="product__name">Quantity Supplier</label>
+
+   </div>
+  </div>
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->low_stock_quantity }}</span>
+   @else
+    <input type="number" name="low_stock_quantity" wire:model.defer="prod.low_stock_quantity" required>
+   @endif
+   <label for="low_stock_quantity">Low Stock Quantity</label>
+  </div>
+
+  <div class="details__checkboxes">
+
    {{-- Product Popularity --}}
    <div class="input__tabs">
     @if ($editproduct === null)
@@ -206,11 +231,6 @@
      <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
     @endif
     <label for="product__name">Popularity</label>
-   </div>
-   <div class="input__tabs">
-    <span class="disabled">{{ $product->quantity_supplier_ordered }}</span>
-    <label for="product__name">Quantity Supplier Ordered</label>
-
    </div>
   </div>
   <div class="details__checkboxes">

@@ -75,6 +75,11 @@
          Quantity
         </button>
        </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Price
+        </button>
+       </th>
        <th>
         <div style="display: flex;">
          <button class="button button--secondary button--sm" style="opacity: 0">
@@ -160,6 +165,10 @@
         <td class="hidden" style="width: auto;">
          <input type="number" placeholder="Insert quantity" required class="input button--fill button--xs"
           wire:model.defer="productsAndValues.{{ $index }}.product.quantity">
+        </td>
+        <td class="hidden" style="width: auto;">
+         <input type="text" placeholder="Insert price" required class="input button--fill button--xs"
+          wire:model.defer="productsAndValues.{{ $index }}.product.price">
         </td>
 
         <td>
@@ -255,6 +264,11 @@
            <bold>Quantity</bold>
            <input type="number" placeholder="Insert quantity" required class="input button--fill button--xs"
             wire:model.defer="productsAndValues.{{ $index }}.product.quantity">
+          </p>
+          <p>
+           <bold>Price</bold>
+           <input type="text" placeholder="Insert price" required class="input button--fill button--xs"
+            wire:model.defer="productsAndValues.{{ $index }}.product.price">
           </p>
          </div>
         </td>
@@ -429,6 +443,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Price'))
+      <th class="hidden">
+       <button wire:click="sortBy('price')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Price
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created by'))
       <th class="hidden">
        <button wire:click="sortBy('created_by')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -551,6 +575,18 @@
           <div class="searchable">
            <input type="number" required class="input__searchable"
             wire:model.defer="order_item.{{ $index }}.quantity_received">
+          </div>
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Price'))
+        <td class="hidden">
+         @if ($editindex !== $index)
+          {{ $order->price }}
+         @else
+          <div class="searchable">
+           <input type="text" required class="input__searchable"
+            wire:model.defer="order_item.{{ $index }}.price">
           </div>
          @endif
         </td>

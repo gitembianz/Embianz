@@ -31,7 +31,9 @@ class Product extends Model
     'brand',
     'innerid',
     'comments',
-    'low_stock'
+    'low_stock',
+    'supplier_name',
+    'low_stock_quantity'
   ];
 
   public static function search($search)

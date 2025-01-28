@@ -22,7 +22,7 @@ class RelatedAddresses extends Component
     public $showrelatedadd = false;
     public $accountId;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'County', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'Country ISO', 'County', 'County ISO', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
     public $adress = [];
@@ -62,7 +62,11 @@ class RelatedAddresses extends Component
             $index . '.address1' => $record->address1,
             $index . '.address2' => $record->address2,
             $index . '.country' => $record->country,
+            $index . '.country_iso' => $record->country_iso,
+
             $index . '.county' => $record->county,
+            $index . '.county_iso' => $record->county_iso,
+
             $index . '.city' => $record->city,
             $index . '.zipcode' => $record->zipcode,
         ];
@@ -94,8 +98,14 @@ class RelatedAddresses extends Component
             if (array_key_exists('country', $record)) {
                 $new->country = $record['country'];
             }
+            if (array_key_exists('country_iso', $record)) {
+                $new->country_iso = $record['country_iso'];
+            }
             if (array_key_exists('county', $record)) {
                 $new->county = $record['county'];
+            }
+            if (array_key_exists('county_iso', $record)) {
+                $new->county_iso = $record['county_iso'];
             }
             if (array_key_exists('city', $record)) {
                 $new->city = $record['city'];
@@ -132,7 +142,7 @@ class RelatedAddresses extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->addresses->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->addresses->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -166,7 +176,7 @@ class RelatedAddresses extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->addressesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->addressesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function getAddressesProperty()
     {

@@ -29,6 +29,80 @@
   </div>
  </aside>
 
+ {{-- xml invoice --}}
+ <aside>
+  <div class="background background--center @if ($xmlinvoicesmodal || $xmlstornomodal) active @endif"></div>
+  <div class="aside aside--confirm @if ($xmlinvoicesmodal || $xmlstornomodal) active @endif"
+   style="min-width: 400px;min-height:250px">
+   <span>
+    @if ($xmlinvoicesmodal)
+     Select the invoice start and end date
+    @else
+     Select the storno start and end date
+    @endif
+   </span>
+   <form method="POST" wire:submit.prevent="handleSubmission">
+    @csrf
+    <div class="input__tabs">
+     <input type="date" id="start_date" wire:model.defer="start_date" name="start_date">
+     <label>Start Date</label>
+    </div>
+
+    {{-- End Date --}}
+    <div class="input__tabs">
+     <input type="date" id="end_date" wire:model.defer="end_date" name="end_date">
+     <label>End Date</label>
+    </div>
+
+    {{-- Buttons for Submit --}}
+    <div class="button-group" style="margin-top: 10px">
+     @if ($xmlinvoicesmodal)
+      <button type="button" class="button button--primary button--long" wire:click="generate_xml_invoice">
+       <span>Generate XML Invoice</span>
+      </button>
+     @else
+      <button type="button" class="button button--primary button--long" wire:click="generate_xml_storno">
+       <span>Generate XML Storno</span>
+      </button>
+     @endif
+     {{-- Cancel Button --}}
+     <button type="button" class="button button--danger button--long" wire:click="cancel_xml">
+      <span>Cancel</span>
+     </button>
+    </div>
+
+   </form>
+  </div>
+ </aside>
+
+ {{-- xml invoice --}}
+ <aside>
+  <div class="background background--center @if ($filteractive) active @endif"></div>
+  <div class="aside aside--confirm @if ($filteractive) active @endif"
+   style="min-width: 400px;min-height:250px">
+   <span>
+    Select the dates
+   </span>
+   <div class="input__tabs">
+    <input type="date" id="start_date" wire:model.defer="start_date_filter" name="start_date">
+    <label>Start Date</label>
+   </div>
+
+   {{-- Product End Date --}}
+   <div class="input__tabs">
+    <input type="date" id="end_date" wire:model.defer="end_date_filter" name="end_date">
+    <label>End Date</label>
+   </div>
+
+   <button class="button button--primary button--long" wire:click="filter_order()">
+    <span>Filter</span>
+   </button>
+   <button class="button button--danger button--long" wire:click="cancel_filter()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
+
 
  {{-- Asides --}}
  <aside>
@@ -86,7 +160,9 @@
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Orders') }} ({{ $orders->total() }})</h1>
- <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;" wire:model="status31Only"> Show Processing Only</div>
+
+ <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;"
+   wire:model="status31Only"> Show Processing Only</div>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
@@ -101,6 +177,11 @@
     <path d="M16.84 18.37l0 .01" />
     <path d="M19.37 15.1l0 .01" />
     <path d="M19.94 11l0 .01" />
+   </svg>
+  </button>
+  <button class="button button--secondary" tooltip="Filter by invoice date" tooltip-top wire:click="filter">
+   <svg>
+    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
   </button>
   {{-- IF CHECKED --}}
@@ -128,6 +209,7 @@
      <path d="M7 6v12" />
     </svg>
    </button>
+
    {{-- Dropdown Content --}}
    <div class="dropdown__content">
     <div class="dropdown__container">
@@ -141,6 +223,33 @@
        {{ $column }}
       </button>
      @endforeach
+    </div>
+   </div>
+  </div>
+  {{-- xml generator --}}
+  <div class="dropdown dropdown--right display--desktop" wire:ignore>
+   {{-- Dropdown Button --}}
+   <button class="button button--secondary button--centered" tooltip="Generate xml for orders" tooltip-left>
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+     <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+     <path d="M4 15l4 6" />
+     <path d="M4 21l4 -6" />
+     <path d="M19 15v6h3" />
+     <path d="M11 21v-6l2.5 3l2.5 -3v6" />
+    </svg>
+   </button>
+
+   {{-- Dropdown Content --}}
+   <div class="dropdown__content">
+    <div class="dropdown__container">
+     <button class="button button--primary button--long button--flexed button--arrow" wire:click="xmlinvoices">
+      for invoices
+     </button>
+     <button class="button button--primary button--long button--flexed button--arrow" wire:click="xmlstorno">
+      for storno
+     </button>
     </div>
    </div>
   </div>

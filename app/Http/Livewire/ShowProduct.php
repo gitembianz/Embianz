@@ -25,11 +25,13 @@ class ShowProduct extends Component
   public $delete = false;
   public $prod;
   public $interimQuantity;
+  public $quantitysupplier;
 
   public function mount($productId)
   {
     $this->productId = $productId;
     $this->calculateInterimQuantity();
+    $this->calculatequantitysupplier();
   }
   public function confirmProductRemoval($id)
   {
@@ -61,7 +63,10 @@ class ShowProduct extends Component
       'seo_id' => $this->product->seo_id,
       'type' => $this->product->type,
       'brand' => $this->product->brand,
-      'comments' => $this->product->comments
+      'comments' => $this->product->comments,
+      'supplier_name' => $this->product->supplier_name,
+      'low_stock_quantity' => $this->product->low_stock_quantity,
+
 
     ];
     $this->editproduct = true;
@@ -81,6 +86,17 @@ class ShowProduct extends Component
       ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
       ->groupBy('products.id', 'products.quantity')
       ->value('interim_quantity') ?? $this->product->quantity;
+  }
+  public function calculateQuantitySupplier()
+  {
+    $this->quantitysupplier = Product::query()
+      ->leftJoin('order__supplier__items as os', 'products.id', '=', 'os.product_id')
+      ->leftJoin('order__suppliers as o_s', 'os.order__supplier_id', '=', 'o_s.id')
+      ->where('products.id', $this->productId)
+      ->where('o_s.status', '!=', 'closed') // Adjust the status check as needed
+      ->selectRaw('COALESCE(SUM(os.quantity), 0) as quantity_supplier')
+      ->groupBy('products.id')
+      ->value('quantity_supplier') ?? 0;
   }
   private function generateUniqueSeoId($name)
   {
@@ -103,6 +119,9 @@ class ShowProduct extends Component
       $new = Product::find($this->productId);
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
+      }
+      if (array_key_exists('supplier_name', $product_new)) {
+        $new->supplier_name = $product_new['supplier_name'];
       }
       if (array_key_exists('seo_id', $product_new)) {
         if ($product_new['seo_id'] == "") {
@@ -134,6 +153,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('quantity', $product_new)) {
         $new->quantity = $product_new['quantity'];
+      }
+      if (array_key_exists('low_stock_quantity', $product_new)) {
+        $new->low_stock_quantity = $product_new['low_stock_quantity'];
       }
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];

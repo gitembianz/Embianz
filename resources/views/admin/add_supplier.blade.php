@@ -43,6 +43,15 @@
    <input type="date" name="date" required>
    <label>Date</label>
   </div>
+  {{-- Price List Currency --}}
+  <div class="input__tabs">
+   <select name="currency">
+    @foreach ($currencies as $currency)
+     <option value="{{ $currency->name }}">{{ $currency->name }}</option>
+    @endforeach
+   </select>
+   <label>Currency</label>
+  </div>
   {{-- Save Button --}}
   <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
   @error('date')

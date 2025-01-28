@@ -17,6 +17,7 @@ use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use App\Mail\ConfirmationOrder;
+use App\Models\Country;
 use Illuminate\Support\Facades\Mail;
 
 class StoreOrder extends Component
@@ -45,7 +46,8 @@ class StoreOrder extends Component
   public $individual_billing_address1;
   public $individual_billing_address2;
   public $individual_billing_country;
-  public $individual_billing_county;
+  public $individual_billing_county = 'Alba_AB';
+  public $individual_billing_county_iso;
   public $individual_billing_city;
   public $individual_billing_zipcode;
   public $individual_shipping_first;
@@ -55,7 +57,8 @@ class StoreOrder extends Component
   public $individual_shipping_address1;
   public $individual_shipping_address2;
   public $individual_shipping_country;
-  public $individual_shipping_county;
+  public $individual_shipping_county = 'Alba_AB';
+  public $individual_shipping_county_iso;
   public $individual_shipping_city;
   public $individual_shipping_zipcode;
 
@@ -74,7 +77,8 @@ class StoreOrder extends Component
   public $juridic_billing_address1;
   public $juridic_billing_address2;
   public $juridic_billing_country;
-  public $juridic_billing_county;
+  public $juridic_billing_county = 'Alba_AB';
+  public $juridic_billing_county_iso;
   public $juridic_billing_city;
   public $juridic_billing_zipcode;
   public $juridic_shipping_first;
@@ -84,7 +88,8 @@ class StoreOrder extends Component
   public $juridic_shipping_address1;
   public $juridic_shipping_address2;
   public $juridic_shipping_country;
-  public $juridic_shipping_county;
+  public $juridic_shipping_county = 'Alba_AB';
+  public $juridic_shipping_county_iso;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
 
@@ -196,6 +201,14 @@ class StoreOrder extends Component
   {
     $this->step--;
     $this->resetErrorBag();
+    if ($this->juridic) {
+      $this->juridic_shipping_county = $this->juridic_shipping_county . '_' . $this->juridic_shipping_county_iso;
+      $this->juridic_billing_county = $this->juridic_billing_county . '_' . $this->juridic_billing_county_iso;
+    }
+    if ($this->individual) {
+      $this->individual_shipping_county = $this->individual_shipping_county . '_' . $this->individual_shipping_county_iso;
+      $this->individual_billing_county = $this->individual_billing_county . '_' . $this->individual_billing_county_iso;
+    }
   }
 
 
@@ -207,7 +220,7 @@ class StoreOrder extends Component
       $this->resetErrorBag();
       $this->validateData();
       $this->step++;
-      if ($this->individual_identic) {
+      if ($this->individual && $this->individual_identic) {
         $this->individual_shipping_first = $this->individual_billing_first;
         $this->individual_shipping_last = $this->individual_billing_last;
         $this->individual_shipping_phone = $this->individual_billing_phone;
@@ -215,11 +228,22 @@ class StoreOrder extends Component
         $this->individual_shipping_address1 = $this->individual_billing_address1;
         $this->individual_shipping_address2 = $this->individual_billing_address2;
         $this->individual_shipping_country = $this->individual_billing_country;
-        $this->individual_shipping_county = $this->individual_billing_county;
+        [$county, $iso] = explode('_', $this->individual_billing_county);
+        $this->individual_billing_county = $county;
+        $this->individual_billing_county_iso = $iso;
+        $this->individual_shipping_county = $county;
+        $this->individual_shipping_county_iso = $iso;
         $this->individual_shipping_city = $this->individual_billing_city;
         $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
+      } elseif ($this->individual) {
+        [$county, $iso] = explode('_', $this->individual_billing_county);
+        $this->individual_billing_county = $county;
+        $this->individual_billing_county_iso = $iso;
+        [$countys, $isos] = explode('_', $this->individual_shipping_county);
+        $this->individual_shipping_county = $countys;
+        $this->individual_shipping_county_iso = $isos;
       }
-      if ($this->juridic_identic) {
+      if ($this->juridic && $this->juridic_identic) {
         $this->juridic_shipping_first = $this->juridic_billing_first;
         $this->juridic_shipping_last = $this->juridic_billing_last;
         $this->juridic_shipping_phone = $this->juridic_billing_phone;
@@ -227,9 +251,20 @@ class StoreOrder extends Component
         $this->juridic_shipping_address1 = $this->juridic_billing_address1;
         $this->juridic_shipping_address2 = $this->juridic_billing_address2;
         $this->juridic_shipping_country = $this->juridic_billing_country;
-        $this->juridic_shipping_county = $this->juridic_billing_county;
+        [$county, $iso] = explode('_', $this->juridic_shipping_county);
+        $this->juridic_billing_county = $county;
+        $this->juridic_billing_county_iso = $iso;
+        $this->juridic_shipping_county = $county;
+        $this->juridic_shipping_county_iso = $iso;
         $this->juridic_shipping_city = $this->juridic_billing_city;
         $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+      } elseif ($this->juridic) {
+        [$county, $iso] = explode('_', $this->juridic_billing_county);
+        $this->juridic_billing_county = $county;
+        $this->juridic_billing_county_iso = $iso;
+        [$countys, $isos] = explode('_', $this->juridic_shipping_county);
+        $this->juridic_shipping_county = $countys;
+        $this->juridic_shipping_county_iso = $isos;
       }
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
@@ -261,12 +296,6 @@ class StoreOrder extends Component
           'min:1',
           'max:100',
         ],
-        'individual_billing_county' =>
-        [
-          'required',
-          'min:1',
-          'max:40',
-        ],
         'individual_billing_city' =>
         [
           'required',
@@ -294,12 +323,6 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-          ],
-          'individual_shipping_county' =>
-          [
-            'required',
-            'min:1',
-            'max:40',
           ],
           'individual_shipping_city' =>
           [
@@ -347,12 +370,6 @@ class StoreOrder extends Component
           'min:1',
           'max:100',
         ],
-        'juridic_billing_county' =>
-        [
-          'required',
-          'min:1',
-          'max:40',
-        ],
         'juridic_billing_city' =>
         [
           'required',
@@ -378,11 +395,6 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-          ],
-          'juridic_shipping_county' => [
-            'required',
-            'min:1',
-            'max:40',
           ],
           'juridic_shipping_city' => [
             'required',
@@ -582,7 +594,7 @@ class StoreOrder extends Component
           $this->individual_billing_address1 = $account->addresses->where('type', 'billing')->first()->address1;
           $this->individual_billing_address2 = $account->addresses->where('type', 'billing')->first()->address2;
           $this->individual_billing_country = $account->addresses->where('type', 'billing')->first()->country;
-          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county;
+
           $this->individual_billing_city = $account->addresses->where('type', 'billing')->first()->city;
           $this->individual_billing_zipcode = $account->addresses->where('type', 'billing')->first()->zipcode;
           $this->individual_shipping_first = $account->addresses->where('type', 'shipping')->first()->first_name;
@@ -592,9 +604,12 @@ class StoreOrder extends Component
           $this->individual_shipping_address1 = $account->addresses->where('type', 'shipping')->first()->address1;
           $this->individual_shipping_address2 = $account->addresses->where('type', 'shipping')->first()->address2;
           $this->individual_shipping_country = $account->addresses->where('type', 'shipping')->first()->country;
-          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
+
+
           $this->individual_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->individual_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
+          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
+          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
         } else {
           $this->juridic = true;
           $this->individual = false;
@@ -611,7 +626,6 @@ class StoreOrder extends Component
           $this->juridic_billing_address1 = $account->addresses->where('type', 'billing')->first()->address1;
           $this->juridic_billing_address2 = $account->addresses->where('type', 'billing')->first()->address2;
           $this->juridic_billing_country = $account->addresses->where('type', 'billing')->first()->country;
-          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county;
           $this->juridic_billing_city = $account->addresses->where('type', 'billing')->first()->city;
           $this->juridic_billing_zipcode = $account->addresses->where('type', 'billing')->first()->zipcode;
           $this->juridic_shipping_first = $account->addresses->where('type', 'shipping')->first()->first_name;
@@ -621,9 +635,10 @@ class StoreOrder extends Component
           $this->juridic_shipping_address1 = $account->addresses->where('type', 'shipping')->first()->address1;
           $this->juridic_shipping_address2 = $account->addresses->where('type', 'shipping')->first()->address2;
           $this->juridic_shipping_country = $account->addresses->where('type', 'shipping')->first()->country;
-          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
           $this->juridic_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->juridic_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
+          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
+          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
         }
       }
     }
@@ -776,7 +791,7 @@ class StoreOrder extends Component
         cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
 
 
-
+        $countryiso = Country::where('name', $this->individual_billing_country)->first()->iso_code;
         Address::create([
           'account_id' => $account->id,
           'first_name' => $this->individual_billing_first,
@@ -787,12 +802,16 @@ class StoreOrder extends Component
           'address2' => $this->individual_billing_address2,
           'type' => 'billing',
           'country' => $this->individual_billing_country,
+          'country_iso' => $countryiso,
           'county' => $this->individual_billing_county,
+          'county_iso' => $this->individual_billing_county_iso,
+
           'city' => $this->individual_billing_city,
           'zipcode' => $this->individual_billing_zipcode
         ]);
-
         if (!$this->individual_identic) {
+          $countryisos = Country::where('name', $this->individual_shipping_country)->first()->iso_code;
+
           Address::create([
             'account_id' => $account->id,
             'first_name' => $this->individual_shipping_first,
@@ -803,7 +822,9 @@ class StoreOrder extends Component
             'address2' => $this->individual_shipping_address2,
             'type' => 'shipping',
             'country' => $this->individual_shipping_country,
+            'country_iso' => $countryisos,
             'county' => $this->individual_shipping_county,
+            'county_iso' => $this->individual_shipping_county_iso,
             'city' => $this->individual_shipping_city,
             'zipcode' => $this->individual_shipping_zipcode
           ]);
@@ -818,6 +839,8 @@ class StoreOrder extends Component
             'address2' => $this->individual_billing_address2,
             'type' => 'shipping',
             'country' => $this->individual_billing_country,
+            'country_iso' => $countryiso,
+            'county_iso' => $this->individual_billing_county_iso,
             'county' => $this->individual_billing_county,
             'city' => $this->individual_billing_city,
             'zipcode' => $this->individual_billing_zipcode
@@ -886,6 +909,7 @@ class StoreOrder extends Component
         cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
 
 
+        $countryisoj = Country::where('name', $this->juridic_billing_country)->first()->iso_code;
 
         Address::create([
           'account_id' => $account->id,
@@ -897,12 +921,17 @@ class StoreOrder extends Component
           'address2' => $this->juridic_billing_address2,
           'type' => 'billing',
           'country' => $this->juridic_billing_country,
+          'country_iso' => $countryisoj,
           'county' => $this->juridic_billing_county,
+          'county_iso' => $this->juridic_billing_county_iso,
+
           'city' => $this->juridic_billing_city,
           'zipcode' => $this->juridic_billing_zipcode
         ]);
 
         if (!$this->juridic_identic) {
+          $countryisojs = Country::where('name', $this->juridic_shipping_country)->first()->iso_code;
+
           Address::create([
             'account_id' => $account->id,
             'first_name' => $this->juridic_shipping_first,
@@ -913,7 +942,10 @@ class StoreOrder extends Component
             'address2' => $this->juridic_shipping_address2,
             'type' => 'shipping',
             'country' => $this->juridic_shipping_country,
+            'country_iso' => $countryisojs,
             'county' => $this->juridic_shipping_county,
+            'county_iso' => $this->juridic_shipping_county_iso,
+
             'city' => $this->juridic_shipping_city,
             'zipcode' => $this->juridic_shipping_zipcode
           ]);
@@ -928,7 +960,11 @@ class StoreOrder extends Component
             'address2' => $this->juridic_billing_address2,
             'type' => 'shipping',
             'country' => $this->juridic_billing_country,
+            'country_iso' => $countryisoj,
+
             'county' => $this->juridic_billing_county,
+            'county_iso' => $this->juridic_billing_county_iso,
+
             'city' => $this->juridic_billing_city,
             'zipcode' => $this->juridic_billing_zipcode
           ]);
@@ -936,12 +972,13 @@ class StoreOrder extends Component
       }
 
       $baseName = class_basename(Order::class);
-      $cartNumber = 1;
-      $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      while (Order::where('name', $uniqueName)->exists()) {
-        $cartNumber++;
-        $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      }
+
+      // Get the last order name and calculate the next order number
+      $lastOrder = Order::latest('id')->first();
+      $orderNumber = $lastOrder ? ((int)str_replace("{$baseName}_", '', $lastOrder->name) + 1) : 1;
+
+      // Generate the unique name
+      $uniqueName = "{$baseName}_" . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
       if ($this->payment['type'] != 'card') {
 
         $order = Order::create([

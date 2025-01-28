@@ -28,17 +28,25 @@
  </aside>
  {{-- preview sistem --}}
  <aside>
-  <div class="background background--center @if ($previewurl != null) active @endif"></div>
-  <div class="aside aside--table @if ($previewurl != null) active @endif">
-   <iframe src="/{{ $previewurl }}" width="100%" height="95%" style="border: none;">
-    Your browser does not support iframes. Please download the file
-    <a href="/{{ $previewurl }}">here</a>.
-   </iframe>
+  <div class="background background--center @if ($previewContent || $previewurl) active @endif"></div>
+  <div class="aside aside--table @if ($previewContent || $previewurl) active @endif">
+   @if ($previewurl)
+    <iframe src="/{{ $previewurl }}" width="100%" height="95%" style="border: none;">
+     Your browser does not support iframes. Please download the file
+     <a href="/{{ $previewurl }}">here</a>.
+    </iframe>
+   @elseif ($previewContent)
+    <div class="xml-preview"
+     style="overflow-y: auto; height: 95%; padding: 10px; background: #f8f8f8; border: 1px solid #ddd;">
+     <pre>{{ $previewContent }}</pre>
+    </div>
+   @endif
    <button class="button button--danger button--fill" wire:click="cancel_preview()">
     <span>Cancel</span>
    </button>
   </div>
  </aside>
+
 
 
  {{-- Accordion Header --}}
