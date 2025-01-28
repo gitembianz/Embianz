@@ -522,12 +522,19 @@
     @else
      @foreach ($orderproducts as $index => $order)
       @php
+       if ($order->quantity != $order->quantity_received) {
+           $class = 'notprocess';
+       } else {
+           $class = '';
+       }
+      @endphp
+      @php
        $pr = $order->product;
        $interimQuantity = $pr->quantity + $pr->interim_quantity;
        $totalQuantity = $pr->total_quantity;
       @endphp
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($order->id)) active @endif">
+       class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}" wire:model="checked">
