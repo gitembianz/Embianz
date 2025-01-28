@@ -41,7 +41,7 @@ class ShowSupplier extends Component
 
         if ($supplier) {
             $this->totalPrice = $supplier->items->sum(function ($item) {
-                return (int) $item->price;
+                return (int) ($item->price * $item->quantity);
             }) ?? 0;
         }
 

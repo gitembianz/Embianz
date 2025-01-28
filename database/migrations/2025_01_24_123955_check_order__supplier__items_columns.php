@@ -55,6 +55,12 @@ return new class extends Migration
                 $table->decimal('price', 10, 4)->nullable()->after('quantity_received');
             });
         }
+        if (!Schema::hasColumn('order__supplier__items', 'subtotal')) {
+
+            Schema::table('order__supplier__items', function (Blueprint $table) {
+                $table->decimal('subtotal', 10, 4)->nullable()->after('price');
+            });
+        }
         if (!Schema::hasColumn('order__supplier__items', 'created_by')) {
 
             Schema::table('order__supplier__items', function (Blueprint $table) {
