@@ -453,6 +453,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Subtotal'))
+      <th class="hidden">
+       <button wire:click="sortBy('subtotal')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Subtotal
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created by'))
       <th class="hidden">
        <button wire:click="sortBy('created_by')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -588,6 +598,15 @@
            <input type="text" required class="input__searchable"
             wire:model.defer="order_item.{{ $index }}.price">
           </div>
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Subtotal'))
+        <td class="hidden">
+         @if ($order->subtotal != null)
+          {{ $order->subtotal }}
+         @else
+          {{ $order->price * $order->quantity }}
          @endif
         </td>
        @endif
