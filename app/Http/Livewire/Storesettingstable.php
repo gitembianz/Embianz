@@ -323,29 +323,33 @@ class Storesettingstable extends Component
 
   public function refreshprices()
   {
-    $prices = PricelistEntries::get();
+    $prices = PricelistEntries::all();
 
     foreach ($prices as $price) {
-      if ($price->value_no_vat && $price->value == null) {
-        $price->value_no_discount = $price->value_no_vat + (0.01 * $price->vat * $price->value_no_vat); // Calculate value_no_discount
-        $price->value = $price->value_no_discount - (0.01 * $price->value_no_discount * $price->discount); // Calculate value
-      } else {
-        if ($price->value && $price->discount != 0) {
-          $price->value_no_discount = $price->value / (1 - ($price->discount / 100));
-        } else if ($price->value && $price->discount == 0) {
-          $price->value_no_discount = $price->value_no_vat + (0.01 * $price->vat * $price->value_no_vat);
-        }
-        $price->value_no_vat = $price->value / (1 + ($price->vat / 100));
+      if (!is_null($price->value_no_vat) && is_null($price->value)) {
+        $price->value_no_discount = round($price->value_no_vat * (1 + $price->vat / 100), 2);
+
+        $price->value = round($price->value_no_discount * (1 - $price->discount / 100), 2);
+      } elseif (!is_null($price->value) && $price->discount > 0) {
+        $price->value_no_discount = round($price->value / (1 - $price->discount / 100), 2);
+
+        $price->value_no_vat = round($price->value_no_discount / (1 + $price->vat / 100), 2);
+      } elseif (!is_null($price->value) && $price->discount == 0) {
+        $price->value_no_vat = round($price->value / (1 + $price->vat / 100), 2);
+
+        $price->value_no_discount = round($price->value_no_vat * (1 + $price->vat / 100), 2);
       }
 
       $price->save();
     }
+
     session()->flash('notification', [
-      'message' => 'Price corected successfully!',
+      'message' => 'Prices corrected successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
+
 
 
   public function initializeSitemap()
@@ -358,162 +362,163 @@ class Storesettingstable extends Component
   private function createNewSitemap($filePath)
   {
     $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-    '</urlset>';
-file_put_contents($filePath, $xmlString);
-return simplexml_load_string($xmlString);
-}
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+      '</urlset>';
+    file_put_contents($filePath, $xmlString);
+    return simplexml_load_string($xmlString);
+  }
 
 
-public function sitemap()
-{
-$filePath = public_path('sitemap.xml');
-$xml = $this->initializeSitemap();
+  public function sitemap()
+  {
+    $filePath = public_path('sitemap.xml');
+    $xml = $this->initializeSitemap();
 
-// Homepage
-$url = $xml->addChild('url');
-$url->addChild('loc', url('/'));
-$url->addChild('lastmod', now()->toAtomString());
-$url->addChild('priority', '1.0');
+    // Homepage
+    $url = $xml->addChild('url');
+    $url->addChild('loc', url('/'));
+    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('priority', '1.0');
 
-// Static pages
-$pages = [
-'/faq' => '0.5',
-'/cookie' => '0.5',
-'/privacy' => '0.5',
-'/contact' => '0.5',
-'/about' => '0.5',
-'/terms' => '0.5'
-];
+    // Static pages
+    $pages = [
+      '/faq' => '0.5',
+      '/cookie' => '0.5',
+      '/privacy' => '0.5',
+      '/contact' => '0.5',
+      '/about' => '0.5',
+      '/terms' => '0.5'
+    ];
 
-foreach ($pages as $page => $priority) {
-$url = $xml->addChild('url');
-$url->addChild('loc', url($page));
-$url->addChild('lastmod', now()->toAtomString());
-$url->addChild('priority', $priority);
-}
+    foreach ($pages as $page => $priority) {
+      $url = $xml->addChild('url');
+      $url->addChild('loc', url($page));
+      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('priority', $priority);
+    }
 
-// Active Products
-$products = Product::where('active', true)
-->where('type', '!=', 'parent')
-->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-    ->get();
+    // Active Products
+    $products = Product::where('active', true)
+      ->where('type', '!=', 'parent')
+      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->get();
 
     foreach ($products as $product) {
-    $url = $xml->addChild('url');
-    $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
-    $url->addChild('loc', htmlspecialchars($productUrl));
-    $url->addChild('lastmod', now()->toAtomString());
-    $url->addChild('priority', '0.8');
+      $url = $xml->addChild('url');
+      $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
+      $url->addChild('loc', htmlspecialchars($productUrl));
+      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('priority', '0.8');
     }
 
     // Global default category
     if (app()->has('global_default_category') && app('global_default_category') != "") {
-    $defaultCategory = Category::find(app('global_default_category'));
-    if ($defaultCategory) {
-    $this->generateCategoryPages($xml, $defaultCategory, true);
-    }
+      $defaultCategory = Category::find(app('global_default_category'));
+      if ($defaultCategory) {
+        $this->generateCategoryPages($xml, $defaultCategory, true);
+      }
     }
 
     // All other categories
     $categories = Category::where('active', true)
-    ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
-        ->get();
+      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->get();
 
-        foreach ($categories as $category) {
-        if (isset($defaultCategory) && $category->id == $defaultCategory->id) {
+    foreach ($categories as $category) {
+      if (isset($defaultCategory) && $category->id == $defaultCategory->id) {
         continue;
-        }
-        $this->generateCategoryPages($xml, $category, false);
-        }
+      }
+      $this->generateCategoryPages($xml, $category, false);
+    }
 
-        $xml->asXML($filePath);
-        chmod($filePath, 0755);
+    $xml->asXML($filePath);
+    chmod($filePath, 0755);
 
-        session()->flash('notification', [
-        'message' => 'Sitemap generated successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-        ]);
-        }
+    session()->flash('notification', [
+      'message' => 'Sitemap generated successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
 
-        /**
-        * Generate paginated URLs for a category in the sitemap
-        *
-        * @param SimpleXMLElement $xml
-        * @param Category $category
-        * @param bool $isDefaultCategory
-        * @return void
-        */
-        private function generateCategoryPages(&$xml, $category, $isDefaultCategory = false)
-        {
-        // Count the products associated with the category that meet the conditions
-        $productsCount = $category->product_categories()
-        ->whereHas('product', function ($query) {
+  /**
+   * Generate paginated URLs for a category in the sitemap
+   *
+   * @param SimpleXMLElement $xml
+   * @param Category $category
+   * @param bool $isDefaultCategory
+   * @return void
+   */
+  private function generateCategoryPages(&$xml, $category, $isDefaultCategory = false)
+  {
+    // Count the products associated with the category that meet the conditions
+    $productsCount = $category->product_categories()
+      ->whereHas('product', function ($query) {
         $query->where('active', true)
-        ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
-            })
-            ->count();
+          ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
+      })
+      ->count();
 
-            $limit = config('global.global_limit_load', 16); // Fetch the global limit, default to 16
-            $totalPages = ceil($productsCount / $limit);
+    $limit = config('global.global_limit_load', 16); // Fetch the global limit, default to 16
+    $totalPages = ceil($productsCount / $limit);
 
-            for ($page = 1; $page <= $totalPages; $page++) { $url=$xml->addChild('url');
+    for ($page = 1; $page <= $totalPages; $page++) {
+      $url = $xml->addChild('url');
 
-                // Generate the category URL with pagination
-                $categoryUrl = route('products', [
-                'categorySlug' => $category->seo_id ?? $category->id
-                ]);
+      // Generate the category URL with pagination
+      $categoryUrl = route('products', [
+        'categorySlug' => $category->seo_id ?? $category->id
+      ]);
 
-                if ($page > 1) {
-                $categoryUrl .= "?page=" . $page; // Append ?page=N for paginated pages
-                }
+      if ($page > 1) {
+        $categoryUrl .= "?page=" . $page; // Append ?page=N for paginated pages
+      }
 
-                $url->addChild('loc', htmlspecialchars($categoryUrl));
-                $url->addChild('lastmod', now()->toAtomString());
-                $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
-                }
-                }
-
-
-
-                public function refreshfilters()
-                {
-                Cache::forget('cached_specifications');
-                session()->flash('notification', [
-                'message' => 'Fileters update successfully!',
-                'type' => 'success',
-                'title' => 'Success'
-                ]);
-                }
+      $url->addChild('loc', htmlspecialchars($categoryUrl));
+      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
+    }
+  }
 
 
 
-                public function addSettingsIfNotExist()
-                {
-                $settings = StoreSeeder::settings();
-                foreach ($settings as $setting) {
-                $exists = DB::table('store__settings')
-                ->where('parameter', $setting['parameter'])
-                ->exists();
+  public function refreshfilters()
+  {
+    Cache::forget('cached_specifications');
+    session()->flash('notification', [
+      'message' => 'Fileters update successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
 
-                if (!$exists) {
-                DB::table('store__settings')->insert([
-                'parameter' => $setting['parameter'],
-                'value' => $setting['value'],
-                'description' => $setting['description'],
-                'createdby' => 'admin',
-                'lastmodifiedby' => 'admin',
-                'created_at' => $setting['created_at'],
-                'updated_at' => $setting['updated_at']
-                ]);
-                }
-                }
-                Cache::forget('global_variables');
-                session()->flash('notification', [
-                'message' => 'Parameters update successfully!',
-                'type' => 'success',
-                'title' => 'Success'
-                ]);
-                }
-                }
+
+
+  public function addSettingsIfNotExist()
+  {
+    $settings = StoreSeeder::settings();
+    foreach ($settings as $setting) {
+      $exists = DB::table('store__settings')
+        ->where('parameter', $setting['parameter'])
+        ->exists();
+
+      if (!$exists) {
+        DB::table('store__settings')->insert([
+          'parameter' => $setting['parameter'],
+          'value' => $setting['value'],
+          'description' => $setting['description'],
+          'createdby' => 'admin',
+          'lastmodifiedby' => 'admin',
+          'created_at' => $setting['created_at'],
+          'updated_at' => $setting['updated_at']
+        ]);
+      }
+    }
+    Cache::forget('global_variables');
+    session()->flash('notification', [
+      'message' => 'Parameters update successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+}
