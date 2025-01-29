@@ -35,6 +35,21 @@ class ShowSupplier extends Component
     {
         $this->delete = false;
     }
+    public function deleteSingleRecord()
+    {
+        $id = $this->itemId;
+        $record = Order_Supplier::findOrFail($id);
+        foreach ($record->items as $item) {
+            $item->delete();
+        }
+        $record->delete();
+        $this->delete = false;
+        return redirect()->route('suppliers')->with('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
     public function getSupplierQueryProperty()
     {
         $supplier = Order_Supplier::with('items')->find($this->itemId);
