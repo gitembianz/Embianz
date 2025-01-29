@@ -40,7 +40,7 @@
    </svg>
   </a>
   @if ($edititem === null)
-   <button class="button button--primary button--centered" tooltip="Edit this Price" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Edit this Supplier" tooltip-left
     wire:click.prevent="edititem()">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -70,7 +70,7 @@
     </svg>
    </button>
   @endif
-  <button class="button button--primary button--centered" tooltip="Delete this Price" tooltip-left
+  <button class="button button--primary button--centered" tooltip="Delete this Supplier" tooltip-left
    wire:click.prevent="confirmItemRemoval({{ $supplier->id }})">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
