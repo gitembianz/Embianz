@@ -453,6 +453,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Subtotal'))
+      <th class="hidden">
+       <button wire:click="sortBy('subtotal')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Subtotal
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created by'))
       <th class="hidden">
        <button wire:click="sortBy('created_by')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -512,12 +522,19 @@
     @else
      @foreach ($orderproducts as $index => $order)
       @php
+       if ($order->quantity != $order->quantity_received) {
+           $class = 'notprocess';
+       } else {
+           $class = '';
+       }
+      @endphp
+      @php
        $pr = $order->product;
        $interimQuantity = $pr->quantity + $pr->interim_quantity;
        $totalQuantity = $pr->total_quantity;
       @endphp
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($order->id)) active @endif">
+       class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}" wire:model="checked">
@@ -588,6 +605,15 @@
            <input type="text" required class="input__searchable"
             wire:model.defer="order_item.{{ $index }}.price">
           </div>
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Subtotal'))
+        <td class="hidden">
+         @if ($order->subtotal != null)
+          {{ $order->subtotal }}
+         @else
+          {{ $order->price * $order->quantity }}
          @endif
         </td>
        @endif

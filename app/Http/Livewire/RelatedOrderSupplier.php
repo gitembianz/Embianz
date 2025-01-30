@@ -26,7 +26,7 @@ class RelatedOrderSupplier extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'Created by', 'Updated by', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'Subtotal', 'Created by', 'Updated by', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $supplier;
     public $rand = null;
@@ -106,6 +106,9 @@ class RelatedOrderSupplier extends Component
         }
         $orderItem->price = $record['price'];
 
+
+        $orderItem->save();
+        $orderItem->subtotal = $orderItem->price * $orderItem->quantity;
         $orderItem->save();
 
         session()->flash('notification', [
@@ -128,6 +131,7 @@ class RelatedOrderSupplier extends Component
                     'product_id' => $array['product']['idrel'],
                     'quantity' => $array['product']['quantity'],
                     'price' => $array['product']['price'],
+                    'subtotal' => $array['product']['quantity'] * $array['product']['price'],
                     'created_by' => Auth::user()->name,
                     'last_modified_by' => Auth::user()->name
                 ]);
