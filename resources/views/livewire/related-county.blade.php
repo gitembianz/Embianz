@@ -1,4 +1,4 @@
-<div class="accordion @if ($showrelatedprod) active @endif">
+<div class="accordion @if ($showrelated) active @endif">
  {{-- Delete Record OR Records --}}
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
@@ -29,9 +29,9 @@
  {{-- Accordion Header --}}
  <div class="accordion__header">
   <button
-   class="button button--flexed button--fill button--primary @if ($showrelatedprod) button--secondary active @endif"
-   wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-   {{ __('Cart Items ') }}({{ $cart->cartitems()->count() }})
+   class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
+   wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
+   {{ __('County ') }}({{ $cart->cartitems()->count() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
