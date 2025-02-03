@@ -20,4 +20,8 @@ class Country extends Model
             ->orWhere('currency', 'like', '%' . $search . '%')
             ->orWhere('iso_code', 'like', '%' . $search . '%');
     }
+    public function counties()
+    {
+        return $this->hasMany(County::class, 'country_id');
+    }
 }
