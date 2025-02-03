@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 
 
@@ -111,14 +112,20 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                 'FurnizorIBAN' => '',
                 'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ?
                     app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel. 0757.527.656'),
-                'ClientNume' => $order->account->name,
+                'ClientNume' => Str::ascii(
+                    $order->account->name
+                ),
                 'ClientInformatiiSuplimentare' => '',
                 'ClientCIF' => '',
                 'ClientNrRegCom' => '',
                 'ClientJudet' => $order->account->addresses->where('type', 'billing')->first()->county_iso,
-                'ClientLocalitate' => $order->account->addresses->where('type', 'billing')->first()->city,
+                'ClientLocalitate' => Str::ascii(
+                    $order->account->addresses->where('type', 'billing')->first()->city
+                ),
                 'ClientTara' => $order->account->addresses->where('type', 'billing')->first()->country_iso,
-                'ClientAdresa' => $order->account->addresses->where('type', 'billing')->first()->address1,
+                'ClientAdresa' => Str::ascii(
+                    $order->account->addresses->where('type', 'billing')->first()->address1
+                ),
                 'ClientTelefon' => $order->account->phone,
                 'ClientEmail' => $order->account->email,
                 'FacturaNumar' => $order->invoice_series . ' - ' . $serie,
@@ -151,7 +158,9 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
 
                     $invoiceData['Detalii'][] = [
                         'LinieNrCrt' => $index + 1,
-                        'Descriere' => $item->product->name,
+                        'Descriere' => Str::ascii(
+                            $item->product->name
+                        ),
                         'CodArticolFurnizor' => strtoupper($item->product->sku),
                         'CodArticolClient' => '',
                         'CodBare' => '',
@@ -166,7 +175,9 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
                 } else {
                     $invoiceData['Detalii'][] = [
                         'LinieNrCrt' => $index + 1,
-                        'Descriere' => $item->product->name,
+                        'Descriere' => Str::ascii(
+                            $item->product->name
+                        ),
                         'CodArticolFurnizor' => strtoupper($item->product->sku),
                         'CodArticolClient' => '',
                         'CodBare' => '',

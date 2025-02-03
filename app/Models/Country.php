@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'status', 'iso_code3', 'phone_code', 'currency', 'iso_code'];
+
     public static function search($search)
     {
         return empty($search) ? static::query()
@@ -17,5 +19,9 @@ class Country extends Model
             ->orWhere('phone_code', 'like', '%' . $search . '%')
             ->orWhere('currency', 'like', '%' . $search . '%')
             ->orWhere('iso_code', 'like', '%' . $search . '%');
+    }
+    public function counties()
+    {
+        return $this->hasMany(County::class, 'country_id');
     }
 }

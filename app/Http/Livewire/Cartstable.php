@@ -54,7 +54,7 @@ class Cartstable extends Component
   }
   public function getCartsQueryProperty()
   {
-    return Cart::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    return Cart::search($this->search)->with('status', 'voucher', 'order', 'currency')->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
   public function showColumn($column)
   {
@@ -66,7 +66,7 @@ class Cartstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->carts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->carts->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -97,7 +97,7 @@ class Cartstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->cartsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->cartsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {

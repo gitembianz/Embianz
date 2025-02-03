@@ -97,7 +97,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
             $activeCountries = Cache::rememberForever('active_countries', function () {
                 return DB::table('countries')
-                    ->select(['id', 'name'])
+                    ->select(['id', 'name', 'iso_code'])
                     ->where('status', true)
                     ->get();
             });
