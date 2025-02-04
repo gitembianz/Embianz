@@ -308,7 +308,9 @@
        <td>{{ $country->id }}</td>
       @endif
       @if ($this->showColumn('name'))
-       <td>{{ $country->name }} </td>
+       <td>
+        <a href="{{ route('show_country', ['id' => $country->id]) }}">{{ strip_tags($country->name) }}</a>
+       </td>
       @endif
       @if ($this->showColumn('iso_code'))
        <td>
