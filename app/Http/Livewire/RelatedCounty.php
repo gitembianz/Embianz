@@ -195,12 +195,13 @@ class RelatedCounty extends Component
         $this->Values = [];
         $this->rand = 1;
         $this->add = false;
+        Cache::forget('active_countries');
         session()->flash('notification', [
             'message' => 'Record related successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->mount($this->county);
+        $this->mount($this->countryId);
     }
     public function edititem($index, $id)
     {
