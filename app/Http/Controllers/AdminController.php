@@ -18,6 +18,7 @@ use App\Models\Order_Supplier;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -157,6 +158,11 @@ class AdminController extends Controller
   {
     $data = Order_Supplier::find($id);
     return view('admin.show_supplier', compact('data'));
+  }
+  public function show_country($id)
+  {
+    $data = Country::find($id);
+    return view('admin.show_country', compact('data'));
   }
   public function show_cart($id)
   {

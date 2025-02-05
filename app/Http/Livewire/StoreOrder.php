@@ -18,12 +18,13 @@ use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use App\Mail\ConfirmationOrder;
 use App\Models\Country;
+use App\Models\County;
 use Illuminate\Support\Facades\Mail;
 
 class StoreOrder extends Component
 {
   public $step = 1;
-  public $is_account;
+  public $is_account = null;
   public $back = false;
   public $terms = false;
   public $errorterms = false;
@@ -35,6 +36,13 @@ class StoreOrder extends Component
   public $payment_cancel = false;
   public $new_order;
   public $modification = false;
+  public $country;
+  public $countries;
+  public $billingCounties = [];
+  public $shippingCounties = [];
+  public $jbillingCounties = [];
+  public $jshippingCounties = [];
+
 
   // individual declaration
   public $individual = true;
@@ -46,8 +54,7 @@ class StoreOrder extends Component
   public $individual_billing_address1;
   public $individual_billing_address2;
   public $individual_billing_country;
-  public $individual_billing_county = 'Alba_AB';
-  public $individual_billing_county_iso;
+  public $individual_billing_county;
   public $individual_billing_city;
   public $individual_billing_zipcode;
   public $individual_shipping_first;
@@ -57,8 +64,7 @@ class StoreOrder extends Component
   public $individual_shipping_address1;
   public $individual_shipping_address2;
   public $individual_shipping_country;
-  public $individual_shipping_county = 'Alba_AB';
-  public $individual_shipping_county_iso;
+  public $individual_shipping_county;
   public $individual_shipping_city;
   public $individual_shipping_zipcode;
 
@@ -77,8 +83,7 @@ class StoreOrder extends Component
   public $juridic_billing_address1;
   public $juridic_billing_address2;
   public $juridic_billing_country;
-  public $juridic_billing_county = 'Alba_AB';
-  public $juridic_billing_county_iso;
+  public $juridic_billing_county;
   public $juridic_billing_city;
   public $juridic_billing_zipcode;
   public $juridic_shipping_first;
@@ -88,8 +93,7 @@ class StoreOrder extends Component
   public $juridic_shipping_address1;
   public $juridic_shipping_address2;
   public $juridic_shipping_country;
-  public $juridic_shipping_county = 'Alba_AB';
-  public $juridic_shipping_county_iso;
+  public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
 
@@ -104,6 +108,78 @@ class StoreOrder extends Component
     'isdisabled' => 'checkIsDisabled',
     'timmerexpired' => 'checkpromotions'
   ];
+
+  public function updatedIndividualBillingCountry()
+  {
+    $this->individual_billing_county = null;
+    $this->billingCounties = $this->getBillingCounties();
+  }
+  public function updatedJuridicBillingCountry()
+  {
+    $this->juridic_billing_county = null;
+    $this->jbillingCounties = $this->getJBillingCounties();
+  }
+  public function updatedIndividualShippingCountry()
+  {
+    $this->individual_shipping_county = null;
+    $this->shippingCounties = $this->getShippingCounties();
+  }
+  public function updatedJuridicShippingCountry()
+  {
+    $this->juridic_shipping_county = null;
+    $this->jshippingCounties = $this->getJShippingCounties();
+  }
+
+  public function getBillingCounties()
+  {
+    $activeCountries = $this->countries;
+    $selectedCountry = $activeCountries->firstWhere('name', $this->individual_billing_country);
+
+    // Ensure counties is always an array
+    $counties = isset($selectedCountry) ? collect($selectedCountry['counties'])->toArray() : [];
+
+    // Check properly if the array is not empty
+    if (count($counties) > 0 && !$this->individual_billing_county) {
+      $this->individual_billing_county = $counties[0]['name'];
+    }
+
+    return $counties;
+  }
+
+  public function getJBillingCounties()
+  {
+    $activeCountries = $this->countries;
+    $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_billing_country);
+    $counties = $selectedCountry['counties'] ?? [];
+
+    if (!empty($counties) && !$this->juridic_billing_county) {
+      $this->juridic_billing_county = $counties[0]['name'];
+    }
+    return $counties;
+  }
+  public function getShippingCounties()
+  {
+    $activeCountries = $this->countries;
+    $selectedCountry = $activeCountries->firstWhere('name', $this->individual_shipping_country);
+    $counties = $selectedCountry['counties'] ?? [];
+
+    if (!empty($counties) && !$this->individual_shipping_county) {
+      $this->individual_shipping_county = $counties[0]['name'];
+    }
+
+    return $counties;
+  }
+  public function getJShippingCounties()
+  {
+    $activeCountries = $this->countries;
+    $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_shipping_country);
+    $counties = $selectedCountry['counties'] ?? [];
+
+    if (!empty($counties) && !$this->juridic_shipping_county) {
+      $this->juridic_shipping_county = $counties[0]['name'];
+    }
+    return $counties;
+  }
 
   public function getPromotionsProperty()
   {
@@ -201,14 +277,6 @@ class StoreOrder extends Component
   {
     $this->step--;
     $this->resetErrorBag();
-    if ($this->juridic) {
-      $this->juridic_shipping_county = $this->juridic_shipping_county . '_' . $this->juridic_shipping_county_iso;
-      $this->juridic_billing_county = $this->juridic_billing_county . '_' . $this->juridic_billing_county_iso;
-    }
-    if ($this->individual) {
-      $this->individual_shipping_county = $this->individual_shipping_county . '_' . $this->individual_shipping_county_iso;
-      $this->individual_billing_county = $this->individual_billing_county . '_' . $this->individual_billing_county_iso;
-    }
   }
 
 
@@ -228,20 +296,9 @@ class StoreOrder extends Component
         $this->individual_shipping_address1 = $this->individual_billing_address1;
         $this->individual_shipping_address2 = $this->individual_billing_address2;
         $this->individual_shipping_country = $this->individual_billing_country;
-        [$county, $iso] = explode('_', $this->individual_billing_county);
-        $this->individual_billing_county = $county;
-        $this->individual_billing_county_iso = $iso;
-        $this->individual_shipping_county = $county;
-        $this->individual_shipping_county_iso = $iso;
+        $this->individual_shipping_county = $this->individual_billing_county;
         $this->individual_shipping_city = $this->individual_billing_city;
         $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
-      } elseif ($this->individual) {
-        [$county, $iso] = explode('_', $this->individual_billing_county);
-        $this->individual_billing_county = $county;
-        $this->individual_billing_county_iso = $iso;
-        [$countys, $isos] = explode('_', $this->individual_shipping_county);
-        $this->individual_shipping_county = $countys;
-        $this->individual_shipping_county_iso = $isos;
       }
       if ($this->juridic && $this->juridic_identic) {
         $this->juridic_shipping_first = $this->juridic_billing_first;
@@ -251,20 +308,9 @@ class StoreOrder extends Component
         $this->juridic_shipping_address1 = $this->juridic_billing_address1;
         $this->juridic_shipping_address2 = $this->juridic_billing_address2;
         $this->juridic_shipping_country = $this->juridic_billing_country;
-        [$county, $iso] = explode('_', $this->juridic_shipping_county);
-        $this->juridic_billing_county = $county;
-        $this->juridic_billing_county_iso = $iso;
-        $this->juridic_shipping_county = $county;
-        $this->juridic_shipping_county_iso = $iso;
+        $this->juridic_shipping_county = $this->juridic_billing_county;
         $this->juridic_shipping_city = $this->juridic_billing_city;
         $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
-      } elseif ($this->juridic) {
-        [$county, $iso] = explode('_', $this->juridic_billing_county);
-        $this->juridic_billing_county = $county;
-        $this->juridic_billing_county_iso = $iso;
-        [$countys, $isos] = explode('_', $this->juridic_shipping_county);
-        $this->juridic_shipping_county = $countys;
-        $this->juridic_shipping_county_iso = $isos;
       }
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
@@ -438,6 +484,10 @@ class StoreOrder extends Component
 
     $this->modification = false;
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+    $this->country = app()->make('active_countries')->where('name',  app('global_default_country'))->first() ?? 'n/a';
+    $this->countries = app()->make('active_countries') ?? null;
+
+
 
     if (app()->has("global_check_terms_order") && app('global_check_terms_order') == 'true') {
       $this->terms = true;
@@ -569,10 +619,21 @@ class StoreOrder extends Component
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     }
-    $this->individual_billing_country = app('global_default_country');
-    $this->individual_shipping_country = app('global_default_country');
-    $this->juridic_billing_country = app('global_default_country');
-    $this->juridic_shipping_country = app('global_default_country');
+    if ($this->country != 'n/a') {
+
+      $this->individual_billing_country = $this->country->name;
+      $this->individual_shipping_country = $this->country->name;
+      $this->juridic_billing_country = $this->country->name;
+      $this->juridic_shipping_country = $this->country->name;
+    } else {
+      $this->individual_billing_country = 'Romania';
+      $this->individual_shipping_country = 'Romania';
+      $this->juridic_billing_country = 'Romania';
+      $this->juridic_shipping_country = 'Romania';
+    }
+
+
+
     if (request()->cookie('accountId')) {
       $this->is_account = request()->cookie('accountId');
     }
@@ -608,8 +669,8 @@ class StoreOrder extends Component
 
           $this->individual_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->individual_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
-          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
-          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
+          $this->individual_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
+          $this->individual_billing_county = $account->addresses->where('type', 'billing')->first()->county;
         } else {
           $this->juridic = true;
           $this->individual = false;
@@ -637,12 +698,15 @@ class StoreOrder extends Component
           $this->juridic_shipping_country = $account->addresses->where('type', 'shipping')->first()->country;
           $this->juridic_shipping_city = $account->addresses->where('type', 'shipping')->first()->city;
           $this->juridic_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
-          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county . '_' . $account->addresses->where('type', 'shipping')->first()->county_iso;
-          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county . '_' . $account->addresses->where('type', 'billing')->first()->county_iso;
+          $this->juridic_shipping_county = $account->addresses->where('type', 'shipping')->first()->county;
+          $this->juridic_billing_county = $account->addresses->where('type', 'billing')->first()->county;
         }
       }
     }
-
+    $this->billingCounties = $this->getBillingCounties();
+    $this->shippingCounties = $this->getShippingCounties();
+    $this->jbillingCounties = $this->getJBillingCounties();
+    $this->jshippingCounties = $this->getJShippingCounties();
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
@@ -792,6 +856,8 @@ class StoreOrder extends Component
 
 
         $countryiso = Country::where('name', $this->individual_billing_country)->first()->iso_code;
+        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code;
+
         Address::create([
           'account_id' => $account->id,
           'first_name' => $this->individual_billing_first,
@@ -804,13 +870,13 @@ class StoreOrder extends Component
           'country' => $this->individual_billing_country,
           'country_iso' => $countryiso,
           'county' => $this->individual_billing_county,
-          'county_iso' => $this->individual_billing_county_iso,
-
+          'county_iso' => $countyiso,
           'city' => $this->individual_billing_city,
           'zipcode' => $this->individual_billing_zipcode
         ]);
         if (!$this->individual_identic) {
           $countryisos = Country::where('name', $this->individual_shipping_country)->first()->iso_code;
+          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code;
 
           Address::create([
             'account_id' => $account->id,
@@ -824,7 +890,7 @@ class StoreOrder extends Component
             'country' => $this->individual_shipping_country,
             'country_iso' => $countryisos,
             'county' => $this->individual_shipping_county,
-            'county_iso' => $this->individual_shipping_county_iso,
+            'county_iso' => $countyisos,
             'city' => $this->individual_shipping_city,
             'zipcode' => $this->individual_shipping_zipcode
           ]);
@@ -840,7 +906,7 @@ class StoreOrder extends Component
             'type' => 'shipping',
             'country' => $this->individual_billing_country,
             'country_iso' => $countryiso,
-            'county_iso' => $this->individual_billing_county_iso,
+            'county_iso' => $countyiso,
             'county' => $this->individual_billing_county,
             'city' => $this->individual_billing_city,
             'zipcode' => $this->individual_billing_zipcode
@@ -910,6 +976,7 @@ class StoreOrder extends Component
 
 
         $countryisoj = Country::where('name', $this->juridic_billing_country)->first()->iso_code;
+        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code;
 
         Address::create([
           'account_id' => $account->id,
@@ -923,14 +990,14 @@ class StoreOrder extends Component
           'country' => $this->juridic_billing_country,
           'country_iso' => $countryisoj,
           'county' => $this->juridic_billing_county,
-          'county_iso' => $this->juridic_billing_county_iso,
-
+          'county_iso' => $countyisoj,
           'city' => $this->juridic_billing_city,
           'zipcode' => $this->juridic_billing_zipcode
         ]);
 
         if (!$this->juridic_identic) {
           $countryisojs = Country::where('name', $this->juridic_shipping_country)->first()->iso_code;
+          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code;
 
           Address::create([
             'account_id' => $account->id,
@@ -944,8 +1011,7 @@ class StoreOrder extends Component
             'country' => $this->juridic_shipping_country,
             'country_iso' => $countryisojs,
             'county' => $this->juridic_shipping_county,
-            'county_iso' => $this->juridic_shipping_county_iso,
-
+            'county_iso' => $countyisojs,
             'city' => $this->juridic_shipping_city,
             'zipcode' => $this->juridic_shipping_zipcode
           ]);
@@ -961,10 +1027,8 @@ class StoreOrder extends Component
             'type' => 'shipping',
             'country' => $this->juridic_billing_country,
             'country_iso' => $countryisoj,
-
             'county' => $this->juridic_billing_county,
-            'county_iso' => $this->juridic_billing_county_iso,
-
+            'county_iso' => $countyisoj,
             'city' => $this->juridic_billing_city,
             'zipcode' => $this->juridic_billing_zipcode
           ]);

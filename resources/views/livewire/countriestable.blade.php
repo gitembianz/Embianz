@@ -308,7 +308,15 @@
        <td>{{ $country->id }}</td>
       @endif
       @if ($this->showColumn('name'))
-       <td>{{ $country->name }} </td>
+       <td>
+        @if ($rowindex !== $index)
+         <a href="{{ route('show_country', ['id' => $country->id]) }}">{{ strip_tags($country->name) }}</a>
+        @else
+         <div class="searchable">
+          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.name">
+         </div>
+        @endif
+       </td>
       @endif
       @if ($this->showColumn('iso_code'))
        <td>

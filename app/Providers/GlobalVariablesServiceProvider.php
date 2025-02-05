@@ -2,20 +2,21 @@
 
 namespace App\Providers;
 
-use App\Models\Category;
 use App\Models\Status;
+use App\Models\Country;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\Product_Spec;
+use App\Models\Category;
 use App\Models\PriceList;
+use App\Models\Promotion;
 use App\Models\TextLabel;
 use App\Models\CustomScript;
-use App\Models\Promotion;
+use App\Models\Product_Spec;
 use App\Models\Store_Settings;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\DB;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -94,11 +95,13 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     private function loadActiveCountries()
     {
         if (Schema::hasTable('countries')) {
-
             $activeCountries = Cache::rememberForever('active_countries', function () {
-                return DB::table('countries')
-                    ->select(['id', 'name'])
+                return Country::with(['counties' => function ($query) {
+                    $query->where('status', true)
+                        ->select(['id', 'country_id', 'name', 'iso_code']);
+                }])
                     ->where('status', true)
+                    ->select(['id', 'name', 'iso_code'])
                     ->get();
             });
 

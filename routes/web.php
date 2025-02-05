@@ -116,6 +116,8 @@
 
 
       route::view('/countries', 'admin.countries')->name('countries');
+      route::get('/show_country/{id}/', [AdminController::class, 'show_country'])->name('show_country');
+
       route::view('/suppliers', 'admin.suppliers')->name('suppliers');
       route::get('/add_supplier', [AdminController::class, 'add_supplier'])->name('add_supplier');
       route::post('/new_supplier', [AdminController::class, 'store_supplier'])->name('new_supplier');
