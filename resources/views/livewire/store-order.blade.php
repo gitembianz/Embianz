@@ -124,27 +124,6 @@
     @else
      ""
     @endif ,
-    // county Validation
-    // county_require: @if (app()->bound('label_form_county_require'))
-    //  "{{ app('label_form_county_require') }}"
-    // @else
-    //  ""
-    // @endif ,
-    // county_min: @if (app()->bound('label_form_county_min'))
-    //  "{{ app('label_form_county_min') }}"
-    // @else
-    //  ""
-    // @endif ,
-    // county_max: @if (app()->bound('label_form_county_max'))
-    //  "{{ app('label_form_county_max') }}"
-    // @else
-    //  ""
-    // @endif ,
-    // county_space: @if (app()->bound('label_form_county_space'))
-    //  "{{ app('label_form_county_space') }}"
-    // @else
-    //  ""
-    // @endif ,
     // city Validation
     city_require: @if (app()->bound('label_form_city_require'))
      "{{ app('label_form_city_require') }}"
@@ -291,7 +270,7 @@
      </div>
      <!-------------- Individual -------------->
      <div class="checkout__container @if ($individual) active @endif">
-      <div wire:ignore class="checkout__form active">
+      <div class="checkout__form active">
        <div class="checkout__top">
         <span>1</span>
         <h3>
@@ -348,7 +327,7 @@
         </label>
        </div>
       </div>
-      <div wire:ignore class="checkout__form active">
+      <div class="checkout__form active">
        <div class="checkout__top">
         <span>2</span>
         <h3>
@@ -384,317 +363,37 @@
         </div>
        @endif
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!---------------------------------------------------->
-        <select wire:model.defer="individual_billing_country" class="select" id="individual_billing_country"
-         aria-label="select a country">
-         <option value="Afghanistan">Afghanistan</option>
-         <option value="Åland Islands">Åland Islands</option>
-         <option value="Albania">Albania</option>
-         <option value="Algeria">Algeria</option>
-         <option value="American Samoa">American Samoa</option>
-         <option value="Andorra">Andorra</option>
-         <option value="Angola">Angola</option>
-         <option value="Anguilla">Anguilla</option>
-         <option value="Antarctica">Antarctica</option>
-         <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-         <option value="Argentina">Argentina</option>
-         <option value="Armenia">Armenia</option>
-         <option value="Aruba">Aruba</option>
-         <option value="Australia">Australia</option>
-         <option value="Austria">Austria</option>
-         <option value="Azerbaijan">Azerbaijan</option>
-         <option value="Bahamas">Bahamas</option>
-         <option value="Bahrain">Bahrain</option>
-         <option value="Bangladesh">Bangladesh</option>
-         <option value="Barbados">Barbados</option>
-         <option value="Belarus">Belarus</option>
-         <option value="Belgium">Belgium</option>
-         <option value="Belize">Belize</option>
-         <option value="Benin">Benin</option>
-         <option value="Bermuda">Bermuda</option>
-         <option value="Bhutan">Bhutan</option>
-         <option value="Bolivia">Bolivia</option>
-         <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-         <option value="Botswana">Botswana</option>
-         <option value="Bouvet Island">Bouvet Island</option>
-         <option value="Brazil">Brazil</option>
-         <option value="British Indian Ocean Territory">British Indian Ocean Territory
-         </option>
-         <option value="Brunei Darussalam">Brunei Darussalam</option>
-         <option value="Bulgaria">Bulgaria</option>
-         <option value="Burkina Faso">Burkina Faso</option>
-         <option value="Burundi">Burundi</option>
-         <option value="Cambodia">Cambodia</option>
-         <option value="Cameroon">Cameroon</option>
-         <option value="Canada">Canada</option>
-         <option value="Cape Verde">Cape Verde</option>
-         <option value="Cayman Islands">Cayman Islands</option>
-         <option value="Central African Republic">Central African Republic</option>
-         <option value="Chad">Chad</option>
-         <option value="Chile">Chile</option>
-         <option value="China">China</option>
-         <option value="Christmas Island">Christmas Island</option>
-         <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
-         <option value="Colombia">Colombia</option>
-         <option value="Comoros">Comoros</option>
-         <option value="Congo">Congo</option>
-         <option value="Congo, The Democratic Republic of the">Congo, The Democratic
-          Republic of the</option>
-         <option value="Cook Islands">Cook Islands</option>
-         <option value="Costa Rica">Costa Rica</option>
-         <option value="Croatia">Croatia</option>
-         <option value="Cuba">Cuba</option>
-         <option value="Cyprus">Cyprus</option>
-         <option value="Czech Republic">Czech Republic</option>
-         <option value="Denmark">Denmark</option>
-         <option value="Djibouti">Djibouti</option>
-         <option value="Dominica">Dominica</option>
-         <option value="Dominican Republic">Dominican Republic</option>
-         <option value="Ecuador">Ecuador</option>
-         <option value="Egypt">Egypt</option>
-         <option value="El Salvador">El Salvador</option>
-         <option value="Equatorial Guinea">Equatorial Guinea</option>
-         <option value="Eritrea">Eritrea</option>
-         <option value="Estonia">Estonia</option>
-         <option value="Ethiopia">Ethiopia</option>
-         <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
-         <option value="Faroe Islands">Faroe Islands</option>
-         <option value="Fiji">Fiji</option>
-         <option value="Finland">Finland</option>
-         <option value="France">France</option>
-         <option value="French Guiana">French Guiana</option>
-         <option value="French Polynesia">French Polynesia</option>
-         <option value="French Southern Territories">French Southern Territories</option>
-         <option value="Gabon">Gabon</option>
-         <option value="Gambia">Gambia</option>
-         <option value="Georgia">Georgia</option>
-         <option value="Germany">Germany</option>
-         <option value="Ghana">Ghana</option>
-         <option value="Gibraltar">Gibraltar</option>
-         <option value="Greece">Greece</option>
-         <option value="Greenland">Greenland</option>
-         <option value="Grenada">Grenada</option>
-         <option value="Guadeloupe">Guadeloupe</option>
-         <option value="Guam">Guam</option>
-         <option value="Guatemala">Guatemala</option>
-         <option value="Guernsey">Guernsey</option>
-         <option value="Guinea">Guinea</option>
-         <option value="Guinea-Bissau">Guinea-Bissau</option>
-         <option value="Guyana">Guyana</option>
-         <option value="Haiti">Haiti</option>
-         <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald Islands
-         </option>
-         <option value="Holy See (Vatican City State)">Holy See (Vatican City State)
-         </option>
-         <option value="Honduras">Honduras</option>
-         <option value="Hong Kong">Hong Kong</option>
-         <option value="Hungary">Hungary</option>
-         <option value="Iceland">Iceland</option>
-         <option value="India">India</option>
-         <option value="Indonesia">Indonesia</option>
-         <option value="Iran, Islamic Republic Of">Iran, Islamic Republic Of</option>
-         <option value="Iraq">Iraq</option>
-         <option value="Ireland">Ireland</option>
-         <option value="Isle of Man">Isle of Man</option>
-         <option value="Israel">Israel</option>
-         <option value="Italy">Italy</option>
-         <option value="Jamaica">Jamaica</option>
-         <option value="Japan">Japan</option>
-         <option value="Jersey">Jersey</option>
-         <option value="Jordan">Jordan</option>
-         <option value="Kazakhstan">Kazakhstan</option>
-         <option value="Kenya">Kenya</option>
-         <option value="Kiribati">Kiribati</option>
-         <option value="Korea, Republic of">Korea, Republic of</option>
-         <option value="Kuwait">Kuwait</option>
-         <option value="Kyrgyzstan">Kyrgyzstan</option>
-         <option value="Latvia">Latvia</option>
-         <option value="Lebanon">Lebanon</option>
-         <option value="Lesotho">Lesotho</option>
-         <option value="Liberia">Liberia</option>
-         <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
-         <option value="Liechtenstein">Liechtenstein</option>
-         <option value="Lithuania">Lithuania</option>
-         <option value="Luxembourg">Luxembourg</option>
-         <option value="Macao">Macao</option>
-         <option value="North Macedonia">North Macedonia</option>
-         <option value="Madagascar">Madagascar</option>
-         <option value="Malawi">Malawi</option>
-         <option value="Malaysia">Malaysia</option>
-         <option value="Maldives">Maldives</option>
-         <option value="Mali">Mali</option>
-         <option value="Malta">Malta</option>
-         <option value="Marshall Islands">Marshall Islands</option>
-         <option value="Martinique">Martinique</option>
-         <option value="Mauritania">Mauritania</option>
-         <option value="Mauritius">Mauritius</option>
-         <option value="Mayotte">Mayotte</option>
-         <option value="Mexico">Mexico</option>
-         <option value="Micronesia, Federated States of">Micronesia, Federated States of
-         </option>
-         <option value="Republic of Moldova">Republic of Moldova</option>
-         <option value="Monaco">Monaco</option>
-         <option value="Mongolia">Mongolia</option>
-         <option value="Montserrat">Montserrat</option>
-         <option value="Morocco">Morocco</option>
-         <option value="Mozambique">Mozambique</option>
-         <option value="Myanmar">Myanmar</option>
-         <option value="Namibia">Namibia</option>
-         <option value="Nauru">Nauru</option>
-         <option value="Nepal">Nepal</option>
-         <option value="Netherlands">Netherlands</option>
-         <option value="Netherlands Antilles">Netherlands Antilles</option>
-         <option value="New Caledonia">New Caledonia</option>
-         <option value="New Zealand">New Zealand</option>
-         <option value="Nicaragua">Nicaragua</option>
-         <option value="Niger">Niger</option>
-         <option value="Nigeria">Nigeria</option>
-         <option value="Niue">Niue</option>
-         <option value="Norfolk Island">Norfolk Island</option>
-         <option value="Northern Mariana Islands">Northern Mariana Islands</option>
-         <option value="Norway">Norway</option>
-         <option value="Oman">Oman</option>
-         <option value="Pakistan">Pakistan</option>
-         <option value="Palau">Palau</option>
-         <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied
-         </option>
-         <option value="Panama">Panama</option>
-         <option value="Papua New Guinea">Papua New Guinea</option>
-         <option value="Paraguay">Paraguay</option>
-         <option value="Peru">Peru</option>
-         <option value="Philippines">Philippines</option>
-         <option value="Pitcairn Islands">Pitcairn Islands</option>
-         <option value="Poland">Poland</option>
-         <option value="Portugal">Portugal</option>
-         <option value="Puerto Rico">Puerto Rico</option>
-         <option value="Qatar">Qatar</option>
-         <option value="Reunion">Reunion</option>
-         <option value="Romania">Romania</option>
-         <option value="Russian Federation">Russian Federation</option>
-         <option value="Rwanda">Rwanda</option>
-         <option value="Saint Helena">Saint Helena</option>
-         <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-         <option value="Saint Lucia">Saint Lucia</option>
-         <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
-         <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines
-         </option>
-         <option value="Samoa">Samoa</option>
-         <option value="San Marino">San Marino</option>
-         <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-         <option value="Saudi Arabia">Saudi Arabia</option>
-         <option value="Senegal">Senegal</option>
-         <option value="Serbia and Montenegro">Serbia and Montenegro</option>
-         <option value="Seychelles">Seychelles</option>
-         <option value="Sierra Leone">Sierra Leone</option>
-         <option value="Singapore">Singapore</option>
-         <option value="Slovakia">Slovakia</option>
-         <option value="Slovenia">Slovenia</option>
-         <option value="Solomon Islands">Solomon Islands</option>
-         <option value="Somalia">Somalia</option>
-         <option value="South Africa">South Africa</option>
-         <option value="South Georgia and the South Sandwich Islands">South Georgia and the
-          South Sandwich Islands</option>
-         <option value="Spain">Spain</option>
-         <option value="Sri Lanka">Sri Lanka</option>
-         <option value="Sudan">Sudan</option>
-         <option value="Suriname">Suriname</option>
-         <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-         <option value="Swaziland">Swaziland</option>
-         <option value="Sweden">Sweden</option>
-         <option value="Switzerland">Switzerland</option>
-         <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-         <option value="Taiwan">Taiwan</option>
-         <option value="Tajikistan">Tajikistan</option>
-         <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
-         <option value="Thailand">Thailand</option>
-         <option value="Timor-Leste">Timor-Leste</option>
-         <option value="Togo">Togo</option>
-         <option value="Tokelau">Tokelau</option>
-         <option value="Tonga">Tonga</option>
-         <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-         <option value="Tunisia">Tunisia</option>
-         <option value="Turkey">Turkey</option>
-         <option value="Turkmenistan">Turkmenistan</option>
-         <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
-         <option value="Tuvalu">Tuvalu</option>
-         <option value="Uganda">Uganda</option>
-         <option value="Ukraine">Ukraine</option>
-         <option value="United Arab Emirates">United Arab Emirates</option>
-         <option value="United Kingdom">United Kingdom</option>
-         <option value="United States">United States</option>
-         <option value="United States Minor Outlying Islands">United States Minor Outlying
-          Islands</option>
-         <option value="Uruguay">Uruguay</option>
-         <option value="Uzbekistan">Uzbekistan</option>
-         <option value="Vanuatu">Vanuatu</option>
-         <option value="Venezuela">Venezuela</option>
-         <option value="Vietnam">Vietnam</option>
-         <option value="Virgin Islands, British">Virgin Islands, British</option>
-         <option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
-         <option value="Wallis and Futuna">Wallis and Futuna</option>
-         <option value="Western Sahara">Western Sahara</option>
-         <option value="Yemen">Yemen</option>
-         <option value="Zambia">Zambia</option>
-         <option value="Zimbabwe">Zimbabwe</option>
+        <!-- Country Select -->
+        <select wire:model="individual_billing_country" class="select">
+         @foreach ($countries as $c)
+          <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
+         @endforeach
         </select>
        @endif
+
        <!---------------------------------------------------->
-       {{-- <div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
-        <input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty"
-         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-         required id="individualShippingCounty">
-        <span></span>
-        <label for="individualShippingCounty">
-         @if (app()->has('label_order_county'))
-          {!! app('label_order_county') !!}
-         @endif
-        </label>
-       </div> --}}
-       <select class="select" wire:model.defer="individual_billing_county" name="individualShippingCounty"
-        id="individualShippingCounty">
-        <option value="Alba_AB">Alba</option>
-        <option value="Arad_AR">Arad</option>
-        <option value="Arges_AG">Arges</option>
-        <option value="Bacau_BC">Bacau</option>
-        <option value="Bihor_BH">Bihor</option>
-        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
-        <option value="Botosani_BT">Botosani</option>
-        <option value="Braila_BR">Braila</option>
-        <option value="Brasov_BV">Brasov</option>
-        <option value="Bucuresti_B">Bucuresti</option>
-        <option value="Buzau_BZ">Buzau</option>
-        <option value="Caras-Severin_CS">Caras-Severin</option>
-        <option value="Calarasi_CL">Calarasi</option>
-        <option value="Cluj_CJ">Cluj</option>
-        <option value="Constanta_CT">Constanta</option>
-        <option value="Covasna_CV">Covasna</option>
-        <option value="Dambovita_DB">Dambovita</option>
-        <option value="Dolj_DJ">Dolj</option>
-        <option value="Galati_GL">Galati</option>
-        <option value="Giurgiu_GR">Giurgiu</option>
-        <option value="Gorj_GJ">Gorj</option>
-        <option value="Harghita_HR">Harghita</option>
-        <option value="Hunedoara_HD">Hunedoara</option>
-        <option value="Ialomita_IL">Ialomita</option>
-        <option value="Iasi_IS">Iasi</option>
-        <option value="Ilfov_IF">Ilfov</option>
-        <option value="Maramures_MM">Maramures</option>
-        <option value="Mehedinti_MH">Mehedinti</option>
-        <option value="Mures_MS">Mures</option>
-        <option value="Neamt_NT">Neamt</option>
-        <option value="Olt_OT">Olt</option>
-        <option value="Prahova_PH">Prahova</option>
-        <option value="Salaj_SJ">Salaj</option>
-        <option value="Satu Mare_SM">Satu Mare</option>
-        <option value="Sibiu_SB">Sibiu</option>
-        <option value="Suceava_SV">Suceava</option>
-        <option value="Teleorman_TR">Teleorman</option>
-        <option value="Timis_TM">Timis</option>
-        <option value="Tulcea_TL">Tulcea</option>
-        <option value="Valcea_VL">Valcea</option>
-        <option value="Vaslui_VS">Vaslui</option>
-        <option value="Vrancea_VN">Vrancea</option>
-       </select>
+
+       @if (!empty($billingCounties))
+        <select wire:model="individual_billing_county" class="select">
+         @foreach ($billingCounties as $county)
+          <option value="{{ $county['name'] }}">{{ $county['name'] }}</option>
+         @endforeach
+        </select>
+       @else
+        <div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
+         <input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty"
+          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+          required id="individualShippingCounty">
+         <span></span>
+         <label for="individualShippingCounty">
+          @if (app()->has('label_order_county'))
+           {!! app('label_order_county') !!}
+          @endif
+         </label>
+        </div>
+       @endif
+
+
        <!---------------------------------------------------->
        <div class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
@@ -821,317 +520,35 @@
         </div>
        @endif
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!---------------------------------------------------->
-        <select wire:ignore wire:model="individual_shipping_country" class="select" id="individual_shipping_country"
-         aria-label="select a country">
-         <option value="Afghanistan">Afghanistan</option>
-         <option value="Åland Islands">Åland Islands</option>
-         <option value="Albania">Albania</option>
-         <option value="Algeria">Algeria</option>
-         <option value="American Samoa">American Samoa</option>
-         <option value="Andorra">Andorra</option>
-         <option value="Angola">Angola</option>
-         <option value="Anguilla">Anguilla</option>
-         <option value="Antarctica">Antarctica</option>
-         <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-         <option value="Argentina">Argentina</option>
-         <option value="Armenia">Armenia</option>
-         <option value="Aruba">Aruba</option>
-         <option value="Australia">Australia</option>
-         <option value="Austria">Austria</option>
-         <option value="Azerbaijan">Azerbaijan</option>
-         <option value="Bahamas">Bahamas</option>
-         <option value="Bahrain">Bahrain</option>
-         <option value="Bangladesh">Bangladesh</option>
-         <option value="Barbados">Barbados</option>
-         <option value="Belarus">Belarus</option>
-         <option value="Belgium">Belgium</option>
-         <option value="Belize">Belize</option>
-         <option value="Benin">Benin</option>
-         <option value="Bermuda">Bermuda</option>
-         <option value="Bhutan">Bhutan</option>
-         <option value="Bolivia">Bolivia</option>
-         <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-         <option value="Botswana">Botswana</option>
-         <option value="Bouvet Island">Bouvet Island</option>
-         <option value="Brazil">Brazil</option>
-         <option value="British Indian Ocean Territory">British Indian Ocean Territory
-         </option>
-         <option value="Brunei Darussalam">Brunei Darussalam</option>
-         <option value="Bulgaria">Bulgaria</option>
-         <option value="Burkina Faso">Burkina Faso</option>
-         <option value="Burundi">Burundi</option>
-         <option value="Cambodia">Cambodia</option>
-         <option value="Cameroon">Cameroon</option>
-         <option value="Canada">Canada</option>
-         <option value="Cape Verde">Cape Verde</option>
-         <option value="Cayman Islands">Cayman Islands</option>
-         <option value="Central African Republic">Central African Republic</option>
-         <option value="Chad">Chad</option>
-         <option value="Chile">Chile</option>
-         <option value="China">China</option>
-         <option value="Christmas Island">Christmas Island</option>
-         <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
-         <option value="Colombia">Colombia</option>
-         <option value="Comoros">Comoros</option>
-         <option value="Congo">Congo</option>
-         <option value="Congo, The Democratic Republic of the">Congo, The Democratic
-          Republic of the</option>
-         <option value="Cook Islands">Cook Islands</option>
-         <option value="Costa Rica">Costa Rica</option>
-         <option value="Croatia">Croatia</option>
-         <option value="Cuba">Cuba</option>
-         <option value="Cyprus">Cyprus</option>
-         <option value="Czech Republic">Czech Republic</option>
-         <option value="Denmark">Denmark</option>
-         <option value="Djibouti">Djibouti</option>
-         <option value="Dominica">Dominica</option>
-         <option value="Dominican Republic">Dominican Republic</option>
-         <option value="Ecuador">Ecuador</option>
-         <option value="Egypt">Egypt</option>
-         <option value="El Salvador">El Salvador</option>
-         <option value="Equatorial Guinea">Equatorial Guinea</option>
-         <option value="Eritrea">Eritrea</option>
-         <option value="Estonia">Estonia</option>
-         <option value="Ethiopia">Ethiopia</option>
-         <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
-         <option value="Faroe Islands">Faroe Islands</option>
-         <option value="Fiji">Fiji</option>
-         <option value="Finland">Finland</option>
-         <option value="France">France</option>
-         <option value="French Guiana">French Guiana</option>
-         <option value="French Polynesia">French Polynesia</option>
-         <option value="French Southern Territories">French Southern Territories</option>
-         <option value="Gabon">Gabon</option>
-         <option value="Gambia">Gambia</option>
-         <option value="Georgia">Georgia</option>
-         <option value="Germany">Germany</option>
-         <option value="Ghana">Ghana</option>
-         <option value="Gibraltar">Gibraltar</option>
-         <option value="Greece">Greece</option>
-         <option value="Greenland">Greenland</option>
-         <option value="Grenada">Grenada</option>
-         <option value="Guadeloupe">Guadeloupe</option>
-         <option value="Guam">Guam</option>
-         <option value="Guatemala">Guatemala</option>
-         <option value="Guernsey">Guernsey</option>
-         <option value="Guinea">Guinea</option>
-         <option value="Guinea-Bissau">Guinea-Bissau</option>
-         <option value="Guyana">Guyana</option>
-         <option value="Haiti">Haiti</option>
-         <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald Islands
-         </option>
-         <option value="Holy See (Vatican City State)">Holy See (Vatican City State)
-         </option>
-         <option value="Honduras">Honduras</option>
-         <option value="Hong Kong">Hong Kong</option>
-         <option value="Hungary">Hungary</option>
-         <option value="Iceland">Iceland</option>
-         <option value="India">India</option>
-         <option value="Indonesia">Indonesia</option>
-         <option value="Iran, Islamic Republic Of">Iran, Islamic Republic Of</option>
-         <option value="Iraq">Iraq</option>
-         <option value="Ireland">Ireland</option>
-         <option value="Isle of Man">Isle of Man</option>
-         <option value="Israel">Israel</option>
-         <option value="Italy">Italy</option>
-         <option value="Jamaica">Jamaica</option>
-         <option value="Japan">Japan</option>
-         <option value="Jersey">Jersey</option>
-         <option value="Jordan">Jordan</option>
-         <option value="Kazakhstan">Kazakhstan</option>
-         <option value="Kenya">Kenya</option>
-         <option value="Kiribati">Kiribati</option>
-         <option value="Korea, Republic of">Korea, Republic of</option>
-         <option value="Kuwait">Kuwait</option>
-         <option value="Kyrgyzstan">Kyrgyzstan</option>
-         <option value="Latvia">Latvia</option>
-         <option value="Lebanon">Lebanon</option>
-         <option value="Lesotho">Lesotho</option>
-         <option value="Liberia">Liberia</option>
-         <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
-         <option value="Liechtenstein">Liechtenstein</option>
-         <option value="Lithuania">Lithuania</option>
-         <option value="Luxembourg">Luxembourg</option>
-         <option value="Macao">Macao</option>
-         <option value="North Macedonia">North Macedonia</option>
-         <option value="Madagascar">Madagascar</option>
-         <option value="Malawi">Malawi</option>
-         <option value="Malaysia">Malaysia</option>
-         <option value="Maldives">Maldives</option>
-         <option value="Mali">Mali</option>
-         <option value="Malta">Malta</option>
-         <option value="Marshall Islands">Marshall Islands</option>
-         <option value="Martinique">Martinique</option>
-         <option value="Mauritania">Mauritania</option>
-         <option value="Mauritius">Mauritius</option>
-         <option value="Mayotte">Mayotte</option>
-         <option value="Mexico">Mexico</option>
-         <option value="Micronesia, Federated States of">Micronesia, Federated States of
-         </option>
-         <option value="Republic of Moldova">Republic of Moldova</option>
-         <option value="Monaco">Monaco</option>
-         <option value="Mongolia">Mongolia</option>
-         <option value="Montserrat">Montserrat</option>
-         <option value="Morocco">Morocco</option>
-         <option value="Mozambique">Mozambique</option>
-         <option value="Myanmar">Myanmar</option>
-         <option value="Namibia">Namibia</option>
-         <option value="Nauru">Nauru</option>
-         <option value="Nepal">Nepal</option>
-         <option value="Netherlands">Netherlands</option>
-         <option value="Netherlands Antilles">Netherlands Antilles</option>
-         <option value="New Caledonia">New Caledonia</option>
-         <option value="New Zealand">New Zealand</option>
-         <option value="Nicaragua">Nicaragua</option>
-         <option value="Niger">Niger</option>
-         <option value="Nigeria">Nigeria</option>
-         <option value="Niue">Niue</option>
-         <option value="Norfolk Island">Norfolk Island</option>
-         <option value="Northern Mariana Islands">Northern Mariana Islands</option>
-         <option value="Norway">Norway</option>
-         <option value="Oman">Oman</option>
-         <option value="Pakistan">Pakistan</option>
-         <option value="Palau">Palau</option>
-         <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied
-         </option>
-         <option value="Panama">Panama</option>
-         <option value="Papua New Guinea">Papua New Guinea</option>
-         <option value="Paraguay">Paraguay</option>
-         <option value="Peru">Peru</option>
-         <option value="Philippines">Philippines</option>
-         <option value="Pitcairn Islands">Pitcairn Islands</option>
-         <option value="Poland">Poland</option>
-         <option value="Portugal">Portugal</option>
-         <option value="Puerto Rico">Puerto Rico</option>
-         <option value="Qatar">Qatar</option>
-         <option value="Reunion">Reunion</option>
-         <option value="Romania">Romania</option>
-         <option value="Russian Federation">Russian Federation</option>
-         <option value="Rwanda">Rwanda</option>
-         <option value="Saint Helena">Saint Helena</option>
-         <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-         <option value="Saint Lucia">Saint Lucia</option>
-         <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
-         <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines
-         </option>
-         <option value="Samoa">Samoa</option>
-         <option value="San Marino">San Marino</option>
-         <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-         <option value="Saudi Arabia">Saudi Arabia</option>
-         <option value="Senegal">Senegal</option>
-         <option value="Serbia and Montenegro">Serbia and Montenegro</option>
-         <option value="Seychelles">Seychelles</option>
-         <option value="Sierra Leone">Sierra Leone</option>
-         <option value="Singapore">Singapore</option>
-         <option value="Slovakia">Slovakia</option>
-         <option value="Slovenia">Slovenia</option>
-         <option value="Solomon Islands">Solomon Islands</option>
-         <option value="Somalia">Somalia</option>
-         <option value="South Africa">South Africa</option>
-         <option value="South Georgia and the South Sandwich Islands">South Georgia and the
-          South Sandwich Islands</option>
-         <option value="Spain">Spain</option>
-         <option value="Sri Lanka">Sri Lanka</option>
-         <option value="Sudan">Sudan</option>
-         <option value="Suriname">Suriname</option>
-         <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-         <option value="Swaziland">Swaziland</option>
-         <option value="Sweden">Sweden</option>
-         <option value="Switzerland">Switzerland</option>
-         <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-         <option value="Taiwan">Taiwan</option>
-         <option value="Tajikistan">Tajikistan</option>
-         <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
-         <option value="Thailand">Thailand</option>
-         <option value="Timor-Leste">Timor-Leste</option>
-         <option value="Togo">Togo</option>
-         <option value="Tokelau">Tokelau</option>
-         <option value="Tonga">Tonga</option>
-         <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-         <option value="Tunisia">Tunisia</option>
-         <option value="Turkey">Turkey</option>
-         <option value="Turkmenistan">Turkmenistan</option>
-         <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
-         <option value="Tuvalu">Tuvalu</option>
-         <option value="Uganda">Uganda</option>
-         <option value="Ukraine">Ukraine</option>
-         <option value="United Arab Emirates">United Arab Emirates</option>
-         <option value="United Kingdom">United Kingdom</option>
-         <option value="United States">United States</option>
-         <option value="United States Minor Outlying Islands">United States Minor Outlying
-          Islands</option>
-         <option value="Uruguay">Uruguay</option>
-         <option value="Uzbekistan">Uzbekistan</option>
-         <option value="Vanuatu">Vanuatu</option>
-         <option value="Venezuela">Venezuela</option>
-         <option value="Vietnam">Vietnam</option>
-         <option value="Virgin Islands, British">Virgin Islands, British</option>
-         <option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
-         <option value="Wallis and Futuna">Wallis and Futuna</option>
-         <option value="Western Sahara">Western Sahara</option>
-         <option value="Yemen">Yemen</option>
-         <option value="Zambia">Zambia</option>
-         <option value="Zimbabwe">Zimbabwe</option>
+        <!-- Country Select -->
+        <select wire:model="individual_shipping_country" class="select">
+         @foreach ($countries as $c)
+          <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
+         @endforeach
         </select>
        @endif
+
        <!---------------------------------------------------->
-       {{-- <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCountyParent">
-        <input type="text" wire:model.defer="individual_shipping_county" name="individualBillingCounty"
-         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-         required id="individualBillingCounty">
-        <span></span>
-        <label for="individualBillingCounty">
-         @if (app()->has('label_order_county'))
-          {!! app('label_order_county') !!}
-         @endif
-        </label>
-       </div> --}}
-       <select class="select" wire:model.defer="individual_shipping_county" name="individualBillingCounty"
-        id="individualBillingCounty">
-        <option value="Alba_AB">Alba</option>
-        <option value="Arad_AR">Arad</option>
-        <option value="Arges_AG">Arges</option>
-        <option value="Bacau_BC">Bacau</option>
-        <option value="Bihor_BH">Bihor</option>
-        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
-        <option value="Botosani_BT">Botosani</option>
-        <option value="Braila_BR">Braila</option>
-        <option value="Brasov_BV">Brasov</option>
-        <option value="Bucuresti_B">Bucuresti</option>
-        <option value="Buzau_BZ">Buzau</option>
-        <option value="Caras-Severin_CS">Caras-Severin</option>
-        <option value="Calarasi_CL">Calarasi</option>
-        <option value="Cluj_CJ">Cluj</option>
-        <option value="Constanta_CT">Constanta</option>
-        <option value="Covasna_CV">Covasna</option>
-        <option value="Dambovita_DB">Dambovita</option>
-        <option value="Dolj_DJ">Dolj</option>
-        <option value="Galati_GL">Galati</option>
-        <option value="Giurgiu_GR">Giurgiu</option>
-        <option value="Gorj_GJ">Gorj</option>
-        <option value="Harghita_HR">Harghita</option>
-        <option value="Hunedoara_HD">Hunedoara</option>
-        <option value="Ialomita_IL">Ialomita</option>
-        <option value="Iasi_IS">Iasi</option>
-        <option value="Ilfov_IF">Ilfov</option>
-        <option value="Maramures_MM">Maramures</option>
-        <option value="Mehedinti_MH">Mehedinti</option>
-        <option value="Mures_MS">Mures</option>
-        <option value="Neamt_NT">Neamt</option>
-        <option value="Olt_OT">Olt</option>
-        <option value="Prahova_PH">Prahova</option>
-        <option value="Salaj_SJ">Salaj</option>
-        <option value="Satu Mare_SM">Satu Mare</option>
-        <option value="Sibiu_SB">Sibiu</option>
-        <option value="Suceava_SV">Suceava</option>
-        <option value="Teleorman_TR">Teleorman</option>
-        <option value="Timis_TM">Timis</option>
-        <option value="Tulcea_TL">Tulcea</option>
-        <option value="Valcea_VL">Valcea</option>
-        <option value="Vaslui_VS">Vaslui</option>
-        <option value="Vrancea_VN">Vrancea</option>
-       </select>
+       @if (!empty($shippingCounties))
+        <select wire:model="individual_shipping_county" class="select">
+         @foreach ($shippingCounties as $county)
+          <option value="{{ $county->name }}">{{ $county->name }}</option>
+         @endforeach
+        </select>
+       @else
+        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCountyParent">
+         <input type="text" wire:model.defer="individual_shipping_county" name="individualBillingCounty"
+          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+          required id="individualBillingCounty">
+         <span></span>
+         <label for="individualBillingCounty">
+          @if (app()->has('label_order_county'))
+           {!! app('label_order_county') !!}
+          @endif
+         </label>
+        </div>
+       @endif
+
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
         <input type="text" wire:model.defer="individual_shipping_city" name="individualBillingCity"
@@ -1277,7 +694,7 @@
         </label>
        </div>
       </div>
-      <div wire:ignore class="checkout__form active">
+      <div class="checkout__form active">
        <div class="checkout__top">
         <span>2</span>
         <h3>
@@ -1313,317 +730,34 @@
         </div>
        @endif
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!---------------------------------------------------->
-        <select wire:model.defer="juridic_billing_country" class="select" id="juridic_billing_country"
-         aria-label="select a country">
-         <option value="Afghanistan">Afghanistan</option>
-         <option value="Åland Islands">Åland Islands</option>
-         <option value="Albania">Albania</option>
-         <option value="Algeria">Algeria</option>
-         <option value="American Samoa">American Samoa</option>
-         <option value="Andorra">Andorra</option>
-         <option value="Angola">Angola</option>
-         <option value="Anguilla">Anguilla</option>
-         <option value="Antarctica">Antarctica</option>
-         <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-         <option value="Argentina">Argentina</option>
-         <option value="Armenia">Armenia</option>
-         <option value="Aruba">Aruba</option>
-         <option value="Australia">Australia</option>
-         <option value="Austria">Austria</option>
-         <option value="Azerbaijan">Azerbaijan</option>
-         <option value="Bahamas">Bahamas</option>
-         <option value="Bahrain">Bahrain</option>
-         <option value="Bangladesh">Bangladesh</option>
-         <option value="Barbados">Barbados</option>
-         <option value="Belarus">Belarus</option>
-         <option value="Belgium">Belgium</option>
-         <option value="Belize">Belize</option>
-         <option value="Benin">Benin</option>
-         <option value="Bermuda">Bermuda</option>
-         <option value="Bhutan">Bhutan</option>
-         <option value="Bolivia">Bolivia</option>
-         <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-         <option value="Botswana">Botswana</option>
-         <option value="Bouvet Island">Bouvet Island</option>
-         <option value="Brazil">Brazil</option>
-         <option value="British Indian Ocean Territory">British Indian Ocean Territory
-         </option>
-         <option value="Brunei Darussalam">Brunei Darussalam</option>
-         <option value="Bulgaria">Bulgaria</option>
-         <option value="Burkina Faso">Burkina Faso</option>
-         <option value="Burundi">Burundi</option>
-         <option value="Cambodia">Cambodia</option>
-         <option value="Cameroon">Cameroon</option>
-         <option value="Canada">Canada</option>
-         <option value="Cape Verde">Cape Verde</option>
-         <option value="Cayman Islands">Cayman Islands</option>
-         <option value="Central African Republic">Central African Republic</option>
-         <option value="Chad">Chad</option>
-         <option value="Chile">Chile</option>
-         <option value="China">China</option>
-         <option value="Christmas Island">Christmas Island</option>
-         <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
-         <option value="Colombia">Colombia</option>
-         <option value="Comoros">Comoros</option>
-         <option value="Congo">Congo</option>
-         <option value="Congo, The Democratic Republic of the">Congo, The Democratic
-          Republic of the</option>
-         <option value="Cook Islands">Cook Islands</option>
-         <option value="Costa Rica">Costa Rica</option>
-         <option value="Croatia">Croatia</option>
-         <option value="Cuba">Cuba</option>
-         <option value="Cyprus">Cyprus</option>
-         <option value="Czech Republic">Czech Republic</option>
-         <option value="Denmark">Denmark</option>
-         <option value="Djibouti">Djibouti</option>
-         <option value="Dominica">Dominica</option>
-         <option value="Dominican Republic">Dominican Republic</option>
-         <option value="Ecuador">Ecuador</option>
-         <option value="Egypt">Egypt</option>
-         <option value="El Salvador">El Salvador</option>
-         <option value="Equatorial Guinea">Equatorial Guinea</option>
-         <option value="Eritrea">Eritrea</option>
-         <option value="Estonia">Estonia</option>
-         <option value="Ethiopia">Ethiopia</option>
-         <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
-         <option value="Faroe Islands">Faroe Islands</option>
-         <option value="Fiji">Fiji</option>
-         <option value="Finland">Finland</option>
-         <option value="France">France</option>
-         <option value="French Guiana">French Guiana</option>
-         <option value="French Polynesia">French Polynesia</option>
-         <option value="French Southern Territories">French Southern Territories</option>
-         <option value="Gabon">Gabon</option>
-         <option value="Gambia">Gambia</option>
-         <option value="Georgia">Georgia</option>
-         <option value="Germany">Germany</option>
-         <option value="Ghana">Ghana</option>
-         <option value="Gibraltar">Gibraltar</option>
-         <option value="Greece">Greece</option>
-         <option value="Greenland">Greenland</option>
-         <option value="Grenada">Grenada</option>
-         <option value="Guadeloupe">Guadeloupe</option>
-         <option value="Guam">Guam</option>
-         <option value="Guatemala">Guatemala</option>
-         <option value="Guernsey">Guernsey</option>
-         <option value="Guinea">Guinea</option>
-         <option value="Guinea-Bissau">Guinea-Bissau</option>
-         <option value="Guyana">Guyana</option>
-         <option value="Haiti">Haiti</option>
-         <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald Islands
-         </option>
-         <option value="Holy See (Vatican City State)">Holy See (Vatican City State)
-         </option>
-         <option value="Honduras">Honduras</option>
-         <option value="Hong Kong">Hong Kong</option>
-         <option value="Hungary">Hungary</option>
-         <option value="Iceland">Iceland</option>
-         <option value="India">India</option>
-         <option value="Indonesia">Indonesia</option>
-         <option value="Iran, Islamic Republic Of">Iran, Islamic Republic Of</option>
-         <option value="Iraq">Iraq</option>
-         <option value="Ireland">Ireland</option>
-         <option value="Isle of Man">Isle of Man</option>
-         <option value="Israel">Israel</option>
-         <option value="Italy">Italy</option>
-         <option value="Jamaica">Jamaica</option>
-         <option value="Japan">Japan</option>
-         <option value="Jersey">Jersey</option>
-         <option value="Jordan">Jordan</option>
-         <option value="Kazakhstan">Kazakhstan</option>
-         <option value="Kenya">Kenya</option>
-         <option value="Kiribati">Kiribati</option>
-         <option value="Korea, Republic of">Korea, Republic of</option>
-         <option value="Kuwait">Kuwait</option>
-         <option value="Kyrgyzstan">Kyrgyzstan</option>
-         <option value="Latvia">Latvia</option>
-         <option value="Lebanon">Lebanon</option>
-         <option value="Lesotho">Lesotho</option>
-         <option value="Liberia">Liberia</option>
-         <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
-         <option value="Liechtenstein">Liechtenstein</option>
-         <option value="Lithuania">Lithuania</option>
-         <option value="Luxembourg">Luxembourg</option>
-         <option value="Macao">Macao</option>
-         <option value="North Macedonia">North Macedonia</option>
-         <option value="Madagascar">Madagascar</option>
-         <option value="Malawi">Malawi</option>
-         <option value="Malaysia">Malaysia</option>
-         <option value="Maldives">Maldives</option>
-         <option value="Mali">Mali</option>
-         <option value="Malta">Malta</option>
-         <option value="Marshall Islands">Marshall Islands</option>
-         <option value="Martinique">Martinique</option>
-         <option value="Mauritania">Mauritania</option>
-         <option value="Mauritius">Mauritius</option>
-         <option value="Mayotte">Mayotte</option>
-         <option value="Mexico">Mexico</option>
-         <option value="Micronesia, Federated States of">Micronesia, Federated States of
-         </option>
-         <option value="Republic of Moldova">Republic of Moldova</option>
-         <option value="Monaco">Monaco</option>
-         <option value="Mongolia">Mongolia</option>
-         <option value="Montserrat">Montserrat</option>
-         <option value="Morocco">Morocco</option>
-         <option value="Mozambique">Mozambique</option>
-         <option value="Myanmar">Myanmar</option>
-         <option value="Namibia">Namibia</option>
-         <option value="Nauru">Nauru</option>
-         <option value="Nepal">Nepal</option>
-         <option value="Netherlands">Netherlands</option>
-         <option value="Netherlands Antilles">Netherlands Antilles</option>
-         <option value="New Caledonia">New Caledonia</option>
-         <option value="New Zealand">New Zealand</option>
-         <option value="Nicaragua">Nicaragua</option>
-         <option value="Niger">Niger</option>
-         <option value="Nigeria">Nigeria</option>
-         <option value="Niue">Niue</option>
-         <option value="Norfolk Island">Norfolk Island</option>
-         <option value="Northern Mariana Islands">Northern Mariana Islands</option>
-         <option value="Norway">Norway</option>
-         <option value="Oman">Oman</option>
-         <option value="Pakistan">Pakistan</option>
-         <option value="Palau">Palau</option>
-         <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied
-         </option>
-         <option value="Panama">Panama</option>
-         <option value="Papua New Guinea">Papua New Guinea</option>
-         <option value="Paraguay">Paraguay</option>
-         <option value="Peru">Peru</option>
-         <option value="Philippines">Philippines</option>
-         <option value="Pitcairn Islands">Pitcairn Islands</option>
-         <option value="Poland">Poland</option>
-         <option value="Portugal">Portugal</option>
-         <option value="Puerto Rico">Puerto Rico</option>
-         <option value="Qatar">Qatar</option>
-         <option value="Reunion">Reunion</option>
-         <option value="Romania">Romania</option>
-         <option value="Russian Federation">Russian Federation</option>
-         <option value="Rwanda">Rwanda</option>
-         <option value="Saint Helena">Saint Helena</option>
-         <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-         <option value="Saint Lucia">Saint Lucia</option>
-         <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
-         <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines
-         </option>
-         <option value="Samoa">Samoa</option>
-         <option value="San Marino">San Marino</option>
-         <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-         <option value="Saudi Arabia">Saudi Arabia</option>
-         <option value="Senegal">Senegal</option>
-         <option value="Serbia and Montenegro">Serbia and Montenegro</option>
-         <option value="Seychelles">Seychelles</option>
-         <option value="Sierra Leone">Sierra Leone</option>
-         <option value="Singapore">Singapore</option>
-         <option value="Slovakia">Slovakia</option>
-         <option value="Slovenia">Slovenia</option>
-         <option value="Solomon Islands">Solomon Islands</option>
-         <option value="Somalia">Somalia</option>
-         <option value="South Africa">South Africa</option>
-         <option value="South Georgia and the South Sandwich Islands">South Georgia and the
-          South Sandwich Islands</option>
-         <option value="Spain">Spain</option>
-         <option value="Sri Lanka">Sri Lanka</option>
-         <option value="Sudan">Sudan</option>
-         <option value="Suriname">Suriname</option>
-         <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-         <option value="Swaziland">Swaziland</option>
-         <option value="Sweden">Sweden</option>
-         <option value="Switzerland">Switzerland</option>
-         <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-         <option value="Taiwan">Taiwan</option>
-         <option value="Tajikistan">Tajikistan</option>
-         <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
-         <option value="Thailand">Thailand</option>
-         <option value="Timor-Leste">Timor-Leste</option>
-         <option value="Togo">Togo</option>
-         <option value="Tokelau">Tokelau</option>
-         <option value="Tonga">Tonga</option>
-         <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-         <option value="Tunisia">Tunisia</option>
-         <option value="Turkey">Turkey</option>
-         <option value="Turkmenistan">Turkmenistan</option>
-         <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
-         <option value="Tuvalu">Tuvalu</option>
-         <option value="Uganda">Uganda</option>
-         <option value="Ukraine">Ukraine</option>
-         <option value="United Arab Emirates">United Arab Emirates</option>
-         <option value="United Kingdom">United Kingdom</option>
-         <option value="United States">United States</option>
-         <option value="United States Minor Outlying Islands">United States Minor Outlying
-          Islands</option>
-         <option value="Uruguay">Uruguay</option>
-         <option value="Uzbekistan">Uzbekistan</option>
-         <option value="Vanuatu">Vanuatu</option>
-         <option value="Venezuela">Venezuela</option>
-         <option value="Vietnam">Vietnam</option>
-         <option value="Virgin Islands, British">Virgin Islands, British</option>
-         <option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
-         <option value="Wallis and Futuna">Wallis and Futuna</option>
-         <option value="Western Sahara">Western Sahara</option>
-         <option value="Yemen">Yemen</option>
-         <option value="Zambia">Zambia</option>
-         <option value="Zimbabwe">Zimbabwe</option>
+        <!-- Country Select -->
+        <select wire:model="juridic_billing_country" class="select">
+         @foreach ($countries as $c)
+          <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
+         @endforeach
         </select>
        @endif
        <!---------------------------------------------------->
-       {{-- <div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
-        <input type="text" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
-         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-         required id="juridicShippingCounty">
-        <span></span>
-        <label for="juridicShippingCounty">
-         @if (app()->has('label_order_county'))
-          {!! app('label_order_county') !!}
-         @endif
-        </label>
-       </div> --}}
-       <select class="select" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
-        id="juridicShippingCounty">
-        <option value="Alba_AB">Alba</option>
-        <option value="Arad_AR">Arad</option>
-        <option value="Arges_AG">Arges</option>
-        <option value="Bacau_BC">Bacau</option>
-        <option value="Bihor_BH">Bihor</option>
-        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
-        <option value="Botosani_BT">Botosani</option>
-        <option value="Braila_BR">Braila</option>
-        <option value="Brasov_BV">Brasov</option>
-        <option value="Bucuresti_B">Bucuresti</option>
-        <option value="Buzau_BZ">Buzau</option>
-        <option value="Caras-Severin_CS">Caras-Severin</option>
-        <option value="Calarasi_CL">Calarasi</option>
-        <option value="Cluj_CJ">Cluj</option>
-        <option value="Constanta_CT">Constanta</option>
-        <option value="Covasna_CV">Covasna</option>
-        <option value="Dambovita_DB">Dambovita</option>
-        <option value="Dolj_DJ">Dolj</option>
-        <option value="Galati_GL">Galati</option>
-        <option value="Giurgiu_GR">Giurgiu</option>
-        <option value="Gorj_GJ">Gorj</option>
-        <option value="Harghita_HR">Harghita</option>
-        <option value="Hunedoara_HD">Hunedoara</option>
-        <option value="Ialomita_IL">Ialomita</option>
-        <option value="Iasi_IS">Iasi</option>
-        <option value="Ilfov_IF">Ilfov</option>
-        <option value="Maramures_MM">Maramures</option>
-        <option value="Mehedinti_MH">Mehedinti</option>
-        <option value="Mures_MS">Mures</option>
-        <option value="Neamt_NT">Neamt</option>
-        <option value="Olt_OT">Olt</option>
-        <option value="Prahova_PH">Prahova</option>
-        <option value="Salaj_SJ">Salaj</option>
-        <option value="Satu Mare_SM">Satu Mare</option>
-        <option value="Sibiu_SB">Sibiu</option>
-        <option value="Suceava_SV">Suceava</option>
-        <option value="Teleorman_TR">Teleorman</option>
-        <option value="Timis_TM">Timis</option>
-        <option value="Tulcea_TL">Tulcea</option>
-        <option value="Valcea_VL">Valcea</option>
-        <option value="Vaslui_VS">Vaslui</option>
-        <option value="Vrancea_VN">Vrancea</option>
-       </select>
+
+       @if (!empty($jbillingCounties))
+        <select wire:model="juridic_billing_county" class="select">
+         @foreach ($jbillingCounties as $county)
+          <option value="{{ $county->name }}">{{ $county->name }}</option>
+         @endforeach
+        </select>
+       @else
+        <div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
+         <input type="text" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
+          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+          required id="juridicShippingCounty">
+         <span></span>
+         <label for="juridicShippingCounty">
+          @if (app()->has('label_order_county'))
+           {!! app('label_order_county') !!}
+          @endif
+         </label>
+        </div>
+       @endif
        <!---------------------------------------------------->
        <div class="checkout__item checkout__item--required" id="juridicShippingCityParent">
         <input type="text" wire:model.defer="juridic_billing_city" name="juridicShippingCity"
@@ -1639,8 +773,8 @@
        <!---------------------------------------------------->
        <div class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
         <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
-         placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code" id="juridicShippingPostal">
+         placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
+         id="juridicShippingPostal">
         <span></span>
         <label for="juridicShippingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -1680,8 +814,8 @@
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
         <input type="text" wire:model.defer="juridic_shipping_last" name="juridicBillingLastName"
-         placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif"
-         autocomplete="family-name" required id="juridicBillingLastName">
+         placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
+         required id="juridicBillingLastName">
         <span></span>
         <label for="juridicBillingLastName">
          @if (app()->has('label_order_lastname'))
@@ -1752,316 +886,35 @@
        @endif
        <!---------------------------------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <select wire:model.defer="juridic_shipping_country" class="select" id="juridic_shipping_country"
-         aria-label="select a country">
-         <option value="Afghanistan">Afghanistan</option>
-         <option value="Åland Islands">Åland Islands</option>
-         <option value="Albania">Albania</option>
-         <option value="Algeria">Algeria</option>
-         <option value="American Samoa">American Samoa</option>
-         <option value="Andorra">Andorra</option>
-         <option value="Angola">Angola</option>
-         <option value="Anguilla">Anguilla</option>
-         <option value="Antarctica">Antarctica</option>
-         <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-         <option value="Argentina">Argentina</option>
-         <option value="Armenia">Armenia</option>
-         <option value="Aruba">Aruba</option>
-         <option value="Australia">Australia</option>
-         <option value="Austria">Austria</option>
-         <option value="Azerbaijan">Azerbaijan</option>
-         <option value="Bahamas">Bahamas</option>
-         <option value="Bahrain">Bahrain</option>
-         <option value="Bangladesh">Bangladesh</option>
-         <option value="Barbados">Barbados</option>
-         <option value="Belarus">Belarus</option>
-         <option value="Belgium">Belgium</option>
-         <option value="Belize">Belize</option>
-         <option value="Benin">Benin</option>
-         <option value="Bermuda">Bermuda</option>
-         <option value="Bhutan">Bhutan</option>
-         <option value="Bolivia">Bolivia</option>
-         <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-         <option value="Botswana">Botswana</option>
-         <option value="Bouvet Island">Bouvet Island</option>
-         <option value="Brazil">Brazil</option>
-         <option value="British Indian Ocean Territory">British Indian Ocean Territory
-         </option>
-         <option value="Brunei Darussalam">Brunei Darussalam</option>
-         <option value="Bulgaria">Bulgaria</option>
-         <option value="Burkina Faso">Burkina Faso</option>
-         <option value="Burundi">Burundi</option>
-         <option value="Cambodia">Cambodia</option>
-         <option value="Cameroon">Cameroon</option>
-         <option value="Canada">Canada</option>
-         <option value="Cape Verde">Cape Verde</option>
-         <option value="Cayman Islands">Cayman Islands</option>
-         <option value="Central African Republic">Central African Republic</option>
-         <option value="Chad">Chad</option>
-         <option value="Chile">Chile</option>
-         <option value="China">China</option>
-         <option value="Christmas Island">Christmas Island</option>
-         <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
-         <option value="Colombia">Colombia</option>
-         <option value="Comoros">Comoros</option>
-         <option value="Congo">Congo</option>
-         <option value="Congo, The Democratic Republic of the">Congo, The Democratic
-          Republic of the</option>
-         <option value="Cook Islands">Cook Islands</option>
-         <option value="Costa Rica">Costa Rica</option>
-         <option value="Croatia">Croatia</option>
-         <option value="Cuba">Cuba</option>
-         <option value="Cyprus">Cyprus</option>
-         <option value="Czech Republic">Czech Republic</option>
-         <option value="Denmark">Denmark</option>
-         <option value="Djibouti">Djibouti</option>
-         <option value="Dominica">Dominica</option>
-         <option value="Dominican Republic">Dominican Republic</option>
-         <option value="Ecuador">Ecuador</option>
-         <option value="Egypt">Egypt</option>
-         <option value="El Salvador">El Salvador</option>
-         <option value="Equatorial Guinea">Equatorial Guinea</option>
-         <option value="Eritrea">Eritrea</option>
-         <option value="Estonia">Estonia</option>
-         <option value="Ethiopia">Ethiopia</option>
-         <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
-         <option value="Faroe Islands">Faroe Islands</option>
-         <option value="Fiji">Fiji</option>
-         <option value="Finland">Finland</option>
-         <option value="France">France</option>
-         <option value="French Guiana">French Guiana</option>
-         <option value="French Polynesia">French Polynesia</option>
-         <option value="French Southern Territories">French Southern Territories</option>
-         <option value="Gabon">Gabon</option>
-         <option value="Gambia">Gambia</option>
-         <option value="Georgia">Georgia</option>
-         <option value="Germany">Germany</option>
-         <option value="Ghana">Ghana</option>
-         <option value="Gibraltar">Gibraltar</option>
-         <option value="Greece">Greece</option>
-         <option value="Greenland">Greenland</option>
-         <option value="Grenada">Grenada</option>
-         <option value="Guadeloupe">Guadeloupe</option>
-         <option value="Guam">Guam</option>
-         <option value="Guatemala">Guatemala</option>
-         <option value="Guernsey">Guernsey</option>
-         <option value="Guinea">Guinea</option>
-         <option value="Guinea-Bissau">Guinea-Bissau</option>
-         <option value="Guyana">Guyana</option>
-         <option value="Haiti">Haiti</option>
-         <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald
-          Islands</option>
-         <option value="Holy See (Vatican City State)">Holy See (Vatican City State)
-         </option>
-         <option value="Honduras">Honduras</option>
-         <option value="Hong Kong">Hong Kong</option>
-         <option value="Hungary">Hungary</option>
-         <option value="Iceland">Iceland</option>
-         <option value="India">India</option>
-         <option value="Indonesia">Indonesia</option>
-         <option value="Iran, Islamic Republic Of">Iran, Islamic Republic Of</option>
-         <option value="Iraq">Iraq</option>
-         <option value="Ireland">Ireland</option>
-         <option value="Isle of Man">Isle of Man</option>
-         <option value="Israel">Israel</option>
-         <option value="Italy">Italy</option>
-         <option value="Jamaica">Jamaica</option>
-         <option value="Japan">Japan</option>
-         <option value="Jersey">Jersey</option>
-         <option value="Jordan">Jordan</option>
-         <option value="Kazakhstan">Kazakhstan</option>
-         <option value="Kenya">Kenya</option>
-         <option value="Kiribati">Kiribati</option>
-         <option value="Korea, Republic of">Korea, Republic of</option>
-         <option value="Kuwait">Kuwait</option>
-         <option value="Kyrgyzstan">Kyrgyzstan</option>
-         <option value="Latvia">Latvia</option>
-         <option value="Lebanon">Lebanon</option>
-         <option value="Lesotho">Lesotho</option>
-         <option value="Liberia">Liberia</option>
-         <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
-         <option value="Liechtenstein">Liechtenstein</option>
-         <option value="Lithuania">Lithuania</option>
-         <option value="Luxembourg">Luxembourg</option>
-         <option value="Macao">Macao</option>
-         <option value="North Macedonia">North Macedonia</option>
-         <option value="Madagascar">Madagascar</option>
-         <option value="Malawi">Malawi</option>
-         <option value="Malaysia">Malaysia</option>
-         <option value="Maldives">Maldives</option>
-         <option value="Mali">Mali</option>
-         <option value="Malta">Malta</option>
-         <option value="Marshall Islands">Marshall Islands</option>
-         <option value="Martinique">Martinique</option>
-         <option value="Mauritania">Mauritania</option>
-         <option value="Mauritius">Mauritius</option>
-         <option value="Mayotte">Mayotte</option>
-         <option value="Mexico">Mexico</option>
-         <option value="Micronesia, Federated States of">Micronesia, Federated States of
-         </option>
-         <option value="Republic of Moldova">Republic of Moldova</option>
-         <option value="Monaco">Monaco</option>
-         <option value="Mongolia">Mongolia</option>
-         <option value="Montserrat">Montserrat</option>
-         <option value="Morocco">Morocco</option>
-         <option value="Mozambique">Mozambique</option>
-         <option value="Myanmar">Myanmar</option>
-         <option value="Namibia">Namibia</option>
-         <option value="Nauru">Nauru</option>
-         <option value="Nepal">Nepal</option>
-         <option value="Netherlands">Netherlands</option>
-         <option value="Netherlands Antilles">Netherlands Antilles</option>
-         <option value="New Caledonia">New Caledonia</option>
-         <option value="New Zealand">New Zealand</option>
-         <option value="Nicaragua">Nicaragua</option>
-         <option value="Niger">Niger</option>
-         <option value="Nigeria">Nigeria</option>
-         <option value="Niue">Niue</option>
-         <option value="Norfolk Island">Norfolk Island</option>
-         <option value="Northern Mariana Islands">Northern Mariana Islands</option>
-         <option value="Norway">Norway</option>
-         <option value="Oman">Oman</option>
-         <option value="Pakistan">Pakistan</option>
-         <option value="Palau">Palau</option>
-         <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied
-         </option>
-         <option value="Panama">Panama</option>
-         <option value="Papua New Guinea">Papua New Guinea</option>
-         <option value="Paraguay">Paraguay</option>
-         <option value="Peru">Peru</option>
-         <option value="Philippines">Philippines</option>
-         <option value="Pitcairn Islands">Pitcairn Islands</option>
-         <option value="Poland">Poland</option>
-         <option value="Portugal">Portugal</option>
-         <option value="Puerto Rico">Puerto Rico</option>
-         <option value="Qatar">Qatar</option>
-         <option value="Reunion">Reunion</option>
-         <option value="Romania">Romania</option>
-         <option value="Russian Federation">Russian Federation</option>
-         <option value="Rwanda">Rwanda</option>
-         <option value="Saint Helena">Saint Helena</option>
-         <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-         <option value="Saint Lucia">Saint Lucia</option>
-         <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
-         <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines
-         </option>
-         <option value="Samoa">Samoa</option>
-         <option value="San Marino">San Marino</option>
-         <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-         <option value="Saudi Arabia">Saudi Arabia</option>
-         <option value="Senegal">Senegal</option>
-         <option value="Serbia and Montenegro">Serbia and Montenegro</option>
-         <option value="Seychelles">Seychelles</option>
-         <option value="Sierra Leone">Sierra Leone</option>
-         <option value="Singapore">Singapore</option>
-         <option value="Slovakia">Slovakia</option>
-         <option value="Slovenia">Slovenia</option>
-         <option value="Solomon Islands">Solomon Islands</option>
-         <option value="Somalia">Somalia</option>
-         <option value="South Africa">South Africa</option>
-         <option value="South Georgia and the South Sandwich Islands">South Georgia and the
-          South Sandwich Islands</option>
-         <option value="Spain">Spain</option>
-         <option value="Sri Lanka">Sri Lanka</option>
-         <option value="Sudan">Sudan</option>
-         <option value="Suriname">Suriname</option>
-         <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
-         <option value="Swaziland">Swaziland</option>
-         <option value="Sweden">Sweden</option>
-         <option value="Switzerland">Switzerland</option>
-         <option value="Syrian Arab Republic">Syrian Arab Republic</option>
-         <option value="Taiwan">Taiwan</option>
-         <option value="Tajikistan">Tajikistan</option>
-         <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
-         <option value="Thailand">Thailand</option>
-         <option value="Timor-Leste">Timor-Leste</option>
-         <option value="Togo">Togo</option>
-         <option value="Tokelau">Tokelau</option>
-         <option value="Tonga">Tonga</option>
-         <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-         <option value="Tunisia">Tunisia</option>
-         <option value="Turkey">Turkey</option>
-         <option value="Turkmenistan">Turkmenistan</option>
-         <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
-         <option value="Tuvalu">Tuvalu</option>
-         <option value="Uganda">Uganda</option>
-         <option value="Ukraine">Ukraine</option>
-         <option value="United Arab Emirates">United Arab Emirates</option>
-         <option value="United Kingdom">United Kingdom</option>
-         <option value="United States">United States</option>
-         <option value="United States Minor Outlying Islands">United States Minor Outlying
-          Islands</option>
-         <option value="Uruguay">Uruguay</option>
-         <option value="Uzbekistan">Uzbekistan</option>
-         <option value="Vanuatu">Vanuatu</option>
-         <option value="Venezuela">Venezuela</option>
-         <option value="Vietnam">Vietnam</option>
-         <option value="Virgin Islands, British">Virgin Islands, British</option>
-         <option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
-         <option value="Wallis and Futuna">Wallis and Futuna</option>
-         <option value="Western Sahara">Western Sahara</option>
-         <option value="Yemen">Yemen</option>
-         <option value="Zambia">Zambia</option>
-         <option value="Zimbabwe">Zimbabwe</option>
+        <!-- Country Select -->
+        <select wire:model="juridic_shipping_country" class="select">
+         @foreach ($countries as $c)
+          <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
+         @endforeach
         </select>
        @endif
        <!---------------------------------------------------->
-       {{-- <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
-        <input type="text" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
-         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-         required id="juridicBillingCounty">
-        <span></span>
-        <label for="juridicBillingCounty">
-         @if (app()->has('label_order_county'))
-          {!! app('label_order_county') !!}
-         @endif
-        </label>
-       </div> --}}
-       <select class="select" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
-        id="juridicBillingCounty">
-        <option value="Alba_AB">Alba</option>
-        <option value="Arad_AR">Arad</option>
-        <option value="Arges_AG">Arges</option>
-        <option value="Bacau_BC">Bacau</option>
-        <option value="Bihor_BH">Bihor</option>
-        <option value="Bistrita-Nasaud_BN">Bistrita-Nasaud</option>
-        <option value="Botosani_BT">Botosani</option>
-        <option value="Braila_BR">Braila</option>
-        <option value="Brasov_BV">Brasov</option>
-        <option value="Bucuresti_B">Bucuresti</option>
-        <option value="Buzau_BZ">Buzau</option>
-        <option value="Caras-Severin_CS">Caras-Severin</option>
-        <option value="Calarasi_CL">Calarasi</option>
-        <option value="Cluj_CJ">Cluj</option>
-        <option value="Constanta_CT">Constanta</option>
-        <option value="Covasna_CV">Covasna</option>
-        <option value="Dambovita_DB">Dambovita</option>
-        <option value="Dolj_DJ">Dolj</option>
-        <option value="Galati_GL">Galati</option>
-        <option value="Giurgiu_GR">Giurgiu</option>
-        <option value="Gorj_GJ">Gorj</option>
-        <option value="Harghita_HR">Harghita</option>
-        <option value="Hunedoara_HD">Hunedoara</option>
-        <option value="Ialomita_IL">Ialomita</option>
-        <option value="Iasi_IS">Iasi</option>
-        <option value="Ilfov_IF">Ilfov</option>
-        <option value="Maramures_MM">Maramures</option>
-        <option value="Mehedinti_MH">Mehedinti</option>
-        <option value="Mures_MS">Mures</option>
-        <option value="Neamt_NT">Neamt</option>
-        <option value="Olt_OT">Olt</option>
-        <option value="Prahova_PH">Prahova</option>
-        <option value="Salaj_SJ">Salaj</option>
-        <option value="Satu Mare_SM">Satu Mare</option>
-        <option value="Sibiu_SB">Sibiu</option>
-        <option value="Suceava_SV">Suceava</option>
-        <option value="Teleorman_TR">Teleorman</option>
-        <option value="Timis_TM">Timis</option>
-        <option value="Tulcea_TL">Tulcea</option>
-        <option value="Valcea_VL">Valcea</option>
-        <option value="Vaslui_VS">Vaslui</option>
-        <option value="Vrancea_VN">Vrancea</option>
-       </select>
+
+       @if (!empty($jshippingCounties))
+        <select wire:model="juridic_shipping_county" class="select">
+         @foreach ($jshippingCounties as $county)
+          <option value="{{ $county->name }}">{{ $county->name }}</option>
+         @endforeach
+        </select>
+       @else
+        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
+         <input type="text" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
+          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+          required id="juridicBillingCounty">
+         <span></span>
+         <label for="juridicBillingCounty">
+          @if (app()->has('label_order_county'))
+           {!! app('label_order_county') !!}
+          @endif
+         </label>
+        </div>
+       @endif
+
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
         <input type="text" wire:model.defer="juridic_shipping_city" name="juridicBillingCity"
@@ -2077,8 +930,8 @@
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item" id="juridicBillingPostalParent">
         <input type="text" wire:model.defer="juridic_shipping_zipcode" name="juridicBillingPostal"
-         placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-         autocomplete="postal-code" id="juridicBillingPostal">
+         placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
+         id="juridicBillingPostal">
         <span></span>
         <label for="juridicBillingPostal">
          @if (app()->has('label_order_zipcode'))
@@ -2172,26 +1025,20 @@
       applyValidations("individualShippingEmailParent", emailValidation, false);
       applyValidations("individualShippingPhoneParent", phoneValidation, false);
       applyValidations("individualShippingAddressParent", addressValidations, false);
-      //   applyValidations("individualShippingCountyParent", countyValidations, false);
       applyValidations("individualShippingCityParent", cityValidations, false);
-      // applyValidations("individualShippingPostalParent", zipcodeValidations, false);
       applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
       applyValidations("individualBillingLastNameParent", lastNameValidation, false);
       applyValidations("individualBillingEmailParent", emailValidation, false);
       applyValidations("individualBillingPhoneParent", phoneValidation, false);
       applyValidations("individualBillingAddressParent", addressValidations, false);
-      //   applyValidations("individualBillingCountyParent", countyValidations, false);
       applyValidations("individualBillingCityParent", cityValidations, false);
-      // applyValidations("individualBillingPostalParent", zipcodeValidations, false);
       // ----------------------------------------------------------------------------
       applyValidations("juridicShippingFirstNameParent", firstNameValidation, false);
       applyValidations("juridicShippingLastNameParent", lastNameValidation, false);
       applyValidations("juridicShippingEmailParent", emailValidation, false);
       applyValidations("juridicShippingPhoneParent", phoneValidation, false);
       applyValidations("juridicShippingAddressParent", addressValidations, false);
-      //   applyValidations("juridicShippingCountyParent", countyValidations, false);
       applyValidations("juridicShippingCityParent", cityValidations, false);
-      // applyValidations("juridicShippingPostalParent", zipcodeValidations, false);
       applyValidations("companyNameParent", companyName, false);
       applyValidations("registerNumberParent", registerNumber, false);
       applyValidations("registerCodeParent", registerCode, false);
@@ -2200,9 +1047,7 @@
       applyValidations("juridicBillingEmailParent", emailValidation, false);
       applyValidations("juridicBillingPhoneParent", phoneValidation, false);
       applyValidations("juridicBillingAddressParent", addressValidations, false);
-      //   applyValidations("juridicBillingCountyParent", countyValidations, false);
       applyValidations("juridicBillingCityParent", cityValidations, false);
-      // applyValidations("juridicBillingPostalParent", zipcodeValidations, false);
      </script>
      <div class="dlv" style="display: none">
       <span class="dlv_currency">
@@ -3346,6 +2191,4 @@
    </div>
   </section>
  @endif
-
-
 </div>
