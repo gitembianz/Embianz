@@ -6,13 +6,14 @@ use App\Models\Payment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 
 
 class Paymentstable extends Component
 {
     use WithPagination;
     public $loadAmount = 10;
-    public $search = '';
+    public $search = 'aa';
     public $orderBy = 'id';
     public $orderAsc = true;
     public $checked = [];
@@ -68,7 +69,7 @@ class Paymentstable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->payments->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->payments->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -95,7 +96,7 @@ class Paymentstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->paymentsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->paymentsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function getPaymentsProperty()
     {
@@ -173,6 +174,7 @@ class Paymentstable extends Component
                 $item->description = $new['description'];
             }
             $item->save();
+            Cache::forget('global_payments');
 
             session()->flash('notification', [
                 'message' => 'Record edited successfully!',
