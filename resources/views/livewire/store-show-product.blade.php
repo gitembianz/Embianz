@@ -314,7 +314,9 @@
        }
        ?>
        @if ($price)
-        @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
+        @if (
+            ($product->product->quantity < app('global_low_stock') && $product->product->quantity > 0) ||
+                $product->product->low_stock)
          <p
           class="card-status @if ($discount) save-secondary
           @else
@@ -325,10 +327,10 @@
          </p>
          @if ($discount)
           <p class="card-status save">
-           -{{ $product->product_prices->first()->discount }}%
+           -{{ $product->product->product_prices->first()->discount }}%
           </p>
          @endif
-        @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
+        @elseif($product->product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
          <p class="card-status save">
           @if (app()->has('label_product_status_indisponible'))
            {!! app('label_product_status_indisponible') !!}
@@ -337,7 +339,7 @@
         @else
          @if ($discount)
           <p class="card-status save">
-           -{{ $product->product_prices->first()->discount }}%
+           -{{ $product->product->product_prices->first()->discount }}%
           </p>
          @endif
         @endif

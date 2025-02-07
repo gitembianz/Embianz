@@ -94,7 +94,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadActiveCountries()
     {
-        if (Schema::hasTable('countries')) {
+        if (Schema::hasTable('countries') && Schema::hasTable('counties')) {
             $activeCountries = Cache::rememberForever('active_countries', function () {
                 return Country::with(['counties' => function ($query) {
                     $query->where('status', true)
