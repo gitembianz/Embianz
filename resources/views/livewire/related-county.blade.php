@@ -1,4 +1,6 @@
 <div class="accordion @if ($showrelated) active @endif">
+ <x-alert />
+
  {{-- Delete Record OR Records --}}
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
@@ -174,7 +176,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('Counties ') }}({{ $counties->count() }})
+   {{ __('Counties ') }}({{ $counties->total() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -472,7 +474,7 @@
   </table>
 
   {{-- Load More Manual --}}
-  @if (count($counties) >= 10)
+  @if ($counties->total() > $perPage)
    <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
     Load more
    </button>
