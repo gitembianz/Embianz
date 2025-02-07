@@ -169,21 +169,27 @@ class ShowProduct extends Component
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
         Cache::forget('max_popularity');
-        if (!$new->reviews->first()) {
-          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
 
+        $maxPopularity = app('max_popularity');
+        if ($new->popularity > 0 && $maxPopularity > 0) {
+          $value = (100 / ($maxPopularity / $new->popularity)) / 20;
+        } else {
+          $value = 0;
+        }
+
+        if (!$new->reviews->first()) {
           ModelsProductReviews::create([
             'product_id' => $new->id,
             'count' => 1,
             'value' => $value
           ]);
         } else {
-          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
           ModelsProductReviews::where('product_id', $new->id)->update([
             'value' => $value,
           ]);
         }
       }
+
       if (array_key_exists('long_description', $product_new)) {
         $new->long_description = $product_new['long_description'];
       }
