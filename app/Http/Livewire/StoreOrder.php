@@ -135,10 +135,8 @@ class StoreOrder extends Component
     $activeCountries = $this->countries;
     $selectedCountry = $activeCountries->firstWhere('name', $this->individual_billing_country);
 
-    // Ensure counties is always an array
     $counties = isset($selectedCountry) ? collect($selectedCountry['counties'])->toArray() : [];
 
-    // Check properly if the array is not empty
     if (count($counties) > 0 && !$this->individual_billing_county) {
       $this->individual_billing_county = $counties[0]['name'];
     }
@@ -152,7 +150,7 @@ class StoreOrder extends Component
     $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_billing_country);
     $counties = $selectedCountry['counties'] ?? [];
 
-    if (!empty($counties) && !$this->juridic_billing_county) {
+    if (count($counties) > 0 && !$this->juridic_billing_county) {
       $this->juridic_billing_county = $counties[0]['name'];
     }
     return $counties;
@@ -163,7 +161,7 @@ class StoreOrder extends Component
     $selectedCountry = $activeCountries->firstWhere('name', $this->individual_shipping_country);
     $counties = $selectedCountry['counties'] ?? [];
 
-    if (!empty($counties) && !$this->individual_shipping_county) {
+    if (count($counties) > 0 && !$this->individual_shipping_county) {
       $this->individual_shipping_county = $counties[0]['name'];
     }
 
@@ -175,7 +173,7 @@ class StoreOrder extends Component
     $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_shipping_country);
     $counties = $selectedCountry['counties'] ?? [];
 
-    if (!empty($counties) && !$this->juridic_shipping_county) {
+    if (count($counties) > 0 && !$this->juridic_shipping_county) {
       $this->juridic_shipping_county = $counties[0]['name'];
     }
     return $counties;
