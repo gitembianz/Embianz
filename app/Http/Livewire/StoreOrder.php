@@ -854,7 +854,7 @@ class StoreOrder extends Component
 
 
         $countryiso = Country::where('name', $this->individual_billing_country)->first()->iso_code;
-        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code;
+        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code ?? null;
 
         Address::create([
           'account_id' => $account->id,
@@ -874,7 +874,7 @@ class StoreOrder extends Component
         ]);
         if (!$this->individual_identic) {
           $countryisos = Country::where('name', $this->individual_shipping_country)->first()->iso_code;
-          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code;
+          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code ?? null;
 
           Address::create([
             'account_id' => $account->id,
@@ -974,7 +974,7 @@ class StoreOrder extends Component
 
 
         $countryisoj = Country::where('name', $this->juridic_billing_country)->first()->iso_code;
-        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code;
+        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code ?? null;
 
         Address::create([
           'account_id' => $account->id,
@@ -995,7 +995,7 @@ class StoreOrder extends Component
 
         if (!$this->juridic_identic) {
           $countryisojs = Country::where('name', $this->juridic_shipping_country)->first()->iso_code;
-          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code;
+          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code ?? null;
 
           Address::create([
             'account_id' => $account->id,
