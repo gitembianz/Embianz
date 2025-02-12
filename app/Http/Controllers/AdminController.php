@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Account;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
@@ -15,10 +16,10 @@ use App\Models\CustomScript;
 use App\Models\UserSessions;
 use Illuminate\Http\Request;
 use App\Models\Order_Supplier;
+use App\Models\ProductVariant;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -35,6 +36,16 @@ class AdminController extends Controller
   {
     $currencies = Currency::all();
     return view('admin.add_supplier', compact('currencies'));
+  }
+
+  public function corectparent()
+  {
+    $productVariants = ProductVariant::all();
+
+    foreach ($productVariants as $variant) {
+      Product::where('id', $variant->product_id)->update(['parent_id' => $variant->parent_id]);
+    }
+    return redirect()->route('home');
   }
 
   public function store_supplier(Request $request)

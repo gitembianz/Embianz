@@ -113,6 +113,7 @@
       route::view('/variants', 'admin.variants')->name('variants');
       route::view('/newvariant', 'admin.add_variant')->name('newvariant');
       route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+      route::get('/parent', [AdminController::class, 'corectparent'])->name('parent');
 
 
       route::view('/countries', 'admin.countries')->name('countries');
