@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class OrderSimilarity extends Component
 {
     use WithPagination;
-    public $columns = ['Reference', 'Orders'];
+    public $columns = ['Reference', 'Orders', 'Products', 'Similarity'];
     public $selectedColumns = [];
     public $order;
     public $orderId;
@@ -30,7 +30,7 @@ class OrderSimilarity extends Component
     public function getSimilaritiesProperty()
     {
         if (!$this->order || !$this->order->orders) {
-            return collect(); // Return empty collection if no orders exist
+            return collect();
         }
 
         $referenceOrder = $this->order;
@@ -42,6 +42,7 @@ class OrderSimilarity extends Component
         }
 
         $allOrders = Order::where('id', '!=', $referenceOrder->id)
+            ->where('status_id', 31)
             ->with([
                 'orders.product' => function ($query) {
                     $query->withCount([
@@ -56,13 +57,14 @@ class OrderSimilarity extends Component
             ->get();
 
         $similarOrders = collect();
+        $allProducts = collect();
 
         foreach ($allOrders as $order) {
             $orderProducts = $order->orders;
             $orderProductIds = $orderProducts->pluck('product_id')->unique();
             $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
-
             $orderProductCount = $orderProductIds->count();
+
             if ($orderProductCount === 0) {
                 continue;
             }
@@ -75,7 +77,15 @@ class OrderSimilarity extends Component
                 return $interimQuantity >= $product->quantity;
             });
 
-            if ($similarityPercentage >= (app()->has('global_	min_limit_similarity') ? app('global_	min_limit_similarity') : 50) && $allProductsValid) {
+            if ($similarityPercentage >= 50 && $allProductsValid) {
+                foreach ($orderProducts as $product) {
+                    $allProducts->push([
+                        'id' => $product->product_id,
+                        'name' => $product->product->name ?? 'Unknown Product',
+                        'quantity' => $product->quantity,
+                    ]);
+                }
+
                 $similarOrders->push([
                     'order' => $order,
                     'similarity' => $similarityPercentage,
@@ -83,8 +93,37 @@ class OrderSimilarity extends Component
             }
         }
 
-        return $similarOrders->groupBy('similarity')->sortKeysDesc();
+        $groupedProducts = $allProducts->groupBy('id')->map(function ($products) {
+            return [
+                'name' => $products->first()['name'],
+                'total_quantity' => $products->sum('quantity'),
+            ];
+        })->values();
+
+        $referenceProductCounts = $referenceOrder->orders->groupBy('product_id')->map(function ($products) {
+            $firstProduct = $products->first()->product;
+            return [
+                'name' => $firstProduct->name ?? 'Unknown Product',
+                'total_quantity' => $products->sum('quantity'),
+            ];
+        })->values();
+
+        return [
+            'reference' => [
+                'order' => $referenceOrder,
+                'products' => $referenceProductCounts,
+            ],
+            'similar' => $similarOrders->groupBy('similarity')->map(function ($orders, $similarityPercentage) use ($groupedProducts) {
+                return [
+                    'orders' => $orders,
+                    'products' => $groupedProducts,
+                ];
+            })->sortKeysDesc(),
+        ];
     }
+
+
+
 
 
 
