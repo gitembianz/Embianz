@@ -90,7 +90,11 @@ class StoreProducts extends Component
       ->where('end_date', '>=', now()->format('Y-m-d'))
       ->with([
         'variants' => function ($query) {
-          $query->with('product');
+          $query->with(['product' => function ($query) {
+            $query->with(['media' => function ($query) {
+              $query->select('path', 'name')->where('type', 'main');
+            }]);
+          }]);
         },
         'reviews' => function ($query) {
           $query->select('product_id', 'count', 'value');

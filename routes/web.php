@@ -9,7 +9,6 @@
   use App\Http\Controllers\PriceListController;
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
-  // use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -63,9 +62,6 @@
       route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
 
-      //todolist routes
-      // route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
-      // route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
