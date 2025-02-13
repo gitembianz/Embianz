@@ -275,6 +275,8 @@
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
   @livewire('related-order-items', ['order' => $order])
   @livewire('related-invoices', ['relatedby' => 'order', 'id' => $order->id])
+  @livewire('order-similarity', ['order' => $order])
+
 
  </div>
 </section>
