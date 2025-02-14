@@ -63,25 +63,40 @@ class OrderSimilarity extends Component
             $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
 
             $orderProductCount = $orderProductIds->count();
+        
+
             if ($orderProductCount === 0) {
                 continue;
             }
-
-            $similarityPercentage = ($matchingCount / $orderProductCount) * 100;
-
+        
+            
+            $minProductCount = min($referenceProductCount, $orderProductCount);
+            $similarityPercentage = ($matchingCount / $minProductCount) * 100;
+        
             $allProductsValid = $orderProducts->every(function ($product) {
                 $pr = $product->product;
                 $interimQuantity = ($pr->quantity ?? 0) + ($pr->interim_quantity ?? 0);
                 return $interimQuantity >= $product->quantity;
             });
 
-            if ($similarityPercentage >= (app()->has('global_	min_limit_similarity') ? app('global_	min_limit_similarity') : 50) && $allProductsValid) {
+        
+            if ($similarityPercentage >= 50 && $allProductsValid) {
+                foreach ($orderProducts as $product) {
+                    $allProducts->push([
+                        'id' => $product->product_id,
+                        'name' => $product->product->name ?? 'Unknown Product',
+                        'quantity' => $product->quantity,
+                    ]);
+                }
+        
+
                 $similarOrders->push([
                     'order' => $order,
                     'similarity' => $similarityPercentage,
                 ]);
             }
         }
+        
 
         return $similarOrders->groupBy('similarity')->sortKeysDesc();
     }
