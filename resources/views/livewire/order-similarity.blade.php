@@ -3,7 +3,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('similarities Similatity ') }}({{ count($similarities['similar']) }})
+   {{ __('similarities Similatity ') }}({{ $similarities->count() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -41,9 +41,7 @@
      @if ($this->showColumn('Reference'))
       <th>Order Reference</th>
      @endif
-     @if ($this->showColumn('Products'))
-      <th>Products with Count</th>
-     @endif
+
      @if ($this->showColumn('Orders'))
       <th>Similar Orders</th>
      @endif
@@ -53,52 +51,30 @@
     </tr>
    </thead>
    <tbody>
-    @if ($similarities['similar']->isEmpty())
+    @if ($similarities->isEmpty())
      <tr>
       <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
      </tr>
     @else
-     @foreach ($similarities['similar'] as $similarityPercentage => $group)
+     @foreach ($similarities as $similarityPercentage => $ordersGroup)
       <tr class="expandable-row">
        <td style="border-left: none" data-title="Check"></td>
 
        @if ($this->showColumn('Reference'))
-        <td>{{ $similarities['reference']['order']->name }}</td>
-       @endif
-
-       @if ($this->showColumn('Products'))
-        <td>
-         <ul>
-          @foreach ($group['products'] as $product)
-           @php
-            $referenceQuantity = 0;
-            foreach ($similarities['reference']['products'] as $pr) {
-                if ($pr['name'] === $product['name']) {
-                    $referenceQuantity = $pr['total_quantity'];
-                    break;
-                }
-            }
-           @endphp
-           <li>{{ $product['name'] }} (x{{ $product['total_quantity'] + $referenceQuantity }})</li>
-          @endforeach
-         </ul>
-        </td>
+        <td>{{ $order->name }}</td>
        @endif
 
        @if ($this->showColumn('Orders'))
         <td>
          <ul>
-          @foreach ($group['orders'] as $order)
+          @foreach ($ordersGroup as $similarity)
            <li>
-            <a href="{{ route('show_order', ['id' => $order['order']->id]) }}">
-             {{ $order['order']->name }}
-            </a>
+            <a href="{{ route('show_order', ['id' => $similarity['order']->id]) }}">{{ $similarity['order']->name }}</a>
            </li>
           @endforeach
          </ul>
         </td>
        @endif
-
        @if ($this->showColumn('Similarity'))
         <td>{{ $similarityPercentage }}%</td>
        @endif
@@ -107,12 +83,6 @@
     @endif
    </tbody>
   </table>
-
-
-
-
-
-
 
  </div>
 </div>
