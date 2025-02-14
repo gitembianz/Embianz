@@ -52,6 +52,7 @@ class AdminController extends Controller
   {
     $rules = [
       'name' => 'required',
+      'supplier_name' => 'required',
       'date' => 'required|date'
     ];
     $messages = [
@@ -66,6 +67,7 @@ class AdminController extends Controller
 
     $values = array(
       "name" => $request->name,
+      'supplier_name' => $request->supplier_name,
       "date" => $request->date,
       "status" => "draft",
       'currency' => $request->currency,

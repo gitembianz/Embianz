@@ -106,6 +106,14 @@
   </div>
   <div class="input__tabs">
    @if ($edititem === null)
+    <span class="disabled">{{ $supplier->supplier_name }}</span>
+   @else
+    <input type="text" wire:model.defer="record.supplier_name">
+   @endif
+   <label>Supplier Name</label>
+  </div>
+  <div class="input__tabs">
+   @if ($edititem === null)
     <span class="disabled">{{ $supplier->status }}</span>
    @else
     <select wire:model.defer="record.status">
