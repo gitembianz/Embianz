@@ -64,19 +64,21 @@ class OrderSimilarity extends Component
             $orderProductIds = $orderProducts->pluck('product_id')->unique();
             $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
             $orderProductCount = $orderProductIds->count();
-
+        
             if ($orderProductCount === 0) {
                 continue;
             }
-
-            $similarityPercentage = ($matchingCount / $orderProductCount) * 100;
-
+        
+            
+            $minProductCount = min($referenceProductCount, $orderProductCount);
+            $similarityPercentage = ($matchingCount / $minProductCount) * 100;
+        
             $allProductsValid = $orderProducts->every(function ($product) {
                 $pr = $product->product;
                 $interimQuantity = ($pr->quantity ?? 0) + ($pr->interim_quantity ?? 0);
                 return $interimQuantity >= $product->quantity;
             });
-
+        
             if ($similarityPercentage >= 50 && $allProductsValid) {
                 foreach ($orderProducts as $product) {
                     $allProducts->push([
@@ -85,13 +87,14 @@ class OrderSimilarity extends Component
                         'quantity' => $product->quantity,
                     ]);
                 }
-
+        
                 $similarOrders->push([
                     'order' => $order,
                     'similarity' => $similarityPercentage,
                 ]);
             }
         }
+        
 
         $groupedProducts = $allProducts->groupBy('id')->map(function ($products) {
             return [
