@@ -36,16 +36,20 @@
 
   {{-- Price List Name --}}
   <div class="input__tabs">
-   <input type="text" name="name" required>
+   <input type="text" name="name" required value="{{ old('name') }}">
    <label>Name</label>
   </div>
   <div class="input__tabs">
-   <input type="date" name="date" required>
+   <input type="text" name="supplier_name" required value="{{ old('supplier_name') }}">
+   <label>Supplier Name</label>
+  </div>
+  <div class="input__tabs">
+   <input type="date" name="date" required value="{{ old('date') }}">
    <label>Date</label>
   </div>
   {{-- Price List Currency --}}
   <div class="input__tabs">
-   <select name="currency">
+   <select name="currency" value="{{ old('currency') }}">
     @foreach ($currencies as $currency)
      <option value="{{ $currency->name }}">{{ $currency->name }}</option>
     @endforeach

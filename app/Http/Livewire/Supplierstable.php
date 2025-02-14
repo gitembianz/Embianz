@@ -95,7 +95,6 @@ class Supplierstable extends Component
     public function getSuppliersProperty()
     {
         return $this->suppliersQuery->paginate($this->loadAmount)->map(function ($supplier) {
-            // Calculate the total price for each supplier
             $supplier->totalPrice = $supplier->items->sum(function ($item) {
                 return (float) ($item->price * $item->quantity);
             });

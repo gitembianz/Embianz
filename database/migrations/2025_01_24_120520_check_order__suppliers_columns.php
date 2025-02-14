@@ -17,6 +17,12 @@ return new class extends Migration
                 $table->string('name')->nullable()->after('id');
             });
         }
+        if (!Schema::hasColumn('order__suppliers', 'supplier_name')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->string('supplier_name')->nullable()->after('name');
+            });
+        }
         if (!Schema::hasColumn('order__suppliers', 'status')) {
 
             Schema::table('order__suppliers', function (Blueprint $table) {
