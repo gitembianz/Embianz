@@ -64,41 +64,43 @@ class OrderSimilarity extends Component
             $orderProductIds = $orderProducts->pluck('product_id')->unique();
             $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
             $orderProductCount = $orderProductIds->count();
-        
+
             if ($orderProductCount === 0) {
                 continue;
             }
-        
-            
+
+
             $minProductCount = min($referenceProductCount, $orderProductCount);
             $similarityPercentage = ($matchingCount / $minProductCount) * 100;
-        
+
             $allProductsValid = $orderProducts->every(function ($product) {
                 $pr = $product->product;
                 $interimQuantity = ($pr->quantity ?? 0) + ($pr->interim_quantity ?? 0);
                 return $interimQuantity >= $product->quantity;
             });
-        
+
             if ($similarityPercentage >= 50 && $allProductsValid) {
                 foreach ($orderProducts as $product) {
                     $allProducts->push([
                         'id' => $product->product_id,
+                        'sku' => $product->product->sku,
                         'name' => $product->product->name ?? 'Unknown Product',
                         'quantity' => $product->quantity,
                     ]);
                 }
-        
+
                 $similarOrders->push([
                     'order' => $order,
                     'similarity' => $similarityPercentage,
                 ]);
             }
         }
-        
+
 
         $groupedProducts = $allProducts->groupBy('id')->map(function ($products) {
             return [
                 'name' => $products->first()['name'],
+                'sku' => $products->first()['sku'],
                 'total_quantity' => $products->sum('quantity'),
             ];
         })->values();
@@ -107,6 +109,7 @@ class OrderSimilarity extends Component
             $firstProduct = $products->first()->product;
             return [
                 'name' => $firstProduct->name ?? 'Unknown Product',
+                'sku' => $firstProduct->sku ?? 'Unknown Product',
                 'total_quantity' => $products->sum('quantity'),
             ];
         })->values();

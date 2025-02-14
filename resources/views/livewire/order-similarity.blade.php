@@ -79,7 +79,9 @@
                 }
             }
            @endphp
-           <li>{{ $product['name'] }} (x{{ $product['total_quantity'] + $referenceQuantity }})</li>
+           <li>{{ $product['name'] }} - sku({{ $product['sku'] }})
+            total quanity (x{{ $product['total_quantity'] + $referenceQuantity }})
+           </li>
           @endforeach
          </ul>
         </td>
