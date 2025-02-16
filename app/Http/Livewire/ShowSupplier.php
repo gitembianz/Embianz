@@ -73,6 +73,7 @@ class ShowSupplier extends Component
 
         $this->record = [
             'name' => $this->supplier->name,
+            'supplier_name' => $this->supplier->supplier_name,
             'date' => $this->supplier->date,
             'status' => $this->supplier->status,
             'currency' => $this->supplier->currency
@@ -99,6 +100,9 @@ class ShowSupplier extends Component
                     ]);
                     return;
                 }
+            }
+            if (array_key_exists('supplier_name', $rec)) {
+                $this->supplier->supplier_name = $rec['supplier_name'];
             }
             if (array_key_exists('currency', $rec)) {
                 $this->supplier->currency = $rec['currency'];

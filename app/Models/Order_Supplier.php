@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Order_Supplier extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'status', 'date', 'currency', 'created_by', 'last_modified_by'];
+    protected $fillable = ['name', 'status', 'date', 'supplier_name', 'currency', 'created_by', 'last_modified_by'];
 
     public static function search($search)
     {
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%' . $search . '%')
             ->orWhere('name', 'like', '%' . $search . '%')
+            ->orWhere('supplier_name', 'like', '%' . $search . '%')
             ->orWhere('status', 'like', '%' . $search . '%')
             ->orWhere('created_by', 'like', '%' . $search . '%')
             ->orWhere('last_modified_by', 'like', '%' . $search . '%');

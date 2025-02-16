@@ -26,7 +26,7 @@ class RelatedOrderSupplier extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'Subtotal', 'Created by', 'Updated by', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'VAT', 'Subtotal', 'Created by', 'Updated by', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $supplier;
     public $rand = null;
@@ -52,7 +52,8 @@ class RelatedOrderSupplier extends Component
         $this->order_item[$index] = [
             'quantity_received' => $record->quantity_received,
             'quantity' => $record->quantity,
-            'price' => $record->price
+            'price' => $record->price,
+            'vat' => $record->vat
         ];
     }
     public function canceledit()
@@ -105,10 +106,12 @@ class RelatedOrderSupplier extends Component
             $product->save();
         }
         $orderItem->price = $record['price'];
+        $orderItem->vat = $record['vat'];
+
 
 
         $orderItem->save();
-        $orderItem->subtotal = $orderItem->price * $orderItem->quantity;
+        $orderItem->subtotal = ($orderItem->price + $orderItem->price * $orderItem->vat / 100) * $orderItem->quantity;
         $orderItem->save();
 
         session()->flash('notification', [
@@ -131,7 +134,8 @@ class RelatedOrderSupplier extends Component
                     'product_id' => $array['product']['idrel'],
                     'quantity' => $array['product']['quantity'],
                     'price' => $array['product']['price'],
-                    'subtotal' => $array['product']['quantity'] * $array['product']['price'],
+                    'vat' => $array['product']['vat'],
+                    'subtotal' => $array['product']['quantity'] * ($array['product']['price'] + $array['product']['price'] *  $array['product']['vat'] / 100),
                     'created_by' => Auth::user()->name,
                     'last_modified_by' => Auth::user()->name
                 ]);
@@ -178,7 +182,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
         ];
     }
     public function clear($index)
@@ -193,7 +197,7 @@ class RelatedOrderSupplier extends Component
             $this->productsAndValues[] = [
                 'allow' => false,
                 'itemselected' => null,
-                'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+                'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
             ];
             $this->additems = false;
             $this->row = 1;
@@ -213,7 +217,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
         ];
         $this->row = 1;
         $this->additems = false;
@@ -284,7 +288,7 @@ class RelatedOrderSupplier extends Component
             'itemselected' => null,
             'price' => null,
             'vat' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
         ];
     }
     public function showColumn($column)
