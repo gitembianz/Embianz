@@ -67,6 +67,12 @@ return new class extends Migration
                 $table->boolean('active')->nullable()->after('ean');
             });
         }
+        if (!Schema::hasColumn('products', 'preorder')) {
+
+            Schema::table('products', function (Blueprint $table) {
+                $table->boolean('preorder')->nullable()->default(true)->after('active');
+            });
+        }
         if (!Schema::hasColumn('products', 'is_new')) {
 
             Schema::table('products', function (Blueprint $table) {

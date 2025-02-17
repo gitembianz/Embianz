@@ -242,7 +242,7 @@ class StoreOrder extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
+            $query->select('id', 'preorder', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -768,7 +768,7 @@ class StoreOrder extends Component
         }
       }
       foreach ($this->cartitems as $item) {
-        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+        if ($item->quantity > $item->product->quantity && !$item->product->preorder) {
           $this->validatequantity = false;
           if (app()->has('label_order_error_quantity')) {
             $message = app('label_order_error_quantity');
