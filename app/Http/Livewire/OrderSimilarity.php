@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
+use App\Models\Order_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 
 class OrderSimilarity extends Component
@@ -16,12 +18,53 @@ class OrderSimilarity extends Component
     public $order;
     public $orderId;
     public $showrelated = false;
+    public $checked = [];
+
 
     public function mount($order)
     {
         $this->orderId = $order->id;
         $this->order = $order;
         $this->selectedColumns = $this->columns;
+    }
+    public function isChecked($ids)
+    {
+        return in_array($ids, $this->checked);
+    }
+    public function dowlandproducts()
+    {
+        $orderIds = collect($this->checked)
+            ->flatMap(fn($idString) => explode(',', $idString))
+            ->push($this->orderId)
+            ->unique()
+            ->toArray();
+
+        $products = Order_Item::whereIn('order_id', $orderIds)
+            ->with(['product'])
+            ->get()
+            ->groupBy(fn($item) => $item->product->name . '|' . $item->product->sku)
+            ->map(function ($items) {
+                return [
+                    'name' => $items->first()->product->name,
+                    'sku' => $items->first()->product->sku,
+                    'quantity' => $items->sum('quantity'),
+                ];
+            })
+            ->values();
+
+        $bom = "\xEF\xBB\xBF";
+
+        $csvData = "Name,SKU,Quantity\n";
+
+        foreach ($products as $product) {
+            $csvData .= '"' . addslashes($product['name']) . '",'
+                . '"' . $product['sku'] . '",'
+                . $product['quantity'] . "\n";
+        }
+
+        return Response::streamDownload(function () use ($bom, $csvData) {
+            echo $bom . $csvData;
+        }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
     public function showColumn($column)
     {

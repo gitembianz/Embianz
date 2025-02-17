@@ -12,6 +12,18 @@
  <div class="accordion__body">
   <nav class="nav--controls">
    <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+   <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
+    {{-- Dropdown Button --}}
+    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
+     <span>With Checked({{ count($checked) }})</span>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <button class="button button--primary button--long" wire:click="dowlandproducts()">
+      Get products quantities
+     </button>
+    </div>
+   </div>
    <div class="dropdown dropdown--right" wire:ignore>
     <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
      <svg>
@@ -38,6 +50,8 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;"></th>
+
+     <th style="border-right: none; border-left: none;"></th>
      @if ($this->showColumn('Reference'))
       <th>Order Reference</th>
      @endif
@@ -62,7 +76,20 @@
       $i = 0;
      @endphp
      @foreach ($similarities['similar'] as $similarityPercentage => $group)
-      <tr class="expandable-row">
+      @php
+       $ids = [];
+       foreach ($group['orders'] as $order) {
+           $ids[] = $order['order']->id;
+       }
+       $idsString = implode(',', $ids); // Convert array to a comma-separated string
+      @endphp
+      <tr class="expandable-row" @if ($this->isChecked($idsString)) active @endif>
+       <td style="border-left: none" data-title="Check">
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $idsString }}" id="checkbox-{{ $idsString }}" wire:model="checked">
+         <label for="checkbox-{{ $idsString }}"></label>
+        </div>
+       </td>
        <td style="border-left: none" data-title="Check"></td>
        @if ($this->showColumn('Reference'))
         <td>
