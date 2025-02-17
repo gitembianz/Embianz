@@ -61,7 +61,12 @@ class OrderSimilarity extends Component
                 . '"' . $product['sku'] . '",'
                 . $product['quantity'] . "\n";
         }
-
+        $this->checked = [];
+        session()->flash('notification', [
+            'message' => 'Record downland successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
         return Response::streamDownload(function () use ($bom, $csvData) {
             echo $bom . $csvData;
         }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
