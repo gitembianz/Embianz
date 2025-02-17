@@ -154,6 +154,20 @@
      <label for="Lowstock3">Low Stock</label>
     @endif
    </div>
+   <div class="checkbox__details ">
+    @if ($editproduct === null)
+     @if ($product->preorder)
+      <input type="checkbox" id="preorder1" checked class="disabled" disabled />
+      <label for="preorder1" class="disabled">Preorder</label>
+     @else
+      <input type="checkbox" id="preorder2" class="disabled" disabled />
+      <label for="preorder2" class="disabled">Preorder</label>
+     @endif
+    @else
+     <input type="checkbox" id="preorder3" wire:model.defer="prod.preorder" />
+     <label for="preorder3">Preorder</label>
+    @endif
+   </div>
    {{-- Product IsNew --}}
   </div>
   {{-- Product Brand --}}
