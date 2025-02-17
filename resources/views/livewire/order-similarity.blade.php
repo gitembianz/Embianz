@@ -1,4 +1,5 @@
 <div class="accordion @if ($showrelated) active @endif">
+ <x-alert />
  <div class="accordion__header">
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
