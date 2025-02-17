@@ -106,7 +106,7 @@ class RelatedSubcategory extends Component
   public function updatedSelectPageadd($value)
   {
     if ($value) {
-      $this->checkedadd = $this->categories->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checkedadd = $this->categories->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checkedadd = [];
     }
@@ -126,7 +126,7 @@ class RelatedSubcategory extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->categories->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->categories->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getCategoriesProperty()
   {
@@ -142,7 +142,6 @@ class RelatedSubcategory extends Component
   {
     $category = Category::find($this->idbeinglink);
     $rec = new  Subcategory();
-    $rec->name = $category->name;
     $rec->category_id = $category->id;
     $rec->parent_id = $this->item->id;
     $category->has_parent = true;
@@ -163,7 +162,6 @@ class RelatedSubcategory extends Component
     foreach ($categories as $category) {
       $cat = Category::find($category->id);
       $add = new Subcategory();
-      $add->name = $category->name;
       $add->category_id = $category->id;
       $add->parent_id = $this->item->id;
       $cat->has_parent = true;
@@ -195,7 +193,7 @@ class RelatedSubcategory extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedsubcats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedsubcats->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -229,7 +227,7 @@ class RelatedSubcategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedsubcatsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedsubcatsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getRelatedsubcatsProperty()
   {

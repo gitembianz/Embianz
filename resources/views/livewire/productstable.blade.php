@@ -386,7 +386,7 @@
           @else
            {{ $product->$column }}
           @endif
-         @elseif ($column === 'active' || $column === 'is_new' || $column === 'low_stock')
+         @elseif ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock')
           @if ($product->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled1" disabled checked>
@@ -450,7 +450,7 @@
          @foreach ($selectedColumns as $index => $column)
           @if ($index >= count($selectedColumns) - 18)
            <p>
-            @if ($column === 'active' || $column === 'is_new' || $column === 'low_stock')
+            @if ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock')
              <bold>{{ $column }}:</bold>
              @if ($product->$column)
               <div class="checkbox--secondary disabled">

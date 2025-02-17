@@ -53,6 +53,10 @@
     <input type="checkbox" id="is_new" name="is_new" value="{{ old('is_new') }}" />
     <label for="is_new">Product is new?</label>
    </div>
+   <div class="checkbox__details ">
+    <input type="checkbox" id="preorder" name="preorder" value="{{ old('preorder') }}" />
+    <label for="preorder">Preorder</label>
+   </div>
   </div>
 
   {{-- Product Start Date --}}
