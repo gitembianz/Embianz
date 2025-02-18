@@ -182,7 +182,7 @@
   route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
   //payments routes
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
-  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+  Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
 
 
   //Custom login routes
