@@ -76,7 +76,7 @@ class StoreCart extends Component
             $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
               ->with([
                 'product' => function ($query) {
-                  $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')
+                  $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity', 'preorder')
                     ->with([
                       'media' => function ($query) {
                         $query->select('path', 'name', 'type')->where('type', 'min');
@@ -131,7 +131,7 @@ class StoreCart extends Component
   {
     if ($this->cart) {
       $cartitem_to_increment = $this->cart->cartItems()->where('id', $id)->first();
-      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
+      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity || $cartitem_to_increment->product->preorder) {
         $cartitem_to_increment->increment('quantity');
         $this->cart->increment('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
@@ -288,7 +288,7 @@ class StoreCart extends Component
 
     if ($this->cart->quantity_amount != 0) {
       foreach ($this->cart->cartItems as $item) {
-        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+        if ($item->quantity > $item->product->quantity && !$item->product->preorder) {
           $validateQuantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;

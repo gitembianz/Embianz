@@ -196,7 +196,7 @@
  @endif
 
  @if ($price)
-  @if ($product->quantity > 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
+  @if ($product->quantity > 0 || $product->preorder)
    <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
     aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
     <div class="card__button--cart">
