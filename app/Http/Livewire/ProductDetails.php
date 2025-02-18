@@ -153,7 +153,7 @@ class ProductDetails extends Component
     public function incrementCounter()
     {
         $this->limit = $this->product->quantity;
-        if ($this->quantity >= $this->limit && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+        if ($this->quantity >= $this->limit && !$this->product->preorder) {
             $this->maxlimit = true;
             $this->quantity = $this->limit;
         } else {
@@ -217,7 +217,7 @@ class ProductDetails extends Component
             $cart->save();
             $this->maxlimit = false;
         } else {
-            if (($cartItem->quantity + $this->quantity) <= $this->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
+            if (($cartItem->quantity + $this->quantity) <= $this->product->quantity || $this->product->preorder) {
                 $cartItem->quantity += $this->quantity;
                 $cartItem->save();
                 $cart->quantity_amount += $this->quantity;

@@ -51,7 +51,7 @@
       $disabled[$index] = false;
       $nonquantity[$index] = false;
       
-      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || ($cartItem->product->end_date < now()->format('Y-m-d') || ($cartItem->product->quantity < 0 && (app()->has('global_preorder') && app('global_preorder') != 'true')))) {
+      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || ($cartItem->product->end_date < now()->format('Y-m-d') || ($cartItem->product->quantity < 0 && !$cartItem->product->preorder))) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
@@ -60,7 +60,7 @@
           $isdisabled = true;
       }
       
-      if ($cartItem->product->quantity > 0 && $cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+      if ($cartItem->product->quantity > 0 && $cartItem->product->quantity < $cartItem->quantity && !$cartItem->product->preorder) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
@@ -135,9 +135,7 @@
           <span class="quantity__input product__quantity">
            {{ $cartItem->quantity }}
           </span>
-          <button class="quantity__arrow @if (
-              $cartItem->quantity >= $cartItem->product->quantity &&
-                  (app()->has('global_preorder') && app('global_preorder') != 'true')) disabled @endif"
+          <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity && !$cartItem->product->preorder) disabled @endif"
            style="width: 48px; height: 48px" aria-label="Increase quantity"
            wire:click="increment({{ $cartItem->id }})">
            <svg>
@@ -268,16 +266,15 @@
        <p class="voucher__error">{{ $message }}</p>
       @endif
       @if ($cart->voucher_id == null)
-
-      <!-- CHANGE TO DYNAMIC -->
+       <!-- CHANGE TO DYNAMIC -->
 
        <!-- <div class="voucher">
          <input type="text" wire:model="voucher" maxlength="100" name="voucher"
          placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
         <button type="submit" wire:click="checkvoucher">
          @if (app()->has('label_cart_voucher_apply'))
-          {!! app('label_cart_voucher_apply') !!}
-         @endif
+{!! app('label_cart_voucher_apply') !!}
+@endif
         </button>
        </div> -->
 
