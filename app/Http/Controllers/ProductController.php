@@ -10,6 +10,7 @@ use App\Models\Products_categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Models\ProductReviews as ModelsProductReviews;
 
 
 
@@ -76,6 +77,18 @@ class ProductController extends Controller
       $defaultcategory->category_id = app('global_default_category');
       $defaultcategory->save();
     }
+    if ($newproduct->popularity > app('max_popularity')) {
+      $value = (100 / ($newproduct->popularity / $newproduct->popularity)) / 20;
+    } else {
+
+      $value = (100 / (app('max_popularity') / $newproduct->popularity)) / 20;
+    }
+
+    ModelsProductReviews::create([
+      'product_id' => $newproduct->id,
+      'count' => 1,
+      'value' => $value
+    ]);
 
 
     return redirect()->back()->with([
