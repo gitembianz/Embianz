@@ -162,7 +162,7 @@
     </div>
     <div class="input__tabs">
      <span class="disabled">{{ $sum_supplier }}</span>
-     <label>Supplier amount </label>
+     <label>Average cost</label>
     </div>
    </div>
   @endif
