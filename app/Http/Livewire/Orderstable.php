@@ -60,17 +60,28 @@ class Orderstable extends Component
         $ordersQuery = \App\Models\Order::query();
 
         if ($this->start_date && $this->end_date) {
-            $ordersQuery->whereBetween('invoice_date', [$this->start_date, $this->end_date]);
+            if ($this->start_date === $this->end_date) {
+                $ordersQuery->whereDate('invoice_date', $this->start_date);
+            } else {
+                $ordersQuery->whereBetween('invoice_date', [$this->start_date, $this->end_date]);
+            }
         }
 
         $orders = $ordersQuery->get();
         $type = 'invoice_xml';
         $path = $this->generate_invoice_xml($orders, $type);
 
-        session()->flash('message', 'XML Invoice generated successfully.');
-        $this->resetModal();
-        return response()->download($path);
+        if ($path) {
+            session()->flash('message', 'XML Invoice generated successfully.');
+            $this->resetModal();
+            return response()->download($path);
+        } else {
+            $this->resetModal();
+            session()->flash('warning', 'No order found');
+            return;
+        }
     }
+
     public function generate_invoice_xml($orders, $type)
     {
         if ($orders->isEmpty()) {
@@ -332,9 +343,12 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
         $ordersQuery = \App\Models\Order::query();
 
         if ($this->start_date && $this->end_date) {
-            $ordersQuery->whereBetween('storno_date', [$this->start_date, $this->end_date]);
+            if ($this->start_date === $this->end_date) {
+                $ordersQuery->whereDate('invoice_date', $this->start_date);
+            } else {
+                $ordersQuery->whereBetween('invoice_date', [$this->start_date, $this->end_date]);
+            }
         }
-
         $orders = $ordersQuery->get();
         if ($orders) {
 
@@ -342,9 +356,15 @@ BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
             $type = 'storno_xml';
             $path = $this->generate_invoice_xml($orders, $type);
 
-            session()->flash('message', 'XML Invoice generated successfully.');
-            $this->resetModal();
-            return response()->download($path);
+            if ($path) {
+                session()->flash('message', 'XML Invoice generated successfully.');
+                $this->resetModal();
+                return response()->download($path);
+            } else {
+                $this->resetModal();
+                session()->flash('warning', 'No order found');
+                return;
+            }
         } else {
             $this->resetModal();
 
