@@ -53,13 +53,6 @@ class ShowSupplier extends Component
     public function getSupplierQueryProperty()
     {
         $supplier = Order_Supplier::with('items')->find($this->itemId);
-
-        if ($supplier) {
-            $this->totalPrice = $supplier->items->sum(function ($item) {
-                return (float) ($item->price * $item->quantity);
-            }) ?? 0;
-        }
-
         return $supplier;
     }
 
