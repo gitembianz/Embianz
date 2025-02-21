@@ -346,9 +346,9 @@ $ordersQuery = \App\Models\Order::query();
 
 if ($this->start_date && $this->end_date) {
 if ($this->start_date === $this->end_date) {
-$ordersQuery->whereDate('invoice_date', $this->start_date);
+$ordersQuery->whereDate('storno_date', $this->start_date);
 } else {
-$ordersQuery->whereBetween('invoice_date', [$this->start_date, $this->end_date]);
+$ordersQuery->whereBetween('storno_date', [$this->start_date, $this->end_date]);
 }
 }
 $orders = $ordersQuery->get();
