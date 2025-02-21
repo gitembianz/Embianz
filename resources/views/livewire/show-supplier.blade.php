@@ -149,15 +149,15 @@
 
   {{-- Price List Create by --}}
   <div class="input__tabs">
-   <span class="disabled">{{ $supplier->final_amount }} {{ $supplier->currency }}</span>
+   <span class="disabled">{{ $supplier->final_amount }}</span>
    <label>Final amount</label>
   </div>
   <div class="input__tabs">
-   <span class="disabled">{{ $supplier->sum_amount }} {{ $supplier->currency }}</span>
+   <span class="disabled">{{ $supplier->sum_amount }}</span>
    <label>Sum amount</label>
   </div>
   <div class="input__tabs">
-   <span class="disabled">{{ $supplier->vat_sum_amount }} {{ $supplier->currency }}</span>
+   <span class="disabled">{{ $supplier->vat_sum_amount }}</span>
    <label>Vat amount</label>
   </div>
   {{-- Price List Create by --}}
