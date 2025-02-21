@@ -23,6 +23,7 @@ class ShowOrder extends Component
     public $invoice_sdatabase;
     public $storno_sdatabase;
     public $circle;
+    public $sum_supplier;
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
@@ -134,6 +135,25 @@ class ShowOrder extends Component
             ]);
         }
     }
+
+    public function getSum()
+    {
+        $sum = 0;
+
+        foreach ($this->order->orders as $item) {
+            if ($item->product->order_suppliers->isEmpty()) {
+                return null;
+            }
+
+            $avgPrice = $item->product->order_suppliers->avg('price');
+            $avgVat = $item->product->order_suppliers->avg('vat');
+
+            $sum += $avgPrice + ($avgPrice * $avgVat / 100);
+        }
+
+        return $sum;
+    }
+
 
 
     public function generate_invoice()
@@ -735,10 +755,10 @@ class ShowOrder extends Component
     <br></br>
 
     <table border='1' cellpadding='5' cellspacing='0' width='100%''>
-        <thead>
-            <tr>
-                <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
-                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
+                    <thead>
+                        <tr>
+                            <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
+                            <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
         Articol/Serviciu') . "</th>
         <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
         <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
@@ -917,6 +937,7 @@ class ShowOrder extends Component
                 $this->circle = "#4a0a0f";
             }
         }
+        $this->sum_supplier = $this->getSum() ?? null;
     }
     public function canceledit()
     {
@@ -1007,8 +1028,6 @@ class ShowOrder extends Component
         $this->record = [];
         $this->edititem = null;
     }
-
-
     public function confirmItemRemoval()
     {
         $this->delete = true;
