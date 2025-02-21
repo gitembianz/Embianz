@@ -41,6 +41,24 @@ return new class extends Migration
                 $table->string('currency')->nullable()->after('date');
             });
         }
+        if (!Schema::hasColumn('order__suppliers', 'sum_amount')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->decimal('sum_amount', 10, 2)->default(0)->after('currency');
+            });
+        }
+        if (!Schema::hasColumn('order__suppliers', 'vat_sum_amount')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->decimal('vat_sum_amount', 10, 2)->default(0)->after('currency');
+            });
+        }
+        if (!Schema::hasColumn('order__suppliers', 'final_amount')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->decimal('final_amount', 10, 2)->default(0)->after('currency');
+            });
+        }
         if (!Schema::hasColumn('order__suppliers', 'created_by')) {
 
             Schema::table('order__suppliers', function (Blueprint $table) {
