@@ -54,6 +54,119 @@
    @endforeach
   </div>
  </aside>
+ {{-- Add new exchange --}}
+ <aside>
+  <div class="background background--center @if ($add) active @endif"></div>
+  <form class="aside aside--table @if ($add) active @endif">
+   {{-- Navigation --}}
+   <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Add exchnages rates') }}
+    </h1>
+    <button class="button button--primary button--centered" wire:click.prevent="saveadd()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
+    <button class="button button--danger button--centered" wire:click="canceladd()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+     </svg>
+    </button>
+   </nav>
+
+
+   {{-- Table --}}
+   <div class="table" style="height: calc(100% - 60px);">
+    <table class="expandable-table">
+     <thead>
+      <tr>
+       <th>
+        <div class="table--btn">Nr.</div>
+
+       </th>
+       <th style="min-width: 30%">
+        <div class="table--btn">Base currency</div>
+       </th>
+
+       <th>
+        <div class="table--btn">Quote currency</div>
+       </th>
+       <th>
+        <div class="table--btn">Value</div>
+       </th>
+       <th>
+        <button class="button button--secondary button--sm" style="opacity: 0">
+         <svg>
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+         </svg>
+        </button>
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      @for ($i = 1; $i <= $rowadd; $i++)
+       <tr class="expandable-row">
+        <td>
+         {{ $i }}</td>
+        <td>
+         <select class="searchable" wire:model.defer="base.{{ $i }}">
+          @foreach ($currencies as $currency)
+           <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+          @endforeach
+         </select>
+
+        </td>
+        <td>
+         <select class="searchable" wire:model.defer="quote.{{ $i }}">
+          @foreach ($currencies as $currency)
+           <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+          @endforeach
+         </select>
+        </td>
+        <td>
+         <div class="searchable">
+          <input placeholder="value" type="text"class="input__searchable"
+           wire:model.defer="value.{{ $i }}">
+         </div>
+        </td>
+        <td>
+         <div style="display: flex;">
+          @if ($i == $rowadd)
+           <button type="button" class="button button--secondary button--sm" wire:click="plus()">
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19">
+             </line>
+             <line x1="5" y1="12" x2="19" y2="12">
+             </line>
+            </svg>
+           </button>
+          @endif
+          <button type="button" class="button button--secondary button--sm" wire:click="clear({{ $i }})">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         </div>
+        </td>
+       </tr>
+      @endfor
+     </tbody>
+    </table>
+   </div>
+  </form>
+ </aside>
 
 
  {{-- Navigation --}}
@@ -72,6 +185,15 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  <a class="button button--primary button--centered display--desktop" tooltip="Add" tooltip-top
+   wire:click.prevent="$set('add', true)">
+   <svg>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="12" y1="18" x2="12" y2="12"></line>
+    <line x1="9" y1="15" x2="15" y2="15"></line>
+   </svg>
+  </a>
   {{-- Sorting Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" wire:ignore>
    {{-- Dropdown Button --}}
@@ -149,6 +271,15 @@
       </svg>
       <span>Refresh table</span>
      </button>
+     <a class="button button--primary button--fill button--flexed" wire:click.prevent="$set('add', true)">
+      <svg>
+       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+       <polyline points="14 2 14 8 20 8"></polyline>
+       <line x1="12" y1="18" x2="12" y2="12"></line>
+       <line x1="9" y1="15" x2="15" y2="15"></line>
+      </svg>
+      <span>Add</span>
+     </a>
      <button class="button button--primary button--long button--flexed" id="sort__open">
       <svg>
        <path stroke="none" d="M0 0h24v24H0z" fill="none" />

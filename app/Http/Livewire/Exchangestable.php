@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Currency;
 use App\Models\Exchange;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,6 +19,14 @@ class Exchangestable extends Component
     public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'last_modified_date', 'created_at', 'updated_at'];
     public $selectedColumns = [];
     public $rowindex = null;
+    public $currencies;
+
+    public $add = false;
+    public $rowadd;
+    public $base = [];
+    public $quote = [];
+    public $value = [];
+    public $row = 1;
 
     public function render()
     {
@@ -27,7 +36,9 @@ class Exchangestable extends Component
     }
     public function mount()
     {
+        $this->rowadd = 1;
         $this->selectedColumns = $this->columns;
+        $this->currencies = Currency::all();
     }
     public function showColumn($column)
     {
@@ -54,5 +65,28 @@ class Exchangestable extends Component
     {
         return Exchange::search($this->search)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount);
+    }
+    public function plus()
+    {
+        $this->rowadd++;
+        $this->base[$this->rowadd] = null;
+        $this->quote[$this->rowadd] = null;
+        $this->value[$this->rowadd] = null;
+    }
+    public function clear($i)
+    {
+        array_splice($this->base, $i, 1);
+        array_splice($this->quote, $i, 1);
+        array_splice($this->value, $i, 1);
+
+        $this->rowadd--;
+
+        if ($this->rowadd < 0) {
+            $this->add = false;
+            $this->rowadd = 0;
+            $this->base = [];
+            $this->quote = [];
+            $this->value = [];
+        }
     }
 }
