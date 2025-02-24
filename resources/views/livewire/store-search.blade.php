@@ -217,9 +217,11 @@
    @endif
   </section>
   @if (app()->has('global_pagination') && app('global_pagination') === 'links')
-   <section class="container" style="margin-bottom: 20px">
-    {{ $products->links() }}
-   </section>
+   @if (!$products->isEmpty())
+    <section class="container" style="margin-bottom: 20px">
+     {{ $products->links() }}
+    </section>
+   @endif
   @else
    @if ($products->total() >= $loadAmount)
     <section class="container">
