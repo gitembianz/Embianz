@@ -4,7 +4,12 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('Beeing in orders ') }}({{ $orders->total() }})
+   @if ($relatedby === 'order')
+    {{ __('Beeing in orders ') }}
+   @else
+    {{ __('Beeing in orders supplier ') }}
+   @endif
+   ({{ $orders->total() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -79,6 +84,8 @@
         <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}">
          @if ($column === 'order_id')
           <a href="{{ route('show_order', ['id' => $order->order->id]) }}">{{ $order->order->name }}</a>
+         @elseif ($column === 'order__supplier_id')
+          <a href="{{ route('show_supplier', ['id' => $order->order->id]) }}">{{ $order->order->name }}</a>
          @elseif ($column === 'product_id')
           @if ($order->product_id)
            <a href="{{ route('show_product', ['id' => $order->product_id]) }}">{{ $order->product->name }}</a>

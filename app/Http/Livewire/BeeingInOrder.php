@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order_Item;
+use App\Models\Order_Supplier_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
@@ -27,9 +28,10 @@ class BeeingInOrder extends Component
             'orders' => $this->orders
         ]);
     }
-    public function mount($productid)
+    public function mount($relatedby, $productid)
     {
         $this->productid = $productid;
+        $this->relatedby = $relatedby;
         $this->columns = Schema::getColumnListing('order__items');
         $this->selectedColumns = $this->columns;
     }
@@ -64,13 +66,24 @@ class BeeingInOrder extends Component
     }
     public function getOrdersProperty()
     {
-        return Order_Item::with([
-            'order',
-            'product'
-        ])
-            ->where('product_id', $this->productid)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
-            ->paginate($this->loadAmount); // Paginate the results
+        if ($this->relatedby === 'order') {
+
+            return Order_Item::with([
+                'order',
+                'product'
+            ])
+                ->where('product_id', $this->productid)
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
+                ->paginate($this->loadAmount); // Paginate the results
+        } elseif ($this->relatedby === 'supplier') {
+            return Order_Supplier_Item::with([
+                'order',
+                'product'
+            ])
+                ->where('product_id', $this->productid)
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
+                ->paginate($this->loadAmount); // Paginate the results
+        }
     }
     public function loadMore()
     {
