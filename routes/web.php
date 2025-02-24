@@ -94,6 +94,9 @@
 
       route::view('/payments', 'admin.payment')->name('payments');
       route::view('/currencies', 'admin.currency')->name('currencies');
+      route::view('/new_currency', 'admin.add_currency')->name('newcurrency');
+      route::post('/add_currency', [AdminController::class, 'store_currency'])->name('add_currency');
+
       route::view('/sessions', 'admin.session')->name('sessions');
       route::view('/wishlists', 'admin.wishlists')->name('wishlists');
 

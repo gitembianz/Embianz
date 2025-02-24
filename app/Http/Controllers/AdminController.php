@@ -31,6 +31,22 @@ use App\Models\ProductReviews as ModelsProductReviews;
 class AdminController extends Controller
 {
 
+  public function store_currency(Request $request)
+  {
+    $item = new Currency();
+    $item->name = $request->name;
+    $item->symbol = $request->symbol;
+    $item->createdby = Auth::user()->name;
+    $item->lastmodifiedby = Auth::user()->name;
+    $item->save();
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
+  }
 
   public function add_supplier()
   {
