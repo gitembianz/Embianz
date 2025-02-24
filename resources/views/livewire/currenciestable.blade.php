@@ -73,6 +73,15 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  <a class="button button--primary button--centered display--desktop" tooltip="Add new currency" tooltip-top
+   href="{{ route('newcurrency') }}">
+   <svg>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="12" y1="18" x2="12" y2="12"></line>
+    <line x1="9" y1="15" x2="15" y2="15"></line>
+   </svg>
+  </a>
   {{-- Sorting Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" wire:ignore>
    {{-- Dropdown Button --}}
@@ -150,6 +159,15 @@
       </svg>
       <span>Refresh table</span>
      </button>
+     <a class="button button--primary button--fill button--flexed" href="{{ route('newcurrency') }}">
+      <svg>
+       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+       <polyline points="14 2 14 8 20 8"></polyline>
+       <line x1="12" y1="18" x2="12" y2="12"></line>
+       <line x1="9" y1="15" x2="15" y2="15"></line>
+      </svg>
+      <span>Add Currency</span>
+     </a>
      <button class="button button--primary button--fill button--flexed" id="sort__open">
       <svg>
        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -220,17 +238,17 @@
           @if ($editindex !== $nr)
            {{ $item->name }}
           @else
-            <div class="searchable">
-              <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.name">
-            </div>
+           <div class="searchable">
+            <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.name">
+           </div>
           @endif
          @elseif($column === 'symbol')
           @if ($editindex !== $nr)
            {{ $item->symbol }}
           @else
-          <div class="searchable">
-           <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.symbol">
-          </div>
+           <div class="searchable">
+            <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.symbol">
+           </div>
           @endif
          @else
           {{ $item->$column }}
