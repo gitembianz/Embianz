@@ -119,8 +119,8 @@ class RelatedOrderSupplier extends Component
             $total = 0;
 
             foreach ($this->supplier->items as $supplierItem) {
-                $pu += $supplierItem->price;
-                $total += $supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100);
+                $pu += $supplierItem->price * $supplierItem->quantity;
+                $total += ($supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100)) * $supplierItem->quantity;
             }
 
             $vattotal = $total - $pu;
@@ -173,8 +173,8 @@ class RelatedOrderSupplier extends Component
             $total = 0;
 
             foreach ($this->supplier->items as $supplierItem) {
-                $pu += $supplierItem->price;
-                $total += $supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100);
+                $pu += $supplierItem->price * $supplierItem->quantity;
+                $total += ($supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100)) * $supplierItem->quantity;
             }
 
             $vattotal = $total - $pu;
@@ -215,7 +215,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
     }
     public function clear($index)
@@ -230,7 +230,7 @@ class RelatedOrderSupplier extends Component
             $this->productsAndValues[] = [
                 'allow' => false,
                 'itemselected' => null,
-                'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
+                'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
             ];
             $this->additems = false;
             $this->row = 1;
@@ -250,7 +250,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
         $this->row = 1;
         $this->additems = false;
@@ -321,7 +321,7 @@ class RelatedOrderSupplier extends Component
             'itemselected' => null,
             'price' => null,
             'vat' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 19]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
     }
     public function showColumn($column)

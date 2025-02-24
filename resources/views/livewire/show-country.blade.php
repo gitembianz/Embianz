@@ -131,8 +131,8 @@
    @endif
    <label>Phone code</label>
   </div>
+  <div class="details__checkboxes">
 
-  <div class="details__checkboxes details__long">
    <div class="checkbox__details ">
     @if ($edititem === null)
      @if ($country->status)
