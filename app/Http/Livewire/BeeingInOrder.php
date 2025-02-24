@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Order;
+use App\Models\Order_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
@@ -30,7 +30,7 @@ class BeeingInOrder extends Component
     public function mount($productid)
     {
         $this->productid = $productid;
-        $this->columns = Schema::getColumnListing('orders');
+        $this->columns = Schema::getColumnListing('order__items');
         $this->selectedColumns = $this->columns;
     }
     public function expandRow($index)
@@ -64,17 +64,11 @@ class BeeingInOrder extends Component
     }
     public function getOrdersProperty()
     {
-        return Order::with([
-            'account',  // Eager load account relationship
-            'cart',     // Eager load cart relationship
-            'currency', // Eager load currency relationship
-            'status',   // Eager load status relationship
-            'payment',  // Eager load payment relationship
-            'voucher',  // Eager load voucher relationship
+        return Order_Item::with([
+            'order',
+            'product'
         ])
-            ->whereHas('orders', function ($query) {
-                $query->where('product_id', $this->productid); // Filter by product_id
-            })
+            ->where('product_id', $this->productid)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
             ->paginate($this->loadAmount); // Paginate the results
     }
