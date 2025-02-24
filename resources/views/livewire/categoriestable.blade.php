@@ -261,7 +261,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 17) class="hidden" @endif>
+       <th @if ($index > 2) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -301,7 +301,7 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 17) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 2) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
@@ -351,7 +351,7 @@
        <td colspan="18">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 16)
+          @if ($index >= 3)
            @if ($column === 'name')
             <p>
              <bold>{{ $column }}:</bold>
