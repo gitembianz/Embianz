@@ -32,7 +32,11 @@ class BeeingInOrder extends Component
     {
         $this->productid = $productid;
         $this->relatedby = $relatedby;
-        $this->columns = Schema::getColumnListing('order__items');
+        if ($this->relatedby === 'order') {
+            $this->columns = Schema::getColumnListing('order__items');
+        } else {
+            $this->columns = Schema::getColumnListing('order__supplier__items');
+        }
         $this->selectedColumns = $this->columns;
     }
     public function expandRow($index)
