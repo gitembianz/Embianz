@@ -225,6 +225,15 @@
     <span>Currency</span>
    </a>
    <a
+    class="button button--fill button--flexed button--primary @if ($active == 'exchange') button--active @endif"
+    href="{{ route('exchanges') }}">
+    <svg>
+     <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+     <polyline points="17 6 23 6 23 12"></polyline>
+    </svg>
+    <span>Exchange rate</span>
+   </a>
+   <a
     class="button button--fill button--flexed button--primary @if ($active == 'countries') button--active @endif"
     href="{{ route('countries') }}">
     <svg>
@@ -507,6 +516,15 @@
     <path d="M3 11c0 .888 .772 1.45 2 2" />
    </svg>
    <span>Currency</span>
+  </a>
+  <a
+   class="button button--long button--flexed button--primary @if ($active == 'exchange') button--secondary @endif"
+   href="{{ route('exchanges') }}">
+   <svg>
+    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+    <polyline points="17 6 23 6 23 12"></polyline>
+   </svg>
+   <span>Exchange rate</span>
   </a>
   <a
    class="button button--long button--flexed button--primary @if ($active == 'countries') button--secondary @endif"
