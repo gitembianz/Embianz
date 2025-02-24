@@ -46,11 +46,11 @@
    </div>
    <span class="aside--line"></span>
    @foreach ($columns as $column)
-    <exchnage class="switch switch--primary" style="margin: 0.25rem 0">
+    <exchange class="switch switch--primary" style="margin: 0.25rem 0">
      <input type="checkbox" wire:ignore wire:model="selectedColumns" iso_code="{{ $column }}"
       {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
      <span>{{ $column }}</span>
-    </exchnage>
+    </exchange>
    @endforeach
   </div>
  </aside>
@@ -114,11 +114,11 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
-      <exchnage class="switch switch--primary inline">
+      <exchange class="switch switch--primary inline">
        <input type="checkbox" wire:ignore wire:model="selectedColumns" iso_code="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
        <span>{{ $column }}</span>
-      </exchnage>
+      </exchange>
      @endforeach
     </div>
    </div>
@@ -188,7 +188,7 @@
        </button>
       </th>
      @endif
-     @if ($this->showColumn('Base currency'))
+     @if ($this->showColumn('base_currency_id'))
       <th>
        <button class="table--btn">
         Base currency
@@ -196,7 +196,7 @@
        </button>
       </th>
      @endif
-     @if ($this->showColumn('Quote currency'))
+     @if ($this->showColumn('quote_currency_id'))
       <th>
        <button class="table--btn">
         Quote currency
@@ -277,124 +277,79 @@
     </tr>
    </thead>
    <tbody>
-    @foreach ($exchanges as $index => $exchnage)
-     <tr @if ($loop->last) id="last_record" @endif>
-      @if ($this->showColumn('id'))
-       <td>{{ $exchnage->id }}</td>
-      @endif
-      @if ($this->showColumn('Base currency'))
-       <td>{{ $exchnage->base_currency->name }}</td>
-      @endif
-      @if ($this->showColumn('Quote currency'))
-       <td>{{ $exchnage->quote_currency->name }}</td>
-      @endif
-      @if ($this->showColumn('value'))
-       <td>
-        @if ($rowindex !== $index)
-         {{ $exchnage->iso_code }}
-        @else
-         <div class="searchable">
-          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.iso_code">
-         </div>
-        @endif
-       </td>
-      @endif
-      @if ($this->showColumn('iso_code3'))
-       <td>
-        @if ($rowindex !== $index)
-         {{ $exchnage->iso_code3 }}
-        @else
-         <div class="searchable">
-          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.iso_code3">
-         </div>
-        @endif
-       </td>
-      @endif
-      @if ($this->showColumn('phone_code'))
-       <td>
-        @if ($rowindex !== $index)
-         {{ $exchnage->phone_code }}
-        @else
-         <div class="searchable">
-          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.phone_code">
-         </div>
-        @endif
-       </td>
-      @endif
-      @if ($this->showColumn('currency'))
-       <td>
-        @if ($rowindex !== $index)
-         {{ $exchnage->currency }}
-        @else
-         <div class="searchable">
-          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.currency">
-         </div>
-        @endif
-       </td>
-      @endif
-      @if ($this->showColumn('status'))
-       <td>
-
-        @if ($rowindex !== $index)
-         @if ($exchnage->status)
-          <div class="checkbox--secondary">
-           <input type="checkbox" id="isactive{{ $index }}" disabled checked>
-           <label for="isactive{{ $index }}"></label>
-          </div>
-         @else
-          <div class="checkbox--secondary disabled">
-           <input type="checkbox" id="notactive{{ $index }}" disabled>
-           <label for="notactive{{ $index }}"></label>
-          </div>
-         @endif
-        @else
-         <div class="checkbox--secondary inline">
-          <input type="checkbox" id="check{{ $index }}"
-           wire:model.lazy="element.{{ $index }}.status" />
-          <label for="check{{ $index }}"></label>
-         </div>
-        @endif
-       </td>
-      @endif
-
-      @if ($this->showColumn('created_at'))
-       <td>
-        {{ $exchnage->created_at }}
-       </td>
-      @endif
-      @if ($this->showColumn('updated_at'))
-       <td>
-        {{ $exchnage->updated_at }}
-       </td>
-      @endif
-      <td>
-       @if ($rowindex !== $index)
-        <button class="button button--secondary button--sm"
-         wire:click.prevent="edititem({{ $index }}, {{ $exchnage->id }})">
-         <svg>
-          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-          </path>
-         </svg>
-        </button>
-       @else
-        <div style="display: flex;">
-         <button class="button button--secondary button--sm"
-          wire:click.prevent="saveitem({{ $index }} , {{ $exchnage->id }})">
-          <svg>
-           <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-         </button>
-         <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
-          <svg>
-           <line x1="18" y1="6" x2="6" y2="18"></line>
-           <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-         </button>
-        </div>
-       @endif
-      </td>
+    @if ($exchanges->isEmpty())
+     <tr>
+      <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
      </tr>
-    @endforeach
+    @else
+     @foreach ($exchanges as $index => $exchange)
+      <tr @if ($loop->last) id="last_record" @endif>
+       @if ($this->showColumn('id'))
+        <td>{{ $exchange->id }}</td>
+       @endif
+       @if ($this->showColumn('Base currency'))
+        <td>{{ $exchange->base_currency->name }}</td>
+       @endif
+       @if ($this->showColumn('Quote currency'))
+        <td>{{ $exchange->quote_currency->name }}</td>
+       @endif
+       @if ($this->showColumn('value'))
+        <td>{{ $exchange->value }}</td>
+       @endif
+       @if ($this->showColumn('created_by'))
+        <td>
+         {{ $exchange->created_by }}
+        </td>
+       @endif
+       @if ($this->showColumn('last_modified_by'))
+        <td>
+         {{ $exchange->last_modified_by }}
+        </td>
+       @endif
+       @if ($this->showColumn('last_modified_date'))
+        <td>
+         {{ $exchange->last_modified_date }}
+        </td>
+       @endif
+       @if ($this->showColumn('created_at'))
+        <td>
+         {{ $exchange->created_at }}
+        </td>
+       @endif
+       @if ($this->showColumn('updated_at'))
+        <td>
+         {{ $exchange->updated_at }}
+        </td>
+       @endif
+       <td>
+        @if ($rowindex !== $index)
+         <button class="button button--secondary button--sm"
+          wire:click.prevent="edititem({{ $index }}, {{ $exchange->id }})">
+          <svg>
+           <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+           </path>
+          </svg>
+         </button>
+        @else
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }} , {{ $exchange->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+           </svg>
+          </button>
+         </div>
+        @endif
+       </td>
+      </tr>
+     @endforeach
+    @endif
    </tbody>
   </table>
 
