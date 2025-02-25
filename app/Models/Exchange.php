@@ -27,4 +27,13 @@ class Exchange extends Model
     {
         return $this->belongsTo(Currency::class, 'quote_currency_id');
     }
+    public static function search($search)
+    {
+        return empty($search) ? static::query()
+            : static::query()->where('id', 'like', '%' . $search . '%')
+            ->orWhere('value', 'like', '%' . $search . '%')
+            ->orWhere('created_by', 'like', '%' . $search . '%')
+            ->orWhere('last_modified_by', 'like', '%' . $search . '%')
+            ->orWhere('last_modified_date', 'like', '%' . $search . '%');
+    }
 }
