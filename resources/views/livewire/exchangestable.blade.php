@@ -119,6 +119,8 @@
          {{ $i }}</td>
         <td>
          <select class="searchable" wire:model.defer="base.{{ $i }}">
+          <option value="">Select base currency</option>
+
           @foreach ($currencies as $currency)
            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
           @endforeach
@@ -127,6 +129,8 @@
         </td>
         <td>
          <select class="searchable" wire:model.defer="quote.{{ $i }}">
+          <option value="">Select quote currency</option>
+
           @foreach ($currencies as $currency)
            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
           @endforeach
@@ -418,14 +422,42 @@
        @if ($this->showColumn('id'))
         <td>{{ $exchange->id }}</td>
        @endif
-       @if ($this->showColumn('Base currency'))
-        <td>{{ $exchange->base_currency->name }}</td>
+       @if ($this->showColumn('base_currency_id'))
+        <td>
+         @if ($rowindex !== $index)
+          {{ $exchange->base_currency->name }}
+         @else
+          <select class="searchable" wire:model.defer="element.{{ $index }}.base_currency_id">
+           @foreach ($currencies as $currency)
+            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+           @endforeach
+          </select>
+         @endif
+        </td>
        @endif
-       @if ($this->showColumn('Quote currency'))
-        <td>{{ $exchange->quote_currency->name }}</td>
+       @if ($this->showColumn('quote_currency_id'))
+        <td>
+         @if ($rowindex !== $index)
+          {{ $exchange->quote_currency->name }}
+         @else
+          <select class="searchable" wire:model.defer="element.{{ $index }}.quote_currency_id">
+           @foreach ($currencies as $currency)
+            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+           @endforeach
+          </select>
+         @endif
+        </td>
        @endif
        @if ($this->showColumn('value'))
-        <td>{{ $exchange->value }}</td>
+        <td>
+         @if ($rowindex !== $index)
+          {{ $exchange->value }}
+         @else
+          <div class="searchable">
+           <input type="number" class="input__searchable" wire:model.defer="element.{{ $index }}.value">
+          </div>
+         @endif
+        </td>
        @endif
        @if ($this->showColumn('created_by'))
         <td>
@@ -439,8 +471,14 @@
        @endif
        @if ($this->showColumn('last_modified_date'))
         <td>
-         {{ $exchange->last_modified_date }}
-        </td>
+         @if ($rowindex !== $index)
+          {{ $exchange->last_modified_date }}
+         @else
+          <div class="searchable">
+           <input type="date" class="input__searchable"
+            wire:model.defer="element.{{ $index }}.last_modified_date">
+          </div>
+         @endif
        @endif
        @if ($this->showColumn('created_at'))
         <td>
