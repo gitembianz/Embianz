@@ -116,6 +116,9 @@
         <div class="table--btn">Value</div>
        </th>
        <th>
+        <div class="table--btn">Date</div>
+       </th>
+       <th>
         <button class="button button--secondary button--sm" style="opacity: 0">
          <svg>
           <polyline points="3 6 5 6 21 6"></polyline>
@@ -156,6 +159,11 @@
          </div>
         </td>
         <td>
+         <div class="searchable">
+          <input type="date"class="input__searchable" wire:model.defer="date.{{ $i }}">
+         </div>
+        </td>
+        <td>
          <div style="display: flex;">
           @if ($i == $rowadd)
            <button type="button" class="button button--secondary button--sm" wire:click="plus()">
@@ -167,7 +175,8 @@
             </svg>
            </button>
           @endif
-          <button type="button" class="button button--secondary button--sm" wire:click="clear({{ $i }})">
+          <button type="button" class="button button--secondary button--sm"
+           wire:click="clear({{ $i }})">
            <svg>
             <line x1="18" y1="6" x2="6" y2="18">
             </line>
@@ -362,6 +371,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('date'))
+      <th>
+       <button wire:click="sortBy('date')" class="table--btn @if ($orderBy === 'date' && $orderAsc === '1') active @endif">
+        date
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('created_by'))
       <th>
        <button wire:click="sortBy('created_by')" class="table--btn @if ($orderBy === 'created_by' && $orderAsc === '1') active @endif">
@@ -383,17 +402,7 @@
        </button>
       </th>
      @endif
-     @if ($this->showColumn('last_modified_date'))
-      <th>
-       <button wire:click="sortBy('last_modified_date')"
-        class="table--btn @if ($orderBy === 'last_modified_date' && $orderAsc === '1') active @endif">
-        Last modified date
-        <svg>
-         <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-       </button>
-      </th>
-     @endif
+
      @if ($this->showColumn('created_at'))
       <th>
        <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === 'created_at' && $orderAsc === '1') active @endif">
@@ -472,6 +481,16 @@
          @endif
         </td>
        @endif
+       @if ($this->showColumn('date'))
+        <td>
+         @if ($rowindex !== $index)
+          {{ $exchange->date }}
+         @else
+          <div class="searchable">
+           <input type="date" class="input__searchable" wire:model.defer="element.{{ $index }}.date">
+          </div>
+         @endif
+       @endif
        @if ($this->showColumn('created_by'))
         <td>
          {{ $exchange->created_by }}
@@ -482,17 +501,7 @@
          {{ $exchange->last_modified_by }}
         </td>
        @endif
-       @if ($this->showColumn('last_modified_date'))
-        <td>
-         @if ($rowindex !== $index)
-          {{ $exchange->last_modified_date }}
-         @else
-          <div class="searchable">
-           <input type="date" class="input__searchable"
-            wire:model.defer="element.{{ $index }}.last_modified_date">
-          </div>
-         @endif
-       @endif
+
        @if ($this->showColumn('created_at'))
         <td>
          {{ $exchange->created_at }}

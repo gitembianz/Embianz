@@ -72,6 +72,12 @@ return new class extends Migration
                 $table->decimal('final_amount', 10, 2)->default(0)->after('currency');
             });
         }
+        if (!Schema::hasColumn('order__suppliers', 'final_amount_quote_currency')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->decimal('final_amount_quote_currency', 10, 4)->default(0)->after('final_amount');
+            });
+        }
         if (!Schema::hasColumn('order__suppliers', 'created_by')) {
 
             Schema::table('order__suppliers', function (Blueprint $table) {
