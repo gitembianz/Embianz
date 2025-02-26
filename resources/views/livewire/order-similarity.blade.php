@@ -4,7 +4,8 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('Order similarities ') }}({{ count($similarities['similar']) }})
+   {{ __('Order similarities') }} ({{ count(data_get($similarities, 'similar', [])) }})
+
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -68,80 +69,87 @@
     </tr>
    </thead>
    <tbody>
-    @if ($similarities['similar']->isEmpty())
-     <tr>
-      <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
-     </tr>
-    @else
-     @php
-      $i = 0;
-     @endphp
-     @foreach ($similarities['similar'] as $similarityPercentage => $group)
+    @if (isset($similarities['similar']))
+
+     @if ($similarities['similar']->isEmpty())
+      <tr>
+       <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
+      </tr>
+     @else
       @php
-       $ids = [];
-       foreach ($group['orders'] as $order) {
-           $ids[] = $order['order']->id;
-       }
-       $idsString = implode(',', $ids); // Convert array to a comma-separated string
+       $i = 0;
       @endphp
-      <tr class="expandable-row" @if ($this->isChecked($idsString)) active @endif>
-       <td style="border-left: none" data-title="Check">
-        <div class="checkbox--primary">
-         <input type="checkbox" value="{{ $idsString }}" id="checkbox-{{ $idsString }}" wire:model="checked">
-         <label for="checkbox-{{ $idsString }}"></label>
-        </div>
-       </td>
-       <td style="border-left: none" data-title="Check"></td>
-       @if ($this->showColumn('Reference'))
-        <td>
-         @if ($i === 0)
-          {{ $similarities['reference']['order']->name }}
-         @endif
+      @foreach ($similarities['similar'] as $similarityPercentage => $group)
+       @php
+        $ids = [];
+        foreach ($group['orders'] as $order) {
+            $ids[] = $order['order']->id;
+        }
+        $idsString = implode(',', $ids); // Convert array to a comma-separated string
+       @endphp
+       <tr class="expandable-row" @if ($this->isChecked($idsString)) active @endif>
+        <td style="border-left: none" data-title="Check">
+         <div class="checkbox--primary">
+          <input type="checkbox" value="{{ $idsString }}" id="checkbox-{{ $idsString }}" wire:model="checked">
+          <label for="checkbox-{{ $idsString }}"></label>
+         </div>
         </td>
-       @endif
-       @if ($this->showColumn('Products'))
-        <td>
-         @if ($i === 0)
+        <td style="border-left: none" data-title="Check"></td>
+        @if ($this->showColumn('Reference'))
+         <td>
+          @if ($i === 0)
+           {{ $similarities['reference']['order']->name }}
+          @endif
+         </td>
+        @endif
+        @if ($this->showColumn('Products'))
+         <td>
+          @if ($i === 0)
+           <ul>
+            @foreach ($group['products'] as $product)
+             @php
+              $referenceQuantity = 0;
+              foreach ($similarities['reference']['products'] as $pr) {
+                  if ($pr['name'] === $product['name']) {
+                      $referenceQuantity = $pr['total_quantity'];
+                      break;
+                  }
+              }
+             @endphp
+             <li>{{ $product['name'] }} - sku({{ $product['sku'] }})
+              total quanity (x{{ $product['total_quantity'] + $referenceQuantity }})
+             </li>
+            @endforeach
+           </ul>
+          @endif
+         </td>
+        @endif
+        @if ($this->showColumn('Orders'))
+         <td>
           <ul>
-           @foreach ($group['products'] as $product)
-            @php
-             $referenceQuantity = 0;
-             foreach ($similarities['reference']['products'] as $pr) {
-                 if ($pr['name'] === $product['name']) {
-                     $referenceQuantity = $pr['total_quantity'];
-                     break;
-                 }
-             }
-            @endphp
-            <li>{{ $product['name'] }} - sku({{ $product['sku'] }})
-             total quanity (x{{ $product['total_quantity'] + $referenceQuantity }})
+           @foreach ($group['orders'] as $order)
+            <li>
+             <a href="{{ route('show_order', ['id' => $order['order']->id]) }}">
+              {{ $order['order']->name }}
+             </a>
             </li>
            @endforeach
           </ul>
-         @endif
-        </td>
-       @endif
-       @if ($this->showColumn('Orders'))
-        <td>
-         <ul>
-          @foreach ($group['orders'] as $order)
-           <li>
-            <a href="{{ route('show_order', ['id' => $order['order']->id]) }}">
-             {{ $order['order']->name }}
-            </a>
-           </li>
-          @endforeach
-         </ul>
-        </td>
-       @endif
-       @if ($this->showColumn('Similarity'))
-        <td>{{ $similarityPercentage }}%</td>
-       @endif
-      </tr>
-      @php
-       $i++;
-      @endphp
-     @endforeach
+         </td>
+        @endif
+        @if ($this->showColumn('Similarity'))
+         <td>{{ $similarityPercentage }}%</td>
+        @endif
+       </tr>
+       @php
+        $i++;
+       @endphp
+      @endforeach
+     @endif
+    @else
+     <tr>
+      <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
+     </tr>
     @endif
    </tbody>
   </table>
