@@ -146,7 +146,7 @@
    <label>Currency</label>
   </div>
 
-  <div class="input__tabs">
+  {{-- <div class="input__tabs">
    @if ($edititem === null)
     <span class="disabled">{{ $supplier->quote_currency }}</span>
    @else
@@ -157,7 +157,7 @@
     </select>
    @endif
    <label>Quote Currency</label>
-  </div>
+  </div> --}}
 
   <div class="input__tabs">
    <span class="disabled">{{ optional($supplier->exchange)->value }}</span>
@@ -168,6 +168,10 @@
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->final_amount }}</span>
    <label>Final amount</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $supplier->final_amount_quote_currency }}</span>
+   <label>Final amount quote currency</label>
   </div>
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->sum_amount }}</span>
@@ -182,25 +186,28 @@
    <span class="disabled">{{ $supplier->created_by }}</span>
    <label>Create by</label>
   </div>
+
   {{-- Price List Last modified by --}}
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->last_modified_by }}</span>
    <label>Last modified by</label>
   </div>
-  {{-- Price List Create date / time --}}
-  <div class="input__tabs">
-   <span class="disabled">{{ $supplier->created_at }}</span>
-   <label>Create date / time</label>
+  <div class="details__checkboxes">
+
+   {{-- Price List Create date / time --}}
+   <div class="input__tabs">
+    <span class="disabled">{{ $supplier->created_at }}</span>
+    <label>Create date / time</label>
+   </div>
+
+
+
+   {{-- Price List Updated date / time --}}
+   <div class="input__tabs">
+    <span class="disabled">{{ $supplier->updated_at }}</span>
+    <label>Updated date / time</label>
+   </div>
   </div>
-
-
-
-  {{-- Price List Updated date / time --}}
-  <div class="input__tabs">
-   <span class="disabled">{{ $supplier->updated_at }}</span>
-   <label>Updated date / time</label>
-  </div>
-
 
 
   {{-- Save Button --}}

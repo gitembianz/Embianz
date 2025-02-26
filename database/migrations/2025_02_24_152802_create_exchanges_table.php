@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('quote_currency_id')->index();
             $table->foreign('quote_currency_id')->references('id')->on('currencies');
             $table->decimal('value', 10, 6)->nullable();
+            $table->date('date')->nullable();
             $table->string('created_by')->nullable();
             $table->string('last_modified_by')->nullable();
-            $table->date('last_modified_date')->nullable();
             $table->timestamps();
         });
     }
