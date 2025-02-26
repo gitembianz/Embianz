@@ -207,8 +207,8 @@ class ShowOrder extends Component
                 $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
         } else {
             $acc = $this->order->account->company_name;
-            $adress = "Reg. Com:" . $this->order->account->registration_code . "<br>" .
-                "CIF:" . $this->order->account->registration_number . "<br>" .
+            $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
+                "CIF:" . $this->order->account->registration_code . "<br>" .
                 $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
                 $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
                 $this->order->account->addresses->where('type', 'billing')->first()->county;
@@ -747,8 +747,8 @@ class ShowOrder extends Component
                 $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
         } else {
             $acc = $this->order->account->company_name;
-            $adress = "Reg. Com:" . $this->order->account->registration_code . "<br>" .
-                "CIF:" . $this->order->account->registration_number . "<br>" .
+            $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
+                "CIF:" . $this->order->account->registration_code . "<br>" .
                 $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
                 $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
                 $this->order->account->addresses->where('type', 'billing')->first()->county;
