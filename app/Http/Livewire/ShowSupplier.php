@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Currency;
+use App\Models\Exchange;
 use App\Models\Order_Supplier;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,7 +70,8 @@ class ShowSupplier extends Component
             'supplier_name' => $this->supplier->supplier_name,
             'date' => $this->supplier->date,
             'status' => $this->supplier->status,
-            'currency' => $this->supplier->currency
+            'currency' => $this->supplier->currency,
+            'quote_currency' => $this->supplier->quote_currency
         ];
         $this->edititem = true;
     }
@@ -80,64 +82,49 @@ class ShowSupplier extends Component
     }
     public function saveitem()
     {
-        $rec = $this->record ?? NULL;
-        if (!is_null($rec)) {
-            if (array_key_exists('name', $rec)) {
-                if (!empty($rec['name'])) {
-                    $this->supplier->name = $rec['name'];
-                } else {
-                    session()->flash('notification', [
-                        'message' => 'Please provide a value!',
-                        'type' => 'warning',
-                        'title' => 'Missing Values'
-                    ]);
-                    return;
-                }
-            }
-            if (array_key_exists('supplier_name', $rec)) {
-                $this->supplier->supplier_name = $rec['supplier_name'];
-            }
-            if (array_key_exists('currency', $rec)) {
-                $this->supplier->currency = $rec['currency'];
-            }
-            if (array_key_exists('date', $rec)) {
-                if (!empty($rec['date'])) {
-                    $this->supplier->date = $rec['date'];
-                } else {
-                    session()->flash('notification', [
-                        'message' => 'Please provide a value!',
-                        'type' => 'warning',
-                        'title' => 'Missing Values'
-                    ]);
-                    return;
-                }
-            }
-            if (array_key_exists('status', $rec)) {
-                $this->supplier->status = $rec['status'];
-                if ($rec['status'] != "draft") {
-                    foreach ($this->supplier->items as $item) {
-                        $product = $item->product;
+        if (!$this->record) return;
 
-                        $interimQuantity = $product->orders_item()
-                            ->whereHas('order', function ($q) {
-                                $q->where('status_id', 31);
-                            })->sum('quantity');
+        $rec = $this->record;
 
-                        $item->product_quantity_interim = $item->product->quantity + $interimQuantity;
-                        $item->product_quantity = $item->product->quantity;
-                        $item->save();
-                    }
-                }
+
+        $this->supplier->name = $rec['name'];
+        $this->supplier->supplier_name = $rec['supplier_name'] ?? null;
+        $this->supplier->currency = $rec['currency'];
+        $this->supplier->quote_currency = $rec['quote_currency'];
+        $this->supplier->date = $rec['date'];
+        $this->supplier->status = $rec['status'];
+
+        if ($rec['status'] != "draft" && !empty($this->supplier->items)) {
+            foreach ($this->supplier->items as $item) {
+                $product = $item->product;
+
+                $interimQuantity = $product->orders_item()
+                    ->whereHas('order', function ($q) {
+                        $q->where('status_id', 31);
+                    })->sum('quantity');
+
+                $item->product_quantity_interim = $product->quantity + $interimQuantity;
+                $item->product_quantity = $product->quantity;
+                $item->save();
             }
-            $this->supplier->last_modified_by = Auth::user()->name;
-            $this->supplier->save();
-            $this->emit('itemSaved');
-            session()->flash('notification', [
-                'message' => 'Record edited successfully!',
-                'type' => 'success',
-                'title' => 'Success'
-            ]);
         }
+
+        $c1 = optional(Currency::where('name', $rec['currency'])->first())->id;
+        $c2 = optional(Currency::where('name', $rec['quote_currency'])->first())->id;
+        $exchange_id = optional(Exchange::where('base_currency_id', $c1)
+            ->where('quote_currency_id', $c2)
+            ->first())->id;
+        $this->supplier->last_modified_by = Auth::user()->name ?? 'Unknown';
+        $this->supplier->exchange_id = $exchange_id;
+        $this->supplier->save();
+
+        $this->emit('itemSaved');
+        session()->flash('notification', [
+            'message' => 'Record edited successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+
         $this->record = [];
         $this->edititem = null;
     }

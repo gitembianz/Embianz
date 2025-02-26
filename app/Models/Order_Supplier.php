@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order_Supplier extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'status', 'date', 'sum_amount', 'final_amount', 'vat_sum_amount', 'supplier_name', 'currency', 'created_by', 'last_modified_by'];
+    protected $fillable = ['name', 'status', 'exchange_id', 'date', 'sum_amount', 'final_amount', 'vat_sum_amount', 'supplier_name', 'currency', 'created_by', 'last_modified_by'];
 
     public static function search($search)
     {
@@ -23,5 +23,9 @@ class Order_Supplier extends Model
     public function items()
     {
         return $this->hasMany(Order_Supplier_Item::class, 'order__supplier_id');
+    }
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class, 'exchange_id');
     }
 }

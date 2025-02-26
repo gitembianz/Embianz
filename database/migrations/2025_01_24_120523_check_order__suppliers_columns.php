@@ -41,6 +41,19 @@ return new class extends Migration
                 $table->string('currency')->nullable()->after('date');
             });
         }
+        if (!Schema::hasColumn('order__suppliers', 'quote_currency')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->string('quote_currency')->nullable()->after('currency');
+            });
+        }
+        if (!Schema::hasColumn('order__suppliers', 'exchange_id')) {
+
+            Schema::table('order__suppliers', function (Blueprint $table) {
+                $table->unsignedBigInteger('exchange_id')->index()->nullable()->after('currency');
+                $table->foreign('exchange_id')->references('id')->on('exchanges');
+            });
+        }
         if (!Schema::hasColumn('order__suppliers', 'sum_amount')) {
 
             Schema::table('order__suppliers', function (Blueprint $table) {

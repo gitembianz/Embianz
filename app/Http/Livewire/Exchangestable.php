@@ -6,6 +6,7 @@ use App\Models\Currency;
 use App\Models\Exchange;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 
 class Exchangestable extends Component
@@ -15,17 +16,20 @@ class Exchangestable extends Component
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
-    public $itemidbeingremoved = null;
+    public $idbeingremoved = null;
     public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'last_modified_date', 'created_at', 'updated_at'];
     public $selectedColumns = [];
     public $rowindex = null;
     public $currencies;
+    public $single = false;
 
     public $add = false;
     public $rowadd;
     public $base = [];
     public $quote = [];
     public $value = [];
+    public $element = [];
+
     public $row = 1;
 
     public function render()
@@ -88,5 +92,107 @@ class Exchangestable extends Component
             $this->quote = [];
             $this->value = [];
         }
+    }
+
+    public function saveadd()
+    {
+        for ($i = 1; $i <= $this->rowadd; $i++) {
+            $this->resetErrorBag();
+
+            $this->validate([
+                'base.*' => 'required',
+                'quote.*' => 'required'
+            ]);
+
+            Exchange::create([
+                'base_currency_id' => $this->base[$i],
+                'quote_currency_id' => $this->quote[$i],
+                'value' => $this->value[$i] ?? 1,
+                'created_by' => Auth::user()->name,
+                'last_modified_by' => Auth::user()->name,
+                'last_modified_date' => now(),
+            ]);
+            array_splice($this->base, $i, 1);
+            array_splice($this->quote, $i, 1);
+            array_splice($this->value, $i, 1);
+        }
+        session()->flash('notification', [
+            'message' => 'Exchanges added successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+        $this->add = false;
+        $this->rowadd = 0;
+        $this->base = [];
+        $this->quote = [];
+        $this->value = [];
+    }
+    public function edititem($index, $id)
+    {
+        $record = Exchange::find($id);
+        $this->rowindex = $index;
+        $this->element[$index]  = [
+            'base_currency_id' => $record->base_currency_id,
+            'quote_currency_id' => $record->quote_currency_id,
+            'value' => $record->value,
+            'last_modified_date' => $record->last_modified_date
+        ];
+    }
+    public function cancelitem()
+    {
+        $this->rowindex = null;
+        $this->element = [];
+    }
+    public function saveitem($index, $id)
+    {
+        $record = $this->element[$index] ?? null;
+        if (!$record) {
+            session()->flash('notification', [
+                'message' => 'Nothing was edited!',
+                'type' => 'warning',
+                'title' => 'Warning'
+            ]);
+            return;
+        }
+        $element = Exchange::find($id);
+        $fillableFields = [
+            'base_currency_id',
+            'quote_currency_id',
+            'value',
+            'last_modified_date',
+            'last_modified_by'
+        ];
+        foreach ($fillableFields as $field) {
+            if (array_key_exists($field, $record)) {
+                $element->{$field} = $record[$field];
+            }
+        }
+        $element->last_modified_by = Auth::user()->name;
+        $element->save();
+        session()->flash('notification', [
+            'message' => 'Record edited successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+
+        $this->rowindex = null;
+        $this->element = [];
+    }
+    public function deleteSingleRecord()
+    {
+        $item = Exchange::findOrFail($this->idbeingremoved);
+        $item->delete();
+        $this->single = false;
+
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function confirmItemRemoval($id)
+    {
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
 }
