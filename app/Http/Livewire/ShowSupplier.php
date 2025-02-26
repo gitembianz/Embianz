@@ -16,17 +16,36 @@ class ShowSupplier extends Component
     public $delete = false;
     public $record;
     public $currencies;
+    public $rates = [];
+    public $search = '';
+
     public $totalPrice;
 
     public function render()
     {
+        $exchanges = Exchange::search($this->search)
+            ->where(function ($query) {
+                $query->whereHas('base_currency', function ($subQuery) {
+                    $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+                });
+                $query->whereHas('quote_currency', function ($subQuery) {
+                    $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+                });
+            })->get();
         return view('livewire.show-supplier', [
-            'supplier' => $this->supplier
+            'supplier' => $this->supplier,
+            'exchanges' => $exchanges
+
         ]);
     }
     public function mount($itemId)
     {
         $this->itemId = $itemId;
+        $this->rates[] = [
+            'allow' => false,
+            'itemselected' => null,
+            'rate' => ['idrel' => null, 'value' => null],
+        ];
     }
     public function confirmItemRemoval()
     {

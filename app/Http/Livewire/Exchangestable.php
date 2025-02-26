@@ -17,7 +17,7 @@ class Exchangestable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $idbeingremoved = null;
-    public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'last_modified_date', 'created_at', 'updated_at'];
+    public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'date', 'created_at', 'updated_at'];
     public $selectedColumns = [];
     public $rowindex = null;
     public $currencies;
@@ -28,6 +28,7 @@ class Exchangestable extends Component
     public $base = [];
     public $quote = [];
     public $value = [];
+    public $date = [];
     public $element = [];
 
     public $row = 1;
@@ -76,12 +77,15 @@ class Exchangestable extends Component
         $this->base[$this->rowadd] = null;
         $this->quote[$this->rowadd] = null;
         $this->value[$this->rowadd] = null;
+        $this->date[$this->rowadd] = null;
     }
     public function clear($i)
     {
         array_splice($this->base, $i, 1);
         array_splice($this->quote, $i, 1);
         array_splice($this->value, $i, 1);
+        array_splice($this->date, $i, 1);
+
 
         $this->rowadd--;
 
@@ -91,6 +95,7 @@ class Exchangestable extends Component
             $this->base = [];
             $this->quote = [];
             $this->value = [];
+            $this->date = [];
         }
     }
 
@@ -108,13 +113,14 @@ class Exchangestable extends Component
                 'base_currency_id' => $this->base[$i],
                 'quote_currency_id' => $this->quote[$i],
                 'value' => $this->value[$i] ?? 1,
+                'date' => $this->date[$i],
                 'created_by' => Auth::user()->name,
                 'last_modified_by' => Auth::user()->name,
-                'last_modified_date' => now(),
             ]);
             array_splice($this->base, $i, 1);
             array_splice($this->quote, $i, 1);
             array_splice($this->value, $i, 1);
+            array_splice($this->date, $i, 1);
         }
         session()->flash('notification', [
             'message' => 'Exchanges added successfully!',
@@ -126,6 +132,7 @@ class Exchangestable extends Component
         $this->base = [];
         $this->quote = [];
         $this->value = [];
+        $this->date = [];
     }
     public function edititem($index, $id)
     {
@@ -135,7 +142,7 @@ class Exchangestable extends Component
             'base_currency_id' => $record->base_currency_id,
             'quote_currency_id' => $record->quote_currency_id,
             'value' => $record->value,
-            'last_modified_date' => $record->last_modified_date
+            'date' => $record->date
         ];
     }
     public function cancelitem()
@@ -159,7 +166,7 @@ class Exchangestable extends Component
             'base_currency_id',
             'quote_currency_id',
             'value',
-            'last_modified_date',
+            'date',
             'last_modified_by'
         ];
         foreach ($fillableFields as $field) {

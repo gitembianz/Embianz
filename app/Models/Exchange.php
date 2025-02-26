@@ -15,7 +15,7 @@ class Exchange extends Model
         'value',
         'created_by',
         'last_modified_by',
-        'last_modified_date'
+        'date'
 
     ];
 
@@ -34,7 +34,7 @@ class Exchange extends Model
             ->orWhere('value', 'like', '%' . $search . '%')
             ->orWhere('created_by', 'like', '%' . $search . '%')
             ->orWhere('last_modified_by', 'like', '%' . $search . '%')
-            ->orWhere('last_modified_date', 'like', '%' . $search . '%');
+            ->orWhere('date', 'like', '%' . $search . '%');
     }
     public function suppliers()
     {
