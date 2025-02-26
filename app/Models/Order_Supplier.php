@@ -24,4 +24,8 @@ class Order_Supplier extends Model
     {
         return $this->hasMany(Order_Supplier_Item::class, 'order__supplier_id');
     }
+    public function exchange()
+    {
+        return $this->belongsTo(Exchange::class, 'exchan9ge_id');
+    }
 }

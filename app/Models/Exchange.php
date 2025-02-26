@@ -36,4 +36,8 @@ class Exchange extends Model
             ->orWhere('last_modified_by', 'like', '%' . $search . '%')
             ->orWhere('last_modified_date', 'like', '%' . $search . '%');
     }
+    public function suppliers()
+    {
+        return $this->hasMany(Order_Supplier::class, 'exchange_id');
+    }
 }
