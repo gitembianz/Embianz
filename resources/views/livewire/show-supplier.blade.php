@@ -146,6 +146,23 @@
    <label>Currency</label>
   </div>
 
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">{{ $supplier->quote_currency }}</span>
+   @else
+    <select wire:model.defer="record.quote_currency">
+     @foreach ($currencies as $currency)
+      <option value="{{ $currency->name }}">{{ $currency->name }}</option>
+     @endforeach
+    </select>
+   @endif
+   <label>Quote Currency</label>
+  </div>
+
+  <div class="input__tabs">
+   <span class="disabled">{{ optional($supplier->exchange)->value }}</span>
+   <label>Exchange rate</label>
+  </div>
 
   {{-- Price List Create by --}}
   <div class="input__tabs">
