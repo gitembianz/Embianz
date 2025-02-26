@@ -1,7 +1,20 @@
 <section class="content">
  <x-alert />
 
-
+ <aside>
+  <div class="background background--center @if ($single) active @endif"></div>
+  <div class="aside aside--confirm @if ($single) active @endif">
+   <span>
+    Are you sure to delete this record?
+   </span>
+   <button class="button button--primary button--long" wire:click="deleteSingleRecord()">
+    <span>Delete</span>
+   </button>
+   <button class="button button--danger button--long" wire:click="$set('single', false)">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
  {{-- Asides --}}
  <aside>
   <div class="background background--right" wire:ignore id="sort__backdrop"></div>
@@ -138,7 +151,7 @@
         </td>
         <td>
          <div class="searchable">
-          <input placeholder="value" type="text"class="input__searchable"
+          <input placeholder="value" type="number"class="input__searchable"
            wire:model.defer="value.{{ $i }}">
          </div>
         </td>
@@ -491,30 +504,40 @@
         </td>
        @endif
        <td>
-        @if ($rowindex !== $index)
-         <button class="button button--secondary button--sm"
-          wire:click.prevent="edititem({{ $index }}, {{ $exchange->id }})">
-          <svg>
-           <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-           </path>
-          </svg>
-         </button>
-        @else
-         <div style="display: flex;">
+        <div style="display:flex;">
+
+         @if ($rowindex !== $index)
           <button class="button button--secondary button--sm"
-           wire:click.prevent="saveitem({{ $index }} , {{ $exchange->id }})">
+           wire:click.prevent="edititem({{ $index }}, {{ $exchange->id }})">
            <svg>
-            <polyline points="20 6 9 17 4 12"></polyline>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
            </svg>
           </button>
-          <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
+          <button wire:click.prevent="confirmItemRemoval({{ $exchange->id }})"
+           class="button button--secondary button--sm">
            <svg>
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
            </svg>
           </button>
-         </div>
-        @endif
+         @else
+          <div style="display: flex;">
+           <button class="button button--secondary button--sm"
+            wire:click.prevent="saveitem({{ $index }} , {{ $exchange->id }})">
+            <svg>
+             <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+           </button>
+           <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18"></line>
+             <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+           </button>
+          </div>
+         @endif
+        </div>
        </td>
       </tr>
      @endforeach

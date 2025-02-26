@@ -16,11 +16,12 @@ class Exchangestable extends Component
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
-    public $itemidbeingremoved = null;
+    public $idbeingremoved = null;
     public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'last_modified_date', 'created_at', 'updated_at'];
     public $selectedColumns = [];
     public $rowindex = null;
     public $currencies;
+    public $single = false;
 
     public $add = false;
     public $rowadd;
@@ -176,5 +177,22 @@ class Exchangestable extends Component
 
         $this->rowindex = null;
         $this->element = [];
+    }
+    public function deleteSingleRecord()
+    {
+        $item = Exchange::findOrFail($this->idbeingremoved);
+        $item->delete();
+        $this->single = false;
+
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function confirmItemRemoval($id)
+    {
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
 }
