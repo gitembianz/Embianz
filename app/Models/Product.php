@@ -132,6 +132,11 @@ class Product extends Model
   {
     return $this->hasMany(Order_Supplier_Item::class, 'product_id');
   }
+  public function costs()
+  {
+    return $this->hasMany(ProductCost::class, 'product_id');
+  }
+
 
   public function media()
   {
