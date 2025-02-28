@@ -534,6 +534,10 @@ class AdminController extends Controller
       );
     }
 
-    return Redirect::to('/');
+    return redirect()->route('dashboard')->with('notification', [
+      'message' => 'Product cost updated!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 }
