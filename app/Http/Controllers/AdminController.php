@@ -473,4 +473,12 @@ class AdminController extends Controller
     }
     return Redirect::to('/');
   }
+  public function updatecosts()
+  {
+    $products = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+
+    return Redirect::to('/');
+  }
 }
