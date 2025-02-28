@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
 use App\Models\Currency;
+use App\Models\Exchange;
 use App\Models\Promotion;
 use App\Models\CustomScript;
 use App\Models\UserSessions;
@@ -473,11 +474,65 @@ class AdminController extends Controller
     }
     return Redirect::to('/');
   }
-  public function updatecosts()
+  public function updateCosts()
   {
     $products = Product::where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->get();
+
+    foreach ($products as $product) {
+      $cartPrices = $product->carts_item()->pluck('price');
+      if ($cartPrices->isNotEmpty()) {
+        $averagePrice = $cartPrices->avg();
+      } else {
+        $averagePrice = optional($product->product_prices->first())->value;
+      }
+
+      $totalCost = 0;
+      $count = 0;
+
+      foreach ($product->order_suppliers as $orderSupplier) {
+        $cost = $orderSupplier->price;
+        $supplierCurrency = $orderSupplier->order->currency ?? null;
+        $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
+
+        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->latest()->first();
+
+          if (!$exchange) {
+            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+              $q->where('name', $productCurrency);
+            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+              $q->where('name', $supplierCurrency);
+            })->latest()->first();
+
+            if ($exchange) {
+              $cost /= $exchange->value;
+            }
+          } else {
+            $cost *= $exchange->value;
+          }
+        }
+
+        if ($cost) {
+          $totalCost += $cost;
+          $count++;
+        }
+      }
+
+
+      $averageCost = $count > 0 ? ($totalCost / $count) : null;
+
+      DB::table('product_costs')->updateOrInsert(
+        ['product_id' => $product->id],
+        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+      );
+    }
 
     return Redirect::to('/');
   }
