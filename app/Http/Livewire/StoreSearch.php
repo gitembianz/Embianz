@@ -120,7 +120,7 @@ class StoreSearch extends Component
                 );
             } else {
                 return Product::search($this->search)
-                    ->select('id', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
+                    ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
                     ->where('active', true)
                     ->where('type', '!=', 'parent')
                     ->where('start_date', '<=',  now()->format('Y-m-d'))
