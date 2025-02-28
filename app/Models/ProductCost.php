@@ -12,4 +12,12 @@ class ProductCost extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    protected $fillable = [
+        'product_id',
+        'price',
+        'cost',
+        'date',
+        'created_by',
+        'last_modified_by'
+    ];
 }
