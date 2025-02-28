@@ -154,6 +154,9 @@
       route::get('/seedreviews', [AdminController::class, 'seedreviews']);
       route::get('/updatereviews', [AdminController::class, 'updatereviews']);
 
+      route::get('/updatecosts', [AdminController::class, 'updatecosts']);
+
+
       route::get('/clear-cache', function () {
         Artisan::call('cache:clear');
         echo 'Cache cleared for global variables';

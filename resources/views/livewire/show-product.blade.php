@@ -395,6 +395,7 @@
   @livewire('product-reviews', ['product' => $product, 'tableName' => 'product_reviews'])
   @livewire('beeing-in-order', ['relatedby' => 'order', 'productid' => $product->id], key(1))
   @livewire('beeing-in-order', ['relatedby' => 'supplier', 'productid' => $product->id], key(2))
+  @livewire('related-cost', ['product' => $product, 'tableName' => 'product_costs'])
 
  </div>
 </section>
