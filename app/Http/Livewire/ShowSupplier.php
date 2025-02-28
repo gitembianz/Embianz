@@ -16,7 +16,7 @@ class ShowSupplier extends Component
     public $delete = false;
     public $record;
     public $currencies;
-    public $rates = [];
+    public $rate = [];
     public $search = '';
 
     public $totalPrice;
@@ -41,11 +41,29 @@ class ShowSupplier extends Component
     public function mount($itemId)
     {
         $this->itemId = $itemId;
-        $this->rates[] = [
+        $this->rate = [
             'allow' => false,
             'itemselected' => null,
-            'rate' => ['idrel' => null, 'value' => null],
+            'idrel' => null,
         ];
+    }
+    public function allowselect()
+    {
+        $this->rate['allow'] = true;
+    }
+    public function selectitem($id)
+    {
+        $exchange = Exchange::with(['base_currency', 'quote_currency'])->find($id);
+        $this->rate = [
+            'itemselected' => $exchange->base_currency->name . '/' . $exchange->quote_currency->name . ' date - ' . $exchange->date . ' value - ' . $exchange->value,
+            'idrel' => $id,
+            'allow' => false,
+        ];
+        $this->search = '';
+    }
+    public function dennyselect()
+    {
+        $this->rate['allow'] = false;
     }
     public function confirmItemRemoval()
     {
@@ -89,8 +107,7 @@ class ShowSupplier extends Component
             'supplier_name' => $this->supplier->supplier_name,
             'date' => $this->supplier->date,
             'status' => $this->supplier->status,
-            'currency' => $this->supplier->currency,
-            'quote_currency' => $this->supplier->quote_currency
+            'currency' => $this->supplier->currency
         ];
         $this->edititem = true;
     }
@@ -109,7 +126,6 @@ class ShowSupplier extends Component
         $this->supplier->name = $rec['name'];
         $this->supplier->supplier_name = $rec['supplier_name'] ?? null;
         $this->supplier->currency = $rec['currency'];
-        $this->supplier->quote_currency = $rec['quote_currency'];
         $this->supplier->date = $rec['date'];
         $this->supplier->status = $rec['status'];
 
@@ -128,14 +144,19 @@ class ShowSupplier extends Component
             }
         }
 
-        $c1 = optional(Currency::where('name', $rec['currency'])->first())->id;
-        $c2 = optional(Currency::where('name', $rec['quote_currency'])->first())->id;
-        $exchange_id = optional(Exchange::where('base_currency_id', $c1)
-            ->where('quote_currency_id', $c2)
-            ->first())->id;
+        if (isset($this->rate['idrel']) && $this->rate['idrel'] != null) {
+            $this->supplier->exchange_id = $this->rate['idrel'];
+        }
+
         $this->supplier->last_modified_by = Auth::user()->name ?? 'Unknown';
-        $this->supplier->exchange_id = $exchange_id;
         $this->supplier->save();
+        if ($this->supplier->currency == $this->supplier->exchange->base_currency->name) {
+            $this->supplier->final_amount_quote_currency = $this->supplier->exchange->value * $this->supplier->final_amount;
+        } elseif ($this->supplier->currency == $this->supplier->exchange->quote_currency->name) {
+            $this->supplier->final_amount_quote_currency = 1 / $this->supplier->exchange->value * $this->supplier->final_amount;
+        }
+        $this->supplier->save();
+
 
         $this->emit('itemSaved');
         session()->flash('notification', [
