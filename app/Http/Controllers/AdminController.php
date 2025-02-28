@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+
 use App\Models\ProductReviews as ModelsProductReviews;
 
 
@@ -534,6 +536,46 @@ class AdminController extends Controller
       );
     }
 
-    return Redirect::to('/');
+    return redirect()->route('dashboard')->with('notification', [
+      'message' => 'Product cost updated!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+  public function checkorders()
+  {
+    $orders = Order::with('orders')->get();
+
+    $csvData = "Name,final_amount,real_final_amount,sum_amount,real_sum_amount,date\n";
+
+    foreach ($orders as $order) {
+      $sum_amount = 0;
+
+      foreach ($order->orders as $item) {
+        $sum_amount += $item->price * $item->quantity;
+      }
+
+      $final_amount = $sum_amount + $order->delivery_price - $order->voucher_value - $order->promotion_value;
+
+      if (round($final_amount, 2) != round($order->final_amount, 2)) {
+        $csvData .= '"' . $order->name . '",'
+          . '"' . $order->final_amount . '",'
+          . '"' . $final_amount . '",'
+          . '"' . $order->sum_amount . '",'
+          . '"' . $sum_amount . '",'
+          . '"' . $order->created_at->format('Y-m-d H:i:s') . '"' . "\n";
+      }
+    }
+
+    session()->flash('notification', [
+      'message' => 'Records downloaded successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
+    return Response::streamDownload(function () use ($csvData) {
+      echo $csvData;
+    }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
   }
 }
