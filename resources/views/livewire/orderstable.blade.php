@@ -435,6 +435,10 @@
           {{ $order->status->name }}
          @elseif ($column === 'payment_id')
           {{ $order->payment->name }}
+         @elseif($column === 'comments')
+          <span class="show-less">
+           {!! $order->$column !!}
+          </span>
          @elseif ($column === 'voucher_id')
           @if ($order->voucher_id)
            {{ $order->voucher->code }}

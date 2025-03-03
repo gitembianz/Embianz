@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Currency;
 use App\Models\Exchange;
 use App\Models\Order_Supplier;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -122,7 +123,7 @@ class ShowSupplier extends Component
 
         $rec = $this->record;
 
-
+        $oldstatus = $this->supplier->status;
         $this->supplier->name = $rec['name'];
         $this->supplier->supplier_name = $rec['supplier_name'] ?? null;
         $this->supplier->currency = $rec['currency'];
@@ -157,6 +158,23 @@ class ShowSupplier extends Component
         }
         $this->supplier->save();
 
+        // if ($rec['status'] === 'closed' && $oldstatus != $rec['status']) {
+        //     foreach ($this->supplier->items->product as $product) {
+        //         $cartPrices = $product->carts_item()->pluck('price');
+        //         if ($cartPrices->isNotEmpty()) {
+        //             $averagePrice = $cartPrices->avg();
+        //         } else {
+        //             $averagePrice = optional($product->product_prices->first())->value;
+        //         }
+
+        //         dd($product->costs);
+
+        //         DB::table('product_costs')->updateOrInsert(
+        //             ['product_id' => $product->id],
+        //             ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+        //         );
+        //     }
+        // }
 
         $this->emit('itemSaved');
         session()->flash('notification', [
