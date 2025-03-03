@@ -158,7 +158,7 @@
     {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
    @endif
   </span>
-  @if ($product->quantity > 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
+  @if ($product->quantity > 0 || $product->preorder)
    <div class="quantity">
     <span>
      @if (app()->has('label_product_quantity_tag'))
@@ -196,7 +196,7 @@
  @endif
 
  @if ($price)
-  @if ($product->quantity > 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
+  @if ($product->quantity > 0 || $product->preorder)
    <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
     aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
     <div class="card__button--cart">

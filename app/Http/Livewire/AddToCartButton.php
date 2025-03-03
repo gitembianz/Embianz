@@ -126,7 +126,7 @@ class AddToCartButton extends Component
             $cart->final_amount = $cart->sum_amount + $cart->delivery_price;
             $cart->final_amount -= $cart->voucher_value;
         } else {
-            if ($cartItem->quantity < $this->product->quantity || (app()->has('global_preorder') && app('global_preorder') === 'true')) {
+            if ($cartItem->quantity < $this->product->quantity || $this->product->preorder) {
                 $cartItem->increment('quantity');
                 $cart->increment('quantity_amount');
                 if ($cartItem->price != $this->product->product_prices->first()->value) {

@@ -45,7 +45,6 @@ class StoreSeeder extends Seeder
             ['parameter' => 'display_rating_value', 'value' => 'none', 'description' => 'Display rating value', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'cache_data', 'value' => 'false', 'description' => 'Cache products and categories', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'numberformat_element', 'value' => '.', 'description' => 'Number format element(is accepted only . or ,)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'preorder', 'value' => 'true', 'description' => 'Order indisponible products', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'lang', 'value' => 'ro', 'description' => 'Project Language ex: ro', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'locale', 'value' => 'ro_RO', 'description' => 'Project Locale ex: ro_RO', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'display_delivery_price_on_cart', 'value' => 'true', 'description' => 'Display Delivery price on cart, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
@@ -81,6 +80,7 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'check_terms_order', 'value' => 'true', 'description' => 'Check terms on order', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_display_country', 'value' => 'true', 'description' => 'Order display country', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_display_address2', 'value' => 'false', 'description' => 'Order display address2', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'min_limit_similarity', 'value' => '50', 'description' => 'Min limiti of order similarity', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
 

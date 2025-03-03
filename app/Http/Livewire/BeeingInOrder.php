@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Order;
+use App\Models\Order_Item;
+use App\Models\Order_Supplier_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
@@ -27,10 +28,15 @@ class BeeingInOrder extends Component
             'orders' => $this->orders
         ]);
     }
-    public function mount($productid)
+    public function mount($relatedby, $productid)
     {
         $this->productid = $productid;
-        $this->columns = Schema::getColumnListing('orders');
+        $this->relatedby = $relatedby;
+        if ($this->relatedby === 'order') {
+            $this->columns = Schema::getColumnListing('order__items');
+        } else {
+            $this->columns = Schema::getColumnListing('order__supplier__items');
+        }
         $this->selectedColumns = $this->columns;
     }
     public function expandRow($index)
@@ -64,19 +70,24 @@ class BeeingInOrder extends Component
     }
     public function getOrdersProperty()
     {
-        return Order::with([
-            'account',  // Eager load account relationship
-            'cart',     // Eager load cart relationship
-            'currency', // Eager load currency relationship
-            'status',   // Eager load status relationship
-            'payment',  // Eager load payment relationship
-            'voucher',  // Eager load voucher relationship
-        ])
-            ->whereHas('orders', function ($query) {
-                $query->where('product_id', $this->productid); // Filter by product_id
-            })
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
-            ->paginate($this->loadAmount); // Paginate the results
+        if ($this->relatedby === 'order') {
+
+            return Order_Item::with([
+                'order',
+                'product'
+            ])
+                ->where('product_id', $this->productid)
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
+                ->paginate($this->loadAmount); // Paginate the results
+        } elseif ($this->relatedby === 'supplier') {
+            return Order_Supplier_Item::with([
+                'order',
+                'product'
+            ])
+                ->where('product_id', $this->productid)
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
+                ->paginate($this->loadAmount); // Paginate the results
+        }
     }
     public function loadMore()
     {

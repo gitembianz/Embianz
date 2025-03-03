@@ -66,6 +66,7 @@ class ShowProduct extends Component
       'comments' => $this->product->comments,
       'supplier_name' => $this->product->supplier_name,
       'low_stock_quantity' => $this->product->low_stock_quantity,
+      'preorder' => $this->product->preorder == 1 ? true : false,
 
 
     ];
@@ -141,6 +142,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('active', $product_new)) {
         $new->active = $product_new['active'];
+      }
+      if (array_key_exists('preorder', $product_new)) {
+        $new->preorder = $product_new['preorder'];
       }
       if (array_key_exists('is_new', $product_new)) {
         $new->is_new = $product_new['is_new'];

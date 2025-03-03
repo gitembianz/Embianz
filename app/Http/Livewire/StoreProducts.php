@@ -90,7 +90,11 @@ class StoreProducts extends Component
       ->where('end_date', '>=', now()->format('Y-m-d'))
       ->with([
         'variants' => function ($query) {
-          $query->with('product');
+          $query->with(['product' => function ($query) {
+            $query->with(['media' => function ($query) {
+              $query->select('path', 'name')->where('type', 'main');
+            }]);
+          }]);
         },
         'reviews' => function ($query) {
           $query->select('product_id', 'count', 'value');
@@ -218,7 +222,6 @@ class StoreProducts extends Component
     $this->selectedKeys = [];
     $this->selectedfilters = [];
     $productIdsPerSpec = [];
-    $ids = [];
     $specVariantIds = [];
     $totalspecs = 0;
 
@@ -228,69 +231,68 @@ class StoreProducts extends Component
 
         foreach ($values as $value => $isfilterselected) {
           if (array_values($isfilterselected)[0]) {
-
             $fullString = array_keys($isfilterselected)[0];
             $productIdsWithTypes = explode(',', $fullString);
+
             foreach ($productIdsWithTypes as $item) {
               $parts = explode('|', $item);
               if (isset($parts[1])) {
                 $specVariantIds[$parts[1]][] = (string)$parts[0];
               } else {
-                $specProductIds[] = $parts[0];
+                $specProductIds[] = (string)$parts[0];
               }
             }
-            $sanitizedValue = str_replace(',', '.', $value);
 
+            $sanitizedValue = str_replace(',', '.', $value);
             $this->selectedfilters[$sanitizedValue] = $specName;
           }
         }
+
         if (!empty($specProductIds)) {
           $productIdsPerSpec[] = array_unique($specProductIds);
-        } else {
-          $productIdsPerSpec[] = [];
         }
+
         $totalspecs++;
       }
 
-      if (!empty($productIdsPerSpec)) {
-        $ids[] = array_intersect(...$productIdsPerSpec);
-      }
+      $ids = [];
+
+      // Handle variant filtering
       if (!empty($specVariantIds)) {
         foreach ($specVariantIds as $parentId => $variants) {
           $variantCount = array_count_values($variants);
-
           $maxCount = max($variantCount);
-          if ($maxCount == $totalspecs) {
 
-            $mostFrequentVariant = array_search($maxCount, $variantCount);
-            $ids[] = [(string)$mostFrequentVariant];
-          }
+          $mostFrequentVariant = array_search($maxCount, $variantCount);
+          $ids[] = [(string)$mostFrequentVariant];
         }
       }
-      if (!empty($ids)) {
 
-        $ids = [array_merge(...$ids)];
+      if (!empty($productIdsPerSpec)) {
+        $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
+
+        if (!empty($filteredSpecs)) {
+          $ids[] = array_intersect(...$filteredSpecs);
+        }
       }
 
-      if (count($ids) > 0) {
-        $this->selectedKeys = $ids[0];
-      } else {
-        $this->selectedKeys =  [];
-      }
+
+
+      $mergedIds = array_merge(...$ids);
+      $this->selectedKeys = !empty($mergedIds) ? $mergedIds : $this->products->pluck('id')->toArray();
 
       session()->put('filtered_values', [
         'category_id' => $this->category->id,
         'queryfilters' => $this->queryfilters
       ]);
 
-      if (count($this->selectedKeys) > 0) {
-        $this->emit('filtersApplied', count($this->selectedKeys));
-      } else {
-        $this->emit('filtersApplied', $this->products->total());
-      }
+      $this->emit('filtersApplied', count($this->selectedKeys));
     }
+
     return $this->products->whereIn('id', $this->selectedKeys);
   }
+
+
 
 
   public function clearall()

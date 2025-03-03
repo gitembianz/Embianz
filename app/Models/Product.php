@@ -33,7 +33,8 @@ class Product extends Model
     'comments',
     'low_stock',
     'supplier_name',
-    'low_stock_quantity'
+    'low_stock_quantity',
+    'preorder'
   ];
 
   public static function search($search)
@@ -131,6 +132,11 @@ class Product extends Model
   {
     return $this->hasMany(Order_Supplier_Item::class, 'product_id');
   }
+  public function costs()
+  {
+    return $this->hasMany(ProductCost::class, 'product_id');
+  }
+
 
   public function media()
   {

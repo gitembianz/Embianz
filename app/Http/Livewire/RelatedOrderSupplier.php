@@ -26,7 +26,7 @@ class RelatedOrderSupplier extends Component
     public $col = false;
     public $all = false;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'Subtotal', 'Created by', 'Updated by', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Product', 'Total Quantity', 'Product Quantity Interim', 'Product Quantity', 'Quantity', 'Quantity Received', 'Price', 'VAT', 'Subtotal', 'Created by', 'Updated by', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $supplier;
     public $rand = null;
@@ -52,7 +52,8 @@ class RelatedOrderSupplier extends Component
         $this->order_item[$index] = [
             'quantity_received' => $record->quantity_received,
             'quantity' => $record->quantity,
-            'price' => $record->price
+            'price' => $record->price,
+            'vat' => $record->vat
         ];
     }
     public function canceledit()
@@ -105,11 +106,29 @@ class RelatedOrderSupplier extends Component
             $product->save();
         }
         $orderItem->price = $record['price'];
+        $orderItem->vat = $record['vat'];
+
 
 
         $orderItem->save();
-        $orderItem->subtotal = $orderItem->price * $orderItem->quantity;
+        $orderItem->subtotal = ($orderItem->price + $orderItem->price * $orderItem->vat / 100) * $orderItem->quantity;
         $orderItem->save();
+
+        if ($this->supplier && $this->supplier->items->isNotEmpty()) {
+            $pu = 0;
+            $total = 0;
+
+            foreach ($this->supplier->items as $supplierItem) {
+                $pu += $supplierItem->price * $supplierItem->quantity;
+                $total += ($supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100)) * $supplierItem->quantity;
+            }
+
+            $vattotal = $total - $pu;
+            $this->supplier->sum_amount = $pu;
+            $this->supplier->vat_sum_amount = $vattotal;
+            $this->supplier->final_amount = $total;
+            $this->supplier->save();
+        }
 
         session()->flash('notification', [
             'message' => 'Record edited successfully!',
@@ -131,7 +150,8 @@ class RelatedOrderSupplier extends Component
                     'product_id' => $array['product']['idrel'],
                     'quantity' => $array['product']['quantity'],
                     'price' => $array['product']['price'],
-                    'subtotal' => $array['product']['quantity'] * $array['product']['price'],
+                    'vat' => $array['product']['vat'],
+                    'subtotal' => $array['product']['quantity'] * ($array['product']['price'] + $array['product']['price'] *  $array['product']['vat'] / 100),
                     'created_by' => Auth::user()->name,
                     'last_modified_by' => Auth::user()->name
                 ]);
@@ -147,6 +167,23 @@ class RelatedOrderSupplier extends Component
                 return;
             }
         }
+
+        if ($this->supplier && $this->supplier->items->isNotEmpty()) {
+            $pu = 0;
+            $total = 0;
+
+            foreach ($this->supplier->items as $supplierItem) {
+                $pu += $supplierItem->price * $supplierItem->quantity;
+                $total += ($supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100)) * $supplierItem->quantity;
+            }
+
+            $vattotal = $total - $pu;
+            $this->supplier->sum_amount = $pu;
+            $this->supplier->vat_sum_amount = $vattotal;
+            $this->supplier->final_amount = $total;
+            $this->supplier->save();
+        }
+
 
         $this->productsAndValues = [];
         $this->row = 1;
@@ -178,7 +215,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
     }
     public function clear($index)
@@ -193,7 +230,7 @@ class RelatedOrderSupplier extends Component
             $this->productsAndValues[] = [
                 'allow' => false,
                 'itemselected' => null,
-                'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+                'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
             ];
             $this->additems = false;
             $this->row = 1;
@@ -213,7 +250,7 @@ class RelatedOrderSupplier extends Component
         $this->productsAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
         $this->row = 1;
         $this->additems = false;
@@ -284,7 +321,7 @@ class RelatedOrderSupplier extends Component
             'itemselected' => null,
             'price' => null,
             'vat' => null,
-            'product' => ['name' => null, 'quantity' => 1, 'price' => 0]
+            'product' => ['name' => null, 'quantity' => 1, 'price' => 0, 'vat' => 0]
         ];
     }
     public function showColumn($column)
@@ -374,18 +411,60 @@ class RelatedOrderSupplier extends Component
     }
     public function deleteSingleRecord()
     {
-        $item = Order_Supplier_Item::findOrFail($this->idbeingremoved);
-        $item->product->quantity -= $item->quantity_received;
-        $item->product->save();
+        if (!$this->idbeingremoved) {
+            session()->flash('notification', [
+                'message' => 'No record selected for deletion!',
+                'type' => 'error',
+                'title' => 'Error'
+            ]);
+            return;
+        }
+
+        // Find the item
+        $item = Order_Supplier_Item::find($this->idbeingremoved);
+
+        if (!$item) {
+            session()->flash('notification', [
+                'message' => 'Record not found!',
+                'type' => 'error',
+                'title' => 'Error'
+            ]);
+            return;
+        }
+
+        if ($item->product) {
+            $item->product->quantity = max(0, $item->product->quantity - $item->quantity_received);
+            $item->product->save();
+        }
+
         $item->delete();
+
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
         $this->single = false;
+
+        if ($this->supplier && $this->supplier->items->isNotEmpty()) {
+            $pu = 0;
+            $total = 0;
+
+            foreach ($this->supplier->items as $supplierItem) {
+                $pu += $supplierItem->price;
+                $total += $supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100);
+            }
+
+            $vattotal = $total - $pu;
+            $this->supplier->sum_amount = $pu;
+            $this->supplier->vat_sum_amount = $vattotal;
+            $this->supplier->final_amount = $total;
+            $this->supplier->save();
+        }
+
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
     }
+
     public function deleteRecords()
     {
         $items = Order_Supplier_Item::whereKey($this->checked)->get();
@@ -396,6 +475,23 @@ class RelatedOrderSupplier extends Component
             $del->product->save();
             $del->delete();
         }
+
+        if ($this->supplier && $this->supplier->items->isNotEmpty()) {
+            $pu = 0;
+            $total = 0;
+
+            foreach ($this->supplier->items as $supplierItem) {
+                $pu += $supplierItem->price;
+                $total += $supplierItem->price + ($supplierItem->price * $supplierItem->vat / 100);
+            }
+
+            $vattotal = $total - $pu;
+            $this->supplier->sum_amount = $pu;
+            $this->supplier->vat_sum_amount = $vattotal;
+            $this->supplier->final_amount = $total;
+            $this->supplier->save();
+        }
+
 
         $this->checked = [];
         $this->selectPage = false;

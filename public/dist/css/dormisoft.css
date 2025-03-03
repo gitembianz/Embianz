@@ -540,7 +540,7 @@ input[type=checkbox]:checked:after {
 }
 
 .alertorder__img {
-  width: 100%;
+  width: 25%;
   height: auto;
   max-width: 300px;
   -o-object-fit: contain;
@@ -4323,6 +4323,11 @@ h2.section__title {
 
 .footer {
   background: #012758;
+}
+@media (min-width: 1200px) {
+  .footer {
+    min-height: 198px;
+  }
 }
 
 .footer__container {

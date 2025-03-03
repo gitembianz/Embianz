@@ -9,7 +9,6 @@
   use App\Http\Controllers\PriceListController;
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
-  // use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -63,9 +62,6 @@
       route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
 
-      //todolist routes
-      // route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
-      // route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
@@ -98,6 +94,11 @@
 
       route::view('/payments', 'admin.payment')->name('payments');
       route::view('/currencies', 'admin.currency')->name('currencies');
+      route::view('/new_currency', 'admin.add_currency')->name('newcurrency');
+      route::post('/add_currency', [AdminController::class, 'store_currency'])->name('add_currency');
+
+      route::view('/exchanges', 'admin.exchanges')->name('exchanges');
+
       route::view('/sessions', 'admin.session')->name('sessions');
       route::view('/wishlists', 'admin.wishlists')->name('wishlists');
 
@@ -113,6 +114,7 @@
       route::view('/variants', 'admin.variants')->name('variants');
       route::view('/newvariant', 'admin.add_variant')->name('newvariant');
       route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+      route::get('/parent', [AdminController::class, 'corectparent'])->name('parent');
 
 
       route::view('/countries', 'admin.countries')->name('countries');
@@ -152,6 +154,11 @@
       route::get('/seedreviews', [AdminController::class, 'seedreviews']);
       route::get('/updatereviews', [AdminController::class, 'updatereviews']);
 
+      route::get('/checkorders', [AdminController::class, 'checkorders'])->name('checkorders');
+      route::get('/updatecosts', [AdminController::class, 'updatecosts']);
+
+
+
       route::get('/clear-cache', function () {
         Artisan::call('cache:clear');
         echo 'Cache cleared for global variables';
@@ -185,7 +192,7 @@
   route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
   //payments routes
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
-  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+  Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
 
 
   //Custom login routes

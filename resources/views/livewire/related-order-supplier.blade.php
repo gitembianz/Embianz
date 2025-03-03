@@ -80,6 +80,11 @@
          Price
         </button>
        </th>
+       <th class="hidden">
+        <button class="table--btn">
+         VAT
+        </button>
+       </th>
        <th>
         <div style="display: flex;">
          <button class="button button--secondary button--sm" style="opacity: 0">
@@ -170,7 +175,10 @@
          <input type="text" placeholder="Insert price" required class="input button--fill button--xs"
           wire:model.defer="productsAndValues.{{ $index }}.product.price">
         </td>
-
+        <td class="hidden" style="width: auto;">
+         <input type="number" placeholder="Insert vat" required class="input button--fill button--xs"
+          wire:model.defer="productsAndValues.{{ $index }}.product.vat">
+        </td>
         <td>
          <div style="display: flex;">
           @if ($index == $row - 1)
@@ -269,6 +277,11 @@
            <bold>Price</bold>
            <input type="text" placeholder="Insert price" required class="input button--fill button--xs"
             wire:model.defer="productsAndValues.{{ $index }}.product.price">
+          </p>
+          <p>
+           <bold>VAT</bold>
+           <input type="number" placeholder="Insert vat" required class="input button--fill button--xs"
+            wire:model.defer="productsAndValues.{{ $index }}.product.vat">
           </p>
          </div>
         </td>
@@ -453,6 +466,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('VAT'))
+      <th class="hidden">
+       <button wire:click="sortBy('vat')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        VAT
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Subtotal'))
       <th class="hidden">
        <button wire:click="sortBy('subtotal')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -608,12 +631,24 @@
          @endif
         </td>
        @endif
+       @if ($this->showColumn('VAT'))
+        <td class="hidden">
+         @if ($editindex !== $index)
+          {{ $order->vat }}
+         @else
+          <div class="searchable">
+           <input type="number" required class="input__searchable"
+            wire:model.defer="order_item.{{ $index }}.vat">
+          </div>
+         @endif
+        </td>
+       @endif
        @if ($this->showColumn('Subtotal'))
         <td class="hidden">
          @if ($order->subtotal != null)
           {{ $order->subtotal }}
          @else
-          {{ $order->price * $order->quantity }}
+          {{ ($order->price + $order->price * $order->vat) * $order->quantity }}
          @endif
         </td>
        @endif

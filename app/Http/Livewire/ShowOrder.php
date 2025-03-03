@@ -23,6 +23,7 @@ class ShowOrder extends Component
     public $invoice_sdatabase;
     public $storno_sdatabase;
     public $circle;
+    public $sum_supplier;
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
@@ -135,6 +136,25 @@ class ShowOrder extends Component
         }
     }
 
+    public function getSum()
+    {
+        $sum = 0;
+
+        foreach ($this->order->orders as $item) {
+            if ($item->product->order_suppliers->isEmpty()) {
+                return null;
+            }
+
+            $avgPrice = $item->product->order_suppliers->avg('price');
+            $avgVat = $item->product->order_suppliers->avg('vat');
+
+            $sum += $avgPrice + ($avgPrice * $avgVat / 100);
+        }
+
+        return $sum;
+    }
+
+
 
     public function generate_invoice()
     {
@@ -178,22 +198,25 @@ class ShowOrder extends Component
             }
             $filePath = $newpath;
         }
+        if ($this->order->account->type === 'individual') {
+            $acc = $this->order->account->name;
+            $adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
+                $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+                $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
+                $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
+                $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
+        } else {
+            $acc = $this->order->account->company_name;
+            $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
+                "CIF:" . $this->order->account->registration_code . "<br>" .
+                $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
+                $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+                $this->order->account->addresses->where('type', 'billing')->first()->county;
+        }
 
 
-
-        // $filePath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . ".pdf";
-        // if (file_exists($filePath)) {
-        //     $i = 1;
-        //     $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
-        //     while (file_exists($newpath)) {
-        //         $i++;
-        //         $newpath = $yearMonthPath . "/" . $this->order->invoice_series . $this->order->external_invoice_number . "-" . $this->order->order_number . "(" . $i . ")" . ".pdf";
-        //     }
-        //     $filePath = $newpath;
-        // }
-        // generate PDF
         $htmlContent = "
-         <html>
+        <html>
         <head>
         <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>
 
@@ -245,12 +268,7 @@ class ShowOrder extends Component
             </tr>
             <tr>
                 <td class='infotd'>" . (app()->has('global_invoice_furnizor') ? app('global_invoice_furnizor') : 'Ceva nu a mers bine, verifica setarile') . "</td>
-                <td class='infotd'>" . $this->order->account->name . "<br> " .
-            $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
-            $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-            $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
-            $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
-            $this->order->account->addresses->where('type', 'billing')->first()->zipcode . "</td>
+                <td class='infotd'>" . $acc . "<br> " . $adress . "</td>
             </tr>
          </table>
             <br></br>
@@ -299,7 +317,7 @@ class ShowOrder extends Component
             $htmlContent .= "
                         <tr>
                             <td>" . ($i + 1) . "</td>
-                            <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
+                            <td>" . $item->product->name . "<br> (" . $item->product->sku . ")</td>
                             <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                             <td>" . $vatRate . "</td>
                             <td>" . $item->quantity . "</td>
@@ -388,40 +406,81 @@ class ShowOrder extends Component
             $serie = $this->order->external_storno_number;
         }
 
+        if ($this->order->account->type === 'individual') {
 
-        $invoiceData = [
-            'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
-            'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
-            'FurnizorNrRegCom' => (app()->has('label_xml_FurnizorNrRegCom') ? app('label_xml_FurnizorNrRegCom') : 'J40/15607/2019'),
-            'FurnizorCapital' => (app()->has('label_xml_FurnizorCapital') ? app('label_xml_FurnizorCapital') : '200.00'),
-            'FurnizorAdresa' => (app()->has('label_xml_FurnizorAdresa') ? app('label_xml_FurnizorAdresa') : 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
-            'FurnizorBanca' => '',
-            'FurnizorIBAN' => '',
-            'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ? app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel. 0757.527.656'),
-            'ClientNume' => Str::ascii($this->order->account->name),
-            'ClientInformatiiSuplimentare' => '',
-            'ClientCIF' => '',
-            'ClientNrRegCom' => '',
-            'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
-            'ClientLocalitate' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->city),
-            'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
-            'ClientAdresa' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->address1),
-            'ClientTelefon' => $this->order->account->phone,
-            'ClientEmail' => $this->order->account->email,
-            'FacturaNumar' => $this->order->invoice_series . ' - ' . $serie,
-            'FacturaData' => $date,
-            'FacturaScadenta' =>  $date,
-            'FacturaMoneda' => $this->order->currency->name,
-            'FacturaGreutate' => 0,
-            'FacturaAccize' => 0,
-            'FacturaIndexSPV' => '',
-            'Detalii' => [],
-            'Sumar' => [
-                'TotalValoare' => $valoare,
-                'TotalTVA' => $vat,
-                'Total' => $this->order->final_amount,
-            ],
-        ];
+            $invoiceData = [
+                'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
+                'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
+                'FurnizorNrRegCom' => (app()->has('label_xml_FurnizorNrRegCom') ? app('label_xml_FurnizorNrRegCom') : 'J40/15607/2019'),
+                'FurnizorCapital' => (app()->has('label_xml_FurnizorCapital') ? app('label_xml_FurnizorCapital') : '200.00'),
+                'FurnizorAdresa' => (app()->has('label_xml_FurnizorAdresa') ? app('label_xml_FurnizorAdresa') : 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
+                'FurnizorBanca' => '',
+                'FurnizorIBAN' => '',
+                'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ? app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel.0757.527.656'),
+                'ClientNume' => Str::ascii($this->order->account->name),
+                'ClientInformatiiSuplimentare' => '',
+                'ClientCIF' => '',
+                'ClientNrRegCom' => '',
+                'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
+                'ClientLocalitate' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->city),
+                'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
+                'ClientAdresa' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->address1),
+                'ClientTelefon' => $this->order->account->phone,
+                'ClientEmail' => $this->order->account->email,
+                'FacturaNumar' => $this->order->invoice_series . ' - ' . $serie,
+                'FacturaData' => $date,
+                'FacturaScadenta' =>  $date,
+                'FacturaMoneda' => $this->order->currency->name,
+                'FacturaGreutate' => 0,
+                'FacturaAccize' => 0,
+                'FacturaIndexSPV' => '',
+                'Detalii' => [],
+                'Sumar' => [
+                    'TotalValoare' => $valoare,
+                    'TotalTVA' => $vat,
+                    'Total' => $this->order->final_amount,
+                ],
+            ];
+        } else {
+            $invoiceData = [
+                'FurnizorNume' => (app()->has('label_xml_FurnizorNume') ? app('label_xml_FurnizorNume') : 'MOLDASO LINE SRL'),
+                'FurnizorCIF' => (app()->has('label_xml_FurnizorCIF') ? app('label_xml_FurnizorCIF') : 'RO41903669'),
+                'FurnizorNrRegCom' => (app()->has('label_xml_FurnizorNrRegCom') ? app('label_xml_FurnizorNrRegCom') : 'J40/15607/2019'),
+                'FurnizorCapital' => (app()->has('label_xml_FurnizorCapital') ? app('label_xml_FurnizorCapital') : '200.00'),
+                'FurnizorAdresa' => (app()->has('label_xml_FurnizorAdresa') ? app('label_xml_FurnizorAdresa') : 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64'),
+                'FurnizorBanca' => '',
+                'FurnizorIBAN' => '',
+                'FurnizorInformatiiSuplimentare' => (app()->has('label_xml_FurnizorInformatiiSuplimentare') ? app('label_xml_FurnizorInformatiiSuplimentare') : 'Tel.0757.527.656'),
+                'ClientNume' => Str::ascii($this->order->account->company_name),
+                'ClientInformatiiSuplimentare' => '',
+                'ClientCIF' => Str::ascii($this->order->account->registration_code),
+                'ClientNrRegCom' => Str::ascii($this->order->account->registration_number),
+                'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
+                'ClientLocalitate' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->city),
+                'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
+                'ClientAdresa' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->address1),
+                'ClientTelefon' => $this->order->account->phone,
+                'ClientEmail' => '',
+                'ClientBanca' => '',
+                'ClientIBAN' => '',
+                'FacturaNumar' => $this->order->invoice_series . ' - ' . $serie,
+                'FacturaData' => $date,
+                'FacturaScadenta' =>  $date,
+                'FacturaTaxareInversa' => 'Nu',
+                'FacturaTVAIncasare' => 'Nu',
+                'FacturaInformatiiSuplimentare' => '',
+                'FacturaMoneda' => $this->order->currency->name,
+                'FacturaGreutate' => 0,
+                'FacturaAccize' => 0,
+                'FacturaIndexSPV' => '',
+                'Detalii' => [],
+                'Sumar' => [
+                    'TotalValoare' => $valoare,
+                    'TotalTVA' => $vat,
+                    'Total' => $this->order->final_amount,
+                ],
+            ];
+        }
 
         foreach ($this->order->orders as $index => $item) {
             $vatRate = (int) $item->vat;
@@ -531,20 +590,38 @@ class ShowOrder extends Component
             }
 
             foreach ($vatGroups as $vatRate => $group) {
-                $invoiceData['Detalii'][] = [
-                    'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
-                    'Descriere' => 'DISCOUNT ACORDAT',
-                    'CodArticolFurnizor' => '000002',
-                    'CodArticolClient' => '',
-                    'CodBare' => '',
-                    'InformatiiSuplimentare' => '',
-                    'UM' => 'BUC',
-                    'Cantitate' => '1.0000',
-                    'Pret' => '-' . number_format($group['totalVoucherNet'], 4),
-                    'Valoare' => '-' . number_format($group['totalVoucherNet'], 4),
-                    'ProcTVA' => number_format($vatRate, 4),
-                    'TVA' => '-' . number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
-                ];
+                if ($type === 'invoice_xml') {
+
+                    $invoiceData['Detalii'][] = [
+                        'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
+                        'Descriere' => 'DISCOUNT ACORDAT',
+                        'CodArticolFurnizor' => '000002',
+                        'CodArticolClient' => '',
+                        'CodBare' => '',
+                        'InformatiiSuplimentare' => '',
+                        'UM' => 'BUC',
+                        'Cantitate' => '1.0000',
+                        'Pret' => '-' . number_format($group['totalVoucherNet'], 4),
+                        'Valoare' => '-' . number_format($group['totalVoucherNet'], 4),
+                        'ProcTVA' => number_format($vatRate, 4),
+                        'TVA' => '-' . number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
+                    ];
+                } else {
+                    $invoiceData['Detalii'][] = [
+                        'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
+                        'Descriere' => 'DISCOUNT ACORDAT',
+                        'CodArticolFurnizor' => '000002',
+                        'CodArticolClient' => '',
+                        'CodBare' => '',
+                        'InformatiiSuplimentare' => '',
+                        'UM' => 'BUC',
+                        'Cantitate' => '1.0000',
+                        'Pret' => number_format($group['totalVoucherNet'], 4),
+                        'Valoare' => number_format($group['totalVoucherNet'], 4),
+                        'ProcTVA' => number_format($vatRate, 4),
+                        'TVA' => number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
+                    ];
+                }
             }
         }
 
@@ -661,6 +738,22 @@ $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" 
 $filePath = $newpath;
 }
 
+if ($this->order->account->type === 'individual') {
+$acc = $this->order->account->name;
+$adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
+$this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
+$this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->zipcode;
+} else {
+$acc = $this->order->account->company_name;
+$adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
+"CIF:" . $this->order->account->registration_code . "<br>" .
+$this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->county;
+}
+
 // generate PDF
 $htmlContent = "
 <html>
@@ -715,21 +808,16 @@ $htmlContent = "
         <tr>
             <td class='infotd'>" . (app()->has('global_invoice_furnizor') ? app('global_invoice_furnizor') : 'Ceva nu a
                 mers bine, verifica setarile') . "</td>
-            <td class='infotd'>" . $this->order->account->name . "<br> " .
-                $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
-                $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
-                $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->zipcode . "</td>
+            <td class='infotd'>" . $acc . "<br> " . $adress . "</td>
         </tr>
     </table>
     <br></br>
 
     <table border='1' cellpadding='5' cellspacing='0' width='100%''>
-        <thead>
-            <tr>
-                <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.' ) . "</th>
-                <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
+                    <thead>
+                        <tr>
+                            <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.' ) . "</th>
+                            <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
         Articol/Serviciu') . "</th>
         <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
         <th>" . (app()->has('label_invoice_th_vat') ? app('label_invoice_th_vat') : 'TVA') . "</th>
@@ -773,7 +861,7 @@ $htmlContent = "
             $htmlContent .= "
             <tr>
                 <td>" . ($i + 1) . "</td>
-                <td>" . $item->product->name . "<br> (" . $item->product->ean . ")</td>
+                <td>" . $item->product->name . "<br> (" . $item->product->sku . ")</td>
                 <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                 <td>" . $vatRate . "</td>
                 <td>" . -$item->quantity . "</td>
@@ -793,7 +881,7 @@ $htmlContent = "
                 <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
                 <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
                 <td>" . $vatRate . "</td>
-                <td>-1</td>
+                <td>1</td>
                 <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                 <td>" . +number_format(+$group['totalpu'], 2) . "</td>
                 <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
@@ -908,6 +996,7 @@ if ($interimQuantity < $orderItem->quantity) {
     $this->circle = "#4a0a0f";
     }
     }
+    $this->sum_supplier = $this->getSum() ?? null;
     }
     public function canceledit()
     {
@@ -918,6 +1007,7 @@ if ($interimQuantity < $orderItem->quantity) {
     {
     $this->statuses = Status::where('type', 'order')->get();
     $this->record = [
+    'comments' => $this->order->comments,
     'status_id' => $this->order->status_id,
     'invoice_date' => $this->order->invoice_date,
     'storno_date' => $this->order->storno_date,
@@ -931,45 +1021,68 @@ if ($interimQuantity < $orderItem->quantity) {
     public function saveitem()
     {
     $new = $this->record ?? null;
+
     if (!is_null($new)) {
     $order = Order::find($this->orderId);
+    if (!$order) {
+    session()->flash('notification', [
+    'message' => 'Order not found!',
+    'type' => 'error',
+    'title' => 'Error'
+    ]);
+    return;
+    }
+
     $oldStatus = $order->status_id;
-    $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->first()->id;
-    $checkpayment = Status::where('type', 'order')->where('name', 'check_payment')->first()->id;
-    $updatableFields = ['invoice_date', 'storno_date', 'promotion_value', 'voucher_value', 'delivery_price'];
+
+    $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->value('id');
+    $checkPaymentId = Status::where('type', 'order')->where('name', 'check_payment')->value('id');
+
+    $updatableFields = ['comments', 'invoice_date', 'storno_date', 'promotion_value', 'voucher_value',
+    'delivery_price'];
     foreach ($updatableFields as $field) {
-    if (array_key_exists($field, $new)) {
+    if (isset($new[$field])) {
     $order->$field = $new[$field];
     }
     }
 
-    if (
-    array_key_exists('promotion_value', $new) ||
-    array_key_exists('voucher_value', $new) ||
-    array_key_exists('delivery_price', $new)
-    ) {
+    if (isset($new['promotion_value']) || isset($new['voucher_value']) || isset($new['delivery_price'])) {
     $order->final_amount = max(
     0,
-    $order->sum_amount + $order->delivery_price - $order->promotion_value - $order->voucher_value
+    ($order->sum_amount ?? 0) + ($order->delivery_price ?? 0) - ($order->promotion_value ?? 0) - ($order->voucher_value
+    ?? 0)
     );
     }
 
-    if (array_key_exists('status_id', $new)) {
+    // Handle status change logic
+    if (isset($new['status_id']) && $oldStatus !== $new['status_id']) {
     $order->status_id = $new['status_id'];
     $order->updated_at = now();
 
-    if ($oldStatus != $new['status_id'] && $oldStatus != $checkpayment) {
-    if ($new['status_id'] == $statusCloseId) {
+    $shouldIncreaseStock = false;
+    $shouldDecreaseStock = false;
+
+    if ($oldStatus == $statusCloseId && $new['status_id'] != $checkPaymentId) {
+    // If changing from "canceled" to any other status, reduce stock
+    $shouldDecreaseStock = true;
+    } elseif ($new['status_id'] == $statusCloseId && $oldStatus != $checkPaymentId) {
+    // If changing to "canceled", restore stock
+    $shouldIncreaseStock = true;
+    } elseif ($oldStatus == $checkPaymentId && $new['status_id'] != $statusCloseId) {
+    // If leaving "check_payment" and not going to "canceled", reduce stock
+    $shouldDecreaseStock = true;
+    } elseif ($oldStatus != $statusCloseId && $new['status_id'] == $checkPaymentId) {
+    // If moving to "check_payment" from any other status, increase stock
+    $shouldIncreaseStock = true;
+    }
+
     foreach ($order->orders as $orderItem) {
+    if ($shouldIncreaseStock) {
     $orderItem->product->quantity += $orderItem->quantity;
-    $orderItem->product->save();
-    }
-    } elseif ($oldStatus == $statusCloseId) {
-    foreach ($order->orders as $orderItem) {
+    } elseif ($shouldDecreaseStock) {
     $orderItem->product->quantity -= $orderItem->quantity;
+    }
     $orderItem->product->save();
-    }
-    }
     }
     }
 
@@ -983,6 +1096,7 @@ if ($interimQuantity < $orderItem->quantity) {
     ]);
     }
 
+    // Reset form data
     $this->record = [];
     $this->edititem = null;
     }

@@ -120,6 +120,16 @@
 
    <label for="category__name">Session Id</label>
   </div>
+
+  {{-- Product Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->comments }}</span>
+   @else
+    <textarea type="text"name="product__name" wire:model.defer="record.comments"></textarea>
+   @endif
+   <label for="product__name">Comments</label>
+  </div>
   {{-- Order Account --}}
   <div class="input__tabs">
    @if ($order->account_id)
@@ -149,10 +159,23 @@
    <label>Sum amount </label>
   </div>
   {{-- Order Sum amount --}}
-  <div class="input__tabs">
-   <span class="disabled">{{ $order->final_amount }}</span>
-   <label>Final amount </label>
-  </div>
+  @if (!$sum_supplier)
+   <div class="input__tabs">
+    <span class="disabled">{{ $order->final_amount }}</span>
+    <label>Final amount </label>
+   </div>
+  @else
+   <div class="details__checkboxes">
+    <div class="input__tabs">
+     <span class="disabled">{{ $order->final_amount }}</span>
+     <label>Final amount </label>
+    </div>
+    <div class="input__tabs">
+     <span class="disabled">{{ $sum_supplier }}</span>
+     <label>Average cost</label>
+    </div>
+   </div>
+  @endif
   <div class="details__checkboxes">
 
    <div class="input__tabs">
@@ -275,6 +298,8 @@
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
   @livewire('related-order-items', ['order' => $order])
   @livewire('related-invoices', ['relatedby' => 'order', 'id' => $order->id])
+  @livewire('order-similarity', ['order' => $order])
+
 
  </div>
 </section>

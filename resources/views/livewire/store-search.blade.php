@@ -110,7 +110,7 @@
            -{{ $product->product_prices->first()->discount }}%
           </p>
          @endif
-        @elseif($product->quantity <= 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
+        @elseif($product->quantity <= 0 && !$product->preorder)
          <p class="card-status save">
           @if (app()->has('label_product_status_indisponible'))
            {!! app('label_product_status_indisponible') !!}
@@ -217,9 +217,11 @@
    @endif
   </section>
   @if (app()->has('global_pagination') && app('global_pagination') === 'links')
-   <section class="container" style="margin-bottom: 20px">
-    {{ $products->links() }}
-   </section>
+   @if (!$products->isEmpty())
+    <section class="container" style="margin-bottom: 20px">
+     {{ $products->links() }}
+    </section>
+   @endif
   @else
    @if ($products->total() >= $loadAmount)
     <section class="container">

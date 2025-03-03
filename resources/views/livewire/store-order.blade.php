@@ -270,7 +270,7 @@
      </div>
      <!-------------- Individual -------------->
      <div class="checkout__container @if ($individual) active @endif">
-      <div class="checkout__form active">
+      <div wire:ignore class="checkout__form active">
        <div class="checkout__top">
         <span>1</span>
         <h3>
@@ -336,7 +336,7 @@
          @endif
         </h3>
        </div>
-       <div class="checkout__item checkout__item--required" id="individualShippingAddressParent">
+       <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingAddressParent">
         <input type="text" wire:model.defer="individual_billing_address1" name="individualShippingAddress"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif" autocomplete="street-address"
          required id="individualShippingAddress">
@@ -350,7 +350,7 @@
        @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
 
         <!---------------------------------------------------->
-        <div class="checkout__item" id="individualShippingAddress2Parent">
+        <div wire:ignore class="checkout__item" id="individualShippingAddress2Parent">
          <input type="text" wire:model.defer="individual_billing_address2" name="individualShippingAddress2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
           autocomplete="address-level2" id="individualShippingAddress2">
@@ -380,7 +380,7 @@
          @endforeach
         </select>
        @else
-        <div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
+        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCountyParent">
          <input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty"
           placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
           required id="individualShippingCounty">
@@ -395,7 +395,7 @@
 
 
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="individualShippingCityParent">
+       <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city"
          required id="individualShippingCity">
@@ -407,7 +407,7 @@
         </label>
        </div>
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item" id="individualShippingPostalParent">
+       <div wire:ignore class="checkout__item checkout__item" id="individualShippingPostalParent">
         <input type="text" wire:model.defer="individual_billing_zipcode" name="individualShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
          id="individualShippingPostal">
@@ -703,7 +703,7 @@
          @endif
         </h3>
        </div>
-       <div class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
         <input type="text" wire:model.defer="juridic_billing_address1" name="juridicShippingAddress"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
          autocomplete="street-address" required id="juridicShippingAddress">
@@ -717,7 +717,7 @@
        @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
 
         <!---------------------------------------------------->
-        <div class="checkout__item" id="juridicShippingAddress2Parent">
+        <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
          <input type="text" wire:model.defer="juridic_billing_address2" name="juridicShippingAddress2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
           autocomplete="address-level2" id="juridicShippingAddress2">
@@ -746,7 +746,7 @@
          @endforeach
         </select>
        @else
-        <div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
+        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
          <input type="text" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
           placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
           required id="juridicShippingCounty">
@@ -759,7 +759,7 @@
         </div>
        @endif
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingCityParent">
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
         <input type="text" wire:model.defer="juridic_billing_city" name="juridicShippingCity"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
          required id="juridicShippingCity">
@@ -771,7 +771,7 @@
         </label>
        </div>
        <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
         <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
          id="juridicShippingPostal">
@@ -1422,10 +1422,7 @@
               $disabled[$index] = true;
               $this->emit('isdisabled');
           }
-          if (
-              $cartItem->product->quantity < $cartItem->quantity &&
-              (app()->has('global_preorder') && app('global_preorder') != 'true')
-          ) {
+          if ($cartItem->product->quantity < $cartItem->quantity && !$cartItem->product->preorder) {
               $nonquantity[$index] = true;
               $this->emit('isdisabled');
           }

@@ -106,6 +106,14 @@
   </div>
   <div class="input__tabs">
    @if ($edititem === null)
+    <span class="disabled">{{ $supplier->supplier_name }}</span>
+   @else
+    <input type="text" wire:model.defer="record.supplier_name">
+   @endif
+   <label>Supplier Name</label>
+  </div>
+  <div class="input__tabs">
+   @if ($edititem === null)
     <span class="disabled">{{ $supplier->status }}</span>
    @else
     <select wire:model.defer="record.status">
@@ -138,23 +146,96 @@
    <label>Currency</label>
   </div>
 
+  <div class="input__tabs">
+   @if ($edititem === null)
+    <span class="disabled">
+     @if ($supplier->exchange_id != null)
+      {{ $supplier->exchange->base_currency->name }} / {{ $supplier->exchange->quote_currency->name }} date -
+      {{ $supplier->exchange->date }} value - {{ $supplier->exchange->value }}
+     @endif
+    </span>
+    <label>Exchange rate</label>
+   @else
+    @if ($rate['allow'])
+     <div class="searchable active">
+      <!-- Dropdown Header -->
+      <input style="width: 100%;min-height: 35px" class="input" wire:model.debounce.300ms="search"
+       placeholder="Search..." type="text">
+      <button class="button__searchable" wire:click.prevent="dennyselect()">
+       <svg>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+        <path d="M13.5 6.5l4 4" />
+        <path class="button__searchable--line" d="M3 3l18 18" />
+       </svg>
+      </button>
+      <div class="content__searchable">
+       <div class="list__searchable">
+        @if (count($exchanges) >= 1)
+         @foreach ($exchanges as $exchange)
+          <button class="item__searchable" wire:click.prevent="selectitem({{ $exchange->id }})">
+           {{ $exchange->base_currency->name }} / {{ $exchange->quote_currency->name }} date - {{ $exchange->date }}
+           value - {{ $exchange->value }}
+          </button>
+         @endforeach
+        @else
+         <span class="item__searchable">{{ __('No record found') }}</span>
+        @endif
+       </div>
+      </div>
+     </div>
+    @else
+     <div class="searchable">
+      <span style="min-height: 35px" class="input__searchable">
+       @if ($rate['itemselected'])
+        {{ $rate['itemselected'] }}
+       @else
+        {{ __('Select a exchange rate') }}
+       @endif
+      </span>
+      <button class="button__searchable" wire:click.prevent="allowselect()">
+       <svg>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+        <path d="M13.5 6.5l4 4" />
+        <path class="button__searchable--line" d="M3 3l18 18" />
+       </svg>
+      </button>
+     </div>
+    @endif
+   @endif
+
+  </div>
 
   {{-- Price List Create by --}}
   <div class="input__tabs">
-   <span class="disabled">{{ $totalPrice }} {{ $supplier->currency }}</span>
-   <label>Total amount</label>
+   <span class="disabled">{{ $supplier->final_amount }}</span>
+   <label>Final amount</label>
   </div>
-
+  <div class="input__tabs">
+   <span class="disabled">{{ $supplier->final_amount_quote_currency }}</span>
+   <label>Final amount quote currency</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $supplier->sum_amount }}</span>
+   <label>Sum amount</label>
+  </div>
+  <div class="input__tabs">
+   <span class="disabled">{{ $supplier->vat_sum_amount }}</span>
+   <label>Vat amount</label>
+  </div>
   {{-- Price List Create by --}}
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->created_by }}</span>
    <label>Create by</label>
   </div>
+
   {{-- Price List Last modified by --}}
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->last_modified_by }}</span>
    <label>Last modified by</label>
   </div>
+
   {{-- Price List Create date / time --}}
   <div class="input__tabs">
    <span class="disabled">{{ $supplier->created_at }}</span>
@@ -170,10 +251,10 @@
   </div>
 
 
-
   {{-- Save Button --}}
   @if ($edititem != null)
-   <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()" value="Save">
+   <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()"
+    value="Save">
     Save
    </button>
   @endif

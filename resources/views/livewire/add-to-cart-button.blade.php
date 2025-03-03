@@ -24,7 +24,7 @@
    </span>
   </button>
  @else
-  @if ($product->product_prices() && (app()->has('global_preorder') && app('global_preorder') === 'true'))
+  @if ($product->product_prices() && $product->preorder)
    <button class="card__button" onclick="flyToCart(this)" wire:click="addToCart({{ $product->id }})"
     wire:ignore="$refresh">
     <div class="card__button--cart">

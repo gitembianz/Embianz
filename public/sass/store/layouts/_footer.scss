@@ -2,6 +2,10 @@
 //<------------------------------- Footer ------------------------------->
 .footer {
   background: $lightBlack;
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    min-height: 198px;
+  }
 }
 
 .footer__container {

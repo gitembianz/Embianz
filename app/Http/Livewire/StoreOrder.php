@@ -242,7 +242,7 @@ class StoreOrder extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
+            $query->select('id', 'preorder', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -283,6 +283,7 @@ class StoreOrder extends Component
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     } else {
+      cookie()->queue(cookie()->forget('accountId'));
       $this->resetErrorBag();
       $this->validateData();
       $this->step++;
@@ -641,6 +642,7 @@ class StoreOrder extends Component
         unset($_COOKIE['accountId']);
         $this->is_account = null;
       } else {
+        cookie()->queue(cookie()->forget('accountId'));
 
         if ($account->type == 'individual') {
           $this->individual = true;
@@ -766,7 +768,7 @@ class StoreOrder extends Component
         }
       }
       foreach ($this->cartitems as $item) {
-        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
+        if ($item->quantity > $item->product->quantity && !$item->product->preorder) {
           $this->validatequantity = false;
           if (app()->has('label_order_error_quantity')) {
             $message = app('label_order_error_quantity');
@@ -803,44 +805,7 @@ class StoreOrder extends Component
 
       if ($this->individual) {
 
-        // if ($this->is_account != null) {
-        //   Account::where('id', $this->is_account)->update([
-        //     'name' => $this->individual_billing_first . " " . $this->individual_billing_last,
-        //     'type' => 'individual',
-        //     'first_name' => $this->individual_billing_first,
-        //     'last_name' => $this->individual_billing_last,
-        //     'phone' => $this->individual_billing_phone,
-        //     'email' => $this->individual_billing_email,
-        //     'updated_at' => now(),
-        //   ]);
-        //   Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
-        //     'first_name' => $this->individual_billing_first,
-        //     'last_name' => $this->individual_billing_last,
-        //     'phone' => $this->individual_billing_phone,
-        //     'email' => $this->individual_billing_email,
-        //     'address1' => $this->individual_billing_address1,
-        //     'address2' => $this->individual_billing_address2,
-        //     'country' => $this->individual_billing_country,
-        //     'county' => $this->individual_billing_county,
-        //     'city' => $this->individual_billing_city,
-        //     'zipcode' => $this->individual_billing_zipcode,
-        //     'updated_at' => now(),
-        //   ]);
-        //   Address::where('account_id', $this->is_account)->where('type', 'shipping')->update([
-        //     'first_name' => $this->individual_shipping_first,
-        //     'last_name' => $this->individual_shipping_last,
-        //     'phone' => $this->individual_shipping_phone,
-        //     'email' => $this->individual_shipping_email,
-        //     'address1' => $this->individual_shipping_address1,
-        //     'address2' => $this->individual_shipping_address2,
-        //     'country' => $this->individual_shipping_country,
-        //     'county' => $this->individual_shipping_county,
-        //     'city' => $this->individual_shipping_city,
-        //     'zipcode' => $this->individual_shipping_zipcode,
-        //     'updated_at' => now(),
-        //   ]);
-        // } else {
-        // }
+
         $account = Account::create([
           'name' => $this->individual_billing_first . " " . $this->individual_billing_last,
           'type' => 'individual',
@@ -854,7 +819,7 @@ class StoreOrder extends Component
 
 
         $countryiso = Country::where('name', $this->individual_billing_country)->first()->iso_code;
-        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code;
+        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code ?? null;
 
         Address::create([
           'account_id' => $account->id,
@@ -874,7 +839,7 @@ class StoreOrder extends Component
         ]);
         if (!$this->individual_identic) {
           $countryisos = Country::where('name', $this->individual_shipping_country)->first()->iso_code;
-          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code;
+          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code ?? null;
 
           Address::create([
             'account_id' => $account->id,
@@ -912,49 +877,7 @@ class StoreOrder extends Component
         }
       }
       if ($this->juridic) {
-        // if ($this->is_account != null) {
-        //   Account::where('id', $this->is_account)->update([
-        //     'name' => $this->juridic_billing_first . " " . $this->juridic_billing_last,
-        //     'type' => 'juridic',
-        //     'first_name' => $this->juridic_billing_first,
-        //     'last_name' => $this->juridic_billing_last,
-        //     'phone' => $this->juridic_billing_phone,
-        //     'email' => $this->juridic_billing_email,
-        //     'company_name' => $this->juridic_billing_company_name,
-        //     'registration_code' => $this->juridic_billing_registration_code,
-        //     'registration_number' => $this->juridic_billing_registration_number,
-        //     'bank_name' => $this->juridic_billing_bank,
-        //     'account' => $this->juridic_billing_account,
-        //     'updated_at' => now(),
-        //   ]);
-        //   Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
-        //     'first_name' => $this->juridic_billing_first,
-        //     'last_name' => $this->juridic_billing_last,
-        //     'phone' => $this->juridic_billing_phone,
-        //     'email' => $this->juridic_billing_email,
-        //     'address1' => $this->juridic_billing_address1,
-        //     'address2' => $this->juridic_billing_address2,
-        //     'country' => $this->juridic_billing_country,
-        //     'county' => $this->juridic_billing_county,
-        //     'city' => $this->juridic_billing_city,
-        //     'zipcode' => $this->juridic_billing_zipcode,
-        //     'updated_at' => now(),
-        //   ]);
-        //   Address::where('account_id', $this->is_account)->where('type', 'shipping')->update([
-        //     'first_name' => $this->juridic_shipping_first,
-        //     'last_name' => $this->juridic_shipping_last,
-        //     'phone' => $this->juridic_shipping_phone,
-        //     'email' => $this->juridic_shipping_email,
-        //     'address1' => $this->juridic_shipping_address1,
-        //     'address2' => $this->juridic_shipping_address2,
-        //     'country' => $this->juridic_shipping_country,
-        //     'county' => $this->juridic_shipping_county,
-        //     'city' => $this->juridic_shipping_city,
-        //     'zipcode' => $this->juridic_shipping_zipcode,
-        //     'updated_at' => now(),
-        //   ]);
-        // } else {
-        // }
+
 
         $account = Account::create([
           'name' => $this->juridic_billing_first . " " . $this->juridic_billing_last . ", " . $this->juridic_billing_company_name,
@@ -974,7 +897,7 @@ class StoreOrder extends Component
 
 
         $countryisoj = Country::where('name', $this->juridic_billing_country)->first()->iso_code;
-        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code;
+        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code ?? null;
 
         Address::create([
           'account_id' => $account->id,
@@ -995,7 +918,7 @@ class StoreOrder extends Component
 
         if (!$this->juridic_identic) {
           $countryisojs = Country::where('name', $this->juridic_shipping_country)->first()->iso_code;
-          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code;
+          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code ?? null;
 
           Address::create([
             'account_id' => $account->id,

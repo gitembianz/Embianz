@@ -1,14 +1,16 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar :active="__('supplier')" />
-<form class="content" method="POST" action="{{ route('new_supplier') }}">
+<x-alert />
+<x-dashboardsidebar :active="__('currency')" />
+
+<form class="content" method="POST" action="{{ route('add_currency') }}">
 
  {{-- Navigation --}}
  <nav class="nav--controls">
-  <h1 class="table--name">New Order Supplier</h1>
+  <h1 class="table--name">New currency</h1>
   {{-- Refresh Button --}}
-  <a class="button button--primary button--centered" tooltip="Back to Order Supplier Lists" tooltip-top
-   href="{{ route('suppliers') }}">
+  <a class="button button--primary button--centered" tooltip="Back to currencies" tooltip-top
+   href="{{ route('currencies') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
@@ -36,34 +38,19 @@
 
   {{-- Price List Name --}}
   <div class="input__tabs">
-   <input type="text" name="name" required value="{{ old('name') }}">
+   <input type="text" name="name" required>
    <label>Name</label>
-  </div>
-  <div class="input__tabs">
-   <input type="text" name="supplier_name" required value="{{ old('supplier_name') }}">
-   <label>Supplier Name</label>
-  </div>
-  <div class="input__tabs">
-   <input type="date" name="date" required value="{{ old('date') }}">
-   <label>Date</label>
   </div>
   {{-- Price List Currency --}}
   <div class="input__tabs">
-   <select name="currency" value="{{ old('currency') }}">
-    @foreach ($currencies as $currency)
-     <option value="{{ $currency->name }}">{{ $currency->name }}</option>
-    @endforeach
-   </select>
-   <label>Currency</label>
+   <input type="text" name="symbol" required>
+   <label>Symbol</label>
   </div>
+
+
   {{-- Save Button --}}
   <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
-  @error('date')
-   <span class="error @error('date') active @enderror">{{ $message }}</span>
-  @enderror
-  @error('name')
-   <span class="error @error('name') active @enderror">{{ $message }}</span>
-  @enderror
  </section>
 </form>
+
 <x-dashboardfooter />

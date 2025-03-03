@@ -6,23 +6,27 @@ use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Account;
+use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
 use App\Models\Currency;
+use App\Models\Exchange;
 use App\Models\Promotion;
 use App\Models\CustomScript;
 use App\Models\UserSessions;
 use Illuminate\Http\Request;
 use App\Models\Order_Supplier;
+use App\Models\ProductVariant;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+
 use App\Models\ProductReviews as ModelsProductReviews;
 
 
@@ -30,6 +34,22 @@ use App\Models\ProductReviews as ModelsProductReviews;
 class AdminController extends Controller
 {
 
+  public function store_currency(Request $request)
+  {
+    $item = new Currency();
+    $item->name = $request->name;
+    $item->symbol = $request->symbol;
+    $item->createdby = Auth::user()->name;
+    $item->lastmodifiedby = Auth::user()->name;
+    $item->save();
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
+  }
 
   public function add_supplier()
   {
@@ -37,10 +57,21 @@ class AdminController extends Controller
     return view('admin.add_supplier', compact('currencies'));
   }
 
+  public function corectparent()
+  {
+    $productVariants = ProductVariant::all();
+
+    foreach ($productVariants as $variant) {
+      Product::where('id', $variant->product_id)->update(['parent_id' => $variant->parent_id]);
+    }
+    return redirect()->route('home');
+  }
+
   public function store_supplier(Request $request)
   {
     $rules = [
       'name' => 'required',
+      'supplier_name' => 'required',
       'date' => 'required|date'
     ];
     $messages = [
@@ -55,6 +86,7 @@ class AdminController extends Controller
 
     $values = array(
       "name" => $request->name,
+      'supplier_name' => $request->supplier_name,
       "date" => $request->date,
       "status" => "draft",
       'currency' => $request->currency,
@@ -443,5 +475,106 @@ class AdminController extends Controller
       ]);
     }
     return Redirect::to('/');
+  }
+  public function updateCosts()
+  {
+    $products = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->get();
+
+    foreach ($products as $product) {
+      $cartPrices = $product->carts_item()->pluck('price');
+      if ($cartPrices->isNotEmpty()) {
+        $averagePrice = $cartPrices->avg();
+      } else {
+        $averagePrice = optional($product->product_prices->first())->value;
+      }
+
+      $totalCost = 0;
+      $count = 0;
+      foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
+        $cost = $orderSupplier->price;
+        $supplierCurrency = $orderSupplier->order->currency ?? null;
+        $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
+
+        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->latest()->first();
+
+          if (!$exchange) {
+            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+              $q->where('name', $productCurrency);
+            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+              $q->where('name', $supplierCurrency);
+            })->latest()->first();
+
+            if ($exchange) {
+              $cost /= $exchange->value;
+            }
+          } else {
+            $cost *= $exchange->value;
+          }
+        }
+
+        if ($cost) {
+          $totalCost += $cost;
+          $count++;
+        }
+      }
+
+
+      $averageCost = $count > 0 ? ($totalCost / $count) : null;
+
+      DB::table('product_costs')->updateOrInsert(
+        ['product_id' => $product->id],
+        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+      );
+    }
+
+    return redirect()->route('dashboard')->with('notification', [
+      'message' => 'Product cost updated!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+  public function checkorders()
+  {
+    $orders = Order::with('orders')->get();
+
+    $csvData = "Name,final_amount,real_final_amount,sum_amount,real_sum_amount,date\n";
+
+    foreach ($orders as $order) {
+      $sum_amount = 0;
+
+      foreach ($order->orders as $item) {
+        $sum_amount += $item->price * $item->quantity;
+      }
+
+      $final_amount = $sum_amount + $order->delivery_price - $order->voucher_value - $order->promotion_value;
+
+      if (round($final_amount, 2) != round($order->final_amount, 2)) {
+        $csvData .= '"' . $order->name . '",'
+          . '"' . $order->final_amount . '",'
+          . '"' . $final_amount . '",'
+          . '"' . $order->sum_amount . '",'
+          . '"' . $sum_amount . '",'
+          . '"' . $order->created_at->format('Y-m-d H:i:s') . '"' . "\n";
+      }
+    }
+
+    session()->flash('notification', [
+      'message' => 'Records downloaded successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
+    return Response::streamDownload(function () use ($csvData) {
+      echo $csvData;
+    }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
   }
 }
