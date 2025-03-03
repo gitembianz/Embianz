@@ -154,7 +154,7 @@
       route::get('/seedreviews', [AdminController::class, 'seedreviews']);
       route::get('/updatereviews', [AdminController::class, 'updatereviews']);
 
-      route::get('/checkorders', [AdminController::class, 'checkorders']);
+      route::get('/checkorders', [AdminController::class, 'checkorders'])->name('checkorders');
       route::get('/updatecosts', [AdminController::class, 'updatecosts']);
 
 

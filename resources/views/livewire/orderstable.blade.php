@@ -179,6 +179,16 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
+  <a href="{{ route('checkorders') }}" class="button button--secondary button--centered display--desktop"
+   tooltip="Check orders values" tooltip-top>
+   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+    class="feather feather-info">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+   </svg>
+  </a>
   <button class="button button--secondary" tooltip="Filter by invoice date" tooltip-top wire:click="filter">
    <svg>
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
@@ -302,6 +312,16 @@
       </svg>
       <span>Refresh table</span>
      </button>
+     <a class="button button--primary button--fill button--flexed" href="{{ route('checkorders') }}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+       class="feather feather-info">
+       <circle cx="12" cy="12" r="10"></circle>
+       <line x1="12" y1="16" x2="12" y2="12"></line>
+       <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <span>Check order values</span>
+     </a>
      <button class="button button--primary button--fill button--flexed" id="sort__open">
       <svg>
        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
