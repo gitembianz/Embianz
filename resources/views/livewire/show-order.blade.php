@@ -43,6 +43,18 @@
      <button class="button button--primary button--long" wire:click="generate_invoice()">
       Generate invoice
      </button>
+    </div>
+   </div>
+  </div>
+  <div class="dropdown dropdown--right">
+   {{-- Dropdown Button --}}
+   <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Actions with checked"
+    tooltip-top>
+    <span>Storno</span>
+   </button>
+   {{-- Dropdown Content --}}
+   <div class="dropdown__content">
+    <div class="dropdown__container">
      <button class="button button--primary button--long" wire:click="generate_storno_number()">
       Get storno number
      </button>
