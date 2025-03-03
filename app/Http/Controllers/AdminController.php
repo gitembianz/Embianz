@@ -493,8 +493,7 @@ class AdminController extends Controller
 
       $totalCost = 0;
       $count = 0;
-
-      foreach ($product->order_suppliers as $orderSupplier) {
+      foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
         $cost = $orderSupplier->price;
         $supplierCurrency = $orderSupplier->order->currency ?? null;
         $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
