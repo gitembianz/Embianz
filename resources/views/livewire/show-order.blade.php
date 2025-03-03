@@ -120,6 +120,16 @@
 
    <label for="category__name">Session Id</label>
   </div>
+
+  {{-- Product Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($edititem === null)
+    <span class="disabled">{{ $order->comments }}</span>
+   @else
+    <textarea type="text"name="product__name" wire:model.defer="record.comments"></textarea>
+   @endif
+   <label for="product__name">Comments</label>
+  </div>
   {{-- Order Account --}}
   <div class="input__tabs">
    @if ($order->account_id)

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $fillable = ['name', 'promotion_value', 'order_number', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'voucher_value', 'delivery_price', 'final_amount', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
+  protected $fillable = ['name', 'comments', 'promotion_value', 'order_number', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'voucher_value', 'delivery_price', 'final_amount', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
 
   public function orders()
   {
@@ -50,6 +50,7 @@ class Order extends Model
       ->orWhere('quantity_amount', 'like', '%' . $search . '%')
       ->orWhere('sum_amount', 'like', '%' . $search . '%')
       ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('comments', 'like', '%' . $search . '%')
       ->orWhere('order_number', 'like', '%' . $search . '%');;
   }
 }
