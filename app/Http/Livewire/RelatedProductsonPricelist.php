@@ -294,8 +294,7 @@ class RelatedProductsonPricelist extends Component
     $item = Product::find($new->product_id);
     $cartPrices = $item->carts_item()->pluck('price');
     if ($cartPrices->isNotEmpty()) {
-      $pr = $cartPrices->avg();
-      $averagePrice = ($pr + $new->value) / 2;
+      $averagePrice = $cartPrices->avg();
     } else {
       $averagePrice = $new->value;
     }
@@ -425,8 +424,7 @@ class RelatedProductsonPricelist extends Component
       $item = Product::find($new->product_id);
       $cartPrices = $item->carts_item()->pluck('price');
       if ($cartPrices->isNotEmpty()) {
-        $pr = $cartPrices->avg();
-        $averagePrice = ($pr + $new->value) / 2;
+        $averagePrice = $cartPrices->avg();
       } else {
         $averagePrice = $new->value;
       }
@@ -612,8 +610,7 @@ class RelatedProductsonPricelist extends Component
       $product = Product::find($item->product_id);
       $cartPrices = $item->carts_item()->pluck('price');
       if ($cartPrices->isNotEmpty()) {
-        $pr = $cartPrices->avg();
-        $averagePrice = ($pr + $item->value) / 2;
+        $averagePrice = $cartPrices->avg();
       } else {
         $averagePrice = $item->value;
       }

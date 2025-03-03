@@ -159,6 +159,14 @@ class ProductController extends Controller
     $this->generateCsvFeed($products, 'salesforce');
     $this->generateCsvFeed($products->where('active', '=', 1), 'facebook');
     $this->generateCsvFeed($products->where('active', '=', 1), 'tiktok');
+
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Feeds generated successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
   }
 
   private function generateCsvFeed($products, $feedType)

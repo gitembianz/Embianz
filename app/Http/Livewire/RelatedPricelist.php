@@ -298,8 +298,7 @@ class RelatedPricelist extends Component
 
       $cartPrices = $this->item->carts_item()->pluck('price');
       if ($cartPrices->isNotEmpty()) {
-        $pr = $cartPrices->avg();
-        $averagePrice = ($pr + $new->value) / 2;
+        $averagePrice = $cartPrices->avg();
       } else {
         $averagePrice = $new->value;
       }
@@ -450,8 +449,7 @@ class RelatedPricelist extends Component
 
           $cartPrices = $item->product->carts_item()->pluck('price');
           if ($cartPrices->isNotEmpty()) {
-            $pr = $cartPrices->avg();
-            $averagePrice = ($pr + $item->value) / 2;
+            $averagePrice = $cartPrices->avg();
           } else {
             $averagePrice = $item->value;
           }
@@ -665,8 +663,7 @@ class RelatedPricelist extends Component
 
     $cartPrices = $this->item->carts_item()->pluck('price');
     if ($cartPrices->isNotEmpty()) {
-      $pr = $cartPrices->avg();
-      $averagePrice = ($pr + $new->value) / 2;
+      $averagePrice = $cartPrices->avg();
     } else {
       $averagePrice = $new->value;
     }
