@@ -18,6 +18,12 @@ return new class extends Migration
                     $table->longText('comments')->nullable()->after('session_id');
                 });
             }
+            if (!Schema::hasColumn('orders', 'avg_cost')) {
+
+                Schema::table('orders', function (Blueprint $table) {
+                    $table->decimal('avg_cost', 10, 4)->default(0)->after('promotion_value');
+                });
+            }
         });
     }
 
