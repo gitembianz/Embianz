@@ -351,7 +351,7 @@ class Storesettingstable extends Component
     foreach ($products as $product) {
       $cartPrices = $product->carts_item()->pluck('price');
       if ($cartPrices->isNotEmpty()) {
-        $averagePrice = ($cartPrices->avg() + optional($product->product_prices->first())->value) / 2;
+        $averagePrice = $cartPrices->avg();
       } else {
         $averagePrice = optional($product->product_prices->first())->value;
       }
