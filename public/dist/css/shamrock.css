@@ -4324,6 +4324,11 @@ h2.section__title {
 .footer {
   background: #1d4a31;
 }
+@media (min-width: 1200px) {
+  .footer {
+    min-height: 198px;
+  }
+}
 
 .footer__container {
   display: flex;
