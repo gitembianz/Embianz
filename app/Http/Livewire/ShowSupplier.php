@@ -158,23 +158,40 @@ class ShowSupplier extends Component
         }
         $this->supplier->save();
 
-        // if ($rec['status'] === 'closed' && $oldstatus != $rec['status']) {
-        //     foreach ($this->supplier->items->product as $product) {
-        //         $cartPrices = $product->carts_item()->pluck('price');
-        //         if ($cartPrices->isNotEmpty()) {
-        //             $averagePrice = $cartPrices->avg();
-        //         } else {
-        //             $averagePrice = optional($product->product_prices->first())->value;
-        //         }
+        if ($rec['status'] === 'closed' && $oldstatus != $rec['status']) {
+            foreach ($this->supplier->items as $item) {
 
-        //         dd($product->costs);
 
-        //         DB::table('product_costs')->updateOrInsert(
-        //             ['product_id' => $product->id],
-        //             ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
-        //         );
-        //     }
-        // }
+                $cartPrices = $item->product->carts_item()->pluck('price');
+                if ($cartPrices->isNotEmpty()) {
+                    $averagePrice = $cartPrices->avg();
+                } else {
+                    $averagePrice = optional($item->product->product_prices->first())->value;
+                }
+                if (!$item->product->costs()) {
+                    $averageCost = $item->price;
+                    DB::table('product_costs')->updateOrInsert(
+                        ['product_id' => $item->product->id],
+                        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+                    );
+                } else {
+                    $oldcost = $item->product->costs()->latest()->first()->cost;
+                    if ($oldcost != $item->price) {
+                        $averageCost = ($oldcost + $item->price) / 2;
+                        DB::table('product_costs')->insert([
+                            'product_id' => $item->product->id,
+                            'price' => $averagePrice,
+                            'cost' => $averageCost,
+                            'date' => now(),
+                            'created_by' => auth()->user()->name,
+                            'last_modified_by' => auth()->user()->name,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
+                }
+            }
+        }
 
         $this->emit('itemSaved');
         session()->flash('notification', [
