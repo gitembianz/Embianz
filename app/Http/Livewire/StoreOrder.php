@@ -18,7 +18,6 @@ use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
 use App\Mail\ConfirmationOrder;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 
@@ -1032,26 +1031,22 @@ class StoreOrder extends Component
           'vat' => $item->vat
         ]);
       }
-      try {
-        $cost = 0;
-        foreach ($order->orders as $item) {
-          if (!$item->product->costs->last()->cost) {
-            $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
-            if ($possiblecost) {
-              $cost += $possiblecost->cost;
-            } else {
-              $cost = 0;
-              break;
-            }
+      $cost = 0;
+      foreach ($order->orders as $item) {
+        if (!optional($item->product->costs->last())->cost) {
+          $possiblecost = optional($item->product->costs)->where('cost', '!=', null)->last() ?? null;
+          if ($possiblecost) {
+            $cost += $possiblecost->cost;
           } else {
-            $cost += optional($item->product->costs->last())->cost;
+            $cost = 0;
+            break;
           }
+        } else {
+          $cost += optional(optional($item->product->costs)->last())->cost;
         }
-        if ($cost > 0) {
-          $order->update(['avg_cost' => $cost]);
-        }
-      } catch (\Exception $e) {
-        Log::error('Error calculating cost: ' . $e->getMessage());
+      }
+      if ($cost > 0) {
+        $order->update(['avg_cost' => $cost]);
       }
 
       if ($this->cart->voucher && $this->cart->voucher->single_use) {
@@ -1161,7 +1156,7 @@ class StoreOrder extends Component
           try {
             Mail::to($order->account->email)->send(new ConfirmationOrder($order));
           } catch (\Throwable $th) {
-            Log::error('Error mail: ' . $e->getMessage());
+            return;
           }
         }
         $this->dispatchBrowserEvent('goup');

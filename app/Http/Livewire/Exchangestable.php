@@ -7,6 +7,8 @@ use App\Models\Exchange;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+
 
 
 class Exchangestable extends Component
@@ -17,11 +19,12 @@ class Exchangestable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $idbeingremoved = null;
-    public $columns = ['id', 'base_currency_id', 'quote_currency_id', 'value', 'created_by', 'last_modified_by', 'date', 'created_at', 'updated_at'];
+    public $columns = [];
     public $selectedColumns = [];
     public $rowindex = null;
     public $currencies;
     public $single = false;
+    public $tableName;
 
     public $add = false;
     public $rowadd;
@@ -42,6 +45,8 @@ class Exchangestable extends Component
     public function mount()
     {
         $this->rowadd = 1;
+        $this->columns = Schema::getColumnListing($this->tableName);
+
         $this->selectedColumns = $this->columns;
         $this->currencies = Currency::all();
     }

@@ -16,7 +16,6 @@ class Exchange extends Model
         'created_by',
         'last_modified_by',
         'date'
-
     ];
 
     public function base_currency()
