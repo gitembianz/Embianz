@@ -1161,7 +1161,7 @@ class StoreOrder extends Component
           try {
             Mail::to($order->account->email)->send(new ConfirmationOrder($order));
           } catch (\Throwable $th) {
-            Log::error('Error calculating cost: ' . $e->getMessage());
+            Log::error('Error mail: ' . $e->getMessage());
           }
         }
         $this->dispatchBrowserEvent('goup');
