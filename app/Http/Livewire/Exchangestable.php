@@ -24,6 +24,7 @@ class Exchangestable extends Component
     public $rowindex = null;
     public $currencies;
     public $single = false;
+    public $tableName;
 
     public $add = false;
     public $rowadd;
