@@ -23,7 +23,6 @@ class ShowOrder extends Component
     public $invoice_sdatabase;
     public $storno_sdatabase;
     public $circle;
-    public $sum_supplier;
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
@@ -135,25 +134,6 @@ class ShowOrder extends Component
             ]);
         }
     }
-
-    public function getSum()
-    {
-        $sum = 0;
-
-        foreach ($this->order->orders as $item) {
-            if ($item->product->order_suppliers->isEmpty()) {
-                return null;
-            }
-
-            $avgPrice = $item->product->order_suppliers->avg('price');
-            $avgVat = $item->product->order_suppliers->avg('vat');
-
-            $sum += $avgPrice + ($avgPrice * $avgVat / 100);
-        }
-
-        return $sum;
-    }
-
 
 
     public function generate_invoice()
@@ -996,7 +976,6 @@ if ($interimQuantity < $orderItem->quantity) {
     $this->circle = "#4a0a0f";
     }
     }
-    $this->sum_supplier = $this->getSum() ?? null;
     }
     public function canceledit()
     {
@@ -1038,8 +1017,14 @@ if ($interimQuantity < $orderItem->quantity) {
     $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->value('id');
     $checkPaymentId = Status::where('type', 'order')->where('name', 'check_payment')->value('id');
 
-    $updatableFields = ['comments', 'invoice_date', 'storno_date', 'promotion_value', 'voucher_value',
-    'delivery_price'];
+    $updatableFields = [
+    'comments',
+    'invoice_date',
+    'storno_date',
+    'promotion_value',
+    'voucher_value',
+    'delivery_price'
+    ];
     foreach ($updatableFields as $field) {
     if (isset($new[$field])) {
     $order->$field = $new[$field];
