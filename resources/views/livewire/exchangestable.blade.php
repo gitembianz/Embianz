@@ -196,7 +196,7 @@
 
 
  {{-- Navigation --}}
- <h1 class="table--name">{{ __('Exchanges rate') }} ({{ $exchanges->total() }})</h1>
+ <h1 class="table--name">{{ __('Exchanges rate') }} ({{ count($exchanges) }})</h1>
  <nav class="nav--controls">
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top

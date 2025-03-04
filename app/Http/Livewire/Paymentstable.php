@@ -13,7 +13,7 @@ class Paymentstable extends Component
 {
     use WithPagination;
     public $loadAmount = 10;
-    public $search = 'aa';
+    public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
     public $checked = [];
