@@ -125,6 +125,7 @@
       route::post('/new_supplier', [AdminController::class, 'store_supplier'])->name('new_supplier');
       route::get('/show_supplier/{id}/', [AdminController::class, 'show_supplier'])->name('show_supplier');
 
+      route::view('/pages', 'admin.pages')->name('pages');
 
 
 

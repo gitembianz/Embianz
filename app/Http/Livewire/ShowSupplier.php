@@ -151,12 +151,15 @@ class ShowSupplier extends Component
 
         $this->supplier->last_modified_by = Auth::user()->name ?? 'Unknown';
         $this->supplier->save();
-        if ($this->supplier->currency == $this->supplier->exchange->base_currency->name) {
-            $this->supplier->final_amount_quote_currency = $this->supplier->exchange->value * $this->supplier->final_amount;
-        } elseif ($this->supplier->currency == $this->supplier->exchange->quote_currency->name) {
-            $this->supplier->final_amount_quote_currency = 1 / $this->supplier->exchange->value * $this->supplier->final_amount;
+        if ($this->supplier->exchange) {
+            if ($this->supplier->currency == $this->supplier->exchange->base_currency->name) {
+                $this->supplier->final_amount_quote_currency = $this->supplier->exchange->value * $this->supplier->final_amount;
+            } elseif ($this->supplier->currency == $this->supplier->exchange->quote_currency->name) {
+                $this->supplier->final_amount_quote_currency = 1 / $this->supplier->exchange->value * $this->supplier->final_amount;
+            }
+            $this->supplier->save();
         }
-        $this->supplier->save();
+
 
         if ($rec['status'] === 'closed' && $oldstatus != $rec['status']) {
             foreach ($this->supplier->items as $item) {
