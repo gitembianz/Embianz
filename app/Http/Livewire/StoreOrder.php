@@ -1031,6 +1031,23 @@ class StoreOrder extends Component
           'vat' => $item->vat
         ]);
       }
+      $cost = 0;
+      foreach ($order->orders as $item) {
+        if (!$item->product->costs->last()->cost) {
+          $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
+          if ($possiblecost) {
+            $cost += $possiblecost->cost;
+          } else {
+            $cost = 0;
+            break;
+          }
+        } else {
+          $cost += optional($item->product->costs->last())->cost;
+        }
+      }
+      if ($cost > 0) {
+        $order->update(['avg_cost' => $cost]);
+      }
 
       if ($this->cart->voucher && $this->cart->voucher->single_use) {
         Voucher::where('id', $this->cart->voucher_id)->update([

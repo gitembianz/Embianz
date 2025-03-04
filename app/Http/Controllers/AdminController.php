@@ -580,7 +580,7 @@ class AdminController extends Controller
 
   public function getavgvalues()
   {
-    $orders = Order::with('orders.product.costs')->get();
+    $orders = Order::with('orders.product.costs')->where('avg_cost', null)->get();
     foreach ($orders as $order) {
       $cost = 0;
       foreach ($order->orders as $item) {
@@ -590,7 +590,7 @@ class AdminController extends Controller
             $cost += $possiblecost->cost;
           } else {
             $cost = 0;
-            continue;
+            break;
           }
         } else {
           $cost += optional($item->product->costs->last())->cost;
