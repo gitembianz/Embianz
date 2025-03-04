@@ -171,23 +171,17 @@
    <label>Sum amount </label>
   </div>
   {{-- Order Sum amount --}}
-  @if (!$sum_supplier)
+
+  <div class="details__checkboxes">
    <div class="input__tabs">
     <span class="disabled">{{ $order->final_amount }}</span>
     <label>Final amount </label>
    </div>
-  @else
-   <div class="details__checkboxes">
-    <div class="input__tabs">
-     <span class="disabled">{{ $order->final_amount }}</span>
-     <label>Final amount </label>
-    </div>
-    <div class="input__tabs">
-     <span class="disabled">{{ $sum_supplier }}</span>
-     <label>Average cost</label>
-    </div>
+   <div class="input__tabs">
+    <span class="disabled">{{ $order->avg_cost }}</span>
+    <label>Average cost</label>
    </div>
-  @endif
+  </div>
   <div class="details__checkboxes">
 
    <div class="input__tabs">
