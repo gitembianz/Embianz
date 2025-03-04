@@ -7,12 +7,11 @@ use App\Models\ProductCost;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
-use Stripe\Product as StripeProduct;
 
 class RelatedCost extends Component
 {
     use WithPagination;
-    public $product;
+    public $productid;
     public $selectedColumns = [];
     public $columns = [];
     public $showrelated = false;
@@ -38,15 +37,15 @@ class RelatedCost extends Component
             'costs' => $costs
         ]);
     }
-    public function mount(Product $product, $tableName)
+    public function mount($productid, $tableName)
     {
-        $this->product = $product;
+        $this->productid = $productid;
         $this->columns = Schema::getColumnListing($tableName);
         $this->selectedColumns = $this->columns;
     }
     public function getCostsProperty()
     {
-        return ProductCost::where('product_id', $this->product->id)
+        return ProductCost::where('product_id', $this->productid)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
     public function showColumn($column)
