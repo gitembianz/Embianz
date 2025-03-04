@@ -18,7 +18,6 @@ use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
 use App\Mail\ConfirmationOrder;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 
