@@ -2,24 +2,25 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use Stripe\Stripe;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\County;
 use GuzzleHttp\Client;
 use App\Models\Account;
 use App\Models\Address;
+use App\Models\Country;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
-use Illuminate\Support\Facades\Cache;
-use Carbon\Carbon;
 use App\Mail\ConfirmationOrder;
-use App\Models\Country;
-use App\Models\County;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 
 class StoreOrder extends Component
 {
@@ -1031,22 +1032,26 @@ class StoreOrder extends Component
           'vat' => $item->vat
         ]);
       }
-      $cost = 0;
-      foreach ($order->orders as $item) {
-        if (!$item->product->costs->last()->cost) {
-          $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
-          if ($possiblecost) {
-            $cost += $possiblecost->cost;
+      try {
+        $cost = 0;
+        foreach ($order->orders as $item) {
+          if (!$item->product->costs->last()->cost) {
+            $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
+            if ($possiblecost) {
+              $cost += $possiblecost->cost;
+            } else {
+              $cost = 0;
+              break;
+            }
           } else {
-            $cost = 0;
-            break;
+            $cost += optional($item->product->costs->last())->cost;
           }
-        } else {
-          $cost += optional($item->product->costs->last())->cost;
         }
-      }
-      if ($cost > 0) {
-        $order->update(['avg_cost' => $cost]);
+        if ($cost > 0) {
+          $order->update(['avg_cost' => $cost]);
+        }
+      } catch (\Exception $e) {
+        Log::error('Error calculating cost: ' . $e->getMessage());
       }
 
       if ($this->cart->voucher && $this->cart->voucher->single_use) {
@@ -1156,7 +1161,7 @@ class StoreOrder extends Component
           try {
             Mail::to($order->account->email)->send(new ConfirmationOrder($order));
           } catch (\Throwable $th) {
-            return;
+            Log::error('Error mail: ' . $e->getMessage());
           }
         }
         $this->dispatchBrowserEvent('goup');
