@@ -739,7 +739,6 @@ class StoreOrder extends Component
     return view('livewire.store-order', $data);
   }
 
-
   public function confirm()
   {
     if (!$this->terms) {
@@ -1030,23 +1029,6 @@ class StoreOrder extends Component
           'quantity' => $item->quantity,
           'vat' => $item->vat
         ]);
-      }
-      $cost = 0;
-      foreach ($order->orders as $item) {
-        if (!optional($item->product->costs->last())->cost) {
-          $possiblecost = optional($item->product->costs)->where('cost', '!=', null)->last() ?? null;
-          if ($possiblecost) {
-            $cost += $possiblecost->cost;
-          } else {
-            $cost = 0;
-            break;
-          }
-        } else {
-          $cost += optional(optional($item->product->costs)->last())->cost;
-        }
-      }
-      if ($cost > 0) {
-        $order->update(['avg_cost' => $cost]);
       }
 
       if ($this->cart->voucher && $this->cart->voucher->single_use) {
