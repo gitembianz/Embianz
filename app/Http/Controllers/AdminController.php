@@ -577,4 +577,33 @@ class AdminController extends Controller
       echo $csvData;
     }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
   }
+
+  public function getavgvalues()
+  {
+    $orders = Order::with('orders.product.costs')->where('avg_cost', null)->get();
+    foreach ($orders as $order) {
+      $cost = 0;
+      foreach ($order->orders as $item) {
+        if (!$item->product->costs->last()->cost) {
+          $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
+          if ($possiblecost) {
+            $cost += $possiblecost->cost;
+          } else {
+            $cost = 0;
+            break;
+          }
+        } else {
+          $cost += optional($item->product->costs->last())->cost;
+        }
+      }
+      if ($cost > 0) {
+        $order->update(['avg_cost' => $cost]);
+      }
+    }
+    return redirect()->route('orders')->with('notification', [
+      'message' => 'Average cost updated!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
 }
