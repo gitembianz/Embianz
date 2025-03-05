@@ -484,7 +484,7 @@ class StoreOrder extends Component
 
 
 
-    if (app()->has("global_check_terms_order") && app('global_check_terms_order') == 'true') {
+    if (app()->has("global_check_terms_order") && app('global_check_terms_order') === 'true') {
       $this->terms = true;
     }
     if (session()->has('paymentcancel')) {
@@ -523,7 +523,9 @@ class StoreOrder extends Component
       }
     }
 
-    if (!$this->cart || !$this->cart->cartItems) {
+    if (!$this->cart) {
+      $this->back = true;
+    } elseif (!$this->cart->cartItems) {
       $this->back = true;
     }
     if ($this->country != 'n/a') {
@@ -544,7 +546,7 @@ class StoreOrder extends Component
     if (request()->cookie('accountId')) {
       $this->is_account = request()->cookie('accountId');
     }
-    if ($this->is_account != null) {
+    if ($this->is_account != null && $this->step != 3) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
       if (!$account) {
         unset($_COOKIE['accountId']);
@@ -611,22 +613,24 @@ class StoreOrder extends Component
         }
       }
     }
-    $this->billingCounties = $this->getBillingCounties();
-    $this->shippingCounties = $this->getShippingCounties();
-    $this->jbillingCounties = $this->getJBillingCounties();
-    $this->jshippingCounties = $this->getJShippingCounties();
-    $this->cash = app('global_cash');
-    $this->card = app('global_card_stripe');
-    $this->ordin = app('global_ordin');
-    if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
+    if ($this->step == 1) {
+      $this->billingCounties = $this->getBillingCounties();
+      $this->shippingCounties = $this->getShippingCounties();
+      $this->jbillingCounties = $this->getJBillingCounties();
+      $this->jshippingCounties = $this->getJShippingCounties();
+      $this->cash = app('global_cash');
+      $this->card = app('global_card_stripe');
+      $this->ordin = app('global_ordin');
+      if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
 
-      $this->payment = $this->card;
-      $this->payment['description'] = app('label_order_cart_stripe_title');
-      $this->crd = true;
-    } else {
-      $this->rtc = true;
-      $this->payment = $this->cash;
-      $this->payment['description'] = app('label_order_cash_title');
+        $this->payment = $this->card;
+        $this->payment['description'] = app('label_order_cart_stripe_title');
+        $this->crd = true;
+      } else {
+        $this->rtc = true;
+        $this->payment = $this->cash;
+        $this->payment['description'] = app('label_order_cash_title');
+      }
     }
 
 
@@ -662,28 +666,29 @@ class StoreOrder extends Component
           $message = app('label_order_error_voucher') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           $this->cart->update([
-            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
+            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')) - $this->cart->promotion_value,
             'voucher_id' => null,
             'voucher_value' => 0,
             'updated_at' => now(),
           ]);
           return;
         }
-      }
-
-      foreach ($this->cart->cartItems as $item) {
-        $product = $item->product;
-        if ($item->quantity > $product->quantity && !$product->preorder) {
-          $this->validatequantity = false;
-          $message = app('label_order_error_quantity') ?? "";
-          $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
-          return;
+        if ($voucher->single_use) {
+          $voucher->update(['status_id' => app('global_voucher_closed')]);
         }
       }
 
       foreach ($this->cart->cartItems as $item) {
         $product = $item->product;
         $currentDate = now()->format('Y-m-d');
+
+        if ($item->quantity > $product->quantity && !$product->preorder) {
+          $this->validatequantity = false;
+          $message = app('label_order_error_quantity') ?? "";
+          $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
+          return;
+        }
+
         if (!$product->active || $product->start_date > $currentDate || $product->end_date < $currentDate) {
           $message = app('label_order_error_active') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
@@ -850,11 +855,6 @@ class StoreOrder extends Component
 
       if (!empty($orderItemsToInsert)) {
         Order_Item::insert($orderItemsToInsert);
-      }
-
-
-      if ($this->cart->voucher && $this->cart->voucher->single_use) {
-        Voucher::where('id', $this->cart->voucher_id)->update(['status_id' => app('global_voucher_closed')]);
       }
 
       if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
