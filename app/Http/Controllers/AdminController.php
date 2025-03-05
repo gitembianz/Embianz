@@ -584,6 +584,10 @@ class AdminController extends Controller
     foreach ($orders as $order) {
       $cost = 0;
       foreach ($order->orders as $item) {
+        if ($item->product->costs->isEmpty()) {
+          $cost = 0;
+          break;
+        }
         if (!$item->product->costs->last()->cost) {
           $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
           if ($possiblecost) {
