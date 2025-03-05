@@ -1057,7 +1057,7 @@
       </span>
       <span class="dlv_value">{{ $cart->final_amount }}</span>
       <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
-      @foreach ($cartItems as $cartItem)
+      @foreach ($cart->cartItems as $cartItem)
        <div class="dlv_item">
         <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
         <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
@@ -1409,8 +1409,8 @@
       @endif
       <!---------------------------------------------------->
       <div class="total__info">
-       @if (!$cartItems->isEmpty())
-        @foreach ($cartItems as $index => $cartItem)
+       @if ($cart->cartItems)
+        @foreach ($cart->cartItems as $index => $cartItem)
          @php
           $disabled[$index] = false;
           $nonquantity[$index] = false;
@@ -1574,7 +1574,7 @@
       <span class="dlv_value">{{ $cart->final_amount - $cart->promotion_value }}</span>
       <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
       <span class="dlv_payment">{{ $payment['name'] }}</span>
-      @foreach ($cartItems as $cartItem)
+      @foreach ($cart->cartItems as $cartItem)
        <div class="dlv_item">
         <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
         <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
@@ -1755,8 +1755,7 @@
         @if (app()->has('label_order_fullname'))
          {!! app('label_order_fullname') !!}
         @endif:
-        <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->first_name }}</strong>
-        <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->last_name }}</strong>
+        <strong>{{ $new_order->account->name }}</strong>
        </span>
        <span class="total__message">
         @if (app()->has('label_order_phone'))
@@ -2013,7 +2012,7 @@
         @endif
        @endif
       </span>
-      @foreach ($cartItems as $cartItem)
+      @foreach ($cart->cartItems as $cartItem)
        <div class="dlv_item">
         <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
         <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
