@@ -7,7 +7,6 @@ use Stripe\Stripe;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\County;
-use GuzzleHttp\Client;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Country;
@@ -18,6 +17,7 @@ use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
 use App\Mail\ConfirmationOrder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 
@@ -228,36 +228,32 @@ class StoreOrder extends Component
     return Cart::select('id', 'quantity_amount', 'currency_id', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'status_id', 'promotion_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
-      ->with(['voucher' => function ($query) {
-        $query->select('code', 'id', 'percent', 'single_use', 'value', 'start_date', 'end_date');
-      }])
-      ->latest()
-      ->first() ?? null;
-  }
-
-  public function getCartItemsProperty()
-  {
-    if ($this->cart) {
-      return Cart_Item::select('id', 'quantity', 'price', 'product_id', 'vat')
-        ->where('cart_id', $this->cart->id)
-        ->with([
-          'product' => function ($query) {
-            $query->select('id', 'preorder', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
-              'media' => function ($query) {
-                $query->select('path', 'name')->where('type', 'min');
-              },
-              'product_prices' => function ($query) {
-                $query->select('product_id', 'value', 'pricelist_id')
-                  ->with(['pricelist' => function ($query) {
-                    $query->select('id', 'currency_id');
-                  }]);
+      ->with([
+        'voucher' => function ($query) {
+          $query->select('code', 'id', 'percent', 'single_use', 'value', 'start_date', 'end_date');
+        },
+        'cartItems' => function ($query) {
+          $query->select('id', 'cart_id', 'product_id', 'price', 'quantity', 'vat')
+            ->with([
+              'product' => function ($query) {
+                $query->select('id', 'preorder', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')
+                  ->with([
+                    'media' => function ($query) {
+                      $query->select('path', 'name', 'type')->where('type', 'min');
+                    },
+                    'product_prices' => function ($query) {
+                      $query->select('product_id', 'value', 'pricelist_id')
+                        ->with(['pricelist' => function ($query) {
+                          $query->select('id', 'currency_id');
+                        }]);
+                    }
+                  ]);
               }
             ]);
-          }
-        ])->get() ?? collect();
-    } else {
-      return collect();
-    }
+        }
+      ])
+      ->latest()
+      ->first() ?? null;
   }
 
   public function showindividual()
@@ -280,7 +276,7 @@ class StoreOrder extends Component
 
   public function next()
   {
-    if ($this->cartItems->isEmpty() || !$this->cart) {
+    if (!$this->cart->cartItems || !$this->cart) {
       $this->back = true;
     } else {
       cookie()->queue(cookie()->forget('accountId'));
@@ -519,103 +515,15 @@ class StoreOrder extends Component
         $item->product->save();
       }
       $this->step = 3;
-      if (app()->has("global_send_to_salesforce") && app('global_send_to_salesforce') == 'true') {
-        //request to salesforce
-        $order_lines = [];
-        foreach ($order->orders as $sub_order) {
-          $order_line = [
-            '00N9N000000QGYY' => $sub_order->order_id,
-            '00N9N000000QGYT' => $sub_order->id,
-            '00N9N000000QGYd' => $sub_order->product_id,
-            '00N9N000000QGZC' => $sub_order->quantity,
-            '00NQF000000Yzc9' => $sub_order->price
-          ];
-          $order_lines[] = $order_line;
-        }
-        $client = new Client();
-        $order_lines_string = json_encode($order_lines);
-        $hashed = base64_encode($order->order_number . ";" . $order->account->email);
-
-        $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
-          'headers' => [
-            'Accept' => 'application/json',
-          ],
-          'query' => [
-            'orgid' => '00D09000008XPQu',
-            'debug' => '0',
-            'debugEmail' => 'support@embianz.com',
-            'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
-              app('global_site_name') . ' Order_id:' . $order->id :
-              'Order_id:' . $order->id,
-            '00N9N000000QGVe' => app()->has('global_site_url') && app('global_site_url') != "" ?
-              app('global_site_url') : 'Verifica site url-ul proiectului',
-
-            'type' => 'Store Order Master',
-
-            //hasedinfo
-            '00NQF000000VDVd' => $hashed,
-
-
-            //order
-            '00N9N000000QGVZ' => $order->id,
-            '00N9N000000QGVj' => $order->order_number,
-            '00N9N000000QGVo' => $order->status->name,
-            '00N9N000000QGVt' => $order->currency->name,
-            '00N9N000000QGVy' => $order->payment->name,
-            '00N9N000000QGW3' => $order->voucher->code ?? "",
-            '00N9N000000QGW8' => $order->voucher_value,
-            '00N9N000000QGWI' => $order->delivery_price,
-            '00N9N000000QGWN' => $order->final_amount,
-
-            //orderlines
-            '00N9N000000QGYi' => $order_lines_string,
-
-            //account
-            '00N9N000000QGWS' => $order->account->id,
-            '00N9N000000QGYx' => $order->account->type,
-            '00N9N000000QGWX' => $order->account->company_name ?? "",
-            '00N9N000000QGWc' => $order->account->registration_code ?? "",
-            '00N9N000000QGWh' => $order->account->registration_number ?? "",
-            '00N9N000000QGWr' => $order->account->bank_name ?? "",
-            '00N9N000000QGWw' => $order->account->account ?? "",
-            //billing adress
-            '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
-            '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
-            '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
-            '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
-            '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
-            '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
-            '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
-            '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
-            '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
-            '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
-            //shipping adress
-            '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
-            '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
-            '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
-            '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
-            '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
-            '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
-            '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
-            '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
-            '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
-            '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
-          ],
-          'curl' => [
-            CURLOPT_SSL_VERIFYPEER => false,
-          ],
-        ]);
-      } else {
-        try {
-          Mail::to($order->account->email)->send(new ConfirmationOrder($order));
-        } catch (\Throwable $th) {
-          return;
-        }
-      }
       session()->forget('paymentsucces');
+      try {
+        Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+      } catch (\Throwable $th) {
+        return;
+      }
     }
 
-    if ($this->cartItems->isEmpty() || !$this->cart) {
+    if (!$this->cart || !$this->cart->cartItems) {
       $this->back = true;
     }
     if ($this->country != 'n/a') {
@@ -733,7 +641,6 @@ class StoreOrder extends Component
   public function render()
   {
     $data = [
-      'cartItems' => $this->cartItems,
       'cart' => $this->cart
     ];
     return view('livewire.store-order', $data);
@@ -747,15 +654,12 @@ class StoreOrder extends Component
       return;
     }
 
-    if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
+    if ($this->cart->cartItems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
       if ($this->cart->voucher) {
-        if (($this->cart->voucher->status_id == app('global_voucher_closed')) || ($this->cart->voucher->start_date > now()->format('Y-m-d')) || ($this->cart->voucher->end_date < now()->format('Y-m-d'))) {
-
-          if (app()->has('label_order_error_voucher')) {
-            $message = app('label_order_error_voucher');
-          } else {
-            $message = "";
-          }
+        $voucher = $this->cart->voucher;
+        $currentDate = now()->format('Y-m-d');
+        if ($voucher->status_id == app('global_voucher_closed') || $voucher->start_date > $currentDate || $voucher->end_date < $currentDate) {
+          $message = app('label_order_error_voucher') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           $this->cart->update([
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
@@ -766,25 +670,22 @@ class StoreOrder extends Component
           return;
         }
       }
-      foreach ($this->cartitems as $item) {
-        if ($item->quantity > $item->product->quantity && !$item->product->preorder) {
+
+      foreach ($this->cart->cartItems as $item) {
+        $product = $item->product;
+        if ($item->quantity > $product->quantity && !$product->preorder) {
           $this->validatequantity = false;
-          if (app()->has('label_order_error_quantity')) {
-            $message = app('label_order_error_quantity');
-          } else {
-            $message = "";
-          }
+          $message = app('label_order_error_quantity') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
         }
       }
-      foreach ($this->cartitems as $item) {
-        if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
-          if (app()->has('label_order_error_active')) {
-            $message = app('label_order_error_active');
-          } else {
-            $message = "";
-          }
+
+      foreach ($this->cart->cartItems as $item) {
+        $product = $item->product;
+        $currentDate = now()->format('Y-m-d');
+        if (!$product->active || $product->start_date > $currentDate || $product->end_date < $currentDate) {
+          $message = app('label_order_error_active') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
         }
@@ -792,362 +693,212 @@ class StoreOrder extends Component
     } else {
       $this->emit('cartUpdated');
       $this->validatequantity = false;
-      if (app()->has('label_order_error_cart')) {
-        $message = app('label_order_error_cart');
-      } else {
-        $message = "";
-      }
+      $message = app('label_order_error_cart') ?? "";
       $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
       return;
     }
+
     if ($this->validatequantity) {
+      $accountData = [
+        'phone' => $this->individual ? $this->individual_billing_phone : $this->juridic_billing_phone,
+        'email' => $this->individual ? $this->individual_billing_email : $this->juridic_billing_email,
+      ];
 
       if ($this->individual) {
-
-
-        $account = Account::create([
+        $accountData = array_merge($accountData, [
           'name' => $this->individual_billing_first . " " . $this->individual_billing_last,
           'type' => 'individual',
           'first_name' => $this->individual_billing_first,
           'last_name' => $this->individual_billing_last,
-          'phone' => $this->individual_billing_phone,
-          'email' => $this->individual_billing_email
         ]);
-        // setrawcookie('accountId', $account->id);
-        cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
-
-
-        $countryiso = Country::where('name', $this->individual_billing_country)->first()->iso_code;
-        $countyiso = County::where('name', $this->individual_billing_county)->first()->iso_code ?? null;
-
-        Address::create([
-          'account_id' => $account->id,
-          'first_name' => $this->individual_billing_first,
-          'last_name' => $this->individual_billing_last,
-          'phone' => $this->individual_billing_phone,
-          'email' => $this->individual_billing_email,
-          'address1' => $this->individual_billing_address1,
-          'address2' => $this->individual_billing_address2,
-          'type' => 'billing',
-          'country' => $this->individual_billing_country,
-          'country_iso' => $countryiso,
-          'county' => $this->individual_billing_county,
-          'county_iso' => $countyiso,
-          'city' => $this->individual_billing_city,
-          'zipcode' => $this->individual_billing_zipcode
-        ]);
-        if (!$this->individual_identic) {
-          $countryisos = Country::where('name', $this->individual_shipping_country)->first()->iso_code;
-          $countyisos = County::where('name', $this->individual_shipping_county)->first()->iso_code ?? null;
-
-          Address::create([
-            'account_id' => $account->id,
-            'first_name' => $this->individual_shipping_first,
-            'last_name' => $this->individual_shipping_last,
-            'phone' => $this->individual_shipping_phone,
-            'email' => $this->individual_shipping_email,
-            'address1' => $this->individual_shipping_address1,
-            'address2' => $this->individual_shipping_address2,
-            'type' => 'shipping',
-            'country' => $this->individual_shipping_country,
-            'country_iso' => $countryisos,
-            'county' => $this->individual_shipping_county,
-            'county_iso' => $countyisos,
-            'city' => $this->individual_shipping_city,
-            'zipcode' => $this->individual_shipping_zipcode
-          ]);
-        } else {
-          Address::create([
-            'account_id' => $account->id,
-            'first_name' => $this->individual_billing_first,
-            'last_name' => $this->individual_billing_last,
-            'phone' => $this->individual_billing_phone,
-            'email' => $this->individual_billing_email,
-            'address1' => $this->individual_billing_address1,
-            'address2' => $this->individual_billing_address2,
-            'type' => 'shipping',
-            'country' => $this->individual_billing_country,
-            'country_iso' => $countryiso,
-            'county_iso' => $countyiso,
-            'county' => $this->individual_billing_county,
-            'city' => $this->individual_billing_city,
-            'zipcode' => $this->individual_billing_zipcode
-          ]);
-        }
-      }
-      if ($this->juridic) {
-
-
-        $account = Account::create([
+      } else {
+        $accountData = array_merge($accountData, [
           'name' => $this->juridic_billing_first . " " . $this->juridic_billing_last . ", " . $this->juridic_billing_company_name,
           'type' => 'juridic',
           'first_name' => $this->juridic_billing_first,
           'last_name' => $this->juridic_billing_last,
-          'phone' => $this->juridic_billing_phone,
-          'email' => $this->juridic_billing_email,
           'company_name' => $this->juridic_billing_company_name,
           'registration_code' => $this->juridic_billing_registration_code,
           'registration_number' => $this->juridic_billing_registration_number,
           'bank_name' => $this->juridic_billing_bank,
           'account' => $this->juridic_billing_account,
         ]);
-        // setrawcookie('accountId', $account->id);
-        cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
-
-
-        $countryisoj = Country::where('name', $this->juridic_billing_country)->first()->iso_code;
-        $countyisoj = County::where('name', $this->juridic_billing_county)->first()->iso_code ?? null;
-
-        Address::create([
-          'account_id' => $account->id,
-          'first_name' => $this->juridic_billing_first,
-          'last_name' => $this->juridic_billing_last,
-          'phone' => $this->juridic_billing_phone,
-          'email' => $this->juridic_billing_email,
-          'address1' => $this->juridic_billing_address1,
-          'address2' => $this->juridic_billing_address2,
-          'type' => 'billing',
-          'country' => $this->juridic_billing_country,
-          'country_iso' => $countryisoj,
-          'county' => $this->juridic_billing_county,
-          'county_iso' => $countyisoj,
-          'city' => $this->juridic_billing_city,
-          'zipcode' => $this->juridic_billing_zipcode
-        ]);
-
-        if (!$this->juridic_identic) {
-          $countryisojs = Country::where('name', $this->juridic_shipping_country)->first()->iso_code;
-          $countyisojs = County::where('name', $this->juridic_shipping_county)->first()->iso_code ?? null;
-
-          Address::create([
-            'account_id' => $account->id,
-            'first_name' => $this->juridic_shipping_first,
-            'last_name' => $this->juridic_shipping_last,
-            'phone' => $this->juridic_shipping_phone,
-            'email' => $this->juridic_shipping_email,
-            'address1' => $this->juridic_shipping_address1,
-            'address2' => $this->juridic_shipping_address2,
-            'type' => 'shipping',
-            'country' => $this->juridic_shipping_country,
-            'country_iso' => $countryisojs,
-            'county' => $this->juridic_shipping_county,
-            'county_iso' => $countyisojs,
-            'city' => $this->juridic_shipping_city,
-            'zipcode' => $this->juridic_shipping_zipcode
-          ]);
-        } else {
-          Address::create([
-            'account_id' => $account->id,
-            'first_name' => $this->juridic_billing_first,
-            'last_name' => $this->juridic_billing_last,
-            'phone' => $this->juridic_billing_phone,
-            'email' => $this->juridic_billing_email,
-            'address1' => $this->juridic_billing_address1,
-            'address2' => $this->juridic_billing_address2,
-            'type' => 'shipping',
-            'country' => $this->juridic_billing_country,
-            'country_iso' => $countryisoj,
-            'county' => $this->juridic_billing_county,
-            'county_iso' => $countyisoj,
-            'city' => $this->juridic_billing_city,
-            'zipcode' => $this->juridic_billing_zipcode
-          ]);
-        }
       }
 
-      $baseName = class_basename(Order::class);
+      $account = Account::create($accountData);
+      cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
 
-      // Get the last order name and calculate the next order number
+      $billingAddressData = [
+        'account_id' => $account->id,
+        'first_name' => $this->individual ? $this->individual_billing_first : $this->juridic_billing_first,
+        'last_name' => $this->individual ? $this->individual_billing_last : $this->juridic_billing_last,
+        'phone' => $this->individual ? $this->individual_billing_phone : $this->juridic_billing_phone,
+        'email' => $this->individual ? $this->individual_billing_email : $this->juridic_billing_email,
+        'address1' => $this->individual ? $this->individual_billing_address1 : $this->juridic_billing_address1,
+        'address2' => $this->individual ? $this->individual_billing_address2 : $this->juridic_billing_address2,
+        'type' => 'billing',
+        'country' => $this->individual ? $this->individual_billing_country : $this->juridic_billing_country,
+        'country_iso' => Country::where('name', $this->individual ? $this->individual_billing_country : $this->juridic_billing_country)->first()->iso_code,
+        'county' => $this->individual ? $this->individual_billing_county : $this->juridic_billing_county,
+        'county_iso' => County::where('name', $this->individual ? $this->individual_billing_county : $this->juridic_billing_county)->first()->iso_code ?? null,
+        'city' => $this->individual ? $this->individual_billing_city : $this->juridic_billing_city,
+        'zipcode' => $this->individual ? $this->individual_billing_zipcode : $this->juridic_billing_zipcode,
+      ];
+
+      Address::create($billingAddressData);
+
+      if (!$this->individual_identic || !$this->juridic_identic) {
+        $shippingAddressData = [
+          'account_id' => $account->id,
+          'first_name' => $this->individual ? $this->individual_shipping_first : $this->juridic_shipping_first,
+          'last_name' => $this->individual ? $this->individual_shipping_last : $this->juridic_shipping_last,
+          'phone' => $this->individual ? $this->individual_shipping_phone : $this->juridic_shipping_phone,
+          'email' => $this->individual ? $this->individual_shipping_email : $this->juridic_shipping_email,
+          'address1' => $this->individual ? $this->individual_shipping_address1 : $this->juridic_shipping_address1,
+          'address2' => $this->individual ? $this->individual_shipping_address2 : $this->juridic_shipping_address2,
+          'type' => 'shipping',
+          'country' => $this->individual ? $this->individual_shipping_country : $this->juridic_shipping_country,
+          'country_iso' => Country::where('name', $this->individual ? $this->individual_shipping_country : $this->juridic_shipping_country)->first()->iso_code,
+          'county' => $this->individual ? $this->individual_shipping_county : $this->juridic_shipping_county,
+          'county_iso' => County::where('name', $this->individual ? $this->individual_shipping_county : $this->juridic_shipping_county)->first()->iso_code ?? null,
+          'city' => $this->individual ? $this->individual_shipping_city : $this->juridic_shipping_city,
+          'zipcode' => $this->individual ? $this->individual_shipping_zipcode : $this->juridic_shipping_zipcode,
+        ];
+
+        Address::create($shippingAddressData);
+      } else {
+        Address::create(array_merge($billingAddressData, ['type' => 'shipping']));
+      }
+
+      $baseName = 'Order';
       $lastOrder = Order::latest('id')->first();
       $orderNumber = $lastOrder ? ((int)str_replace("{$baseName}_", '', $lastOrder->name) + 1) : 1;
-
-      // Generate the unique name
       $uniqueName = "{$baseName}_" . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
-      if ($this->payment['type'] != 'card') {
+      $status = $this->payment['type'] != 'card' ? app('global_order_processing') : app('global_order_check_payment');
 
-        $order = Order::create([
-          'name' => $uniqueName,
-          'session_id' => $this->session_id,
-          'account_id' => $account->id,
-          'cart_id' => $this->cart->id,
-          'quantity_amount' => $this->cart->quantity_amount,
-          'sum_amount' => $this->cart->sum_amount,
-          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value),
-          'delivery_price' => app('global_delivery_price'),
-          'voucher_value' => $this->cart->voucher_value ?? 0,
-          'promotion_value' => $this->cart->promotion_value ?? 0,
-          'currency_id' => $this->cart->currency_id,
-          'status_id' =>  app('global_order_processing'),
-          'payment_id' => $this->payment['id'],
-          'voucher_id' =>  $this->cart->voucher_id
-        ]);
+      $prefix = app('global_order_prefix') . now()->format('Ymd');
+
+      $lastTodayOrder = Order::where('order_number', 'LIKE', "{$prefix}%")
+        ->latest('order_number')
+        ->first();
+
+      if ($lastTodayOrder) {
+        $lastNumber = (int)substr($lastTodayOrder->order_number, -3);
+        $today = $lastNumber + 1;
       } else {
-        $order = Order::create([
-          'name' => $uniqueName,
-          'session_id' => $this->session_id,
-          'account_id' => $account->id,
-          'cart_id' => $this->cart->id,
-
-          'quantity_amount' => $this->cart->quantity_amount,
-          'sum_amount' => $this->cart->sum_amount,
-          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value),
-          'delivery_price' => app('global_delivery_price'),
-          'voucher_value' => $this->cart->voucher_value ?? 0,
-          'promotion_value' => $this->cart->promotion_value ?? 0,
-          'currency_id' => $this->cart->currency_id,
-          'status_id' =>  app('global_order_check_payment'),
-          'payment_id' => $this->payment['id'],
-          'voucher_id' =>  $this->cart->voucher_id
-        ]);
+        $today = 1;
       }
 
-
-      $today = 1;
-      $uniqueorderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($today, 3, '0', STR_PAD_LEFT);
-      while (Order::where('order_number', $uniqueorderNumber)->exists()) {
-        $today++;
-        $uniqueorderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($today, 3, '0', STR_PAD_LEFT);
-      }
-
-
-
+      $uniqueorderNumber = $prefix . str_pad($today, 3, '0', STR_PAD_LEFT);
       $this->orderNumber = $uniqueorderNumber;
-      $order->update([
-        'order_number' => $this->orderNumber
+
+      $order = Order::create([
+        'name' => $uniqueName,
+        'session_id' => $this->session_id,
+        'account_id' => $account->id,
+        'cart_id' => $this->cart->id,
+        'order_number' => $this->orderNumber,
+        'quantity_amount' => $this->cart->quantity_amount,
+        'sum_amount' => $this->cart->sum_amount,
+        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value),
+        'delivery_price' => app('global_delivery_price'),
+        'voucher_value' => $this->cart->voucher_value ?? 0,
+        'promotion_value' => $this->cart->promotion_value ?? 0,
+        'currency_id' => $this->cart->currency_id,
+        'status_id' => $status,
+        'payment_id' => $this->payment['id'],
+        'voucher_id' => $this->cart->voucher_id
       ]);
 
-      foreach ($this->cartitems as $item) {
+
+      $productsToUpdate = [];
+      $orderItemsToInsert = [];
+
+      foreach ($this->cart->cartItems as $item) {
         if ($this->payment['type'] != 'card') {
-          $item->product->quantity -= $item->quantity;
-          $item->product->save();
+          $productsToUpdate[$item->product_id] = ($productsToUpdate[$item->product_id] ?? 0) + $item->quantity;
         }
 
-        Order_Item::create([
+        $orderItemsToInsert[] = [
           'order_id' => $order->id,
           'product_id' => $item->product_id,
           'price' => $item->price,
           'quantity' => $item->quantity,
-          'vat' => $item->vat
-        ]);
+          'vat' => $item->vat,
+          'created_at' => now(),
+          'updated_at' => now()
+        ];
       }
 
-      if ($this->cart->voucher && $this->cart->voucher->single_use) {
-        Voucher::where('id', $this->cart->voucher_id)->update([
-          'status_id' => app('global_voucher_closed')
-        ]);
+      if (!empty($productsToUpdate)) {
+        $cases = [];
+        $ids = [];
+        $bindings = [];
+
+        foreach ($productsToUpdate as $id => $quantity) {
+          $cases[] = "WHEN id = ? THEN quantity - ?";
+          $bindings[] = $id;
+          $bindings[] = $quantity;
+          $ids[] = $id;
+        }
+
+        $cases = implode(" ", $cases);
+        $ids = implode(",", $ids);
+
+        DB::update("UPDATE products SET quantity = CASE $cases END, updated_at = ? WHERE id IN ($ids)", array_merge($bindings, [now()]));
       }
+
+      if (!empty($orderItemsToInsert)) {
+        Order_Item::insert($orderItemsToInsert);
+      }
+
+
+      if ($this->cart->voucher && $this->cart->voucher->single_use) {
+        Voucher::where('id', $this->cart->voucher_id)->update(['status_id' => app('global_voucher_closed')]);
+      }
+
       if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
         Cache::forget('cached_products');
       }
-      if ($this->payment['type'] != 'card') {
 
-        $this->cart->update([
-          'order_id' => $order->id,
-          'status_id' => app('global_cart_closed')
+      if ($this->payment['type'] != 'card') {
+        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_cart_closed')]);
+        $this->step = 3;
+        $this->new_order = $order->load([
+          'orders.product' => function ($query) {
+            $query->select('id', 'name', 'seo_id')
+              ->with([
+                'media' => function ($query) {
+                  $query->select('path', 'name', 'type')->where('type', 'min');
+                },
+                'product_prices' => function ($query) {
+                  $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                },
+              ]);
+          },
+          'account' => function ($query) {
+            $query->select('id', 'name', 'phone', 'email', 'company_name', 'registration_code', 'registration_number', 'bank_name', 'account')
+              ->with([
+                'addresses' => function ($query) {
+                  $query->select('id', 'account_id', 'first_name', 'last_name', 'phone', 'email', 'address1', 'address2', 'type', 'country', 'county', 'city', 'zipcode');
+                },
+              ]);
+          },
+          'currency' => function ($query) {
+            $query->select('id', 'name');
+          },
         ]);
 
-        $this->step = 3;
-        $this->new_order = $order;
-
         $this->emit('orderprocess');
-        if (app()->has("global_send_to_salesforce") && app('global_send_to_salesforce') == 'true') {
 
-          //request to salesforce
-          $order_lines = [];
-          foreach ($order->orders as $sub_order) {
-            $order_line = [
-              '00N9N000000QGYY' => $sub_order->order_id,
-              '00N9N000000QGYT' => $sub_order->id,
-              '00N9N000000QGYd' => $sub_order->product_id,
-              '00N9N000000QGZC' => $sub_order->quantity,
-              '00NQF000000Yzc9' => $sub_order->price
-            ];
-            $order_lines[] = $order_line;
-          }
-          $client = new Client();
-          $order_lines_string = json_encode($order_lines);
-          $hashed = base64_encode($order->order_number);
-          $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
-            'headers' => [
-              'Accept' => 'application/json',
-            ],
-            'query' => [
-              'orgid' => '00D09000008XPQu',
-              'debug' => '0',
-              'debugEmail' => 'support@embianz.com',
-              'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
-                app('global_site_name') . ' Order_id:' . $order->id :
-                'Order_id:' . $order->id,
-              '00N9N000000QGVe' => app()->has('global_site_url') && app('global_site_url') != "" ?
-                app('global_site_url') : 'Verifica site url-ul proiectului',
-              'type' => 'Store Order Master',
-
-              //hasedinfo
-              '00NQF000000VDVd' => $hashed,
-
-              //order
-              '00N9N000000QGVZ' => $order->id,
-              '00N9N000000QGVj' => $order->order_number,
-              '00N9N000000QGVo' => $order->status->name,
-              '00N9N000000QGVt' => $order->currency->name,
-              '00N9N000000QGVy' => $order->payment->type,
-              '00N9N000000QGW3' => $order->voucher->code ?? "",
-              '00N9N000000QGW8' => $order->voucher_value,
-              '00N9N000000QGWI' => $order->delivery_price,
-              '00N9N000000QGWN' => $order->final_amount,
-
-              //orderlines
-              '00N9N000000QGYi' => $order_lines_string,
-
-              //account
-              '00N9N000000QGWS' => $order->account->id,
-              '00N9N000000QGYx' => $order->account->type,
-              '00N9N000000QGWX' => $order->account->company_name ?? "",
-              '00N9N000000QGWc' => $order->account->registration_code ?? "",
-              '00N9N000000QGWh' => $order->account->registration_number ?? "",
-              '00N9N000000QGWr' => $order->account->bank_name ?? "",
-              '00N9N000000QGWw' => $order->account->account ?? "",
-              //billing adress
-              '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
-              '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
-              '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
-              '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
-              '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
-              '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
-              '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
-              '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
-              '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
-              '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
-              //shipping adress
-              '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
-              '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
-              '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
-              '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
-              '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
-              '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
-              '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
-              '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
-              '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
-              '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
-            ],
-            'curl' => [
-              CURLOPT_SSL_VERIFYPEER => false,
-            ],
-          ]);
-        } else {
-          try {
-            Mail::to($order->account->email)->send(new ConfirmationOrder($order));
-          } catch (\Throwable $th) {
-            return;
-          }
+        try {
+          Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+        } catch (\Throwable $th) {
+          return;
         }
         $this->dispatchBrowserEvent('goup');
       } else {
-        $this->cart->update([
-          'order_id' => $order->id,
-          'status_id' => app('global_cart_check_payment')
-        ]);
-
+        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_cart_check_payment')]);
         Stripe::setApiKey(app('global_stripe_key'));
 
         $session = Session::create([
@@ -1155,9 +906,7 @@ class StoreOrder extends Component
             [
               'price_data' => [
                 'currency' => $order->currency->name,
-                'product_data' => [
-                  'name' =>  $order->order_number,
-                ],
+                'product_data' => ['name' => $order->order_number],
                 'unit_amount' => $order->final_amount * 100,
               ],
               'quantity' => 1,
@@ -1169,6 +918,7 @@ class StoreOrder extends Component
           'success_url' => route('payment_success', [], true) . "?session_id={$this->session_id}",
           'cancel_url' => route('payment_cancel', [], true) . "?session_id={$this->session_id}",
         ]);
+
         $this->orderNumber = $order->order_number;
         return redirect()->to($session->url);
       }
