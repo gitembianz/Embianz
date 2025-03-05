@@ -179,7 +179,7 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
-  <a class="button button--primary button--centered display--desktop" tooltip="Update product prices" tooltip-top
+  <a class="button button--primary button--centered display--desktop" tooltip="Update orders costs" tooltip-top
    href="{{ route('getavgvalues') }}">
    <svg>
     <line x1="12" y1="1" x2="12" y2="23"></line>
