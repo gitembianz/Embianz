@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('static__pages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content'); // For storing large HTML content
-            $table->string('slug')->unique(); // For creating routes based on records
-            $table->boolean('display_in_footer')->default(false); // Bool value for displaying in footer
+            $table->string('name')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('route')->unique()->nullable();
+            $table->integer('sequence')->nullable();
+            $table->boolean('display_in_footer')->default(false);
+            $table->string('created_by')->nullable();
+            $table->string('last_modified_by')->nullable();
             $table->timestamps();
         });
     }

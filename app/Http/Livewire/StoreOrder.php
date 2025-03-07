@@ -546,7 +546,7 @@ class StoreOrder extends Component
     if (request()->cookie('accountId')) {
       $this->is_account = request()->cookie('accountId');
     }
-    if ($this->is_account != null && $this->step != 3) {
+    if ($this->is_account != null) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
       if (!$account) {
         unset($_COOKIE['accountId']);
@@ -613,24 +613,22 @@ class StoreOrder extends Component
         }
       }
     }
-    if ($this->step == 1) {
-      $this->billingCounties = $this->getBillingCounties();
-      $this->shippingCounties = $this->getShippingCounties();
-      $this->jbillingCounties = $this->getJBillingCounties();
-      $this->jshippingCounties = $this->getJShippingCounties();
-      $this->cash = app('global_cash');
-      $this->card = app('global_card_stripe');
-      $this->ordin = app('global_ordin');
-      if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
+    $this->billingCounties = $this->getBillingCounties();
+    $this->shippingCounties = $this->getShippingCounties();
+    $this->jbillingCounties = $this->getJBillingCounties();
+    $this->jshippingCounties = $this->getJShippingCounties();
+    $this->cash = app('global_cash');
+    $this->card = app('global_card_stripe');
+    $this->ordin = app('global_ordin');
+    if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
 
-        $this->payment = $this->card;
-        $this->payment['description'] = app('label_order_cart_stripe_title');
-        $this->crd = true;
-      } else {
-        $this->rtc = true;
-        $this->payment = $this->cash;
-        $this->payment['description'] = app('label_order_cash_title');
-      }
+      $this->payment = $this->card;
+      $this->payment['description'] = app('label_order_cart_stripe_title');
+      $this->crd = true;
+    } else {
+      $this->rtc = true;
+      $this->payment = $this->cash;
+      $this->payment['description'] = app('label_order_cash_title');
     }
 
 
