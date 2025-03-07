@@ -1573,7 +1573,7 @@
       </span>
       <span class="dlv_value">{{ $cart->final_amount - $cart->promotion_value }}</span>
       <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
-      <span class="dlv_payment">{{ $payment['name'] }}</span>
+      <span class="dlv_payment">{{ $payment['description'] }}</span>
       @foreach ($cart->cartItems as $cartItem)
        <div class="dlv_item">
         <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
