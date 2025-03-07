@@ -126,6 +126,7 @@
       route::get('/show_supplier/{id}/', [AdminController::class, 'show_supplier'])->name('show_supplier');
 
       route::view('/pages', 'admin.pages')->name('pages');
+      route::get('/add_page', [AdminController::class, 'add_page'])->name('add_page');
 
 
 
