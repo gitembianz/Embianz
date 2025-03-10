@@ -13,7 +13,7 @@ class BeeingInOrder extends Component
     use WithPagination;
     public $search = '';
     public $orderBy = 'id';
-    public $orderAsc = true;
+    public $orderAsc = false;
     public $relatedby;
     public $productid;
     public $selectedColumns = [];
@@ -34,6 +34,7 @@ class BeeingInOrder extends Component
         $this->relatedby = $relatedby;
         if ($this->relatedby === 'order') {
             $this->columns = Schema::getColumnListing('order__items');
+            array_splice($this->columns, array_search('order_id', $this->columns) + 1, 0, 'status');
         } else {
             $this->columns = Schema::getColumnListing('order__supplier__items');
         }
