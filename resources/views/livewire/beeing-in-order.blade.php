@@ -84,6 +84,8 @@
         <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}">
          @if ($column === 'order_id')
           <a href="{{ route('show_order', ['id' => $order->order->id]) }}">{{ $order->order->name }}</a>
+         @elseif ($column === 'status')
+          {{ $order->order->status->name }}
          @elseif ($column === 'order__supplier_id')
           <a href="{{ route('show_supplier', ['id' => $order->order->id]) }}">{{ $order->order->name }}</a>
          @elseif ($column === 'product_id')
