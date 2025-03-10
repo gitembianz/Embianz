@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Related_Products;
 use App\Models\Products_categories;
 use App\Models\Subcategory;
 use Illuminate\Support\Facades\Auth;
@@ -192,5 +193,60 @@ class ShowCategory extends Component
     return view('livewire.show-category', [
       'category' => $this->category
     ]);
+  }
+  public function Productrelated()
+  {
+    $products = Products_categories::where('category_id', $this->categoryId)
+      ->with(['product' => function ($query) {
+        $query->where('active', 1)
+          ->where('start_date', '<=', now()->format('Y-m-d'))
+          ->where('end_date', '>=', now()->format('Y-m-d'));
+      }])
+      ->get()
+      ->pluck('product');
+
+    $relatedProductsData = [];
+    foreach ($products as $parentProduct) {
+      foreach ($products as $index => $relatedProduct) {
+        if ($parentProduct->id !== $relatedProduct->id) {
+          $relatedProductsData[] = [
+            'parent_id' => $parentProduct->id,
+            'product_id' => $relatedProduct->id,
+            'sequence' => $index,
+            'created_at' => now(),
+            'updated_at' => now(),
+          ];
+        }
+      }
+    }
+
+    $existingRelations = Related_Products::whereIn('parent_id', $products->pluck('id'))
+      ->orWhereIn('product_id', $products->pluck('id'))
+      ->get()
+      ->map(function ($relation) {
+        return [
+          'parent_id' => $relation->parent_id,
+          'product_id' => $relation->product_id,
+        ];
+      })
+      ->toArray();
+
+    $newRelations = array_filter($relatedProductsData, function ($relation) use ($existingRelations) {
+      return !in_array(['parent_id' => $relation['parent_id'], 'product_id' => $relation['product_id']], $existingRelations, true) ||
+        !in_array(['parent_id' => $relation['product_id'], 'product_id' => $relation['parent_id']], $existingRelations, true);
+    });
+
+    $chunks = array_chunk($newRelations, 1000);
+    foreach ($chunks as $chunk) {
+      Related_Products::insert($chunk);
+    }
+
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
+    return;
   }
 }

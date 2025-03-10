@@ -33,7 +33,6 @@ class Exchangestable extends Component
     public $value = [];
     public $date = [];
     public $element = [];
-
     public $row = 1;
 
     public function render()
@@ -193,6 +192,11 @@ class Exchangestable extends Component
     public function deleteSingleRecord()
     {
         $item = Exchange::findOrFail($this->idbeingremoved);
+        foreach ($item->suppliers as $supplier) {
+            $supplier->exchange_id = null;
+            $supplier->final_amount_quote_currency = 0;
+            $supplier->save();
+        }
         $item->delete();
         $this->single = false;
 
