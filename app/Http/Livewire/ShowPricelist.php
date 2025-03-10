@@ -29,11 +29,11 @@ class ShowPricelist extends Component
   }
   public function confirmItemRemoval()
   {
-      $this->delete = true;
+    $this->delete = true;
   }
   public function cancelItemRemoval()
   {
-      $this->delete = false;
+    $this->delete = false;
   }
   public function getPricelistQueryProperty()
   {

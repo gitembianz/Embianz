@@ -73,4 +73,8 @@ class Pagestable extends Component
     {
         $this->loadAmount += 10;
     }
+    public function isChecked($id)
+    {
+        return in_array($id, $this->checked);
+    }
 }

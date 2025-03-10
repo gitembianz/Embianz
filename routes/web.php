@@ -12,7 +12,7 @@
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+  use App\Models\Static_Page;
 
   /*
 |--------------------------------------------------------------------------
@@ -126,7 +126,9 @@
       route::get('/show_supplier/{id}/', [AdminController::class, 'show_supplier'])->name('show_supplier');
 
       route::view('/pages', 'admin.pages')->name('pages');
-      route::get('/add_page', [AdminController::class, 'add_page'])->name('add_page');
+      route::view('/add_page', 'admin.add_page')->name('add_page');
+      route::post('/store_page', [AdminController::class, 'store_page'])->name('store_page');
+      route::get('/show_page/{id}/', [AdminController::class, 'show_page'])->name('show_page');
 
 
 
@@ -186,6 +188,17 @@
   route::view('/terms', 'store.terms')->name('terms');
   route::view('/redirect', 'store.redirect')->name('redirect');
   Route::view('/404', 'store.404')->name('404');
+
+  // static pages route system
+  $pages = Cache::rememberForever('static_pages', function () {
+    return Static_Page::all();
+  });
+
+  foreach ($pages as $page) {
+    Route::get($page->route, function () use ($page) {
+      return view('store.page', ['page' => $page]);
+    })->name($page->route);
+  }
 
   //Functionality page routes
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');

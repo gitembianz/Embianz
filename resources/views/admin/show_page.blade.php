@@ -1,5 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
+<x-alert />
 <x-dashboardsidebar :active="__('pages')" />
-@livewire('pagestable', ['tableName' => 'static__pages'])
+@livewire('show-page', ['pageId' => $data->id])
 <x-dashboardfooter />

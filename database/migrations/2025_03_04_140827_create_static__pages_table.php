@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->string('route')->unique()->nullable();
             $table->integer('sequence')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('display_in_footer')->default(false);
             $table->string('created_by')->nullable();
             $table->string('last_modified_by')->nullable();

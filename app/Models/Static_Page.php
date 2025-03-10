@@ -13,6 +13,7 @@ class Static_Page extends Model
         'content',
         'route',
         'sequence',
+        'description',
         'display_in_footer',
         'created_by',
         'last_modified_by'
@@ -26,6 +27,7 @@ class Static_Page extends Model
             ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('content', 'like', '%' . $search . '%')
             ->orWhere('route', 'like', '%' . $search . '%')
+            ->orWhere('description', 'like', '%' . $search . '%')
             ->orWhere('sequence', 'like', '%' . $search . '%')
             ->orWhere('created_by', 'like', '%' . $search . '%')
             ->orWhere('last_modified_by', 'like', '%' . $search . '%');

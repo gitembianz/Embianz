@@ -297,8 +297,7 @@
      @endphp
      @foreach ($pages as $nr => $page)
       <tr @if ($loop->last) id="last_record" @endif
-       @if ($class === 'notprocess') data-tooltip="{{ implode('<br>', $productDetails) }}" @endif
-       class="expandable-row {{ $class }} @if ($this->isChecked($page->id)) active @endif">
+       class="expandable-row @if ($this->isChecked($page->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $page->id }}" id="{{ $page->id }}" wire:model="checked">
