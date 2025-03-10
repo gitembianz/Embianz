@@ -117,6 +117,8 @@ class ShowPage extends Component
     public function deleteSingleRecord()
     {
         $this->page->delete();
+        Cache::forget('static_pages');
+
         $this->registerDynamicRoutes();
 
         $this->delete = false;
