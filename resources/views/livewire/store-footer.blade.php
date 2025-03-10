@@ -232,18 +232,22 @@
     <div class="footer__bottom">
      <div class="footer__list">
       <h3 class="footer__title">Serviciu clienți</h3>
-      <a class="footer__link" href="{{ url('/cookie') }}">Politica de Cookies</a>
-      <a class="footer__link" href="{{ url('/faq') }}">Întrebări Frecvente</a>
-      <a class="footer__link" href="{{ url('/privacy') }}">Politica de confidențialitate</a>
+      @foreach ($staticpages as $page)
+       @if ($page->sequence % 2 != 0)
+        <a class="footer__link" href="{{ url($page->route) }}">{{ $page->name }}</a>
+       @endif
+      @endforeach
       <a class="footer__link" href="{{ url('/sitemap.xml') }}">Hartă Site</a>
       <a class="footer__link" target="blank" href="https://anpc.ro/">ANPC</a>
 
      </div>
      <div class="footer__list">
       <h3 class="footer__title">Informații</h3>
-      <a class="footer__link" href="{{ url('/terms') }}">Termeni și Condiții</a>
-      <a class="footer__link" href="{{ url('/contact') }}">Contactează-ne</a>
-      <a class="footer__link" href="{{ url('/about') }}">Despre Noi</a>
+      @foreach ($staticpages as $page)
+       @if ($page->sequence % 2 == 0)
+        <a class="footer__link" href="{{ url($page->route) }}">{{ $page->name }}</a>
+       @endif
+      @endforeach
      </div>
     </div>
    @endif

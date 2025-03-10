@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Livewire\Component;
 use App\Models\Subscribers;
+use App\Models\Static_Page;
 use App\Models\UserSessions;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\QueryException;
-use Carbon\Carbon;
 
 class StoreFooter extends Component
 {
@@ -17,6 +19,7 @@ class StoreFooter extends Component
   public $session_id;
   public $timer = 0;
   public $page;
+  public $staticpages;
 
   public function render()
   {
@@ -24,6 +27,9 @@ class StoreFooter extends Component
   }
   public function mount($page = "")
   {
+    $this->staticpages = Cache::rememberForever('static_pages', function () {
+      return Static_Page::where('display_in_footer', true)->get();
+    });
     $this->page = $page;
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
       $this->session_id = request()->cookie('sessionId') ?? session()->getId();
