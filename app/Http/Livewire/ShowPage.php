@@ -68,6 +68,9 @@ class ShowPage extends Component
         foreach ($fields as $field) {
             if (array_key_exists($field, $rec)) {
                 if (!empty($rec[$field])) {
+                    if ($field == 'route') {
+                        $rec[$field] = str_replace(' ', '-', $rec[$field]);
+                    }
                     $this->page->$field = $rec[$field];
                 } else {
                     session()->flash('notification', [
@@ -114,6 +117,8 @@ class ShowPage extends Component
     public function deleteSingleRecord()
     {
         $this->page->delete();
+        Cache::forget('static_pages');
+
         $this->registerDynamicRoutes();
 
         $this->delete = false;

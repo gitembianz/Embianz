@@ -48,7 +48,7 @@ class AdminController extends Controller
     $values = array(
       "name" => $request->name,
       "description" => $request->description,
-      "route" => $request->route,
+      "route" => str_replace(' ', '-', $request->route),
       "content" => $request->content,
       "sequence" => $request->sequence,
       'display_in_footer' => $request->has('active'),
