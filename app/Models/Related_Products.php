@@ -15,6 +15,8 @@ class Related_Products extends Model
     protected $fillable = [
         'parent_id',
         'product_id',
-        'sequence'
+        'sequence',
+        'created_at',
+        'updated_at'
     ];
 }

@@ -30,6 +30,16 @@
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
+  <button class="button button--primary button--centered display--desktop" tooltip="Generate related products"
+   tooltip-top wire:click.prevent="Productrelated()">
+   <svg>
+    <polyline points="16 3 21 3 21 8"></polyline>
+    <line x1="4" y1="20" x2="21" y2="3"></line>
+    <polyline points="21 16 21 21 16 21"></polyline>
+    <line x1="15" y1="15" x2="21" y2="21"></line>
+    <line x1="4" y1="4" x2="9" y2="9"></line>
+   </svg>
+  </button>
   <a class="button button--primary button--centered" tooltip="Create new category" tooltip-top
    href="{{ route('newcategory') }}">
    <svg>
