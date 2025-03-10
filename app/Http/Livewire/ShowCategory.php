@@ -194,11 +194,14 @@ class ShowCategory extends Component
       'category' => $this->category
     ]);
   }
-
   public function Productrelated()
   {
     $products = Products_categories::where('category_id', $this->categoryId)
-      ->with('product')
+      ->with(['product' => function ($query) {
+        $query->where('active', 1)
+          ->where('start_date', '<=', now()->format('Y-m-d'))
+          ->where('end_date', '>=', now()->format('Y-m-d'));
+      }])
       ->get()
       ->pluck('product');
 
@@ -233,13 +236,16 @@ class ShowCategory extends Component
         !in_array(['parent_id' => $relation['product_id'], 'product_id' => $relation['parent_id']], $existingRelations, true);
     });
 
-    Related_Products::insert($newRelations);
+    $chunks = array_chunk($newRelations, 1000);
+    foreach ($chunks as $chunk) {
+      Related_Products::insert($chunk);
+    }
+
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
-
 
     return;
   }
