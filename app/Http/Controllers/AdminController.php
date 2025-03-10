@@ -98,10 +98,12 @@ class AdminController extends Controller
 
     Order_Supplier::insert($values);
 
-    return redirect()->back()->with('notification', [
-      'message' => 'Record added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here <a href="' . route("show_supplier", ["id" => DB::getPdo()->lastInsertId()]) . '">' . $request->supplier_name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
     ]);
   }
 
