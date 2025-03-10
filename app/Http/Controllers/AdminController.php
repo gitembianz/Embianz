@@ -26,13 +26,62 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route;
 
 use App\Models\ProductReviews as ModelsProductReviews;
-
-
+use App\Models\Static_Page;
 
 class AdminController extends Controller
 {
+
+  public function store_page(Request $request)
+  {
+    if (!$request->filled('name') || !$request->filled('route') || !$request->filled('description') || !$request->filled('content') || !$request->filled('sequence')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $values = array(
+      "name" => $request->name,
+      "description" => $request->description,
+      "route" => $request->route,
+      "content" => $request->content,
+      "sequence" => $request->sequence,
+      'display_in_footer' => $request->has('active'),
+      "created_by" => Auth::user()->name,
+      "last_modified_by" => Auth::user()->name,
+      "created_at" => now(),
+      "updated_at" => now()
+
+    );
+
+    Static_Page::insert($values);
+
+    Cache::forget('static_pages');
+    $this->registerDynamicRoutes();
+
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+  public function registerDynamicRoutes()
+  {
+    $pages = Cache::rememberForever('static_pages', function () {
+      return Static_Page::all();
+    });
+
+    foreach ($pages as $page) {
+      Route::get($page->route, function () use ($page) {
+        return view('store.page', ['page' => $page]);
+      })->name($page->route);
+    }
+  }
 
   public function store_currency(Request $request)
   {
@@ -202,6 +251,11 @@ class AdminController extends Controller
   {
     $data = Cart::find($id);
     return view('admin.show_cart', compact('data'));
+  }
+  public function show_page($id)
+  {
+    $data = Static_Page::find($id);
+    return view('admin.show_page', compact('data'));
   }
   public function show_session($id)
   {
