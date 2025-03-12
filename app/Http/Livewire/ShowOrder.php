@@ -6,12 +6,15 @@ use App\Models\Invoice;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Status;
+use App\Models\Store_Settings;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use GuzzleHttp\Client;
+
 
 class ShowOrder extends Component
 {
@@ -27,6 +30,50 @@ class ShowOrder extends Component
         'refreshComponent' => '$refresh'
     ];
 
+
+    public function get_token()
+    {
+        $user = 'adtanase';
+        $pass = 'WCsIC3yVToe2400qufAb';
+        $apiUrl = 'https://api.fancourier.ro';
+        $client = new Client();
+
+        $response = $client->post($apiUrl . '/login', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+            'query' => [
+                'username' => $user,
+                'password' => $pass,
+            ],
+            'curl' => [
+                CURLOPT_SSL_VERIFYPEER => false,
+            ],
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            $response = json_decode($response->getBody(), true);
+            $token = $response['data']['token'];
+            $parameter = Store_Settings::where('parameter', 'fan_token')->first();
+            if ($parameter) {
+                $parameter->update(['value' => $token]);
+            }
+            session()->flash('notification', [
+                'message' => 'Token generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+            return;
+        } else {
+            session()->flash('notification', [
+                'message' => 'Token not generated',
+                'type' => 'warning',
+                'title' => 'warning'
+            ]);
+            return;
+        }
+    }
 
     public function generate_invoice_number()
     {
