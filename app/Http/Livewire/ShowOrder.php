@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\AWB;
 use App\Models\Invoice;
 use Carbon\Carbon;
 use App\Models\Order;
@@ -26,19 +27,129 @@ class ShowOrder extends Component
     public $invoice_sdatabase;
     public $storno_sdatabase;
     public $circle;
+    public $fanUrl = 'https://api.fancourier.ro';
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
+
+    public function generate_awb_fancourier()
+    {
+        $client = new Client();
+        $client_id = Store_Settings::where('parameter', 'fan_client_id')->value('value');
+        $token = Store_Settings::where('parameter', 'fan_token')->value('value');
+
+        // Prepare the AWB data
+        $awbData = [
+            'clientId' => $client_id,
+            'shipments' => [
+                [
+                    'info' => [
+                        'service' => 'Cont Colector',
+                        'bank' => '',
+                        'bankAccount' => '',
+                        'packages' => [
+                            'parcel' => 0,
+                            'envelope' => 1,
+                        ],
+                        'weight' => 1,
+                        'cod' => $this->order->final_amount,
+                        'payment' => 'expeditor',
+                        'refund' => '',
+                        'returnPayment' => '',
+                        'observation' => 'POS',
+                        'content' => 'Comanda semintetop.ro',
+                        'dimensions' => [
+                            'length' => 15,
+                            'height' => 3,
+                            'width' => 10,
+                        ],
+                    ],
+                    'recipient' => [
+                        'name' => $this->order->account->name,
+                        'phone' => $this->order->account->phone,
+                        'email' => $this->order->account->email,
+                        'address' => [
+                            'county' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
+                            'locality' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
+                            'street' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
+                            'zipCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        // Make the API request
+        $response = $client->post($this->fanUrl . '/intern-awb', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $token,
+            ],
+            'json' => $awbData,
+            'curl' => [
+                CURLOPT_SSL_VERIFYPEER => false,
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+        if ($responseData['response'][0]['errors'] == null) {
+            $awbNumber = $responseData['response'][0]['awbNumber'];
+
+            $pdfResponse = $client->get($this->fanUrl . '/awb/label', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type' => 'application/pdf',
+                ],
+                'query' => [
+                    'clientId' => $client_id,
+                    'awbs[]' => $awbNumber,
+                    'pdf' => 1,
+                ],
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ]);
+
+            $pdfContent = $pdfResponse->getBody()->getContents();
+            $dir = public_path('documents');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            $pdfFilePath = $dir . '/awb_' . time() . '.pdf';
+
+            file_put_contents($pdfFilePath, $pdfContent);
+            $path = 'documents/awb_' . time() . '.pdf';
+            AWB::create([
+                'order_id' => $this->order->id,
+                'date' => now(),
+                'type' => 'fancourier',
+                'path' => $path
+            ]);
+            session()->flash('notification', [
+                'message' => 'AWB generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+            return;
+        } else {
+            session()->flash('notification', [
+                'message' => 'AWB not generated',
+                'type' => 'warning',
+                'title' => 'warning'
+            ]);
+            return;
+        }
+    }
 
 
     public function get_token()
     {
         $user = 'adtanase';
         $pass = 'WCsIC3yVToe2400qufAb';
-        $apiUrl = 'https://api.fancourier.ro';
         $client = new Client();
 
-        $response = $client->post($apiUrl . '/login', [
+        $response = $client->post($this->fanUrl . '/login', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',

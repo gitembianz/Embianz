@@ -38,6 +38,24 @@
   </button>
   <div class="dropdown dropdown--right">
    {{-- Dropdown Button --}}
+   <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Generate awb"
+    tooltip-top>
+    <span>Generate AWB</span>
+   </button>
+   {{-- Dropdown Content --}}
+   <div class="dropdown__content">
+    <div class="dropdown__container">
+     <button class="button button--primary button--long" wire:click="generate_awb_fancourier()">
+      fancourier
+     </button>
+     <button class="button button--primary button--long">
+      sameday
+     </button>
+    </div>
+   </div>
+  </div>
+  <div class="dropdown dropdown--right">
+   {{-- Dropdown Button --}}
    <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Actions with checked"
     tooltip-top>
     <span>Invoice</span>
