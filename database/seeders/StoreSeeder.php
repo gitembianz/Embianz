@@ -81,6 +81,8 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'order_display_country', 'value' => 'true', 'description' => 'Order display country', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_display_address2', 'value' => 'false', 'description' => 'Order display address2', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'min_limit_similarity', 'value' => '50', 'description' => 'Min limiti of order similarity', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'fan_client_id', 'value' => '7277551', 'description' => 'Fancourier client ID', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'fan_token', 'value' => '', 'description' => 'Fancourier toker for awb, expires in 24h', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
 
