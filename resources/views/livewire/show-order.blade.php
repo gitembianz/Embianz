@@ -305,6 +305,7 @@
   @livewire('related-order-items', ['order' => $order])
   @livewire('related-invoices', ['relatedby' => 'order', 'id' => $order->id])
   @livewire('order-similarity', ['order' => $order])
+  @livewire('related-a-w-b', ['id' => $order->id])
 
 
  </div>

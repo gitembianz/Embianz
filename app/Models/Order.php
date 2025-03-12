@@ -18,6 +18,10 @@ class Order extends Model
   {
     return $this->hasMany(Invoice::class, 'order_id');
   }
+  public function awbs()
+  {
+    return $this->hasMany(AWB::class, 'order_id');
+  }
   public function cart()
   {
     return $this->belongsTo(Cart::class, 'cart_id');

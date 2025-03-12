@@ -1,0 +1,195 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\AWB;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\File;
+
+class RelatedAWB extends Component
+{
+    use WithPagination;
+    public $perPage = 10;
+    public $search = '';
+    public $orderBy = 'id';
+    public $orderAsc = true;
+    public $checked = [];
+    public $selectPage = false;
+    public $selectAll = false;
+    public $showrelated = false;
+    public $idbeingremoved = null;
+    public $columns = ['Id', 'Order', 'Type', 'Account', 'Date', 'Path', 'Created At', 'Updated At'];
+    public $selectedColumns = [];
+    public $objectid;
+    public $row = null;
+    public $single = false;
+    public $multiple = false;
+    public $previewurl = null;
+    public $previewContent = null;
+
+    public function render()
+    {
+        $awbs = $this->awbs
+            ->where(function ($query) {
+                $query->whereHas('order', function ($subQuery) {
+                    $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+                });
+            })->get();
+        return view('livewire.related-a-w-b', ['awbs' => $awbs]);
+    }
+    public function mount($id)
+    {
+        $this->objectid = $id;
+        $this->selectedColumns = $this->columns;
+    }
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
+    public function showColumn($column)
+    {
+        return in_array($column, $this->selectedColumns);
+    }
+    public function updatedSelectPage($value)
+    {
+        if ($value) {
+            $this->checked = $this->awbs->pluck('id')->map(fn($item) => (string) $item)->toArray();
+        } else {
+            $this->checked = [];
+        }
+    }
+    public function swapSortDirection()
+    {
+        return $this->orderAsc === '1' ? '0' : '1';
+    }
+    public function updatedChecked()
+    {
+        $this->selectPage = false;
+    }
+    public function isChecked($id)
+    {
+        return in_array($id, $this->checked);
+    }
+    public function sortBy($columnName)
+    {
+
+        if ($this->orderBy === $columnName) {
+            $this->orderAsc = $this->swapSortDirection();
+        } else {
+            $this->orderAsc = '1';
+        }
+
+        $this->orderBy = $columnName;
+    }
+    public function selectAll()
+    {
+        $this->selectAll = true;
+        $this->checked = $this->awbsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    }
+    public function load()
+    {
+        $this->perPage += 10;
+    }
+    public function getAwbsProperty()
+    {
+        return $this->awbsQuery;
+    }
+    public function getAwbsQueryProperty()
+    {
+        return AWB::where('order_id', $this->objectid)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    }
+    public function confirmItemRemoval($id)
+    {
+        $this->idbeingremoved = $id;
+        $this->single = true;
+    }
+    public function confirmItemsRemoval()
+    {
+        $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
+    }
+    public function deleteSingleRecord()
+    {
+        $item = AWB::findOrFail($this->idbeingremoved);
+        if (File::exists($item->path)) {
+            File::delete($item->path);
+        }
+        $item->delete();
+        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+        $this->single = false;
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function deleteRecords()
+    {
+        $items = AWB::whereKey($this->checked)->get();
+        foreach ($items as $item) {
+            $del = AWB::find($item->id);
+            if (File::exists($del->path)) {
+                File::delete($del->path);
+            }
+            $del->delete();
+        }
+
+        $this->checked = [];
+        $this->selectPage = false;
+        $this->multiple = false;
+        session()->flash('notification', [
+            'message' => 'Records deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function downloadawb($id)
+    {
+        $item = AWB::findOrFail($id);
+        $filePath = public_path($item->path);
+
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        return response()->download($filePath);
+    }
+    public function previewawb($id)
+    {
+        $item = AWB::findOrFail($id);
+        $filePath = $item->path;
+
+        if (!file_exists($filePath)) {
+            session()->flash('notification', [
+                'message' => 'The requested file does not exist.',
+                'type' => 'error',
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        $this->previewurl = $filePath;
+    }
+
+    public function cancel_preview()
+    {
+        $this->previewurl = null;
+    }
+}
