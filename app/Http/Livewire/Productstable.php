@@ -46,6 +46,7 @@ class Productstable extends Component
   public $multiple = false;
   public $uploadcsv = false;
   public $csvFile;
+  public $relation = false;
 
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
@@ -361,6 +362,21 @@ class Productstable extends Component
     foreach ($products as $product) {
       $id = $product->id;
       $producttodel = Product::find($id);
+      if (
+        $producttodel->carts_item()->exists() ||
+        $producttodel->orders_item()->exists() ||
+        $producttodel->order_suppliers()->exists()
+      ) {
+        session()->flash('notification', [
+          'message' => 'This product is in use and cannot be deleted!',
+          'type' => 'danger',
+          'title' => 'Error'
+        ]);
+        $this->relation = true;
+        $this->single = false;
+        $this->idbeingremoved = $producttodel->id;
+        return;
+      }
       $productcats = Products_categories::where('product_id', $id)->get();
       if ($productcats != NULL) {
         foreach ($productcats as $productcat) {
@@ -436,6 +452,20 @@ class Productstable extends Component
   {
     $id = $this->idbeingremoved;
     $product = Product::findOrFail($id);
+    if (
+      $product->carts_item()->exists() ||
+      $product->orders_item()->exists() ||
+      $product->order_suppliers()->exists()
+    ) {
+      session()->flash('notification', [
+        'message' => 'This product is in use and cannot be deleted!',
+        'type' => 'danger',
+        'title' => 'Error'
+      ]);
+      $this->relation = true;
+      $this->single = false;
+      return;
+    }
     $productcats = Products_categories::where('product_id', $id)->get();
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
@@ -560,5 +590,62 @@ class Productstable extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+  }
+  public function forcedeleteRecord()
+  {
+    $product = Product::find($this->idbeingremoved);
+    $productcarts = $product->carts_item()->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $cartitem) {
+        $cart = $cartitem->cart;
+        $cart->sum_amount -= $cartitem->price * $cartitem->quantity;
+        $cart->quantity_amount -= $cartitem->quantity;
+        $cart->final_amount -= $cartitem->price * $cartitem->quantity;
+        $cart->save();
+        if ($cart->final_amount <= 0 || $cart->sum_amount <= 0) {
+          $cart->sum_amount = 0;
+          $cart->quantity_amount = 0;
+          $cart->final_amount = 0;
+          $cart->save();
+        }
+        $cartitem->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+    $productorders = $product->orders_item()->get();
+    if ($productorders != NULL) {
+      foreach ($productorders as $orderitem) {
+        $order = $orderitem->order;
+        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
+        $order->quantity_amount -= $orderitem->quantity;
+        $order->final_amount -= $orderitem->price * $orderitem->quantity;
+        $order->save();
+        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
+          $order->sum_amount = 0;
+          $order->quantity_amount = 0;
+          $order->final_amount = 0;
+          $order->save();
+        }
+        $orderitem->delete();
+        $this->emit('orderUpdated');
+      }
+    }
+    $productordersuppliers = $product->order_suppliers()->get();
+    if ($productordersuppliers != NULL) {
+      foreach ($productordersuppliers as $orderitem) {
+        $order = $orderitem->order;
+        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
+        $order->final_amount -= $orderitem->price * $orderitem->quantity;
+        $order->save();
+        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
+          $order->sum_amount = 0;
+          $order->final_amount = 0;
+          $order->save();
+        }
+        $orderitem->delete();
+        $this->emit('orderUpdated');
+      }
+    }
+    $this->deleteRecord();
   }
 }
