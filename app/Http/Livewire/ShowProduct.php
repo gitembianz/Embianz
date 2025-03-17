@@ -27,6 +27,7 @@ class ShowProduct extends Component
   public $prod;
   public $interimQuantity;
   public $quantitysupplier;
+  public $relation = false;
 
   public function mount($productId)
   {
@@ -43,6 +44,7 @@ class ShowProduct extends Component
   public function cancelItemRemoval()
   {
     $this->delete = false;
+    $this->relation = false;
   }
   public function editproduct()
   {
@@ -229,10 +231,83 @@ class ShowProduct extends Component
     $this->editproduct = null;
     $this->prod = [];
   }
+
+  public function forcedeleteRecord()
+  {
+    $product = Product::find($this->productId);
+    $productcarts = $product->carts_item()->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $cartitem) {
+        $cart = $cartitem->cart;
+        $cart->sum_amount -= $cartitem->price * $cartitem->quantity;
+        $cart->quantity_amount -= $cartitem->quantity;
+        $cart->final_amount -= $cartitem->price * $cartitem->quantity;
+        $cart->save();
+        if ($cart->final_amount <= 0 || $cart->sum_amount <= 0) {
+          $cart->sum_amount = 0;
+          $cart->quantity_amount = 0;
+          $cart->final_amount = 0;
+          $cart->save();
+        }
+        $cartitem->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+    $productorders = $product->orders_item()->get();
+    if ($productorders != NULL) {
+      foreach ($productorders as $orderitem) {
+        $order = $orderitem->order;
+        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
+        $order->quantity_amount -= $orderitem->quantity;
+        $order->final_amount -= $orderitem->price * $orderitem->quantity;
+        $order->save();
+        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
+          $order->sum_amount = 0;
+          $order->quantity_amount = 0;
+          $order->final_amount = 0;
+          $order->save();
+        }
+        $orderitem->delete();
+        $this->emit('orderUpdated');
+      }
+    }
+    $productordersuppliers = $product->order_suppliers()->get();
+    if ($productordersuppliers != NULL) {
+      foreach ($productordersuppliers as $orderitem) {
+        $order = $orderitem->order;
+        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
+        $order->final_amount -= $orderitem->price * $orderitem->quantity;
+        $order->save();
+        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
+          $order->sum_amount = 0;
+          $order->final_amount = 0;
+          $order->save();
+        }
+        $orderitem->delete();
+        $this->emit('orderUpdated');
+      }
+    }
+    $this->deleteRecord();
+  }
   public function deleteRecord()
   {
     $id = $this->productId;
     $product = Product::find($id);
+
+    if (
+      $product->carts_item()->exists() ||
+      $product->orders_item()->exists() ||
+      $product->order_suppliers()->exists()
+    ) {
+      session()->flash('notification', [
+        'message' => 'This product is in use and cannot be deleted!',
+        'type' => 'danger',
+        'title' => 'Error'
+      ]);
+      $this->relation = true;
+      $this->delete = false;
+      return;
+    }
     $productcats = Products_categories::where('product_id', $id)->get();
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
@@ -249,17 +324,6 @@ class ShowProduct extends Component
     if ($costs != NULL) {
       foreach ($costs as $cost) {
         $cost->delete();
-      }
-    }
-    $productcarts = Cart_Item::where('product_id', $id)->get();
-    if ($productcarts != NULL) {
-      foreach ($productcarts as $cartitem) {
-        $cart = $cartitem->cart;
-        $cart->sum_amount -= $cartitem->price;
-        $cart->quantity_amount -= $cartitem->quantity;
-        $cart->save();
-        $cartitem->delete();
-        $this->emit('cartUpdated');
       }
     }
     $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
