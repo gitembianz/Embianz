@@ -78,19 +78,32 @@ class ShowOrder extends Component
                 ],
             ],
         ];
+        try {
+            // Make the API request
+            $response = $client->post($this->fanUrl . '/intern-awb', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $token,
+                ],
+                'json' => $awbData,
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'credentials do not match')) {
+                // Refresh the token and retry
+                $newToken = $this->get_fan_token();
+                return $this->generate_awb_fancourier();
+            }
 
-        // Make the API request
-        $response = $client->post($this->fanUrl . '/intern-awb', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $token,
-            ],
-            'json' => $awbData,
-            'curl' => [
-                CURLOPT_SSL_VERIFYPEER => false,
-            ],
-        ]);
+            session()->flash('notification', [
+                'message' => 'AWB generation failed!',
+                'type' => 'error',
+                'title' => 'Error'
+            ]);
+        }
 
         $responseData = json_decode($response->getBody(), true);
         if ($responseData['response'][0]['errors'] == null) {
@@ -133,17 +146,28 @@ class ShowOrder extends Component
             ]);
             return;
         } else {
-            session()->flash('notification', [
-                'message' => 'AWB not generated',
-                'type' => 'warning',
-                'title' => 'warning'
-            ]);
-            return;
+            $errors = $responseData['response'][0]['errors'];
+
+            if (!empty($errors)) {
+                $errorMessages = collect($errors)
+                    ->map(function ($messages, $field) {
+                        return implode(', ', $messages);
+                    })
+                    ->implode(' | ');
+
+                session()->flash('notification', [
+                    'message' => $errorMessages,
+                    'type' => 'warning',
+                    'title' => 'Warning'
+                ]);
+
+                return;
+            }
         }
     }
 
 
-    public function get_token()
+    public function get_fan_token()
     {
         $user = 'adtanase';
         $pass = 'WCsIC3yVToe2400qufAb';
@@ -175,7 +199,7 @@ class ShowOrder extends Component
                 'type' => 'success',
                 'title' => 'Success'
             ]);
-            return;
+            return true;
         } else {
             session()->flash('notification', [
                 'message' => 'Token not generated',
