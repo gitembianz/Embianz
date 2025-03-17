@@ -2,6 +2,21 @@
  {{-- X-Components --}}
  <x-alert />
 
+ {{-- Delete Record --}}
+ <aside>
+  <div class="background background--center @if ($relation) active @endif"></div>
+  <div class="aside aside--confirm @if ($relation) active @endif" style="min-height: 150px">
+   <span>
+    This product is involved in an order/cart/supplier, delete this record?
+   </span>
+   <button class="button button--primary button--long" wire:click.prevent="forcedeleteRecord()">
+    <span>Yes</span>
+   </button>
+   <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+    <span>No</span>
+   </button>
+  </div>
+ </aside>
 
  {{-- Delete Record OR Records --}}
  <aside>
