@@ -9,6 +9,7 @@ use App\Models\Cart_Item;
 use App\Models\Product_Spec;
 use App\Models\Related_Products;
 use App\Models\PricelistEntries;
+use App\Models\ProductCost;
 use App\Models\Products_categories;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
@@ -242,6 +243,12 @@ class ShowProduct extends Component
     if ($productspecs != NULL) {
       foreach ($productspecs as $productspec) {
         $productspec->delete();
+      }
+    }
+    $costs = ProductCost::where('product_id', $id)->get();
+    if ($costs != NULL) {
+      foreach ($costs as $cost) {
+        $cost->delete();
       }
     }
     $productcarts = Cart_Item::where('product_id', $id)->get();

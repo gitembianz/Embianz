@@ -7,20 +7,21 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\ProductCost;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\PricelistEntries;
 use App\Models\Related_Products;
+use Illuminate\Support\Facades\DB;
 use App\Models\Products_categories;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
+
+
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-
-
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductReviews as ModelsProductReviews;
 
@@ -372,6 +373,12 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
+      $costs = ProductCost::where('product_id', $id)->get();
+      if ($costs != NULL) {
+        foreach ($costs as $cost) {
+          $cost->delete();
+        }
+      }
       $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
       if ($relproducts != NULL) {
         foreach ($relproducts as $item) {
@@ -465,6 +472,12 @@ class Productstable extends Component
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {
         $productpricelist->delete();
+      }
+    }
+    $costs = ProductCost::where('product_id', $id)->get();
+    if ($costs != NULL) {
+      foreach ($costs as $cost) {
+        $cost->delete();
       }
     }
     $medias = $product->media()->get();
