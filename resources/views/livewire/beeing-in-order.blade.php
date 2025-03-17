@@ -6,8 +6,10 @@
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
    @if ($relatedby === 'order')
     {{ __('Beeing in orders ') }}
-   @else
+   @elseif ($relatedby === 'supplier')
     {{ __('Beeing in orders supplier ') }}
+   @elseif ($relatedby === 'cart')
+    {{ __('Beeing in carts') }}
    @endif
    ({{ $orders->total() }})
    <svg>
@@ -92,10 +94,13 @@
           @if ($order->product_id)
            <a href="{{ route('show_product', ['id' => $order->product_id]) }}">{{ $order->product->name }}</a>
           @endif
+         @elseif ($column === 'cart_id')
+          @if ($order->cart_id)
+           <a href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>
+          @endif
          @else
           {{ $order->$column }}
          @endif
-
         </td>
        @endforeach
        <td></td>

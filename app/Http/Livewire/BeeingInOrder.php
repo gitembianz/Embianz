@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use App\Models\Order_Supplier_Item;
 use Livewire\Component;
@@ -35,6 +36,8 @@ class BeeingInOrder extends Component
         if ($this->relatedby === 'order') {
             $this->columns = Schema::getColumnListing('order__items');
             array_splice($this->columns, array_search('order_id', $this->columns) + 1, 0, 'status');
+        } elseif ($this->relatedby === 'cart') {
+            $this->columns = Schema::getColumnListing('cart__items');
         } else {
             $this->columns = Schema::getColumnListing('order__supplier__items');
         }
@@ -88,6 +91,14 @@ class BeeingInOrder extends Component
                 ->where('product_id', $this->productid)
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
                 ->paginate($this->loadAmount); // Paginate the results
+        } else {
+            return Cart_Item::with([
+                'cart',
+                'product'
+            ])
+                ->where('product_id', $this->productid)
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
+                ->paginate($this->loadAmount); // Paginate the results 
         }
     }
     public function loadMore()
