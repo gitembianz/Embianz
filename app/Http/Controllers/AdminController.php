@@ -21,6 +21,7 @@ use App\Models\ProductVariant;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\County;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -246,6 +247,11 @@ class AdminController extends Controller
   {
     $data = Country::find($id);
     return view('admin.show_country', compact('data'));
+  }
+  public function show_county($id)
+  {
+    $data = County::find($id);
+    return view('admin.show_county', compact('data'));
   }
   public function show_cart($id)
   {
