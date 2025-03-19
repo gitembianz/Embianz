@@ -11,6 +11,10 @@ class County extends Model
     protected $fillable = ['name', 'status', 'iso_code', 'country_id'];
     public function country()
     {
-        return $this->belongsTo(Country::class, 'countryid');
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function cities()
+    {
+        return $this->hasMany(City::class, 'county_id');
     }
 }

@@ -34,7 +34,7 @@
    {{-- Navigation --}}
    <nav class="nav--controls">
     <h1 class="table--name">
-     {{ __('Add counties') }}
+     {{ __('Add cities') }}
     </h1>
     <button class="button button--primary button--centered" wire:click.prevent="saveitems()">
      <svg>
@@ -67,13 +67,10 @@
        </th>
        <th style="width: unset !important;">
         <button class="table--btn">
-         County name
+         City name
         </button>
        </th>
-       <th>
-        <button class="table--btn">
-         Iso code
-        </button>
+
        </th>
        <th class="hidden">
         <button class="table--btn">
@@ -109,20 +106,15 @@
         </td>
         <td style="width: auto;">
          <div class="searchable">
-          <input type="text" placeholder="County name" required class="input__searchable"
-           wire:model.defer="Values.{{ $index }}.county.name">
+          <input type="text" placeholder="city name" required class="input__searchable"
+           wire:model.defer="Values.{{ $index }}.city.name">
          </div>
         </td>
-        <td class="hidden" style="width: auto;">
-         <div class="searchable">
-          <input type="text" placeholder="Iso code" required class="input__searchable"
-           wire:model.defer="Values.{{ $index }}.county.iso_code">
-         </div>
-        </td>
+
         <td class="hidden">
          <div class="checkbox--primary">
           <input type="checkbox" id="checkbox{{ $index }}"
-           wire:model.defer="Values.{{ $index }}.county.active" />
+           wire:model.defer="Values.{{ $index }}.city.active" />
           <label for="checkbox{{ $index }}"></label>
          </div>
         </td>
@@ -176,7 +168,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
    wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
-   {{ __('Counties ') }}({{ $counties->total() }})
+   {{ __('Cities ') }}({{ $cities->total() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
@@ -299,7 +291,7 @@
      @endif
      @if ($this->showColumn('Created at'))
       <th class="hidden">
-       <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === $column && $countyAsc === '1') active @endif">
+       <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === $column && $cityAsc === '1') active @endif">
         Created At
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
@@ -309,7 +301,7 @@
      @endif
      @if ($this->showColumn('Updated at'))
       <th class="hidden">
-       <button wire:click="sortBy('updated_at')" class="table--btn @if ($orderBy === $column && $countyAsc === '1') active @endif">
+       <button wire:click="sortBy('updated_at')" class="table--btn @if ($orderBy === $column && $cityAsc === '1') active @endif">
         Updated At
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
@@ -331,27 +323,27 @@
     @php
      $i = 0;
     @endphp
-    @if ($counties->isEmpty())
+    @if ($cities->isEmpty())
      <tr>
       <td class="table--empty" colspan="{{ count($columns) + 2 }}">No record found.</td>
      </tr>
     @else
-     @foreach ($counties as $index => $county)
+     @foreach ($cities as $index => $city)
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($county->id)) active @endif">
+       class="expandable-row @if ($this->isChecked($city->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <div class="checkbox--primary">
-         <input type="checkbox" value="{{ $county->id }}" id="{{ $county->id }}" wire:model="checked">
-         <label for="{{ $county->id }}"></label>
+         <input type="checkbox" value="{{ $city->id }}" id="{{ $city->id }}" wire:model="checked">
+         <label for="{{ $city->id }}"></label>
         </div>
        </td>
        @if ($this->showColumn('Id'))
-        <td wire:click="expandRow({{ $index }})">{{ $county->id }}</td>
+        <td wire:click="expandRow({{ $index }})">{{ $city->id }}</td>
        @endif
        @if ($this->showColumn('Name'))
         <td wire:click="expandRow({{ $index }})">
          @if ($editindex !== $index)
-          <a href="{{ route('show_county', ['id' => $county->id]) }}">{{ $county->name }}</a>
+          {{ $city->name }}
          @else
           <div class="searchable">
            <input type="text" class="input__searchable" wire:model.defer="item.{{ $index }}.name">
@@ -359,21 +351,10 @@
          @endif
         </td>
        @endif
-       @if ($this->showColumn('Iso code'))
-        <td class="hidden">
-         @if ($editindex !== $index)
-          {{ $county->iso_code }}
-         @else
-          <div class="searchable">
-           <input type="text" class="input__searchable" wire:model.defer="item.{{ $index }}.iso_code">
-          </div>
-         @endif
-        </td>
-       @endif
        @if ($this->showColumn('Status'))
         <td class="hidden">
          @if ($editindex !== $index)
-          @if ($county->status)
+          @if ($city->status)
            <div class="checkbox--secondary">
             <input type="checkbox" id="isactive{{ $index }}" disabled checked>
             <label for="isactive{{ $index }}"></label>
@@ -396,26 +377,26 @@
 
        @if ($this->showColumn('Created at'))
         <td class="hidden">
-         {{ $county->created_at }}
+         {{ $city->created_at }}
         </td>
        @endif
        @if ($this->showColumn('Updated at'))
         <td class="hidden">
-         {{ $county->updated_at }}
+         {{ $city->updated_at }}
         </td>
        @endif
        <td>
         @if ($editindex !== $index)
          <div style="display: flex;">
           <button class="button button--secondary button--sm"
-           wire:click.prevent="edititem({{ $index }}, {{ $county->id }})">
+           wire:click.prevent="edititem({{ $index }}, {{ $city->id }})">
            <svg>
             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
             </path>
            </svg>
           </button>
           <button class="button button--secondary button--sm"
-           wire:click.prevent="confirmItemRemoval({{ $county->id }})">
+           wire:click.prevent="confirmItemRemoval({{ $city->id }})">
            <svg>
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -425,7 +406,7 @@
         @else
          <div style="display: flex;">
           <button class="button button--secondary button--sm"
-           wire:click.prevent="saveitem({{ $index }},{{ $county->id }})">
+           wire:click.prevent="saveitem({{ $index }},{{ $city->id }})">
            <svg>
             <polyline points="20 6 9 17 4 12"></polyline>
            </svg>
@@ -443,23 +424,17 @@
       <tr class="details-row  @if ($row === $i) active @endif">
        <td colspan="{{ count($columns) + 2 }}">
         <div class="details">
-         @if ($this->showColumn('Iso code'))
-          <p>
-           <bold>Iso code</bold>
-           {{ $county->iso_code }}
-          </p>
-         @endif
 
          @if ($this->showColumn('Created at'))
           <p>
            <bold>Created At</bold>
-           {{ $county->created_at }}
+           {{ $city->created_at }}
           </p>
          @endif
          @if ($this->showColumn('Updated at'))
           <p>
            <bold>Updated At</bold>
-           {{ $county->updated_at }}
+           {{ $city->updated_at }}
           </p>
          @endif
         </div>
@@ -474,7 +449,7 @@
   </table>
 
   {{-- Load More Manual --}}
-  @if ($counties->total() > $perPage)
+  @if ($cities->total() > $perPage)
    <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
     Load more
    </button>
