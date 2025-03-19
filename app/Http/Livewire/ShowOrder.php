@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Session;
+
 
 
 class ShowOrder extends Component
@@ -31,6 +33,7 @@ class ShowOrder extends Component
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
+
 
     public function generate_awb_fancourier()
     {
@@ -209,6 +212,7 @@ class ShowOrder extends Component
             return;
         }
     }
+
 
     public function generate_invoice_number()
     {
