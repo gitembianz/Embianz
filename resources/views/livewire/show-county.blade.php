@@ -22,7 +22,7 @@
 
  {{-- Navigation --}}
  <nav class="nav--controls">
-  <h1 class="table--name">Country: {{ $country->name }}</h1>
+  <h1 class="table--name">County: {{ $county->name }}</h1>
   {{-- Refresh Button --}}
   <a class="button button--primary button--centered" tooltip="Back to all country" tooltip-top
    href="{{ route('countries') }}">
@@ -30,18 +30,6 @@
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
-  @if ($country->name === 'Romania')
-   <button class="button button--primary button--centered" tooltip="Get cities for this country" tooltip-left
-    wire:click.prevent="city()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-     class="feather feather-map-pin">
-     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-     <circle cx="12" cy="10" r="3"></circle>
-    </svg>
-   </button>
-  @endif
-
   @if ($edititem === null)
    <button class="button button--primary button--centered" tooltip="Edit this Country" tooltip-left
     wire:click.prevent="edititem()">
@@ -74,7 +62,7 @@
    </button>
   @endif
   <button class="button button--primary button--centered" tooltip="Delete this Country" tooltip-left
-   wire:click.prevent="confirmItemRemoval({{ $country->id }})">
+   wire:click.prevent="confirmItemRemoval({{ $county->id }})">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -97,7 +85,7 @@
  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
   <div class="input__tabs">
    @if ($edititem === null)
-    <span class="disabled">{{ $country->name }}</span>
+    <span class="disabled">{{ $county->name }}</span>
    @else
     <input type="text" wire:model.defer="record.name">
    @endif
@@ -106,48 +94,19 @@
 
   <div class="input__tabs">
    @if ($edititem === null)
-    <span class="disabled">{{ $country->currency }}</span>
-   @else
-    <select wire:model.defer="record.currency">
-     @foreach ($currencies as $currency)
-      <option value="{{ $currency->name }}">{{ $currency->name }}</option>
-     @endforeach
-    </select>
-   @endif
-   <label>Currency</label>
-  </div>
-
-  <div class="input__tabs">
-   @if ($edititem === null)
-    <span class="disabled">{{ $country->iso_code }}</span>
+    <span class="disabled">{{ $county->iso_code }}</span>
    @else
     <input type="text" wire:model.defer="record.iso_code">
    @endif
    <label>Iso code</label>
   </div>
 
-  <div class="input__tabs">
-   @if ($edititem === null)
-    <span class="disabled">{{ $country->iso_code3 }}</span>
-   @else
-    <input type="text" wire:model.defer="record.iso_code3">
-   @endif
-   <label>Iso code3</label>
-  </div>
 
-  <div class="input__tabs">
-   @if ($edititem === null)
-    <span class="disabled">{{ $country->phone_code }}</span>
-   @else
-    <input type="text" wire:model.defer="record.phone_code">
-   @endif
-   <label>Phone code</label>
-  </div>
-  <div class="details__checkboxes">
+  <div class="details__checkboxes details__long">
 
    <div class="checkbox__details ">
     @if ($edititem === null)
-     @if ($country->status)
+     @if ($county->status)
       <input type="checkbox" id="active1" checked class="disabled" disabled />
       <label for="active1" class="disabled">Active</label>
      @else
@@ -162,12 +121,12 @@
   </div>
 
   <div class="input__tabs">
-   <span class="disabled">{{ $country->created_at }}</span>
+   <span class="disabled">{{ $county->created_at }}</span>
    <label>Create date / time</label>
   </div>
 
   <div class="input__tabs">
-   <span class="disabled">{{ $country->updated_at }}</span>
+   <span class="disabled">{{ $county->updated_at }}</span>
    <label>Updated date / time</label>
   </div>
 
@@ -181,6 +140,6 @@
 
  {{-- Tabs Body (Related) --}}
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-  @livewire('related-county', ['countryId' => $country->id])
+  @livewire('related-city', ['countyId' => $county->id])
  </div>
 </section>
