@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 
 class RelatedCity extends Component
 {
-    public $perPage = 10;
+    public $perPage = 30;
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
