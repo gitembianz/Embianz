@@ -63,7 +63,7 @@
          $isdisabled = true;
      }
      
-     if ($cartItem->product->quantity > 0 && $cartItem->product->quantity < $cartItem->quantity && !$cartItem->product->preorder) {
+     if ($cartItem->product->quantity >= 0 && $cartItem->product->quantity < $cartItem->quantity && !$cartItem->product->preorder) {
          $nonquantity[$index] = true;
          $isdisabled = true;
      }
@@ -97,6 +97,13 @@
            {{ $cartItem->product->quantity }}
           </span>
          </div>
+         <button class="leftbar__delete" style="border: none" type="button"
+          wire:click="removeFromCart({{ $cartItem->product->id }})">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
         </div>
         <div class="basket__item" style="border-top:1px solid #333333">
          <div class="quantity" style="border-bottom: 0 !important">
