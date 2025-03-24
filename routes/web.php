@@ -134,7 +134,7 @@
 
 
       //specific routes
-      route::get('/cleareverything', function () {
+      Route::get('/cleareverything', function () {
         Artisan::call('cache:clear');
         Artisan::call('clear-compiled');
         Artisan::call('view:clear');
@@ -144,8 +144,13 @@
         Artisan::call('queue:clear');
         Artisan::call('optimize:clear');
         Artisan::call('migrate');
+
+        // Remove cached config files
+        exec('rm -rf bootstrap/cache/*.php');
+
         echo "App is optimized and updated";
       });
+
 
       route::get('/friendlyurl', function () {
         Artisan::call('update:seo_ids');
