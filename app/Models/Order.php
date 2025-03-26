@@ -20,7 +20,7 @@ class Order extends Model
   }
   public function awbs()
   {
-    return $this->hasMany(AWB::class, 'order_id');
+    return $this->hasMany(Awbs::class, 'order_id');
   }
   public function cart()
   {

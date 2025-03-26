@@ -13,6 +13,7 @@
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
   use App\Models\Static_Page;
+  use Illuminate\Support\Facades\Schema;
 
   /*
 |--------------------------------------------------------------------------
@@ -195,10 +196,14 @@
   route::view('/redirect', 'store.redirect')->name('redirect');
   Route::view('/404', 'store.404')->name('404');
 
-  // static pages route system
   $pages = Cache::rememberForever('static_pages', function () {
+    if (!Schema::hasTable('static_pages')) {
+      return collect();
+    }
+
     return Static_Page::all();
   });
+
 
   foreach ($pages as $page) {
     Route::get($page->route, function () use ($page) {
