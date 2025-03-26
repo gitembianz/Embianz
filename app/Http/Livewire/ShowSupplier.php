@@ -171,7 +171,7 @@ class ShowSupplier extends Component
                 } else {
                     $averagePrice = optional($item->product->product_prices->first())->value;
                 }
-                if (!$item->product->costs()) {
+                if (!$item->product->costs->count()) {
                     $averageCost = $item->price;
                     DB::table('product_costs')->updateOrInsert(
                         ['product_id' => $item->product->id],
