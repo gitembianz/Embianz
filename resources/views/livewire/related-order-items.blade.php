@@ -451,12 +451,17 @@
     @else
      @foreach ($orderproducts as $index => $product)
       @php
-       $class = 'process';
        $pr = $product->product;
        $interimQuantity = $pr->quantity + $pr->interim_quantity;
+       if ($status == 31) {
+           $class = 'process';
 
-       if ($interimQuantity < $product->quantity) {
-           $class = 'notprocess';
+           if ($interimQuantity < $product->quantity) {
+               $class = 'notprocess';
+           }
+       } else {
+           $class = '';
+           $interimQuantity = $product->quantity;
        }
       @endphp
       <tr @if ($loop->last) id="last_record" @endif

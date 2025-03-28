@@ -31,6 +31,7 @@ class RelatedOrderItems extends Component
     public $rand = null;
     public $rind2 = null;
     public $order_item = [];
+    public $status;
 
     public $single = false;
     public $multiple = false;
@@ -284,6 +285,7 @@ class RelatedOrderItems extends Component
     }
     public function mount(Order $order)
     {
+        $this->status = $order->status_id;
         $this->orderId = $order->id;
         $this->order = $order;
         $this->selectedColumns = $this->columns;
