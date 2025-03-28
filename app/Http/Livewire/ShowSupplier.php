@@ -171,16 +171,41 @@ class ShowSupplier extends Component
                 } else {
                     $averagePrice = optional($item->product->product_prices->first())->value;
                 }
+                $cost = $item->price;
+                $supplierCurrency = $item->order->currency ?? null;
+                $productCurrency = optional($item->product->product_prices->first())->pricelist->currency->name ?? null;
+
+                if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+                    $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+                        $q->where('name', $supplierCurrency);
+                    })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+                        $q->where('name', $productCurrency);
+                    })->latest()->first();
+
+                    if (!$exchange) {
+                        $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+                            $q->where('name', $productCurrency);
+                        })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+                            $q->where('name', $supplierCurrency);
+                        })->latest()->first();
+
+                        if ($exchange) {
+                            $cost /= $exchange->value;
+                        }
+                    } else {
+                        $cost *= $exchange->value;
+                    }
+                }
+
                 if (!$item->product->costs->count()) {
-                    $averageCost = $item->price;
                     DB::table('product_costs')->updateOrInsert(
                         ['product_id' => $item->product->id],
-                        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+                        ['price' => $averagePrice, 'cost' => $cost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
                     );
                 } else {
                     $oldcost = $item->product->costs()->latest()->first()->cost;
                     if ($oldcost != $item->price) {
-                        $averageCost = ($oldcost + $item->price) / 2;
+                        $averageCost = ($oldcost + $cost) / 2;
                         DB::table('product_costs')->insert([
                             'product_id' => $item->product->id,
                             'price' => $averagePrice,
