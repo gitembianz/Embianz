@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\AWB;
+use App\Models\Awbs;
 use App\Models\Invoice;
 use Carbon\Carbon;
 use App\Models\Order;
@@ -94,7 +94,9 @@ class ShowOrder extends Component
                 ],
             ]);
         } catch (\Exception $e) {
-            if (str_contains($e->getMessage(), 'credentials do not match')) {
+            $errorMessage = $e->getMessage();
+
+            if (str_contains($errorMessage, 'credentials do not match') || str_contains($errorMessage, 'token expired')) {
                 // Refresh the token and retry
                 $newToken = $this->get_fan_token();
                 return $this->generate_awb_fancourier();
@@ -106,6 +108,7 @@ class ShowOrder extends Component
                 'title' => 'Error'
             ]);
         }
+
 
         $responseData = json_decode($response->getBody(), true);
         if ($responseData['response'][0]['errors'] == null) {
@@ -135,7 +138,7 @@ class ShowOrder extends Component
 
             file_put_contents($pdfFilePath, $pdfContent);
             $path = 'documents/awb_' . time() . '.pdf';
-            AWB::create([
+            Awbs::create([
                 'order_id' => $this->order->id,
                 'date' => now(),
                 'type' => 'fancourier',

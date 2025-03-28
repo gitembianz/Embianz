@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\AWB;
+use App\Models\Awbs as AWB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\File;

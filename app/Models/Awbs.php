@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AWB extends Model
+class Awbs extends Model
 {
     use HasFactory;
     protected $fillable = ['order_id', 'type', 'path', 'date'];

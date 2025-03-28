@@ -13,6 +13,7 @@
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
   use App\Models\Static_Page;
+  use Illuminate\Support\Facades\Schema;
 
   /*
 |--------------------------------------------------------------------------
@@ -134,7 +135,7 @@
 
 
       //specific routes
-      route::get('/cleareverything', function () {
+      Route::get('/cleareverything', function () {
         Artisan::call('cache:clear');
         Artisan::call('clear-compiled');
         Artisan::call('view:clear');
@@ -144,8 +145,13 @@
         Artisan::call('queue:clear');
         Artisan::call('optimize:clear');
         Artisan::call('migrate');
+
+        // Remove cached config files
+        exec('rm -rf bootstrap/cache/*.php');
+
         echo "App is optimized and updated";
       });
+
 
       route::get('/friendlyurl', function () {
         Artisan::call('update:seo_ids');
@@ -190,10 +196,14 @@
   route::view('/redirect', 'store.redirect')->name('redirect');
   Route::view('/404', 'store.404')->name('404');
 
-  // static pages route system
   $pages = Cache::rememberForever('static_pages', function () {
+    if (!Schema::hasTable('static_pages')) {
+      return collect();
+    }
+
     return Static_Page::all();
   });
+
 
   foreach ($pages as $page) {
     Route::get($page->route, function () use ($page) {
