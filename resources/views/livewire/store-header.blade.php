@@ -183,8 +183,8 @@
        </div>
        <ul class="dropmenu__list">
         @foreach ($category->subcategory->sortBy(function ($subcategory) {
-          return $subcategory->category->sequence;
-      }) as $subcategory)
+        return $subcategory->category->sequence;
+    }) as $subcategory)
          <li class="submenu">
           <div class="submenu__button">
            <a class="submenu__button--link"
@@ -207,8 +207,8 @@
           @if ($subcategory->category->subcategory->count() != 0)
            <div class="submenu__list">
             @foreach ($category->subcategory->sortBy(function ($subcategory) {
-              return $subcategory->category->sequence;
-          }) as $subcategory)
+        return $subcategory->category->sequence;
+    }) as $subcategory)
              <a class="submenu__link"
               href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
               @if ($subsubCategory->category->media->where('type', 'min')->first() != null)
@@ -240,14 +240,18 @@
      @endif
     @endforeach
     <li class="menufooter">Informații</li>
-    <li class="menufooter__item"><a href="{{ url('/about') }}">Despre Noi</a></li>
-    <li class="menufooter__item"><a href="{{ url('/contact') }}">Contactează-ne</a></li>
-    <li class="menufooter__item"><a href="{{ url('/terms') }}">Termeni și Condiții</a></li>
+    @foreach ($staticpages as $page)
+     @if ($page->sequence % 2 == 0)
+      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
+     @endif
+    @endforeach
 
     <li class="menufooter">Serviciu clienți</li>
-    <li class="menufooter__item"><a href="{{ url('/cookie') }}">Politica de Cookies</a></li>
-    <li class="menufooter__item"><a href="{{ url('/faq') }}">Întrebări Frecvente</a></li>
-    <li class="menufooter__item"><a href="{{ url('/privacy') }}">Politica de confidențialitate</a></li>
+    @foreach ($staticpages as $page)
+     @if ($page->sequence % 2 != 0)
+      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
+     @endif
+    @endforeach
     <li class="menufooter__item"><a href="{{ url('/sitemap.xml') }}">Hartă Site</a></li>
     <li class="menufooter__item"><a target="blank" href="https://anpc.ro/">ANPC</a></li>
 
