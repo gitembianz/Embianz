@@ -8,11 +8,15 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\UserPromotions;
 use App\Models\UserSessions;
+use Illuminate\Support\Facades\Cache;
+use App\Models\Static_Page;
 
 class StoreHeader extends Component
 {
   public $session_id;
   public $timer = null;
+  public $staticpages;
+
 
   protected $listeners = [
     'newcart' => 'NewCart',
@@ -53,7 +57,9 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-
+    $this->staticpages = Cache::rememberForever('static_pages', function () {
+      return Static_Page::where('display_in_footer', true)->get();
+    });
     $counterpromo = $this->promotion->first();
     if (!$counterpromo) {
       return;
