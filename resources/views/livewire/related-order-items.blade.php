@@ -451,10 +451,10 @@
     @else
      @foreach ($orderproducts as $index => $product)
       @php
+       $pr = $product->product;
+       $interimQuantity = $pr->quantity + $pr->interim_quantity;
        if ($status == 31) {
            $class = 'process';
-           $pr = $product->product;
-           $interimQuantity = $pr->quantity + $pr->interim_quantity;
 
            if ($interimQuantity < $product->quantity) {
                $class = 'notprocess';
