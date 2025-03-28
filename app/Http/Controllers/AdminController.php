@@ -173,12 +173,8 @@ class AdminController extends Controller
         'integer',
         'gt:0'
       ],
-      'cookie' => [
-        'nullable',
-        'integer',
-        'gt:0'
-      ],
-      'percent' => 'required|numeric|min:0|max:100',
+
+      'percent' => 'nullable|numeric|min:0|max:100',
       'value' => [
         'nullable',
         'gt:0'
