@@ -272,6 +272,11 @@ $vatGroups[$vatRate]['totalVoucherNet'] += $voucherImpactNet;
 $vatGroups[$vatRate]['totalVoucher'] += $voucherImpactTotal;
 }
 
+if ($type === 'invoice_xml') {
+$sign = '-';
+} else {
+$sign = '';
+}
 foreach ($vatGroups as $vatRate => $group) {
 $invoiceData['Detalii'][] = [
 'LinieNrCrt' => count($invoiceData['Detalii']) + 1,
@@ -282,10 +287,10 @@ $invoiceData['Detalii'][] = [
 'InformatiiSuplimentare' => '',
 'UM' => 'BUC',
 'Cantitate' => '1.0000',
-'Pret' => '-' . number_format($group['totalVoucherNet'], 4),
-'Valoare' => '-' . number_format($group['totalVoucherNet'], 4),
+'Pret' => $sign . number_format($group['totalVoucherNet'], 4),
+'Valoare' => $sign . number_format($group['totalVoucherNet'], 4),
 'ProcTVA' => number_format($vatRate, 4),
-'TVA' => '-' . number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
+'TVA' => $sign . number_format($group['totalVoucher'] - $group['totalVoucherNet'], 4),
 ];
 }
 }
