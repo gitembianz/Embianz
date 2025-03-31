@@ -12,7 +12,6 @@ use App\Models\Address;
 use App\Models\Country;
 use App\Models\Voucher;
 use Livewire\Component;
-use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
@@ -617,6 +616,7 @@ class StoreOrder extends Component
     $this->shippingCounties = $this->getShippingCounties();
     $this->jbillingCounties = $this->getJBillingCounties();
     $this->jshippingCounties = $this->getJShippingCounties();
+
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
