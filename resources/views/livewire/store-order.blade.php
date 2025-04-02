@@ -352,19 +352,16 @@
           <option value="{{ $county['name'] }}">{{ $county['name'] }}</option>
          @endforeach
         </select> --}}
-
        <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
-         wire:change="$set('icountylist', false)">
+         wire:blur="$set('icountylist', false)">
         @if ($icountylist)
          <button class="button__searchable" wire:click.prevent="$set('individual_billing_county', '')">
           <svg>
-           <line x1="18" y1="6" x2="6" y2="18">
-           </line>
-           <line x1="6" y1="6" x2="18" y2="18">
-           </line>
+           <line x1="18" y1="6" x2="6" y2="18"></line>
+           <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
          </button>
         @endif
@@ -378,16 +375,14 @@
         @if ($icountylist)
          <div class="content__searchable">
           <div class="list__searchable">
-           @if (count($billingCounties) >= 1)
-            @foreach ($billingCounties as $county)
-             <button type="button" class="item__searchable"
-              wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
-              {{ $county['name'] }}
-             </button>
-            @endforeach
-           @else
+           @forelse ($billingCounties as $county)
+            <button type="button" class="item__searchable"
+             wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
+             {{ $county['name'] }}
+            </button>
+           @empty
             <button class="item__searchable">{{ __('No record found') }}</button>
-           @endif
+           @endforelse
           </div>
          </div>
         @endif
