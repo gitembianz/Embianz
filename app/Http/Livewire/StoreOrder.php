@@ -12,7 +12,6 @@ use App\Models\Address;
 use App\Models\Country;
 use App\Models\Voucher;
 use Livewire\Component;
-use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use App\Models\UserSessions;
 use Stripe\Checkout\Session;
@@ -20,6 +19,7 @@ use App\Mail\ConfirmationOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class StoreOrder extends Component
 {
@@ -102,6 +102,8 @@ class StoreOrder extends Component
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
+  public $icountylist = false;
+
   protected $listeners = [
     'nocard' => 'mount',
     'cartUpdated' => 'mount',
@@ -109,75 +111,45 @@ class StoreOrder extends Component
     'timmerexpired' => 'checkpromotions'
   ];
 
-  public function updatedIndividualBillingCountry()
+  public function updatedIcountylist()
   {
-    $this->individual_billing_county = null;
     $this->billingCounties = $this->getBillingCounties();
   }
-  public function updatedJuridicBillingCountry()
+
+  public function updatedIndividualBillingCounty()
   {
-    $this->juridic_billing_county = null;
-    $this->jbillingCounties = $this->getJBillingCounties();
-  }
-  public function updatedIndividualShippingCountry()
-  {
-    $this->individual_shipping_county = null;
-    $this->shippingCounties = $this->getShippingCounties();
-  }
-  public function updatedJuridicShippingCountry()
-  {
-    $this->juridic_shipping_county = null;
-    $this->jshippingCounties = $this->getJShippingCounties();
+    $this->billingCounties = $this->getBillingCounties();
   }
 
   public function getBillingCounties()
   {
-    $activeCountries = $this->countries;
+    $activeCountries = collect($this->countries); // Ensure it's a collection
     $selectedCountry = $activeCountries->firstWhere('name', $this->individual_billing_country);
 
-    $counties = isset($selectedCountry) ? collect($selectedCountry['counties'])->toArray() : [];
-
-    if (count($counties) > 0 && !$this->individual_billing_county) {
-      $this->individual_billing_county = $counties[0]['name'];
+    if (!$selectedCountry) {
+      return [];
     }
+
+    // If no search term is provided, return all counties
+    if (empty($this->individual_billing_county)) {
+      return $selectedCountry['counties'];
+    }
+
+    // Filter counties where the name contains the search term (case-insensitive)
+    $counties = collect($selectedCountry['counties'])->filter(function ($county) {
+      return Str::contains(Str::lower($county['name']), Str::lower($this->individual_billing_county));
+    })->toArray();
 
     return $counties;
   }
 
-  public function getJBillingCounties()
+  public function selectBillingCounty($countyName)
   {
-    $activeCountries = $this->countries;
-    $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_billing_country);
-    $counties = $selectedCountry['counties'] ?? [];
-
-    if (count($counties) > 0 && !$this->juridic_billing_county) {
-      $this->juridic_billing_county = $counties[0]['name'];
-    }
-    return $counties;
+    $this->individual_billing_county = $countyName;
+    $this->icountylist = false; // Hide the dropdown
   }
-  public function getShippingCounties()
-  {
-    $activeCountries = $this->countries;
-    $selectedCountry = $activeCountries->firstWhere('name', $this->individual_shipping_country);
-    $counties = $selectedCountry['counties'] ?? [];
 
-    if (count($counties) > 0 && !$this->individual_shipping_county) {
-      $this->individual_shipping_county = $counties[0]['name'];
-    }
 
-    return $counties;
-  }
-  public function getJShippingCounties()
-  {
-    $activeCountries = $this->countries;
-    $selectedCountry = $activeCountries->firstWhere('name', $this->juridic_shipping_country);
-    $counties = $selectedCountry['counties'] ?? [];
-
-    if (count($counties) > 0 && !$this->juridic_shipping_county) {
-      $this->juridic_shipping_county = $counties[0]['name'];
-    }
-    return $counties;
-  }
 
   public function getPromotionsProperty()
   {
@@ -479,8 +451,13 @@ class StoreOrder extends Component
 
     $this->modification = false;
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-    $this->country = app()->make('active_countries')->where('name',  app('global_default_country'))->first() ?? 'n/a';
-    $this->countries = app()->make('active_countries') ?? null;
+    $activeCountries = app('active_countries');
+
+    // Find the default country by name
+    $this->country = collect($activeCountries)->firstWhere('name', app('global_default_country')) ?? 'n/a';
+
+    // Load all cached countries as an array
+    $this->countries = $activeCountries;
 
 
 
@@ -530,10 +507,10 @@ class StoreOrder extends Component
     }
     if ($this->country != 'n/a') {
 
-      $this->individual_billing_country = $this->country->name;
-      $this->individual_shipping_country = $this->country->name;
-      $this->juridic_billing_country = $this->country->name;
-      $this->juridic_shipping_country = $this->country->name;
+      $this->individual_billing_country = $this->country['name'];
+      $this->individual_shipping_country = $this->country['name'];
+      $this->juridic_billing_country = $this->country['name'];
+      $this->juridic_shipping_country = $this->country['name'];
     } else {
       $this->individual_billing_country = 'Romania';
       $this->individual_shipping_country = 'Romania';
@@ -613,10 +590,11 @@ class StoreOrder extends Component
         }
       }
     }
-    $this->billingCounties = $this->getBillingCounties();
-    $this->shippingCounties = $this->getShippingCounties();
-    $this->jbillingCounties = $this->getJBillingCounties();
-    $this->jshippingCounties = $this->getJShippingCounties();
+    // $this->billingCounties = $this->getBillingCounties();
+    // $this->shippingCounties = $this->getShippingCounties();
+    // $this->jbillingCounties = $this->getJBillingCounties();
+    // $this->jshippingCounties = $this->getJShippingCounties();
+
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');

@@ -144,10 +144,10 @@
     @if ($edititem === null)
      @if ($page->display_in_footer)
       <input type="checkbox" id="active1" checked class="disabled" disabled />
-      <label for="active1" class="disabled">Active</label>
+      <label for="active1" class="disabled">Display in footer</label>
      @else
       <input type="checkbox" id="active2" class="disabled" disabled />
-      <label for="active2" class="disabled">Active</label>
+      <label for="active2" class="disabled">Display in footer</label>
      @endif
     @else
      <input type="checkbox" id="active3" wire:model.defer="record.display_in_footer" />
