@@ -145,6 +145,27 @@
     @else
      ""
     @endif ,
+    // county Validation
+    county_require: @if (app()->bound('label_form_county_require'))
+     "{{ app('label_form_county_require') }}"
+    @else
+     ""
+    @endif ,
+    county_min: @if (app()->bound('label_form_county_min'))
+     "{{ app('label_form_county_min') }}"
+    @else
+     ""
+    @endif ,
+    county_max: @if (app()->bound('label_form_county_max'))
+     "{{ app('label_form_county_max') }}"
+    @else
+     ""
+    @endif ,
+    county_space: @if (app()->bound('label_form_county_space'))
+     "{{ app('label_form_county_space') }}"
+    @else
+     ""
+    @endif ,
     // company Validation
     company_require: @if (app()->bound('label_form_company_require'))
      "{{ app('label_form_company_require') }}"
@@ -347,11 +368,7 @@
        @endif
 
        <!-----------------------   county   ----------------------------->
-       {{-- <select wire:model="individual_billing_county" class="select">
-         @foreach ($billingCounties as $county)
-          <option value="{{ $county['name'] }}">{{ $county['name'] }}</option>
-         @endforeach
-        </select> --}}
+
        <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"

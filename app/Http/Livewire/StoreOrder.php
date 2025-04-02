@@ -111,6 +111,21 @@ class StoreOrder extends Component
     'timmerexpired' => 'checkpromotions'
   ];
 
+  public function addCustomValidation()
+  {
+    // Example: Add a new validation rule dynamically
+    $newValidation = [
+      'validation' => "value => value.length >= 5",
+      'message' => "The county name must be at least 5 characters."
+    ];
+
+    // Send new validation to JavaScript
+    $this->dispatchBrowserEvent('update-validation', [
+      'parentId' => 'individualShippingCountyParent',
+      'newValidation' => $newValidation
+    ]);
+  }
+
   public function updatedIcountylist()
   {
     $this->billingCounties = $this->getBillingCounties();
