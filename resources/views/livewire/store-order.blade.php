@@ -356,7 +356,8 @@
        <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-         required id="individualShippingCounty" wire:focus="$set('icountylist', true)">
+         required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
+         wire:change="$set('icountylist', false)">
         @if ($icountylist)
          <button class="button__searchable" wire:click.prevent="$set('individual_billing_county', '')">
           <svg>
