@@ -2847,6 +2847,8 @@ body.no-scroll {
   visibility: hidden;
   transform: translateY(13px);
   z-index: 500;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
 }
 .content__searchable::after {
   position: absolute;
@@ -2868,6 +2870,7 @@ body.no-scroll {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  background: #fafafa;
   overflow: auto;
 }
 
@@ -2882,6 +2885,7 @@ body.no-scroll {
   text-align: left;
   text-wrap: balance;
   cursor: pointer;
+  background: #fafafa;
   transition: all 0.3s ease-in-out;
 }
 .item__searchable:active {
