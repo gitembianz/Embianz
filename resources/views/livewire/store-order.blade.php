@@ -374,7 +374,7 @@
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
          wire:blur="$set('icountylist', false)">
-        @if ($icountylist)
+        @if ($icountylist && $Counties != null)
          <button class="button__searchable" wire:click.prevent="$set('individual_billing_county', '')">
           <svg>
            <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -389,10 +389,10 @@
          @endif
         </label>
 
-        @if ($icountylist)
+        @if ($icountylist && $Counties != null)
          <div class="content__searchable">
           <div class="list__searchable">
-           @forelse ($billingCounties as $county)
+           @forelse ($Counties as $county)
             <button type="button" class="item__searchable"
              wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
              {{ $county['name'] }}

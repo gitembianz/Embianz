@@ -38,10 +38,7 @@ class StoreOrder extends Component
   public $modification = false;
   public $country;
   public $countries;
-  public $billingCounties = [];
-  public $shippingCounties = [];
-  public $jbillingCounties = [];
-  public $jshippingCounties = [];
+  public $Counties = [];
 
 
   // individual declaration
@@ -111,48 +108,31 @@ class StoreOrder extends Component
     'timmerexpired' => 'checkpromotions'
   ];
 
-  public function addCustomValidation()
-  {
-    // Example: Add a new validation rule dynamically
-    $newValidation = [
-      'validation' => "value => value.length >= 5",
-      'message' => "The county name must be at least 5 characters."
-    ];
-
-    // Send new validation to JavaScript
-    $this->dispatchBrowserEvent('update-validation', [
-      'parentId' => 'individualShippingCountyParent',
-      'newValidation' => $newValidation
-    ]);
-  }
-
   public function updatedIcountylist()
   {
-    $this->billingCounties = $this->getBillingCounties();
+    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
   }
 
   public function updatedIndividualBillingCounty()
   {
-    $this->billingCounties = $this->getBillingCounties();
+    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
   }
 
-  public function getBillingCounties()
+  public function getCounties($model)
   {
-    $activeCountries = collect($this->countries); // Ensure it's a collection
+    $activeCountries = collect($this->countries);
     $selectedCountry = $activeCountries->firstWhere('name', $this->individual_billing_country);
 
     if (!$selectedCountry) {
-      return [];
+      return null;
     }
 
-    // If no search term is provided, return all counties
-    if (empty($this->individual_billing_county)) {
+    if (empty($model)) {
       return $selectedCountry['counties'];
     }
 
-    // Filter counties where the name contains the search term (case-insensitive)
-    $counties = collect($selectedCountry['counties'])->filter(function ($county) {
-      return Str::contains(Str::lower($county['name']), Str::lower($this->individual_billing_county));
+    $counties = collect($selectedCountry['counties'])->filter(function ($county) use ($model) {
+      return Str::contains(Str::lower($county['name']), Str::lower($model));
     })->toArray();
 
     return $counties;
@@ -161,7 +141,7 @@ class StoreOrder extends Component
   public function selectBillingCounty($countyName)
   {
     $this->individual_billing_county = $countyName;
-    $this->icountylist = false; // Hide the dropdown
+    $this->icountylist = false;
   }
 
 
@@ -605,10 +585,6 @@ class StoreOrder extends Component
         }
       }
     }
-    // $this->billingCounties = $this->getBillingCounties();
-    // $this->shippingCounties = $this->getShippingCounties();
-    // $this->jbillingCounties = $this->getJBillingCounties();
-    // $this->jshippingCounties = $this->getJShippingCounties();
 
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
