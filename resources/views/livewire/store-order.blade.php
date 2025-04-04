@@ -145,6 +145,27 @@
     @else
      ""
     @endif ,
+    // county Validation
+    county_require: @if (app()->bound('label_form_county_require'))
+     "{{ app('label_form_county_require') }}"
+    @else
+     ""
+    @endif ,
+    county_min: @if (app()->bound('label_form_county_min'))
+     "{{ app('label_form_county_min') }}"
+    @else
+     ""
+    @endif ,
+    county_max: @if (app()->bound('label_form_county_max'))
+     "{{ app('label_form_county_max') }}"
+    @else
+     ""
+    @endif ,
+    county_space: @if (app()->bound('label_form_county_space'))
+     "{{ app('label_form_county_space') }}"
+    @else
+     ""
+    @endif ,
     // company Validation
     company_require: @if (app()->bound('label_form_company_require'))
      "{{ app('label_form_company_require') }}"
@@ -336,6 +357,7 @@
          @endif
         </h3>
        </div>
+
        <!-----------------------   country   ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
         <select wire:model="individual_billing_country" class="select">
@@ -344,31 +366,50 @@
          @endforeach
         </select>
        @endif
+
        <!-----------------------   county   ----------------------------->
-       @if (!empty($billingCounties))
-        <select wire:model="individual_billing_county" class="select">
-         @foreach ($billingCounties as $county)
-          <option value="{{ $county['name'] }}">{{ $county['name'] }}</option>
-         @endforeach
-        </select>
-       @else
-        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCountyParent">
-         <input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty"
-          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-          required id="individualShippingCounty">
-         <span></span>
-         <label for="individualShippingCounty">
-          @if (app()->has('label_order_county'))
-           {!! app('label_order_county') !!}
-          @endif
-         </label>
-        </div>
-       @endif
+
+       <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
+        <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
+         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+         required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
+         wire:blur="$set('icountylist', false)">
+        @if ($icountylist)
+         <button class="button__searchable" wire:click.prevent="$set('individual_billing_county', '')">
+          <svg>
+           <line x1="18" y1="6" x2="6" y2="18"></line>
+           <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+         </button>
+        @endif
+        <span></span>
+        <label for="individualShippingCounty">
+         @if (app()->has('label_order_county'))
+          {!! app('label_order_county') !!}
+         @endif
+        </label>
+
+        @if ($icountylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @forelse ($billingCounties as $county)
+            <button type="button" class="item__searchable"
+             wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
+             {{ $county['name'] }}
+            </button>
+           @empty
+            <button class="item__searchable">{{ __('No record found') }}</button>
+           @endforelse
+          </div>
+         </div>
+        @endif
+       </div>
+
        <!-----------------------   city   ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city" required
-         id="individualShippingCity">
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city"
+         required id="individualShippingCity">
         <span></span>
         <label for="individualShippingCity">
          @if (app()->has('label_order_city'))
@@ -380,8 +421,8 @@
 
        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingAddressParent">
         <input type="text" wire:model.defer="individual_billing_address1" name="individualShippingAddress"
-         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif" autocomplete="street-address"
-         required id="individualShippingAddress">
+         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
+         autocomplete="street-address" required id="individualShippingAddress">
         <span></span>
         <label for="individualShippingAddress">
          @if (app()->has('label_order_address1'))
@@ -554,8 +595,8 @@
        <!---------------------------------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
         <input type="text" wire:model.defer="individual_shipping_city" name="individualBillingCity"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off" required
-         id="individualBillingCity">
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
+         required id="individualBillingCity">
         <span></span>
         <label for="individualBillingCity">
          @if (app()->has('label_order_city'))

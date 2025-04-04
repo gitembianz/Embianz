@@ -96,22 +96,46 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('countries') && Schema::hasTable('counties') && Schema::hasTable('cities')) {
             $activeCountries = Cache::rememberForever('active_countries', function () {
-                return Country::with(['counties' => function ($query) {
-                    $query->where('status', true)
-                        ->select(['id', 'country_id', 'name', 'iso_code'])
-                        ->with(['cities' => function ($query) {
-                            $query->where('status', true)
-                                ->select(['id', 'county_id', 'name']);
-                        }]);
-                }])
-                    ->where('status', true)
+                return Country::where('status', true)
                     ->select(['id', 'name', 'iso_code'])
-                    ->get();
+                    ->with(['counties' => function ($query) {
+                        $query->where('status', true)
+                            ->select(['id', 'country_id', 'name', 'iso_code'])
+                            ->with(['cities' => function ($query) {
+                                $query->where('status', true)
+                                    ->select(['id', 'county_id', 'name']);
+                            }]);
+                    }])
+                    ->get()
+                    ->map(function ($country) {
+                        return [
+                            'id' => $country->id,
+                            'name' => $country->name,
+                            'iso_code' => $country->iso_code,
+                            'counties' => $country->counties->map(function ($county) {
+                                return [
+                                    'id' => $county->id,
+                                    'country_id' => $county->country_id,
+                                    'name' => $county->name,
+                                    'iso_code' => $county->iso_code,
+                                    'cities' => $county->cities->map(function ($city) {
+                                        return [
+                                            'id' => $city->id,
+                                            'county_id' => $city->county_id,
+                                            'name' => $city->name,
+                                        ];
+                                    })->toArray(),
+                                ];
+                            })->toArray(),
+                        ];
+                    })
+                    ->toArray();
             });
 
             $this->app->instance('active_countries', $activeCountries);
         }
     }
+
     private function loadGlobalCustomScripts()
     {
         if (Schema::hasTable('custom_scripts')) {
