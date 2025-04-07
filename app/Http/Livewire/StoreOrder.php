@@ -108,10 +108,7 @@ class StoreOrder extends Component
     'timmerexpired' => 'checkpromotions'
   ];
 
-  public function updatedIcountylist()
-  {
-    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
-  }
+  // Reset every county model on change country
   public function updatedIndividualBillingCountry()
   {
     $this->individual_billing_county = null;
@@ -129,6 +126,10 @@ class StoreOrder extends Component
     $this->individual_billing_county = null;
   }
 
+  public function updatedIcountylist()
+  {
+    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
+  }
 
   public function updatedIndividualBillingCounty()
   {

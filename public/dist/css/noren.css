@@ -2807,32 +2807,6 @@ body.no-scroll {
   visibility: visible;
   transform: translateY(8px);
 }
-.searchable.active .button__searchable--line {
-  opacity: 1;
-}
-
-.button__searchable {
-  position: absolute;
-  transform: translateY(-50%) scale(0.85);
-  top: 17px;
-  right: 7px;
-  border: none;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.button__searchable svg {
-  transform: scale(0.7);
-  transition: all 0.3s ease-in-out;
-}
-.button__searchable--line {
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-}
 
 .content__searchable {
   position: absolute;
