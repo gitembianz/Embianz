@@ -411,7 +411,6 @@ $transition__searchable: all 0.3s ease-in-out;
 .searchable {
   position: relative;
   width: $max-width__searchable;
-  height: 25px;
 
   &.active .content__searchable {
     opacity: 1;

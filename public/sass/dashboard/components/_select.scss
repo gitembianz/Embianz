@@ -19,6 +19,7 @@ $transition__searchable: all 0.3s ease-in-out;
 		visibility: visible;
 		transform: translateY($triangle__searchable);
 	}
+
 	&.active .button__searchable--line {
 		opacity: 1;
 	}
@@ -36,7 +37,7 @@ $transition__searchable: all 0.3s ease-in-out;
 	color: $color__searchable;
 	font-size: 16px;
 	font-weight: 500;
-  text-align: start;
+	text-align: start;
 	outline: none;
 
 	&::placeholder {
@@ -46,6 +47,7 @@ $transition__searchable: all 0.3s ease-in-out;
 		opacity: 0.75;
 	}
 }
+
 .button__searchable {
 	position: absolute;
 	transform: translateY(-50%) scale(0.85);
@@ -65,10 +67,11 @@ $transition__searchable: all 0.3s ease-in-out;
 		transform: scale(0.7);
 		transition: $transition__searchable;
 	}
-  &--line {
-    opacity: 0;
-    transition: $transition__searchable;
-  }
+
+	&--line {
+		opacity: 0;
+		transition: $transition__searchable;
+	}
 }
 
 
@@ -85,7 +88,7 @@ $transition__searchable: all 0.3s ease-in-out;
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY($triangle__searchable + $padding__searchable);
-  z-index: 500;
+	z-index: 500;
 
 	&::after {
 		position: absolute;
@@ -100,6 +103,7 @@ $transition__searchable: all 0.3s ease-in-out;
 		z-index: 10;
 	}
 }
+
 .list__searchable {
 	width: 100%;
 	height: 100%;
@@ -109,6 +113,7 @@ $transition__searchable: all 0.3s ease-in-out;
 	gap: $padding__searchable;
 	overflow: auto;
 }
+
 .item__searchable {
 	width: 100%;
 	min-height: 25px;

@@ -368,12 +368,18 @@
        @endif
 
        <!-----------------------   county individual billing  ----------------------------->
-       <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
+       <div
+        class="checkout__item checkout__item--required searchable active @error('individual_b_county') error @enderror"
+        id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
          wire:blur="$set('icountylist', false)">
-        <span></span>
+        <span>
+         @error('individual_b_county')
+          {{ $message }}
+         @enderror
+        </span>
         <label for="individualShippingCounty">
          @if (app()->has('label_order_county'))
           {!! app('label_order_county') !!}

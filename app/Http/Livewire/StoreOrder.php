@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class StoreOrder extends Component
 {
@@ -258,6 +259,31 @@ class StoreOrder extends Component
     $this->resetErrorBag();
   }
 
+  // validate county if not been selected
+  public function validateCounty($county, $country, $fieldName)
+  {
+    $activeCountries = collect($this->countries);
+    $selectedCountry = $activeCountries->firstWhere('name', $country);
+
+    if ($selectedCountry && !empty($selectedCountry['counties']) && count($selectedCountry['counties']) > 0) {
+      $inputCountyAscii = Str::lower(Str::ascii($county));
+
+      $validCountiesAscii = collect($selectedCountry['counties'])->pluck('name')
+        ->map(fn($c) => Str::lower(Str::ascii($c)));
+
+      if (!$validCountiesAscii->contains($inputCountyAscii)) {
+        $errorMessage = app()->has('label_form_county_invalid')
+          ? app('label_form_county_invalid')
+          : 'The selected county is not valid.';
+        throw ValidationException::withMessages([
+          $fieldName => $errorMessage,
+        ]);
+      }
+    }
+  }
+
+
+
 
   public function next()
   {
@@ -330,6 +356,12 @@ class StoreOrder extends Component
         ],
       ];
 
+      $this->validateCounty(
+        $this->individual_billing_county,
+        $this->individual_billing_country,
+        'individual_b_county'
+      );
+
       if (!$this->individual_identic) {
         $shippingRules = [
           'individual_shipping_first' => [
@@ -357,6 +389,11 @@ class StoreOrder extends Component
             'max:40',
           ],
         ];
+        $this->validateCounty(
+          $this->individual_shipping_county,
+          $this->individual_shipping_country,
+          'individual_s_county'
+        );
         $rules = array_merge($rules, $shippingRules);
       }
 
