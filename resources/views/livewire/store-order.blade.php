@@ -368,20 +368,11 @@
        @endif
 
        <!-----------------------   county   ----------------------------->
-
        <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
          required id="individualShippingCounty" wire:focus="$set('icountylist', true)"
          wire:blur="$set('icountylist', false)">
-        @if ($icountylist && $Counties != null)
-         <button class="button__searchable" wire:click.prevent="$set('individual_billing_county', '')">
-          <svg>
-           <line x1="18" y1="6" x2="6" y2="18"></line>
-           <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-         </button>
-        @endif
         <span></span>
         <label for="individualShippingCounty">
          @if (app()->has('label_order_county'))
@@ -389,17 +380,21 @@
          @endif
         </label>
 
-        @if ($icountylist && $Counties != null)
+        @if ($icountylist && !empty($Counties))
          <div class="content__searchable">
           <div class="list__searchable">
-           @forelse ($Counties as $county)
+           @foreach ($Counties as $county)
             <button type="button" class="item__searchable"
              wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
              {{ $county['name'] }}
             </button>
-           @empty
-            <button class="item__searchable">{{ __('No record found') }}</button>
-           @endforelse
+           @endforeach
+          </div>
+         </div>
+        @elseif ($icountylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
           </div>
          </div>
         @endif
@@ -408,8 +403,8 @@
        <!-----------------------   city   ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city"
-         required id="individualShippingCity">
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city" required
+         id="individualShippingCity">
         <span></span>
         <label for="individualShippingCity">
          @if (app()->has('label_order_city'))
