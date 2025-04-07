@@ -358,7 +358,7 @@
         </h3>
        </div>
 
-       <!-----------------------   country   ----------------------------->
+       <!-----------------------   country individual billing   ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
         <select wire:model="individual_billing_country" class="select">
          @foreach ($countries as $c)
@@ -367,7 +367,7 @@
         </select>
        @endif
 
-       <!-----------------------   county   ----------------------------->
+       <!-----------------------   county individual billing  ----------------------------->
        <div class="checkout__item checkout__item--required searchable active" id="individualShippingCountyParent">
         <input type="text" wire:model="individual_billing_county" name="individualShippingCounty"
          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
@@ -400,7 +400,7 @@
         @endif
        </div>
 
-       <!-----------------------   city   ----------------------------->
+       <!-----------------------   city individual billing   ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCityParent">
         <input type="text" wire:model.defer="individual_billing_city" name="individualShippingCity"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city" required
@@ -412,7 +412,7 @@
          @endif
         </label>
        </div>
-       <!-----------------------   address1   ----------------------------->
+       <!-----------------------   address1 individual billing  ----------------------------->
 
        <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingAddressParent">
         <input type="text" wire:model.defer="individual_billing_address1" name="individualShippingAddress"
@@ -425,7 +425,7 @@
          @endif
         </label>
        </div>
-       <!-----------------------   address2   ----------------------------->
+       <!-----------------------   address2 individual billing  ----------------------------->
 
        @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
         <div wire:ignore class="checkout__item" id="individualShippingAddress2Parent">
@@ -443,7 +443,7 @@
 
 
 
-       <!-----------------------   zipcode   ----------------------------->
+       <!-----------------------   zipcode individual billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item" id="individualShippingPostalParent">
         <input type="text" wire:model.defer="individual_billing_zipcode" name="individualShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
@@ -474,6 +474,8 @@
          @endif
         </h3>
        </div>
+
+       <!-----------------------   first individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstNameParent">
         <input type="text" wire:model.defer="individual_shipping_first" name="individualBillingFirstName"
          placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif" autocomplete="given-name"
@@ -485,7 +487,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   last individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingLastNameParent">
         <input type="text" wire:model.defer="individual_shipping_last" name="individualBillingLastName"
          placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
@@ -497,7 +500,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   phone individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPhoneParent">
         <input type="tel" wire:model.defer="individual_shipping_phone" name="individualBillingPhone"
          placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif" autocomplete="tel"
@@ -509,7 +513,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   email individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingEmailParent">
         <input type="email" wire:model="individual_shipping_email" name="individualBillingEmail"
          placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" autocomplete="email"
@@ -522,6 +527,7 @@
         </label>
        </div>
       </div>
+
       <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
        <div class="checkout__top">
         <span>4</span>
@@ -531,34 +537,8 @@
          @endif
         </h3>
        </div>
-       <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddressParent">
-        <input type="text" wire:model.defer="individual_shipping_address1" name="individualBillingAddress"
-         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-         autocomplete="street-address" required id="individualBillingAddress">
-        <span></span>
-        <label for="individualBillingAddress">
-         @if (app()->has('label_order_address1'))
-          {!! app('label_order_address1') !!}
-         @endif
-        </label>
-       </div>
-       <!---------------------------------------------------->
-       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-
-        <div wire:ignore class="checkout__item" id="individualBillingAddress2Parent">
-         <input type="text" wire:model.defer="individual_shipping_address2" name="individualBillingAddress2"
-          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-          autocomplete="address-level2" id="individualBillingAddress2">
-         <span></span>
-         <label for="individualBillingAddress2">
-          @if (app()->has('label_order_address2'))
-           {!! app('label_order_address2') !!}
-          @endif
-         </label>
-        </div>
-       @endif
+       <!-----------------------   country individual shipping  ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!-- Country Select -->
         <select wire:model="individual_shipping_country" class="select">
          @foreach ($countries as $c)
           <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
@@ -566,7 +546,7 @@
         </select>
        @endif
 
-       <!---------------------------------------------------->
+       <!-----------------------   county individual shipping  ----------------------------->
        @if (!empty($shippingCounties))
         <select wire:model="individual_shipping_county" class="select">
          @foreach ($shippingCounties as $county)
@@ -587,11 +567,11 @@
         </div>
        @endif
 
-       <!---------------------------------------------------->
+       <!-----------------------   city individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
         <input type="text" wire:model.defer="individual_shipping_city" name="individualBillingCity"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="individualBillingCity">
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off" required
+         id="individualBillingCity">
         <span></span>
         <label for="individualBillingCity">
          @if (app()->has('label_order_city'))
@@ -599,7 +579,36 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+       <!-----------------------   address1 individual shipping  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddressParent">
+        <input type="text" wire:model.defer="individual_shipping_address1" name="individualBillingAddress"
+         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
+         autocomplete="street-address" required id="individualBillingAddress">
+        <span></span>
+        <label for="individualBillingAddress">
+         @if (app()->has('label_order_address1'))
+          {!! app('label_order_address1') !!}
+         @endif
+        </label>
+       </div>
+
+       <!-----------------------   address2 individual shipping  ----------------------------->
+       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
+
+        <div wire:ignore class="checkout__item" id="individualBillingAddress2Parent">
+         <input type="text" wire:model.defer="individual_shipping_address2" name="individualBillingAddress2"
+          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
+          autocomplete="address-level2" id="individualBillingAddress2">
+         <span></span>
+         <label for="individualBillingAddress2">
+          @if (app()->has('label_order_address2'))
+           {!! app('label_order_address2') !!}
+          @endif
+         </label>
+        </div>
+       @endif
+
+       <!-----------------------   zipcode individual shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item" id="individualBillingPostalParent">
         <input type="text" wire:model.defer="individual_shipping_zipcode" name="individualBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
