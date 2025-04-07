@@ -126,15 +126,15 @@ class StoreOrder extends Component
     $this->individual_billing_county = null;
   }
 
-  public function updatedIcountylist()
+
+  // Update counties when the country is changed
+  public function updated($propertyName)
   {
-    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
+    if (in_array($propertyName, ['icountylist', 'individual_billing_county'])) {
+      $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
+    }
   }
 
-  public function updatedIndividualBillingCounty()
-  {
-    $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
-  }
 
   public function getCounties($model)
   {
