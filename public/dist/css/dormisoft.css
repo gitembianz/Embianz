@@ -2800,7 +2800,6 @@ body.no-scroll {
 .searchable {
   position: relative;
   width: 100%;
-  height: 25px;
 }
 .searchable.active .content__searchable {
   opacity: 1;
