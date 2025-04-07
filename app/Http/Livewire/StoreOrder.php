@@ -112,6 +112,23 @@ class StoreOrder extends Component
   {
     $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
   }
+  public function updatedIndividualBillingCountry()
+  {
+    $this->individual_billing_county = null;
+  }
+  public function updatedIndividualShippingCountry()
+  {
+    $this->individual_billing_county = null;
+  }
+  public function updatedJuridicBillingCountry()
+  {
+    $this->individual_billing_county = null;
+  }
+  public function updatedJuridicShippingCountry()
+  {
+    $this->individual_billing_county = null;
+  }
+
 
   public function updatedIndividualBillingCounty()
   {
@@ -448,10 +465,8 @@ class StoreOrder extends Component
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
     $activeCountries = app('active_countries');
 
-    // Find the default country by name
     $this->country = collect($activeCountries)->firstWhere('name', app('global_default_country')) ?? 'n/a';
 
-    // Load all cached countries as an array
     $this->countries = $activeCountries;
 
 
