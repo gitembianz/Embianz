@@ -40,6 +40,7 @@ class StoreOrder extends Component
   public $country;
   public $countries;
   public $Counties = [];
+  public $cities = [];
 
 
   // individual declaration
@@ -101,6 +102,8 @@ class StoreOrder extends Component
   public $validatequantity = true;
   public $payment;
   public $icountylist = false;
+  public $iscountylist = false;
+
 
   protected $listeners = [
     'nocard' => 'mount',
@@ -127,12 +130,36 @@ class StoreOrder extends Component
     $this->individual_billing_county = null;
   }
 
+  // Reset every city model on change county
+  public function updatedIndividualBillingCounty()
+  {
+    $this->individual_billing_city = null;
+  }
+  public function updatedIndividualShippingCounty()
+  {
+    $this->individual_billing_city = null;
+  }
+  public function updatedJuridicBillingCounty()
+  {
+    $this->individual_billing_city = null;
+  }
+  public function updatedJuridicShippingCounty()
+  {
+    $this->individual_billing_city = null;
+  }
+
 
   // Update counties when the country is changed
   public function updated($propertyName)
   {
     if (in_array($propertyName, ['icountylist', 'individual_billing_county'])) {
       $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
+    }
+    if (in_array($propertyName, ['iscountylist', 'individual_shipping_county'])) {
+      $this->Counties = $this->getCounties($this->individual_shipping_county) ?? null;
+    }
+    if (in_array($propertyName, ['icitylist', 'individual_billing_cityy'])) {
+      $this->cities = $this->getCities($this->individual_billing_country, $this->individual_billing_county, $this->individual_billing_city) ?? null;
     }
   }
 
@@ -157,10 +184,43 @@ class StoreOrder extends Component
     return $counties;
   }
 
+  public function getCities($countryName, $countyName, $model = null)
+  {
+    $activeCountries = collect($this->countries);
+    $selectedCountry = $activeCountries->firstWhere('name', $countryName);
+
+    if (!$selectedCountry) {
+      return null;
+    }
+
+    $selectedCounty = collect($selectedCountry['counties'])->firstWhere('name', $countyName);
+
+    if (!$selectedCounty) {
+      return null;
+    }
+
+    if (empty($model)) {
+      return $selectedCounty['cities'];
+    }
+
+    $cities = collect($selectedCounty['cities'])->filter(function ($city) use ($model) {
+      return Str::contains(Str::lower($city['name']), Str::lower($model));
+    })->toArray();
+
+    return $cities;
+  }
+
+
   public function selectBillingCounty($countyName)
   {
     $this->individual_billing_county = $countyName;
     $this->icountylist = false;
+  }
+
+  public function selectShippingCounty($countyName)
+  {
+    $this->individual_shipping_county = $countyName;
+    $this->iscountylist = false;
   }
 
 
@@ -393,6 +453,12 @@ class StoreOrder extends Component
           $this->individual_shipping_county,
           $this->individual_shipping_country,
           'individual_s_county'
+        );
+
+        $this->validateCounty(
+          $this->individual_billing_county,
+          $this->individual_billing_country,
+          'individual_b_county'
         );
         $rules = array_merge($rules, $shippingRules);
       }
