@@ -664,12 +664,12 @@
        </div>
 
        <!-----------------------   first juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingFirstNameParent">
-        <input type="text" wire:model.defer="juridic_billing_first" name="juridicShippingFirstName"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstNameParent">
+        <input type="text" wire:model.defer="juridic_billing_first"
          placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif" autocomplete="given-name"
-         required id="juridicShippingFirstName">
+         required id="juridicBillingFirstName">
         <span></span>
-        <label for="juridicShippingFirstName">
+        <label for="juridicBillingFirstName">
          @if (app()->has('label_order_firstname'))
           {!! app('label_order_firstname') !!}
          @endif
@@ -677,12 +677,12 @@
        </div>
 
        <!-----------------------   last juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
-        <input type="text" wire:model.defer="juridic_billing_last" name="juridicShippingLastName"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
+        <input type="text" wire:model.defer="juridic_billing_last"
          placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
-         required id="juridicShippingLastName">
+         required id="juridicBillingLastName">
         <span></span>
-        <label for="juridicShippingLastName">
+        <label for="juridicBillingLastName">
          @if (app()->has('label_order_lastname'))
           {!! app('label_order_lastname') !!}
          @endif
@@ -690,12 +690,12 @@
        </div>
 
        <!-----------------------   phone juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPhoneParent">
-        <input type="tel" wire:model.defer="juridic_billing_phone" name="juridicShippingPhone"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhoneParent">
+        <input type="tel" wire:model.defer="juridic_billing_phone"
          placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif" autocomplete="tel"
-         pattern="[0-9]*" inputmode="numeric" required id="juridicShippingPhone">
+         pattern="[0-9]*" inputmode="numeric" required id="juridicBillingPhone">
         <span></span>
-        <label for="juridicShippingPhone">
+        <label for="juridicBillingPhone">
          @if (app()->has('label_order_phone'))
           {!! app('label_order_phone') !!}
          @endif
@@ -703,12 +703,12 @@
        </div>
 
        <!-----------------------   email juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingEmailParent">
-        <input type="email" wire:model.defer="juridic_billing_email" name="juridicShippingEmail"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmailParent">
+        <input type="email" wire:model.defer="juridic_billing_email"
          placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" autocomplete="email"
-         required id="juridicShippingEmail">
+         required id="juridicBillingEmail">
         <span></span>
-        <label for="juridicShippingEmail">
+        <label for="juridicBillingEmail">
          @if (app()->has('label_order_email'))
           {!! app('label_order_email') !!}
          @endif
@@ -717,7 +717,7 @@
 
        <!-----------------------   company name juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="companyNameParent">
-        <input type="text" wire:model.defer="juridic_billing_company_name" name="companyName"
+        <input type="text" wire:model.defer="juridic_billing_company_name"
          placeholder="@if (app()->has('label_order_company_name')) {!! app('label_order_company_name') !!} @endif"
          autocomplete="organization" required id="companyName">
         <span></span>
@@ -730,7 +730,7 @@
 
        <!-----------------------   registration_code juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="registerCodeParent">
-        <input type="text" wire:model.defer="juridic_billing_registration_code" name="registerCode"
+        <input type="text" wire:model.defer="juridic_billing_registration_code"
          placeholder="@if (app()->has('label_order_register_code')) {!! app('label_order_register_code') !!} @endif" autocomplete="off"
          required id="registerCode">
         <span></span>
@@ -743,7 +743,7 @@
 
        <!-----------------------   registration_number juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="registerNumberParent">
-        <input type="text" wire:model.defer="juridic_billing_registration_number" name="registerNumber"
+        <input type="text" wire:model.defer="juridic_billing_registration_number"
          placeholder="@if (app()->has('label_order_register_number')) {!! app('label_order_register_number') !!} @endif"
          autocomplete="organization-number" required id="registerNumber">
         <span></span>
@@ -756,7 +756,7 @@
 
        <!-----------------------   bank juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item" id="bankNameParent">
-        <input type="text" wire:model.defer="juridic_billing_bank" name="bankName"
+        <input type="text" wire:model.defer="juridic_billing_bank"
          placeholder="@if (app()->has('label_order_bankname')) {!! app('label_order_bankname') !!} @endif" autocomplete="off"
          id="bankName">
         <span></span>
@@ -769,7 +769,7 @@
 
        <!-----------------------   account juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item" id="IBANParent">
-        <input type="text" wire:model.defer="juridic_billing_account" name="IBAN"
+        <input type="text" wire:model.defer="juridic_billing_account"
          placeholder="@if (app()->has('label_order_iban')) {!! app('label_order_iban') !!} @endif" autocomplete="IBAN"
          id="IBAN">
         <span></span>
@@ -780,6 +780,7 @@
         </label>
        </div>
       </div>
+
       <div class="checkout__form active">
        <div class="checkout__top">
         <span>2</span>
@@ -791,12 +792,12 @@
        </div>
 
        <!-----------------------   address1 juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
-        <input type="text" wire:model.defer="juridic_billing_address1" name="juridicShippingAddress"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
+        <input type="text" wire:model.defer="juridic_billing_address1"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-         autocomplete="street-address" required id="juridicShippingAddress">
+         autocomplete="street-address" required id="juridicBillingAddress">
         <span></span>
-        <label for="juridicShippingAddress">
+        <label for="juridicBillingAddress">
          @if (app()->has('label_order_address1'))
           {!! app('label_order_address1') !!}
          @endif
@@ -805,12 +806,12 @@
 
        <!-----------------------   address2 juridic billing  ----------------------------->
        @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-        <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
-         <input type="text" wire:model.defer="juridic_billing_address2" name="juridicShippingAddress2"
+        <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
+         <input type="text" wire:model.defer="juridic_billing_address2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-          autocomplete="address-level2" id="juridicShippingAddress2">
+          autocomplete="address-level2" id="juridicBillingAddress2">
          <span></span>
-         <label for="juridicShippingAddress2">
+         <label for="juridicBillingAddress2">
           @if (app()->has('label_order_address2'))
            {!! app('label_order_address2') !!}
           @endif
@@ -835,12 +836,12 @@
          @endforeach
         </select>
        @else
-        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
-         <input type="text" wire:model.defer="juridic_billing_county" name="juridicShippingCounty"
+        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
+         <input type="text" wire:model.defer="juridic_billing_county"
           placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-          required id="juridicShippingCounty">
+          required id="juridicBillingCounty">
          <span></span>
-         <label for="juridicShippingCounty">
+         <label for="juridicBillingCounty">
           @if (app()->has('label_order_county'))
            {!! app('label_order_county') !!}
           @endif
@@ -849,12 +850,12 @@
        @endif
 
        <!-----------------------   city juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
-        <input type="text" wire:model.defer="juridic_billing_city" name="juridicShippingCity"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
+        <input type="text" wire:model.defer="juridic_billing_city"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="juridicShippingCity">
+         required id="juridicBillingCity">
         <span></span>
-        <label for="juridicShippingCity">
+        <label for="juridicBillingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
@@ -862,12 +863,12 @@
        </div>
 
        <!-----------------------   zipcode juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
-        <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
+       <div wire:ignore class="checkout__item" id="juridicBillingPostalParent">
+        <input type="text" wire:model.defer="juridic_billing_zipcode"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-         id="juridicShippingPostal">
+         id="juridicBillingPostal">
         <span></span>
-        <label for="juridicShippingPostal">
+        <label for="juridicBillingPostal">
          @if (app()->has('label_order_zipcode'))
           {!! app('label_order_zipcode') !!}
          @endif
@@ -895,11 +896,11 @@
        </div>
 
        <!-----------------------   first juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstNameParent">
-        <input type="text" wire:model.defer="juridic_shipping_first" name="juridicBillingFirstName"
-         placeholder="Prenume" autocomplete="given-name" required id="juridicBillingFirstName">
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingFirstNameParent">
+        <input type="text" wire:model.defer="juridic_shipping_first" placeholder="Prenume"
+         autocomplete="given-name" required id="juridicShippingFirstName">
         <span></span>
-        <label for="juridicBillingFirstName">
+        <label for="juridicShippingFirstName">
          @if (app()->has('label_order_firstname'))
           {!! app('label_order_firstname') !!}
          @endif
@@ -907,12 +908,12 @@
        </div>
 
        <!-----------------------   last juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
-        <input type="text" wire:model.defer="juridic_shipping_last" name="juridicBillingLastName"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
+        <input type="text" wire:model.defer="juridic_shipping_last"
          placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
-         required id="juridicBillingLastName">
+         required id="juridicShippingLastName">
         <span></span>
-        <label for="juridicBillingLastName">
+        <label for="juridicShippingLastName">
          @if (app()->has('label_order_lastname'))
           {!! app('label_order_lastname') !!}
          @endif
@@ -920,12 +921,12 @@
        </div>
 
        <!-----------------------   phone juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhoneParent">
-        <input type="tel" wire:model.defer="juridic_shipping_phone" name="juridicBillingPhone"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPhoneParent">
+        <input type="tel" wire:model.defer="juridic_shipping_phone"
          placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif" autocomplete="tel"
-         pattern="[0-9]*" inputmode="numeric" required id="juridicBillingPhone">
+         pattern="[0-9]*" inputmode="numeric" required id="juridicShippingPhone">
         <span></span>
-        <label for="juridicBillingPhone">
+        <label for="juridicShippingPhone">
          @if (app()->has('label_order_phone'))
           {!! app('label_order_phone') !!}
          @endif
@@ -933,12 +934,12 @@
        </div>
 
        <!-----------------------   email juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmailParent">
-        <input type="email" wire:model.defer="juridic_shipping_email" name="juridicBillingEmail"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingEmailParent">
+        <input type="email" wire:model.defer="juridic_shipping_email"
          placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" autocomplete="email"
-         required id="juridicBillingEmail">
+         required id="juridicShippingEmail">
         <span></span>
-        <label for="juridicBillingEmail">
+        <label for="juridicShippingEmail">
          @if (app()->has('label_order_email'))
           {!! app('label_order_email') !!}
          @endif
@@ -957,12 +958,12 @@
        </div>
 
        <!-----------------------   address1 juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
-        <input type="text" wire:model.defer="juridic_shipping_address1" name="juridicBillingAddress"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
+        <input type="text" wire:model.defer="juridic_shipping_address1"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-         autocomplete="street-address" required id="juridicBillingAddress">
+         autocomplete="street-address" required id="juridicShippingAddress">
         <span></span>
-        <label for="juridicBillingAddress">
+        <label for="juridicShippingAddress">
          @if (app()->has('label_order_address1'))
           {!! app('label_order_address1') !!}
          @endif
@@ -971,12 +972,12 @@
 
        <!-----------------------   address2 juridic shipping  ----------------------------->
        @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-        <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
-         <input type="text" wire:model.defer="juridic_shipping_address2" name="juridicBillingAddress2"
+        <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
+         <input type="text" wire:model.defer="juridic_shipping_address2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-          autocomplete="address-level2" id="juridicBillingAddress2">
+          autocomplete="address-level2" id="juridicShippingAddress2">
          <span></span>
-         <label for="juridicBillingAddress2">
+         <label for="juridicShippingAddress2">
           @if (app()->has('label_order_address2'))
            {!! app('label_order_address2') !!}
           @endif
@@ -1001,12 +1002,12 @@
          @endforeach
         </select>
        @else
-        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
-         <input type="text" wire:model.defer="juridic_shipping_county" name="juridicBillingCounty"
+        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
+         <input type="text" wire:model.defer="juridic_shipping_county"
           placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-          required id="juridicBillingCounty">
+          required id="juridicShippingCounty">
          <span></span>
-         <label for="juridicBillingCounty">
+         <label for="juridicShippingCounty">
           @if (app()->has('label_order_county'))
            {!! app('label_order_county') !!}
           @endif
@@ -1015,12 +1016,12 @@
        @endif
 
        <!-----------------------   city juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
-        <input type="text" wire:model.defer="juridic_shipping_city" name="juridicBillingCity"
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
+        <input type="text" wire:model.defer="juridic_shipping_city"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="juridicBillingCity">
+         required id="juridicShippingCity">
         <span></span>
-        <label for="juridicBillingCity">
+        <label for="juridicShippingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
@@ -1028,12 +1029,12 @@
        </div>
 
        <!-----------------------   zipcode juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item" id="juridicBillingPostalParent">
-        <input type="text" wire:model.defer="juridic_shipping_zipcode" name="juridicBillingPostal"
+       <div wire:ignore class="checkout__item checkout__item" id="juridicShippingPostalParent">
+        <input type="text" wire:model.defer="juridic_shipping_zipcode"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
-         id="juridicBillingPostal">
+         id="juridicShippingPostal">
         <span></span>
-        <label for="juridicBillingPostal">
+        <label for="juridicShippingPostal">
          @if (app()->has('label_order_zipcode'))
           {!! app('label_order_zipcode') !!}
          @endif
