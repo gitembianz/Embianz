@@ -653,7 +653,7 @@
      <!-------------- End Individual -------------->
      <!-------------- Juridic -------------->
      <div class="checkout__container @if ($juridic) active @endif">
-      <div wire:ignore class="checkout__form active">
+      <div class="checkout__form active">
        <div class="checkout__top">
         <span>1</span>
         <h3>
@@ -662,7 +662,9 @@
          @endif
         </h3>
        </div>
-       <div class="checkout__item checkout__item--required" id="juridicShippingFirstNameParent">
+
+       <!-----------------------   first juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingFirstNameParent">
         <input type="text" wire:model.defer="juridic_billing_first" name="juridicShippingFirstName"
          placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif" autocomplete="given-name"
          required id="juridicShippingFirstName">
@@ -673,8 +675,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
+
+       <!-----------------------   last juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
         <input type="text" wire:model.defer="juridic_billing_last" name="juridicShippingLastName"
          placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
          required id="juridicShippingLastName">
@@ -685,8 +688,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingPhoneParent">
+
+       <!-----------------------   phone juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPhoneParent">
         <input type="tel" wire:model.defer="juridic_billing_phone" name="juridicShippingPhone"
          placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif" autocomplete="tel"
          pattern="[0-9]*" inputmode="numeric" required id="juridicShippingPhone">
@@ -697,8 +701,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="juridicShippingEmailParent">
+
+       <!-----------------------   email juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingEmailParent">
         <input type="email" wire:model.defer="juridic_billing_email" name="juridicShippingEmail"
          placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" autocomplete="email"
          required id="juridicShippingEmail">
@@ -709,8 +714,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="companyNameParent">
+
+       <!-----------------------   company name juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="companyNameParent">
         <input type="text" wire:model.defer="juridic_billing_company_name" name="companyName"
          placeholder="@if (app()->has('label_order_company_name')) {!! app('label_order_company_name') !!} @endif"
          autocomplete="organization" required id="companyName">
@@ -721,8 +727,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="registerCodeParent">
+
+       <!-----------------------   registration_code juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="registerCodeParent">
         <input type="text" wire:model.defer="juridic_billing_registration_code" name="registerCode"
          placeholder="@if (app()->has('label_order_register_code')) {!! app('label_order_register_code') !!} @endif" autocomplete="off"
          required id="registerCode">
@@ -733,8 +740,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item checkout__item--required" id="registerNumberParent">
+
+       <!-----------------------   registration_number juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="registerNumberParent">
         <input type="text" wire:model.defer="juridic_billing_registration_number" name="registerNumber"
          placeholder="@if (app()->has('label_order_register_number')) {!! app('label_order_register_number') !!} @endif"
          autocomplete="organization-number" required id="registerNumber">
@@ -745,8 +753,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item" id="bankNameParent">
+
+       <!-----------------------   bank juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item" id="bankNameParent">
         <input type="text" wire:model.defer="juridic_billing_bank" name="bankName"
          placeholder="@if (app()->has('label_order_bankname')) {!! app('label_order_bankname') !!} @endif" autocomplete="off"
          id="bankName">
@@ -757,8 +766,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       <div class="checkout__item" id="IBANParent">
+
+       <!-----------------------   account juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item" id="IBANParent">
         <input type="text" wire:model.defer="juridic_billing_account" name="IBAN"
          placeholder="@if (app()->has('label_order_iban')) {!! app('label_order_iban') !!} @endif" autocomplete="IBAN"
          id="IBAN">
@@ -779,6 +789,8 @@
          @endif
         </h3>
        </div>
+
+       <!-----------------------   address1 juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
         <input type="text" wire:model.defer="juridic_billing_address1" name="juridicShippingAddress"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
@@ -790,9 +802,9 @@
          @endif
         </label>
        </div>
-       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
 
-        <!---------------------------------------------------->
+       <!-----------------------   address2 juridic billing  ----------------------------->
+       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
         <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
          <input type="text" wire:model.defer="juridic_billing_address2" name="juridicShippingAddress2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
@@ -805,16 +817,17 @@
          </label>
         </div>
        @endif
+
+       <!-----------------------   country juridic billing  ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!-- Country Select -->
         <select wire:model="juridic_billing_country" class="select">
          @foreach ($countries as $c)
           <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
          @endforeach
         </select>
        @endif
-       <!---------------------------------------------------->
 
+       <!-----------------------   county juridic billing  ----------------------------->
        @if (!empty($jbillingCounties))
         <select wire:model="juridic_billing_county" class="select">
          @foreach ($jbillingCounties as $county)
@@ -834,7 +847,8 @@
          </label>
         </div>
        @endif
-       <!---------------------------------------------------->
+
+       <!-----------------------   city juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
         <input type="text" wire:model.defer="juridic_billing_city" name="juridicShippingCity"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
@@ -846,7 +860,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   zipcode juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
         <input type="text" wire:model.defer="juridic_billing_zipcode" name="juridicShippingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
@@ -859,6 +874,8 @@
         </label>
        </div>
       </div>
+
+      <!-----------------------   Juridic IDentic  ----------------------------->
       <label class="checkout__checkbox">
        <input type="checkbox" wire:model="juridic_identic" id="juridic_identic" name="juridic_identic">
        <span>
@@ -876,7 +893,8 @@
          @endif
         </h3>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   first juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstNameParent">
         <input type="text" wire:model.defer="juridic_shipping_first" name="juridicBillingFirstName"
          placeholder="Prenume" autocomplete="given-name" required id="juridicBillingFirstName">
@@ -887,7 +905,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   last juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
         <input type="text" wire:model.defer="juridic_shipping_last" name="juridicBillingLastName"
          placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif" autocomplete="family-name"
@@ -899,7 +918,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   phone juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhoneParent">
         <input type="tel" wire:model.defer="juridic_shipping_phone" name="juridicBillingPhone"
          placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif" autocomplete="tel"
@@ -911,7 +931,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   email juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmailParent">
         <input type="email" wire:model.defer="juridic_shipping_email" name="juridicBillingEmail"
          placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" autocomplete="email"
@@ -924,7 +945,7 @@
         </label>
        </div>
       </div>
-      <!---------------------------------------------------->
+
       <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
        <div class="checkout__top">
         <span>4</span>
@@ -934,6 +955,8 @@
          @endif
         </h3>
        </div>
+
+       <!-----------------------   address1 juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
         <input type="text" wire:model.defer="juridic_shipping_address1" name="juridicBillingAddress"
          placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
@@ -945,9 +968,9 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
-       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
 
+       <!-----------------------   address2 juridic shipping  ----------------------------->
+       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
         <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
          <input type="text" wire:model.defer="juridic_shipping_address2" name="juridicBillingAddress2"
           placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
@@ -960,17 +983,17 @@
          </label>
         </div>
        @endif
-       <!---------------------------------------------------->
+
+       <!-----------------------   country juridic shipping  ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-        <!-- Country Select -->
         <select wire:model="juridic_shipping_country" class="select">
          @foreach ($countries as $c)
           <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
          @endforeach
         </select>
        @endif
-       <!---------------------------------------------------->
 
+       <!-----------------------   county juridic shipping  ----------------------------->
        @if (!empty($jshippingCounties))
         <select wire:model="juridic_shipping_county" class="select">
          @foreach ($jshippingCounties as $county)
@@ -991,7 +1014,7 @@
         </div>
        @endif
 
-       <!---------------------------------------------------->
+       <!-----------------------   city juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
         <input type="text" wire:model.defer="juridic_shipping_city" name="juridicBillingCity"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
@@ -1003,7 +1026,8 @@
          @endif
         </label>
        </div>
-       <!---------------------------------------------------->
+
+       <!-----------------------   zipcode juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item" id="juridicBillingPostalParent">
         <input type="text" wire:model.defer="juridic_shipping_zipcode" name="juridicBillingPostal"
          placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code"
@@ -1017,6 +1041,9 @@
        </div>
       </div>
      </div>
+     <!-------------- End Juridic -------------->
+
+     <!-------------- Payment -------------->
      <div class="section__header">
       <h2 class="section__title">
        @if (app()->has('label_order_payment_method'))
@@ -1024,6 +1051,8 @@
        @endif
       </h2>
      </div>
+
+     <!-------------- cash -------------->
      @if ($cash['active'] != 0)
       <div class="payment">
        <label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
@@ -1050,7 +1079,7 @@
        </div>
       </div>
      @endif
-     <!---------------------------------------------------->
+     <!-------------- card -------------->
      @if ($card['active'] != 0)
       <div class="payment">
        <label class="payment__wrapper" for="crd" wire:click="togglepayment('crd')">
@@ -1070,8 +1099,7 @@
        </div>
       </div>
      @endif
-     <!---------------------------------------------------->
-
+     <!-------------- ordin -------------->
      @if ($ordin['active'] != 0)
       @if ($juridic)
        <div class="payment">
@@ -1093,42 +1121,11 @@
        </div>
       @endif
      @endif
+     <!-------------- End Payment -------------->
+
+
      <!------------------------- Scrpt for Checkout --------------------------->
      <script src="/script/store/order.js"></script>
-     <script>
-      applyValidations("individualShippingFirstNameParent", firstNameValidation, false);
-      applyValidations("individualShippingLastNameParent", lastNameValidation, false);
-      applyValidations("individualShippingEmailParent", emailValidation, false);
-      applyValidations("individualShippingPhoneParent", phoneValidation, false);
-      applyValidations("individualShippingAddressParent", addressValidations, false);
-      applyValidations("individualShippingCityParent", cityValidations, false);
-      applyValidations("individualShippingCountyParent", countyValidations, false);
-
-      applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
-      applyValidations("individualBillingLastNameParent", lastNameValidation, false);
-      applyValidations("individualBillingEmailParent", emailValidation, false);
-      applyValidations("individualBillingPhoneParent", phoneValidation, false);
-      applyValidations("individualBillingAddressParent", addressValidations, false);
-      applyValidations("individualBillingCityParent", cityValidations, false);
-      applyValidations("individualBillingCountyParent", countyValidations, false);
-
-      // ----------------------------------------------------------------------------
-      applyValidations("juridicShippingFirstNameParent", firstNameValidation, false);
-      applyValidations("juridicShippingLastNameParent", lastNameValidation, false);
-      applyValidations("juridicShippingEmailParent", emailValidation, false);
-      applyValidations("juridicShippingPhoneParent", phoneValidation, false);
-      applyValidations("juridicShippingAddressParent", addressValidations, false);
-      applyValidations("juridicShippingCityParent", cityValidations, false);
-      applyValidations("companyNameParent", companyName, false);
-      applyValidations("registerNumberParent", registerNumber, false);
-      applyValidations("registerCodeParent", registerCode, false);
-      applyValidations("juridicBillingFirstNameParent", firstNameValidation, false);
-      applyValidations("juridicBillingLastNameParent", lastNameValidation, false);
-      applyValidations("juridicBillingEmailParent", emailValidation, false);
-      applyValidations("juridicBillingPhoneParent", phoneValidation, false);
-      applyValidations("juridicBillingAddressParent", addressValidations, false);
-      applyValidations("juridicBillingCityParent", cityValidations, false);
-     </script>
      <div class="dlv" style="display: none">
       <span class="dlv_currency">
        @if (app()->has('global_currency_primary_name'))
@@ -1146,58 +1143,41 @@
        </div>
       @endforeach
      </div>
+
      <script>
       function begin_checkout() {
-       // Variables
        var dlv = document.querySelector('.dlv');
-       // Check if dlv element exists
        if (!dlv) {
         console.error('Elementul cu clasa .dlv nu a fost găsit.');
         return;
        }
-       // Get all Values
        var currency = dlv.querySelector('.dlv_currency').innerText.trim();
        var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
        var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
        var items = [];
-       // Get all items
        var dlv_items = dlv.querySelectorAll('.dlv_item');
-       // Loop through each item
        dlv_items.forEach(dlv_item => {
         var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
         var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
         var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
         var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
-
-        // Create item object
         var item = {
          item_id: item_id,
          item_name: item_name,
          price: item_price,
          quantity: item_quantity
         };
-
-        // Push item in the array
         items.push(item);
        });
-
-       // Create the data object
        var dlvData = {
         currency: currency,
         value: value,
         coupon: coupon,
         items: items
        };
-       // Show the object
-       // console.log(dlvData);
        return dlvData;
       };
-      // begin_checkout();
-
-      // Apelul funcției begin_checkout pentru a extrage datele
       var dlvData = begin_checkout();
-
-      // Trimiterea datelor la Google Analytics folosind dataLayer.push
       dataLayer.push({
        ecommerce: null
       });
@@ -1211,6 +1191,7 @@
        }
       });
      </script>
+     <!-------------- End Script -------------->
 
     @endif
     <!------------------------------------------------------>
