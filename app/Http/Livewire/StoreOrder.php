@@ -532,6 +532,16 @@ class StoreOrder extends Component
         ],
       ];
       if (!$this->juridic_identic) {
+        $this->validateCounty(
+          $this->juridic_billing_county,
+          $this->juridic_billing_country,
+          'juridic_b_county'
+        );
+        $this->validateCounty(
+          $this->juridic_shipping_county,
+          $this->juridic_shipping_country,
+          'juridic_s_county'
+        );
         $shippingRules = [
           'juridic_shipping_first' => [
             'required',
