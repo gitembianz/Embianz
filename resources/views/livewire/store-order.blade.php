@@ -801,26 +801,43 @@
        @endif
 
        <!-----------------------   county juridic billing  ----------------------------->
-       @if (!empty($jbillingCounties))
-        <select wire:model="juridic_billing_county" class="select">
-         @foreach ($jbillingCounties as $county)
-          <option value="{{ $county->name }}">{{ $county->name }}</option>
-         @endforeach
-        </select>
-       @else
-        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
-         <input type="text" wire:model.defer="juridic_billing_county"
-          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-          required id="juridicBillingCounty">
-         <span></span>
-         <label for="juridicBillingCounty">
-          @if (app()->has('label_order_county'))
-           {!! app('label_order_county') !!}
-          @endif
-         </label>
-        </div>
-       @endif
+       <div
+        class="checkout__item checkout__item--required searchable active @error('juridic_b_county') error @enderror"
+        id="juridicBillingCountyParent">
+        <input type="text" wire:model="juridic_billing_county"
+         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+         required id="juridicBillingCounty" wire:focus="$set('jcountylist', true)"
+         wire:blur="$set('jcountylist', false)">
+        <span>
+         @error('juridic_b_county')
+          {{ $message }}
+         @enderror
+        </span>
+        <label for="juridicBillingCounty">
+         @if (app()->has('label_order_county'))
+          {!! app('label_order_county') !!}
+         @endif
+        </label>
 
+        @if ($jcountylist && !empty($Counties))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($Counties as $county)
+            <button type="button" class="item__searchable"
+             wire:click="selectJBillingCounty('{{ addslashes($county['name']) }}')">
+             {{ $county['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($jcountylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
+       </div>
        <!-----------------------   city juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
         <input type="text" wire:model.defer="juridic_billing_city"
@@ -967,25 +984,43 @@
        @endif
 
        <!-----------------------   county juridic shipping  ----------------------------->
-       @if (!empty($jshippingCounties))
-        <select wire:model="juridic_shipping_county" class="select">
-         @foreach ($jshippingCounties as $county)
-          <option value="{{ $county->name }}">{{ $county->name }}</option>
-         @endforeach
-        </select>
-       @else
-        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
-         <input type="text" wire:model.defer="juridic_shipping_county"
-          placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
-          required id="juridicShippingCounty">
-         <span></span>
-         <label for="juridicShippingCounty">
-          @if (app()->has('label_order_county'))
-           {!! app('label_order_county') !!}
-          @endif
-         </label>
-        </div>
-       @endif
+       <div
+        class="checkout__item checkout__item--required searchable active @error('juridic_s_county') error @enderror"
+        id="juridicShippingCountyParent">
+        <input type="text" wire:model="juridic_shipping_county"
+         placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif" autocomplete="county"
+         required id="juridicShippingCounty" wire:focus="$set('jscountylist', true)"
+         wire:blur="$set('jscountylist', false)">
+        <span>
+         @error('juridic_s_county')
+          {{ $message }}
+         @enderror
+        </span>
+        <label for="juridicShippingCounty">
+         @if (app()->has('label_order_county'))
+          {!! app('label_order_county') !!}
+         @endif
+        </label>
+
+        @if ($jscountylist && !empty($Counties))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($Counties as $county)
+            <button type="button" class="item__searchable"
+             wire:click="selectJShippingCounty('{{ addslashes($county['name']) }}')">
+             {{ $county['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($jcountylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
+       </div>
 
        <!-----------------------   city juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
