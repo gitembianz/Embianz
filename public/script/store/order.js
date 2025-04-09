@@ -108,17 +108,6 @@ function applyValidations(parentId, validations, triggerImmediately) {
 }
 
 function validateIndividual() {
-    applyValidations("individualShippingCityParent", cityValidations, true);
-    applyValidations("individualShippingCountyParent", countyValidations, true);
-    applyValidations("individualShippingAddressParent", addressValidations, true);
-    applyValidations("individualShippingPhoneParent", phoneValidation, true);
-    applyValidations("individualShippingEmailParent", emailValidation, true);
-    applyValidations("individualShippingLastNameParent", lastNameValidation, true);
-    applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
-}
-
-function validateIndividualIdentic() {
-    validateIndividual();
     applyValidations("individualBillingCityParent", cityValidations, true);
     applyValidations("individualBillingCountyParent", countyValidations, true);
     applyValidations("individualBillingAddressParent", addressValidations, true);
@@ -126,6 +115,17 @@ function validateIndividualIdentic() {
     applyValidations("individualBillingEmailParent", emailValidation, true);
     applyValidations("individualBillingLastNameParent", lastNameValidation, true);
     applyValidations("individualBillingFirstNameParent", firstNameValidation, true);
+}
+
+function validateIndividualIdentic() {
+    applyValidations("individualShippingCityParent", cityValidations, true);
+    applyValidations("individualShippingCountyParent", countyValidations, true);
+    applyValidations("individualShippingAddressParent", addressValidations, true);
+    applyValidations("individualShippingPhoneParent", phoneValidation, true);
+    applyValidations("individualShippingEmailParent", emailValidation, true);
+    applyValidations("individualShippingLastNameParent", lastNameValidation, true);
+    applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
+    validateIndividual();
 }
 
 function validateJuridic() {
