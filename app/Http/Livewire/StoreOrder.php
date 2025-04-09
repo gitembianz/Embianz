@@ -101,8 +101,12 @@ class StoreOrder extends Component
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
+
   public $icountylist = false;
   public $iscountylist = false;
+  public $jcountylist = false;
+  public $jscountylist = false;
+
 
 
   protected $listeners = [
@@ -153,21 +157,27 @@ class StoreOrder extends Component
   public function updated($propertyName)
   {
     if (in_array($propertyName, ['icountylist', 'individual_billing_county'])) {
-      $this->Counties = $this->getCounties($this->individual_billing_county) ?? null;
+      $this->Counties = $this->getCounties($this->individual_billing_county, $this->individual_billing_country) ?? null;
     }
     if (in_array($propertyName, ['iscountylist', 'individual_shipping_county'])) {
-      $this->Counties = $this->getCounties($this->individual_shipping_county) ?? null;
+      $this->Counties = $this->getCounties($this->individual_shipping_county, $this->individual_shipping_country) ?? null;
     }
-    if (in_array($propertyName, ['icitylist', 'individual_billing_cityy'])) {
-      $this->cities = $this->getCities($this->individual_billing_country, $this->individual_billing_county, $this->individual_billing_city) ?? null;
+    if (in_array($propertyName, ['jcountylist', 'juridic_billing_county'])) {
+      $this->Counties = $this->getCounties($this->juridic_billing_county, $this->juridic_billing_country) ?? null;
     }
+    if (in_array($propertyName, ['jscountylist', 'juridic_shipping_county'])) {
+      $this->Counties = $this->getCounties($this->juridic_shipping_county, $this->juridic_shipping_country) ?? null;
+    }
+    // if (in_array($propertyName, ['icitylist', 'individual_billing_city'])) {
+    //   $this->cities = $this->getCities($this->individual_billing_country, $this->individual_billing_county, $this->individual_billing_city) ?? null;
+    // }
   }
 
 
-  public function getCounties($model)
+  public function getCounties($model, $country)
   {
     $activeCountries = collect($this->countries);
-    $selectedCountry = $activeCountries->firstWhere('name', $this->individual_billing_country);
+    $selectedCountry = $activeCountries->firstWhere('name', $country);
 
     if (!$selectedCountry) {
       return null;
@@ -217,13 +227,23 @@ class StoreOrder extends Component
     $this->icountylist = false;
   }
 
+  public function selectJBillingCounty($countyName)
+  {
+    $this->juridic_billing_county = $countyName;
+    $this->jcountylist = false;
+  }
+
   public function selectShippingCounty($countyName)
   {
     $this->individual_shipping_county = $countyName;
     $this->iscountylist = false;
   }
 
-
+  public function selectJShippingCounty($countyName)
+  {
+    $this->juridic_shipping_county = $countyName;
+    $this->jscountylist = false;
+  }
 
   public function getPromotionsProperty()
   {
@@ -466,6 +486,11 @@ class StoreOrder extends Component
       $this->validate($rules);
     }
     if ($this->juridic) {
+      $this->validateCounty(
+        $this->juridic_billing_county,
+        $this->juridic_billing_country,
+        'juridic_b_county'
+      );
       $rules = [
         'juridic_billing_first' => [
           'required',

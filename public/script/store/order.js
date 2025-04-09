@@ -144,13 +144,14 @@ function validateJuridic() {
 }
 
 function validateJuridicIdentic() {
-    validateJuridic();
+    applyValidations("juridicShippingCountyParent", countyValidations, true);
     applyValidations("juridicShippingCityParent", cityValidations, true);
     applyValidations("juridicShippingAddressParent", addressValidations, true);
     applyValidations("juridicShippingPhoneParent", phoneValidation, true);
     applyValidations("juridicShippingEmailParent", emailValidation, true);
     applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
     applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
+    validateJuridic();
 }
 
 window.addEventListener("update-validation", (event) => {
