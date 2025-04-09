@@ -791,34 +791,6 @@
         </h3>
        </div>
 
-       <!-----------------------   address1 juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
-        <input type="text" wire:model.defer="juridic_billing_address1"
-         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-         autocomplete="street-address" required id="juridicBillingAddress">
-        <span></span>
-        <label for="juridicBillingAddress">
-         @if (app()->has('label_order_address1'))
-          {!! app('label_order_address1') !!}
-         @endif
-        </label>
-       </div>
-
-       <!-----------------------   address2 juridic billing  ----------------------------->
-       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-        <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
-         <input type="text" wire:model.defer="juridic_billing_address2"
-          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-          autocomplete="address-level2" id="juridicBillingAddress2">
-         <span></span>
-         <label for="juridicBillingAddress2">
-          @if (app()->has('label_order_address2'))
-           {!! app('label_order_address2') !!}
-          @endif
-         </label>
-        </div>
-       @endif
-
        <!-----------------------   country juridic billing  ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
         <select wire:model="juridic_billing_country" class="select">
@@ -861,6 +833,34 @@
          @endif
         </label>
        </div>
+
+       <!-----------------------   address1 juridic billing  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
+        <input type="text" wire:model.defer="juridic_billing_address1"
+         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
+         autocomplete="street-address" required id="juridicBillingAddress">
+        <span></span>
+        <label for="juridicBillingAddress">
+         @if (app()->has('label_order_address1'))
+          {!! app('label_order_address1') !!}
+         @endif
+        </label>
+       </div>
+
+       <!-----------------------   address2 juridic billing  ----------------------------->
+       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
+        <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
+         <input type="text" wire:model.defer="juridic_billing_address2"
+          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
+          autocomplete="address-level2" id="juridicBillingAddress2">
+         <span></span>
+         <label for="juridicBillingAddress2">
+          @if (app()->has('label_order_address2'))
+           {!! app('label_order_address2') !!}
+          @endif
+         </label>
+        </div>
+       @endif
 
        <!-----------------------   zipcode juridic billing  ----------------------------->
        <div wire:ignore class="checkout__item" id="juridicBillingPostalParent">
@@ -957,34 +957,6 @@
         </h3>
        </div>
 
-       <!-----------------------   address1 juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
-        <input type="text" wire:model.defer="juridic_shipping_address1"
-         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-         autocomplete="street-address" required id="juridicShippingAddress">
-        <span></span>
-        <label for="juridicShippingAddress">
-         @if (app()->has('label_order_address1'))
-          {!! app('label_order_address1') !!}
-         @endif
-        </label>
-       </div>
-
-       <!-----------------------   address2 juridic shipping  ----------------------------->
-       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-        <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
-         <input type="text" wire:model.defer="juridic_shipping_address2"
-          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-          autocomplete="address-level2" id="juridicShippingAddress2">
-         <span></span>
-         <label for="juridicShippingAddress2">
-          @if (app()->has('label_order_address2'))
-           {!! app('label_order_address2') !!}
-          @endif
-         </label>
-        </div>
-       @endif
-
        <!-----------------------   country juridic shipping  ----------------------------->
        @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
         <select wire:model="juridic_shipping_country" class="select">
@@ -1027,6 +999,34 @@
          @endif
         </label>
        </div>
+
+       <!-----------------------   address1 juridic shipping  ----------------------------->
+       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
+        <input type="text" wire:model.defer="juridic_shipping_address1"
+         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
+         autocomplete="street-address" required id="juridicShippingAddress">
+        <span></span>
+        <label for="juridicShippingAddress">
+         @if (app()->has('label_order_address1'))
+          {!! app('label_order_address1') !!}
+         @endif
+        </label>
+       </div>
+
+       <!-----------------------   address2 juridic shipping  ----------------------------->
+       @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
+        <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
+         <input type="text" wire:model.defer="juridic_shipping_address2"
+          placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
+          autocomplete="address-level2" id="juridicShippingAddress2">
+         <span></span>
+         <label for="juridicShippingAddress2">
+          @if (app()->has('label_order_address2'))
+           {!! app('label_order_address2') !!}
+          @endif
+         </label>
+        </div>
+       @endif
 
        <!-----------------------   zipcode juridic shipping  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item" id="juridicShippingPostalParent">
