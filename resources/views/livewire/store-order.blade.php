@@ -413,23 +413,43 @@
        </div>
 
        <!-----------------------   city individual billing   ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
-        <input type="text" wire:model.defer="individual_billing_city"
+       <div class="checkout__item checkout__item--required searchable active" id="individualBillingCityParent">
+        <input type="text" wire:model="individual_billing_city"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city" required
-         id="individualBillingCity">
+         id="individualBillingCity" wire:focus="$set('icitylist', true)" wire:blur="$set('icitylist', false)">
         <span></span>
         <label for="individualBillingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
         </label>
+
+        @if ($icitylist && !empty($cities))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($cities as $city)
+            <button type="button" class="item__searchable"
+             wire:click="selectBillingCity('{{ addslashes($city['name']) }}')">
+             {{ $city['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($icitylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
        </div>
+
 
        <!-----------------------   address1 individual billing  ----------------------------->
        <div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddressParent">
         <input type="text" wire:model.defer="individual_billing_address1"
-         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif" autocomplete="street-address"
-         required id="individualBillingAddress">
+         placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
+         autocomplete="street-address" required id="individualBillingAddress">
         <span></span>
         <label for="individualBillingAddress">
          @if (app()->has('label_order_address1'))
@@ -596,16 +616,37 @@
        </div>
 
        <!-----------------------   city individual shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="individualShippingCityParent">
-        <input type="text" wire:model.defer="individual_shipping_city"
-         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="individualShippingCity">
-        <span></span>
+       <div class="checkout__item checkout__item--required searchable active" id="individualShippingCityParent">
+        <input type="text" wire:model="individual_shipping_city"
+         placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="city"
+         required id="individualShippingCity" wire:focus="$set('iscitylist', true)"
+         wire:blur="$set('iscitylist', false)">
+        <span>
+        </span>
         <label for="individualShippingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
         </label>
+
+        @if ($iscitylist && !empty($cities))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($cities as $city)
+            <button type="button" class="item__searchable"
+             wire:click="selectShippingCity('{{ addslashes($city['name']) }}')">
+             {{ $city['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($iscitylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
        </div>
 
        <!-----------------------   address1 individual shipping  ----------------------------->
@@ -839,16 +880,36 @@
         @endif
        </div>
        <!-----------------------   city juridic billing  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
-        <input type="text" wire:model.defer="juridic_billing_city"
+       <div class="checkout__item checkout__item--required searchable active" id="juridicBillingCityParent">
+        <input type="text" wire:model="juridic_billing_city"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="juridicBillingCity">
-        <span></span>
+         required id="juridicBillingCity" wire:focus="$set('jcitylist', true)" wire:blur="$set('jcitylist', false)">
+        <span>
+        </span>
         <label for="juridicBillingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
         </label>
+
+        @if ($jcitylist && !empty($cities))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($cities as $city)
+            <button type="button" class="item__searchable"
+             wire:click="selectJBillingCity('{{ addslashes($city['name']) }}')">
+             {{ $city['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($jcitylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
        </div>
 
        <!-----------------------   address1 juridic billing  ----------------------------->
@@ -1023,16 +1084,37 @@
        </div>
 
        <!-----------------------   city juridic shipping  ----------------------------->
-       <div wire:ignore class="checkout__item checkout__item--required" id="juridicShippingCityParent">
-        <input type="text" wire:model.defer="juridic_shipping_city"
+       <div class="checkout__item checkout__item--required searchable active" id="juridicShippingCityParent">
+        <input type="text" wire:model="juridic_billing_city"
          placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif" autocomplete="off"
-         required id="juridicShippingCity">
-        <span></span>
+         required id="juridicShippingCity" wire:focus="$set('jscitylist', true)"
+         wire:blur="$set('jscitylist', false)">
+        <span>
+        </span>
         <label for="juridicShippingCity">
          @if (app()->has('label_order_city'))
           {!! app('label_order_city') !!}
          @endif
         </label>
+
+        @if ($jscitylist && !empty($cities))
+         <div class="content__searchable">
+          <div class="list__searchable">
+           @foreach ($cities as $city)
+            <button type="button" class="item__searchable"
+             wire:click="selectJShippingCity('{{ addslashes($city['name']) }}')">
+             {{ $city['name'] }}
+            </button>
+           @endforeach
+          </div>
+         </div>
+        @elseif ($jscitylist)
+         <div class="content__searchable">
+          <div class="list__searchable">
+           <button class="item__searchable">{{ __('No record found') }}</button>
+          </div>
+         </div>
+        @endif
        </div>
 
        <!-----------------------   address1 juridic shipping  ----------------------------->
