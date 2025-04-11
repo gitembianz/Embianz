@@ -112,6 +112,22 @@ class StoreOrder extends Component
   public $jcitylist = false;
   public $jscitylist = false;
 
+  public function render()
+  {
+    if ($this->step == 2) {
+      $data = [
+        'cart' => $this->cart
+      ];
+    } elseif ($this->step == 3) {
+      $data = [
+        'order' => $this->new_order
+      ];
+    } else {
+      $data = [];
+    }
+
+    return view('livewire.store-order', $data);
+  }
 
   protected $listeners = [
     'nocard' => 'mount',
@@ -324,6 +340,20 @@ class StoreOrder extends Component
   {
     $this->modification = true;
   }
+  // get cart property with childs
+  public function getHasCartWithItemsProperty()
+  {
+    if ($this->step == 3) {
+      return true;
+    }
+
+    return Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', app('global_cart_closed'))
+      ->has('cartItems')
+      ->exists();
+  }
+
+
 
   public function getCartProperty()
   {
@@ -403,8 +433,9 @@ class StoreOrder extends Component
 
   public function next()
   {
-    if (!$this->cart->cartItems || !$this->cart) {
+    if (!$this->cart->cartItems()->count() > 0 || !$this->cart) {
       $this->back = true;
+      $this->step++;
     } else {
       cookie()->queue(cookie()->forget('accountId'));
       $this->resetErrorBag();
@@ -685,11 +716,6 @@ class StoreOrder extends Component
       }
     }
 
-    if (!$this->cart) {
-      $this->back = true;
-    } elseif (!$this->cart->cartItems) {
-      $this->back = true;
-    }
     if ($this->country != 'n/a') {
 
       $this->individual_billing_country = $this->country['name'];
@@ -799,13 +825,7 @@ class StoreOrder extends Component
     }
   }
 
-  public function render()
-  {
-    $data = [
-      'cart' => $this->cart
-    ];
-    return view('livewire.store-order', $data);
-  }
+
 
   public function confirm()
   {
