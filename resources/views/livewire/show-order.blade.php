@@ -40,7 +40,7 @@
      <button class="button button--primary button--long" wire:click="generate_awb_fancourier()">
       fancourier
      </button>
-     <button class="button button--primary button--long">
+     <button class="button button--primary button--long" wire:click="generate_awb_sameday()">
       sameday
      </button>
     </div>
