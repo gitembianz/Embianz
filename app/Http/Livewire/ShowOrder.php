@@ -204,6 +204,54 @@ class ShowOrder extends Component
                 'type' => 'success',
                 'title' => 'Success'
             ]);
+            return  $response['data']['token'];
+        } else {
+            session()->flash('notification', [
+                'message' => 'Token not generated',
+                'type' => 'warning',
+                'title' => 'warning'
+            ]);
+            return;
+        }
+    }
+
+    public function generate_awb_sameday()
+    {
+        return $this->get_sameday_token();
+    }
+
+    public function get_sameday_token()
+    {
+        $user = 'moldasolineAPI';
+        $pass = '*YDF5t6m';
+        $url = 'api.sameday.ro/';
+        $client = new Client();
+        $response = $client->post($url . 'api/authenticate', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'X-AUTH-USERNAME' => $user,
+                'X-AUTH-PASSWORD' => $pass,
+            ],
+            'curl' => [
+                CURLOPT_SSL_VERIFYPEER => false,
+            ],
+        ]);
+        if ($response->getStatusCode() == 200) {
+            $response = json_decode($response->getBody(), true);
+            $token = $response['token'];
+            $parameter = Store_Settings::where('parameter', 'sam_token')->first();
+            if ($parameter) {
+                $parameter->update([
+                    'value' => $token,
+                    'updated_at' => now()
+                ]);
+            }
+            session()->flash('notification', [
+                'message' => 'Token generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
             return true;
         } else {
             session()->flash('notification', [
