@@ -134,10 +134,10 @@ class ShowOrder extends Component
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
-            $pdfFilePath = $dir . '/awb_' . time() . '.pdf';
+            $pdfFilePath = $dir . '/awb_' . $this->order->order_number . '.pdf';
 
             file_put_contents($pdfFilePath, $pdfContent);
-            $path = 'documents/awb_' . time() . '.pdf';
+            $path = 'documents/awb_' . $this->order->order_number . '.pdf';
             Awbs::create([
                 'order_id' => $this->order->id,
                 'date' => now(),
