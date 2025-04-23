@@ -2,19 +2,20 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Awbs;
-use App\Models\Invoice;
 use Carbon\Carbon;
+use App\Models\Awbs;
 use App\Models\Order;
 use App\Models\Status;
-use App\Models\Store_Settings;
+use GuzzleHttp\Client;
+use App\Models\Invoice;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Models\Store_Settings;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use GuzzleHttp\Client;
 
 
 
@@ -24,9 +25,14 @@ class ShowOrder extends Component
     public $record = [];
     public $edititem = null;
     public $delete = false;
-    public $hasservices = false;
+    public bool $sameday = false;
     public $services = [];
+    public $addresses = [];
+    public $persons = [];
     public $statuses;
+    public $person;
+    public $service;
+    public $pickup_point;
     public $invoice_sdatabase;
     public $storno_sdatabase;
     public $circle;
@@ -36,6 +42,13 @@ class ShowOrder extends Component
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
+
+    public function updatedSameday()
+    {
+        $this->services = app()->has('global_sam_services') ? app('global_sam_services') : null;
+        $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
+        dd($this->addresses);
+    }
 
 
     public function generate_awb_fancourier()
@@ -249,6 +262,7 @@ class ShowOrder extends Component
             $setting = Store_Settings::where('parameter', 'sam_services')->first();
             if ($setting) {
                 $setting->update(['value' => $formattedArray]);
+                Cache::forget('global_variables');
             } else {
                 session()->flash('notification', [
                     'message' => 'No sam_services parameter found!',
@@ -312,6 +326,7 @@ class ShowOrder extends Component
 
             if ($setting) {
                 $setting->update(['value' => json_encode($formattedAddresses)]);
+                Cache::forget('global_variables');
             } else {
                 session()->flash('notification', [
                     'message' => 'No sam_addreses parameter found!',
