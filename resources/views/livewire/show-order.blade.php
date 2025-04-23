@@ -16,6 +16,21 @@
    </button>
   </div>
  </aside>
+
+ {{-- Sameday Services --}}
+ <aside>
+  <div class="background background--center @if ($hasservices) active @endif"></div>
+  <div class="aside aside--confirm @if ($hasservices) active @endif">
+   <span>
+    Please select a services
+   </span>
+
+   {{-- <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+    <span>Cancel</span> --}}
+   </button>
+  </div>
+ </aside>
+
  {{-- Navigation --}}
  <nav class="nav--controls">
   @if ($order->status_id === app('global_order_processing'))
@@ -40,7 +55,7 @@
      <button class="button button--primary button--long" wire:click="generate_awb_fancourier()">
       fancourier
      </button>
-     <button class="button button--primary button--long" wire:click="generate_awb_sameday()">
+     <button class="button button--primary button--long" wire:click="get_services_sameday()">
       sameday
      </button>
     </div>

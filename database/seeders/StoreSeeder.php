@@ -84,6 +84,9 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'fan_client_id', 'value' => '7277551', 'description' => 'Fancourier client ID', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'fan_token', 'value' => '', 'description' => 'Fancourier token for awb, expires in 24h', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'sam_token', 'value' => '', 'description' => 'Sameday token for awb, expires in 24h', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'sam_services', 'value' => '', 'description' => 'Sameday services for awb', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'sam_addreses', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
 
