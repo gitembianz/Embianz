@@ -24,7 +24,7 @@ class ShowOrder extends Component
     public $orderId;
     public $record = [];
     public $edititem = null;
-    public $delete = false;
+    public bool $delete = false;
     public bool $sameday = false;
     public $services = [];
     public $addresses = [];
@@ -45,9 +45,20 @@ class ShowOrder extends Component
 
     public function updatedSameday()
     {
-        $this->services = app()->has('global_sam_services') ? app('global_sam_services') : null;
+        $this->services = app()->has('global_sam_services') ? json_decode(app('global_sam_services'), true) : null;
         $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
-        dd($this->addresses);
+        $this->persons = $this->addresses[0]['contact_persons'] ?? null;
+        $this->person = $this->persons[0]['id'] ?? null;
+        $this->service = $this->services[0]['id'] ?? null;
+        $this->pickup_point = $this->addresses[0]['id'] ?? null;
+    }
+
+    public function updatedPickupPoint($value)
+    {
+        $this->pickup_point = $value;
+        $selectedAddress = collect($this->addresses)->firstWhere('id', $value);
+        $this->persons = $selectedAddress['contact_persons'] ?? null;
+        $this->person = $this->persons[0]['id'] ?? null;
     }
 
 
@@ -353,6 +364,8 @@ class ShowOrder extends Component
 
         return;
     }
+
+    public function generateAWBSameday() {}
 
 
     public function get_sameday_token()
