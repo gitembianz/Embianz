@@ -376,7 +376,7 @@ class ShowOrder extends Component
         $shippingAddress = $this->order->account->addresses->where('type', 'shipping')->first();
 
         $awbData = [
-            'pickupPoint' => (int) $this->pickup_point, // ensure it's an integer
+            'pickupPoint' => (int) $this->pickup_point,
             'contactPerson' => (int) $this->person,
             'service' => (int) $this->service,
             'packageType' => 0,
