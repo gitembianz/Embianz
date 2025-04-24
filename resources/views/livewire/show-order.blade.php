@@ -19,8 +19,8 @@
 
  {{-- Sameday Services --}}
  <aside>
-  <div class="background background--center @if ($hasservices) active @endif"></div>
-  <div class="aside aside--confirm @if ($hasservices) active @endif">
+  <div class="background background--center @if ($sameday) active @endif"></div>
+  <div class="aside aside--confirm @if ($sameday) active @endif">
    <span>
     Please select a services
    </span>
@@ -55,7 +55,7 @@
      <button class="button button--primary button--long" wire:click="generate_awb_fancourier()">
       fancourier
      </button>
-     <button class="button button--primary button--long" wire:click="get_services_sameday()">
+     <button class="button button--primary button--long" wire:click="$set('sameday', true)">
       sameday
      </button>
     </div>
