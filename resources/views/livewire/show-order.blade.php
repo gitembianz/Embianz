@@ -25,10 +25,10 @@
    <span style="font-size: 1.2em; font-weight: bold; margin-bottom: 10px; display: block;">
     Sameday AWB
    </span>
-   <span style="margin-bottom: 15px; display: block;">
+   <span style="display: block;">
     Please select a service
    </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-bottom: 15px;">
+   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
     <select wire:model.defer="service"
      style="max-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
      @foreach ($services as $service)
@@ -36,10 +36,10 @@
      @endforeach
     </select>
    </div>
-   <span style="margin-bottom: 15px; display: block;">
+   <span style="display: block;">
     Select a pickup-point
    </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-bottom: 15px;">
+   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
     <select wire:model.defer="pickup_point"
      style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
      @foreach ($addresses as $address)
@@ -47,10 +47,10 @@
      @endforeach
     </select>
    </div>
-   <span style="margin-bottom: 15px; display: block;">
+   <span style="display: block;">
     Select a pickup contact person
    </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-bottom: 20px;">
+   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
     <select wire:model.defer="person"
      style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
      @foreach ($persons as $person)
@@ -58,7 +58,7 @@
      @endforeach
     </select>
    </div>
-   <button class="button button--primary button--long" wire:click.prevent="generateAWBSameday()">
+   <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
     <span>Generate AWB</span>
    </button>
    <button class="button button--danger button--long" wire:click.prevent="$set('sameday', false)">

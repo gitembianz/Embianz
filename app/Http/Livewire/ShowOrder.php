@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\Store_Settings;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -43,14 +44,16 @@ class ShowOrder extends Component
         'refreshComponent' => '$refresh'
     ];
 
-    public function updatedSameday()
+    public function updatedSameday($value)
     {
-        $this->services = app()->has('global_sam_services') ? json_decode(app('global_sam_services'), true) : null;
-        $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
-        $this->persons = $this->addresses[0]['contact_persons'] ?? null;
-        $this->person = $this->persons[0]['id'] ?? null;
-        $this->service = $this->services[0]['id'] ?? null;
-        $this->pickup_point = $this->addresses[0]['id'] ?? null;
+        if ($value) {
+            $this->services = app()->has('global_sam_services') ? json_decode(app('global_sam_services'), true) : null;
+            $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
+            $this->persons = $this->addresses[0]['contact_persons'] ?? null;
+            $this->person = $this->persons[0]['id'] ?? null;
+            $this->service = $this->services[0]['id'] ?? null;
+            $this->pickup_point = $this->addresses[0]['id'] ?? null;
+        }
     }
 
     public function updatedPickupPoint($value)
@@ -162,10 +165,10 @@ class ShowOrder extends Component
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
-            $pdfFilePath = $dir . '/awb_' . $this->order->order_number . '.pdf';
+            $pdfFilePath = $dir . '/awbfancourier_' . $this->order->order_number . '.pdf';
 
             file_put_contents($pdfFilePath, $pdfContent);
-            $path = 'documents/awb_' . $this->order->order_number . '.pdf';
+            $path = 'documents/awbfancourier_' . $this->order->order_number . '.pdf';
             Awbs::create([
                 'order_id' => $this->order->id,
                 'date' => now(),
@@ -365,7 +368,116 @@ class ShowOrder extends Component
         return;
     }
 
-    public function generateAWBSameday() {}
+    public function generate_awb_sameday()
+    {
+        $token = Store_Settings::where('parameter', 'sam_token')->value('value');
+        $client = new \GuzzleHttp\Client();
+
+        $shippingAddress = $this->order->account->addresses->where('type', 'shipping')->first();
+
+        $awbData = [
+            'pickupPoint' => (int) $this->pickup_point, // ensure it's an integer
+            'contactPerson' => (int) $this->person,
+            'service' => (int) $this->service,
+            'packageType' => 0,
+            'packageNumber' => 1,
+            'packageWeight' => 0.1,
+            'insuredValue' => 0,
+            'cashOnDelivery' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
+            'awbPayment' => 1,
+            'thirdPartyPickup' => 0,
+
+
+            'awbRecipient' => [
+                'name' => $this->order->account->name,
+                'phoneNumber' => $this->order->account->phone,
+                'personType' => 0,
+                'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()?->county,
+                'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()?->city,
+                'address' => $this->order->account->addresses->where('type', 'shipping')->first()?->address1,
+                'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()?->zipcode,
+            ],
+            'parcels' => [
+                [
+                    'weight' => 0.1,
+                    'length' => 15,
+                    'width' => 10,
+                    'height' => 3,
+                ],
+            ],
+        ];
+
+        try {
+            $response = $client->post($this->samUrl . 'api/awb', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'X-AUTH-TOKEN' => $token,
+                ],
+                'form_params' => $awbData,
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+
+            if (!empty($responseData['pdfLink'])) {
+                $pdfResponse = $client->get($responseData['pdfLink'], [
+                    'headers' => [
+                        'X-AUTH-TOKEN' => $token,
+                    ],
+                    'curl' => [
+                        CURLOPT_SSL_VERIFYPEER => false,
+                    ],
+                ]);
+
+                $pdfContent = $pdfResponse->getBody()->getContents();
+
+                $dir = public_path('documents');
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+
+                $pdfFilePath = $dir . '/awbsameday_' . $this->order->order_number . '.pdf';
+                file_put_contents($pdfFilePath, $pdfContent);
+
+                $path = 'documents/awbsameday_' . $this->order->order_number . '.pdf';
+
+                Awbs::create([
+                    'order_id' => $this->order->id,
+                    'date' => now(),
+                    'type' => 'sameday',
+                    'path' => $path
+                ]);
+
+                session()->flash('notification', [
+                    'message' => 'AWB generated and saved successfully!',
+                    'type' => 'success',
+                    'title' => 'Success'
+                ]);
+            } else {
+                throw new \Exception('AWB generated but PDF link not found.');
+            }
+            $this->sameday = false;
+            session()->flash('notification', [
+                'message' => 'AWB generated successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+            return;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            Log::error('Sameday AWB generation failed: ' . $e->getMessage());
+            if ($e->hasResponse()) {
+                $errorBody = json_decode($e->getResponse()->getBody(), true);
+                Log::error('Sameday response: ', $errorBody);
+            }
+
+            throw new \Exception('AWB creation failed. Please check the details.');
+        }
+    }
+
+
 
 
     public function get_sameday_token()
@@ -993,133 +1105,133 @@ class ShowOrder extends Component
 
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
 <Facturi />');
-        $factura = $xml->addChild('Factura');
-        $antet = $factura->addChild('Antet');
-        foreach ($invoiceData as $key => $value) {
-            if (is_array($value)) continue; // Skip arrays for now
-            $antet->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
-        }
+$factura = $xml->addChild('Factura');
+$antet = $factura->addChild('Antet');
+foreach ($invoiceData as $key => $value) {
+if (is_array($value)) continue; // Skip arrays for now
+$antet->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+}
 
-        $detalii = $factura->addChild('Detalii')->addChild('Continut');
-        foreach ($invoiceData['Detalii'] as $detail) {
-            $linie = $detalii->addChild('Linie');
-            foreach ($detail as $key => $value) {
-                $linie->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
-            }
-        }
+$detalii = $factura->addChild('Detalii')->addChild('Continut');
+foreach ($invoiceData['Detalii'] as $detail) {
+$linie = $detalii->addChild('Linie');
+foreach ($detail as $key => $value) {
+$linie->addChild($key, htmlspecialchars($value, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+}
+}
 
-        $sumar = $factura->addChild('Sumar');
-        foreach ($invoiceData['Sumar'] as $key => $value) {
-            $sumar->addChild($key, htmlspecialchars(number_format($value, 2), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
-        }
+$sumar = $factura->addChild('Sumar');
+foreach ($invoiceData['Sumar'] as $key => $value) {
+$sumar->addChild($key, htmlspecialchars(number_format($value, 2), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+}
 
-        if ($type === 'invoice_xml') {
-            $invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date);
-        } else {
-            $invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date);
-        }
-        $invoicePath = 'invoices/';
-        $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
+if ($type === 'invoice_xml') {
+$invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date);
+} else {
+$invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date);
+}
+$invoicePath = 'invoices/';
+$yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
 
-        if (!File::exists($yearMonthPath)) {
-            File::makeDirectory($yearMonthPath, 0755, true);
-        }
-
-
-        $xmlPath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-            $this->order->invoice_series . "_" . $serie . "_" . $date . ".xml";
-        if (file_exists($xmlPath)) {
-            $i = 1;
-            $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-                $this->order->invoice_series . "_" . $serie . "_" . $date . "(" . $i . ")" . ".xml";
-            while (file_exists($newpath)) {
-                $i++;
-                $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-                    $this->order->invoice_series . "_" . $serie . "_" . $date . "(" . $i . ")" . ".xml";
-            }
-            $xmlPath = $newpath;
-        }
-
-        if ($type === 'invoice_xml') {
-            $data = $this->order->invoice_date;
-        } else {
-            $data = $this->order->storno_date;
-        }
-        Storage::disk('public_upload')->put($xmlPath, $xml->asXML());
-        Invoice::create([
-            'account_id' => $this->order->account_id,
-            'order_id' => $this->order->id,
-            'date' => $data,
-            'type' => $type,
-            'path' => $xmlPath
-        ]);
-    }
-
-    public function generate_storno()
-    {
-        if (!$this->order->external_storno_number) {
-            session()->flash('notification', [
-                'message' => 'Please generate storno number first!',
-                'type' => 'warning',
-                'title' => 'Information missing'
-            ]);
-            return;
-        }
-
-        if (!$this->order->storno_date) {
-            session()->flash('notification', [
-                'message' => 'Please select storno date first!',
-                'type' => 'warning',
-                'title' => 'Information missing'
-            ]);
-            return;
-        }
-
-        // Folder system
-        $StornoPath = 'invoices/';
-        $stornoDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date); // Parse the invoice_date
-        $yearMonthPath = $StornoPath . $stornoDate->year . '/' . $stornoDate->format('F');
-
-        if (!File::exists($yearMonthPath)) {
-            File::makeDirectory($yearMonthPath, 0755, true);
-        }
+if (!File::exists($yearMonthPath)) {
+File::makeDirectory($yearMonthPath, 0755, true);
+}
 
 
+$xmlPath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $serie . "_" . $date . ".xml";
+if (file_exists($xmlPath)) {
+$i = 1;
+$newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $serie . "_" . $date . "(" . $i . ")" . ".xml";
+while (file_exists($newpath)) {
+$i++;
+$newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $serie . "_" . $date . "(" . $i . ")" . ".xml";
+}
+$xmlPath = $newpath;
+}
 
-        $date = $stornoDate->format('d-m-Y');
+if ($type === 'invoice_xml') {
+$data = $this->order->invoice_date;
+} else {
+$data = $this->order->storno_date;
+}
+Storage::disk('public_upload')->put($xmlPath, $xml->asXML());
+Invoice::create([
+'account_id' => $this->order->account_id,
+'order_id' => $this->order->id,
+'date' => $data,
+'type' => $type,
+'path' => $xmlPath
+]);
+}
 
-        $filePath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-            $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . ".pdf";
-        if (file_exists($filePath)) {
-            $i = 1;
-            $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-                $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
-            while (file_exists($newpath)) {
-                $i++;
-                $newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
-                    $this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
-            }
-            $filePath = $newpath;
-        }
+public function generate_storno()
+{
+if (!$this->order->external_storno_number) {
+session()->flash('notification', [
+'message' => 'Please generate storno number first!',
+'type' => 'warning',
+'title' => 'Information missing'
+]);
+return;
+}
 
-        if ($this->order->account->type === 'individual') {
-            $acc = $this->order->account->name;
-            $adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
-                $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
-                $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
-        } else {
-            $acc = $this->order->account->company_name;
-            $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
-                "CIF:" . $this->order->account->registration_code . "<br>" .
-                $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-                $this->order->account->addresses->where('type', 'billing')->first()->county;
-        }
+if (!$this->order->storno_date) {
+session()->flash('notification', [
+'message' => 'Please select storno date first!',
+'type' => 'warning',
+'title' => 'Information missing'
+]);
+return;
+}
 
-        // generate PDF
-        $htmlContent = "
+// Folder system
+$StornoPath = 'invoices/';
+$stornoDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date); // Parse the invoice_date
+$yearMonthPath = $StornoPath . $stornoDate->year . '/' . $stornoDate->format('F');
+
+if (!File::exists($yearMonthPath)) {
+File::makeDirectory($yearMonthPath, 0755, true);
+}
+
+
+
+$date = $stornoDate->format('d-m-Y');
+
+$filePath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . ".pdf";
+if (file_exists($filePath)) {
+$i = 1;
+$newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
+while (file_exists($newpath)) {
+$i++;
+$newpath = $yearMonthPath . "/" . (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' .
+$this->order->invoice_series . "_" . $this->order->external_storno_number . "_" . $date . "(" . $i . ")" . ".pdf";
+}
+$filePath = $newpath;
+}
+
+if ($this->order->account->type === 'individual') {
+$acc = $this->order->account->name;
+$adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
+$this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
+$this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->zipcode;
+} else {
+$acc = $this->order->account->company_name;
+$adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
+"CIF:" . $this->order->account->registration_code . "<br>" .
+$this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
+$this->order->account->addresses->where('type', 'billing')->first()->county;
+}
+
+// generate PDF
+$htmlContent = "
 <html>
 
 <head>
@@ -1142,14 +1254,14 @@ class ShowOrder extends Component
         <tr>
             <td class='ff'></td>
             <td class='ff'>" . (app()->has('label_invoice_series') ? app('label_invoice_series') : 'Series: ') .
-            $this->order->invoice_series . " - " .
-            (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
-            $this->order->external_storno_number . "</td>
+                $this->order->invoice_series . " - " .
+                (app()->has('label_invoice_number') ? app('label_invoice_number') : 'Number:') .
+                $this->order->external_storno_number . "</td>
         </tr>
         <tr>
             <td class='ff'></td>
             <td class='ff'>" . (app()->has('label_invoice_date') ? app('label_invoice_date') : 'Date: ') .
-            $this->order->storno_date . "</td>
+                $this->order->storno_date . "</td>
         </tr>
         <tr>
             <td class='ff'></td>
@@ -1165,7 +1277,7 @@ class ShowOrder extends Component
         </tr>
         <tr>
             <td class='infotd'>" . (app()->has('label_invoice_furnizor') ? app('label_invoice_furnizor') : 'Furnizor: ')
-            . "</td>
+                . "</td>
             <td class='infotd'>" . (app()->has('label_invoice_client') ? app('label_invoice_client') : 'Client: ') . "
             </td>
         </tr>
@@ -1180,7 +1292,7 @@ class ShowOrder extends Component
     <table border='1' cellpadding='5' cellspacing='0' width='100%''>
                     <thead>
                         <tr>
-                            <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.') . "</th>
+                            <th>" . (app()->has(' label_invoice_th_nr') ? app('label_invoice_th_nr') : 'Nr. Crt.' ) . "</th>
                             <th>" . (app()->has('label_invoice_th_name') ? app('label_invoice_th_name') : 'Denumire
         Articol/Serviciu') . "</th>
         <th>" . (app()->has('label_invoice_th_um') ? app('label_invoice_th_um') : 'U.M') . "</th>
@@ -1196,28 +1308,28 @@ class ShowOrder extends Component
         </thead>
         <tbody>";
 
-        $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
-        $totalval = 0;
-        $i = 0;
-        if ($voucherValue && $voucherValue != 0) {
+            $voucherValue = $this->order->voucher_value + $this->order->promotion_value;
+            $totalval = 0;
+            $i = 0;
+            if ($voucherValue && $voucherValue != 0) {
             $vatGroups = [];
             $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
-        }
-        foreach ($this->order->orders as $item) {
+            }
+            foreach ($this->order->orders as $item) {
             $vatRate = (int) $item->vat;
             $pu = $item->price / (1 + ($vatRate / 100));
             $totalval += $pu * $item->quantity;
 
             if ($voucherValue && $voucherValue != 0) {
-                if (!isset($vatGroups[$vatRate])) {
-                    $vatGroups[$vatRate] = [
-                        'totalpu' => 0,
-                        'total' => 0,
-                    ];
-                }
-                $vatGroups[$vatRate]['totalpu'] += (($item->price / $amountnovoucher) * $item->quantity * $voucherValue) /
-                    (1 + ($vatRate / 100));
-                $vatGroups[$vatRate]['total'] += ($item->price / $amountnovoucher) * $item->quantity * $voucherValue;
+            if (!isset($vatGroups[$vatRate])) {
+            $vatGroups[$vatRate] = [
+            'totalpu' => 0,
+            'total' => 0,
+            ];
+            }
+            $vatGroups[$vatRate]['totalpu'] += (($item->price / $amountnovoucher) * $item->quantity * $voucherValue) /
+            (1 + ($vatRate / 100));
+            $vatGroups[$vatRate]['total'] += ($item->price / $amountnovoucher) * $item->quantity * $voucherValue;
             }
 
 
@@ -1235,11 +1347,11 @@ class ShowOrder extends Component
                 <td> - " . number_format($item->price * $item->quantity, 2) . "</td>
             </tr>";
             $i++;
-        }
-        if ($voucherValue && $voucherValue != 0) {
+            }
+            if ($voucherValue && $voucherValue != 0) {
             foreach ($vatGroups as $vatRate => $group) {
-                $totalval -= $group['totalpu'];
-                $htmlContent .= "
+            $totalval -= $group['totalpu'];
+            $htmlContent .= "
             <tr>
                 <td>" . ($i + 1) . "</td>
                 <td>" . (app()->has('label_invoice_th_voucher') ? app('label_invoice_th_voucher') : 'Reducere') . "</td>
@@ -1251,11 +1363,11 @@ class ShowOrder extends Component
                 <td>" . +number_format(+ ($group['total'] - $group['totalpu']), 2) . "</td>
                 <td>" . +number_format(+$group['total'], 2) . "</td>
             </tr>";
-                $i++;
+            $i++;
             }
-        }
-        // delivery sistem
-        $htmlContent .= "
+            }
+            // delivery sistem
+            $htmlContent .= "
             <tr>
                 <td>" . ($i + 1) . "</td>
                 <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "
@@ -1266,23 +1378,23 @@ class ShowOrder extends Component
                 <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
                 <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
                 <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 /
-            100)))), 2) . "</td>
+                    100)))), 2) . "</td>
                 <td>" . -number_format($this->order->delivery_price, 2) . "</td>
             </tr>";
-        $totalval += $this->order->delivery_price / (1 + (19 / 100));
-        // total row
-        $htmlContent .= "
+            $totalval += $this->order->delivery_price / (1 + (19 / 100));
+            // total row
+            $htmlContent .= "
             <tr>
                 <td colspan='6' style='font-weight: 700;text-align:right'><span>" .
-            (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span>
+                        (app()->has('label_invoice_total_prev') ? app('label_invoice_total_prev') : 'Total') . "</span>
                 </td>
                 <td style='font-weight: 700;'><span> -" . number_format($totalval, 2) . "</span></td>
                 <td style='font-weight: 700;'><span>" . -number_format($this->order->final_amount - $totalval, 2) .
-            "</span></td>
+                        "</span></td>
                 <td style='font-weight: 700;'><span> -" . number_format($this->order->final_amount, 2) . "</span></td>
             </tr>";
 
-        $htmlContent .= "
+            $htmlContent .= "
         </tbody>
     </table>
     <p style='text-align:right'><strong>" . (app()->has('label_invoice_th_totalfinal') ?
@@ -1291,216 +1403,216 @@ class ShowOrder extends Component
             " " . (app()->has('global_currency_primary_symbol') ? app('global_currency_primary_symbol') : 'lei') .
             "</strong></p><br>
     <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number .
-            "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer
+        "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer
         label') . "</p>
 </body>
 
 </html>";
 
-        $pdf = PDF::loadHTML($htmlContent);
-        $pdf->save($filePath);
+$pdf = PDF::loadHTML($htmlContent);
+$pdf->save($filePath);
 
-        Invoice::create([
-            'account_id' => $this->order->account_id,
-            'order_id' => $this->order->id,
-            'date' => $this->order->storno_date,
-            'type' => 'storno',
-            'path' => $filePath
-        ]);
+Invoice::create([
+'account_id' => $this->order->account_id,
+'order_id' => $this->order->id,
+'date' => $this->order->storno_date,
+'type' => 'storno',
+'path' => $filePath
+]);
 
-        $vat = $this->order->final_amount - $totalval;
-        $type = 'storno_xml';
-        $this->generate_invoice_xml($totalval, $vat, $type);
+$vat = $this->order->final_amount - $totalval;
+$type = 'storno_xml';
+$this->generate_invoice_xml($totalval, $vat, $type);
 
-        session()->flash('notification', [
-            'message' => 'Storno generate successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
+session()->flash('notification', [
+'message' => 'Storno generate successfully!',
+'type' => 'success',
+'title' => 'Success'
+]);
+}
+
+public function render()
+{
+return view('livewire.show-order', [
+'order' => $this->order
+]);
+}
+public function getOrderProperty()
+{
+return $this->orderQuery;
+}
+public function getOrderQueryProperty()
+{
+return Order::with([
+'orders.product' => function ($query) {
+$query->withCount(['orders_item as interim_quantity' => function ($query) {
+$query->whereHas('order', function ($q) {
+$q->where('status_id', 31);
+})->select(DB::raw('sum(quantity)'));
+}]);
+},
+'status',
+'account',
+'cart',
+'currency',
+'voucher',
+'payment'
+])->find($this->orderId);
+}
+public function mount($orderId)
+{
+$this->circle = "#37583b";
+$this->orderId = $orderId;
+foreach ($this->order->orders as $orderItem) {
+
+$product = $orderItem->product;
+$interimQuantity = $product->quantity + $product->interim_quantity;
+
+if ($interimQuantity < $orderItem->quantity) {
+    $this->circle = "#4a0a0f";
     }
-
-    public function render()
-    {
-        return view('livewire.show-order', [
-            'order' => $this->order
-        ]);
     }
-    public function getOrderProperty()
-    {
-        return $this->orderQuery;
-    }
-    public function getOrderQueryProperty()
-    {
-        return Order::with([
-            'orders.product' => function ($query) {
-                $query->withCount(['orders_item as interim_quantity' => function ($query) {
-                    $query->whereHas('order', function ($q) {
-                        $q->where('status_id', 31);
-                    })->select(DB::raw('sum(quantity)'));
-                }]);
-            },
-            'status',
-            'account',
-            'cart',
-            'currency',
-            'voucher',
-            'payment'
-        ])->find($this->orderId);
-    }
-    public function mount($orderId)
-    {
-        $this->circle = "#37583b";
-        $this->orderId = $orderId;
-        foreach ($this->order->orders as $orderItem) {
-
-            $product = $orderItem->product;
-            $interimQuantity = $product->quantity + $product->interim_quantity;
-
-            if ($interimQuantity < $orderItem->quantity) {
-                $this->circle = "#4a0a0f";
-            }
-        }
     }
     public function canceledit()
     {
-        $this->edititem = null;
-        $this->record = [];
+    $this->edititem = null;
+    $this->record = [];
     }
     public function edititem()
     {
-        $this->statuses = Status::where('type', 'order')->get();
-        $this->record = [
-            'comments' => $this->order->comments,
-            'status_id' => $this->order->status_id,
-            'invoice_date' => $this->order->invoice_date,
-            'storno_date' => $this->order->storno_date,
-            'promotion_value' => $this->order->promotion_value,
-            'voucher_value' => $this->order->voucher_value,
-            'delivery_price' => $this->order->delivery_price
+    $this->statuses = Status::where('type', 'order')->get();
+    $this->record = [
+    'comments' => $this->order->comments,
+    'status_id' => $this->order->status_id,
+    'invoice_date' => $this->order->invoice_date,
+    'storno_date' => $this->order->storno_date,
+    'promotion_value' => $this->order->promotion_value,
+    'voucher_value' => $this->order->voucher_value,
+    'delivery_price' => $this->order->delivery_price
 
-        ];
-        $this->edititem = true;
+    ];
+    $this->edititem = true;
     }
     public function saveitem()
     {
-        $new = $this->record ?? null;
+    $new = $this->record ?? null;
 
-        if (!is_null($new)) {
-            $order = Order::find($this->orderId);
-            if (!$order) {
-                session()->flash('notification', [
-                    'message' => 'Order not found!',
-                    'type' => 'error',
-                    'title' => 'Error'
-                ]);
-                return;
-            }
+    if (!is_null($new)) {
+    $order = Order::find($this->orderId);
+    if (!$order) {
+    session()->flash('notification', [
+    'message' => 'Order not found!',
+    'type' => 'error',
+    'title' => 'Error'
+    ]);
+    return;
+    }
 
-            $oldStatus = $order->status_id;
+    $oldStatus = $order->status_id;
 
-            $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->value('id');
-            $checkPaymentId = Status::where('type', 'order')->where('name', 'check_payment')->value('id');
+    $statusCloseId = Status::where('type', 'order')->where('name', 'canceled')->value('id');
+    $checkPaymentId = Status::where('type', 'order')->where('name', 'check_payment')->value('id');
 
-            $updatableFields = [
-                'comments',
-                'invoice_date',
-                'storno_date',
-                'promotion_value',
-                'voucher_value',
-                'delivery_price'
-            ];
-            foreach ($updatableFields as $field) {
-                if (isset($new[$field])) {
-                    $order->$field = $new[$field];
-                }
-            }
+    $updatableFields = [
+    'comments',
+    'invoice_date',
+    'storno_date',
+    'promotion_value',
+    'voucher_value',
+    'delivery_price'
+    ];
+    foreach ($updatableFields as $field) {
+    if (isset($new[$field])) {
+    $order->$field = $new[$field];
+    }
+    }
 
-            if (isset($new['promotion_value']) || isset($new['voucher_value']) || isset($new['delivery_price'])) {
-                $order->final_amount = max(
-                    0,
-                    ($order->sum_amount ?? 0) + ($order->delivery_price ?? 0) - ($order->promotion_value ?? 0) - ($order->voucher_value
-                        ?? 0)
-                );
-            }
+    if (isset($new['promotion_value']) || isset($new['voucher_value']) || isset($new['delivery_price'])) {
+    $order->final_amount = max(
+    0,
+    ($order->sum_amount ?? 0) + ($order->delivery_price ?? 0) - ($order->promotion_value ?? 0) - ($order->voucher_value
+    ?? 0)
+    );
+    }
 
-            // Handle status change logic
-            if (isset($new['status_id']) && $oldStatus !== $new['status_id']) {
-                $order->status_id = $new['status_id'];
-                $order->updated_at = now();
+    // Handle status change logic
+    if (isset($new['status_id']) && $oldStatus !== $new['status_id']) {
+    $order->status_id = $new['status_id'];
+    $order->updated_at = now();
 
-                $shouldIncreaseStock = false;
-                $shouldDecreaseStock = false;
+    $shouldIncreaseStock = false;
+    $shouldDecreaseStock = false;
 
-                if ($oldStatus == $statusCloseId && $new['status_id'] != $checkPaymentId) {
-                    // If changing from "canceled" to any other status, reduce stock
-                    $shouldDecreaseStock = true;
-                } elseif ($new['status_id'] == $statusCloseId && $oldStatus != $checkPaymentId) {
-                    // If changing to "canceled", restore stock
-                    $shouldIncreaseStock = true;
-                } elseif ($oldStatus == $checkPaymentId && $new['status_id'] != $statusCloseId) {
-                    // If leaving "check_payment" and not going to "canceled", reduce stock
-                    $shouldDecreaseStock = true;
-                } elseif ($oldStatus != $statusCloseId && $new['status_id'] == $checkPaymentId) {
-                    // If moving to "check_payment" from any other status, increase stock
-                    $shouldIncreaseStock = true;
-                }
+    if ($oldStatus == $statusCloseId && $new['status_id'] != $checkPaymentId) {
+    // If changing from "canceled" to any other status, reduce stock
+    $shouldDecreaseStock = true;
+    } elseif ($new['status_id'] == $statusCloseId && $oldStatus != $checkPaymentId) {
+    // If changing to "canceled", restore stock
+    $shouldIncreaseStock = true;
+    } elseif ($oldStatus == $checkPaymentId && $new['status_id'] != $statusCloseId) {
+    // If leaving "check_payment" and not going to "canceled", reduce stock
+    $shouldDecreaseStock = true;
+    } elseif ($oldStatus != $statusCloseId && $new['status_id'] == $checkPaymentId) {
+    // If moving to "check_payment" from any other status, increase stock
+    $shouldIncreaseStock = true;
+    }
 
-                foreach ($order->orders as $orderItem) {
-                    if ($shouldIncreaseStock) {
-                        $orderItem->product->quantity += $orderItem->quantity;
-                    } elseif ($shouldDecreaseStock) {
-                        $orderItem->product->quantity -= $orderItem->quantity;
-                    }
-                    $orderItem->product->save();
-                }
-            }
+    foreach ($order->orders as $orderItem) {
+    if ($shouldIncreaseStock) {
+    $orderItem->product->quantity += $orderItem->quantity;
+    } elseif ($shouldDecreaseStock) {
+    $orderItem->product->quantity -= $orderItem->quantity;
+    }
+    $orderItem->product->save();
+    }
+    }
 
-            $order->save();
+    $order->save();
 
-            $this->emit('itemSaved');
-            session()->flash('notification', [
-                'message' => 'Record edited successfully!',
-                'type' => 'success',
-                'title' => 'Success'
-            ]);
-        }
+    $this->emit('itemSaved');
+    session()->flash('notification', [
+    'message' => 'Record edited successfully!',
+    'type' => 'success',
+    'title' => 'Success'
+    ]);
+    }
 
-        // Reset form data
-        $this->record = [];
-        $this->edititem = null;
+    // Reset form data
+    $this->record = [];
+    $this->edititem = null;
     }
 
     public function confirmItemRemoval()
     {
-        $this->delete = true;
+    $this->delete = true;
     }
     public function cancelItemRemoval()
     {
-        $this->delete = false;
+    $this->delete = false;
     }
     public function deleteRecord()
     {
-        $order = Order::findOrFail($this->orderId);
-        foreach ($order->orders as $orderitem) {
-            $orderitem->product->quantity += $orderitem->quantity;
-            $orderitem->product->save();
-            $orderitem->delete();
-        }
-
-        $invoices = Invoice::where('order_id', $this->orderId)->get();
-        foreach ($invoices as $invoice) {
-            $del = Invoice::find($invoice->id);
-            if (File::exists($del->path)) {
-                File::delete($del->path);
-            }
-            $del->delete();
-        }
-        $order->delete();
-        $this->delete = false;
-        return redirect()->route('orders')->with('notification', [
-            'message' => 'Record deleted successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
+    $order = Order::findOrFail($this->orderId);
+    foreach ($order->orders as $orderitem) {
+    $orderitem->product->quantity += $orderitem->quantity;
+    $orderitem->product->save();
+    $orderitem->delete();
     }
-}
+
+    $invoices = Invoice::where('order_id', $this->orderId)->get();
+    foreach ($invoices as $invoice) {
+    $del = Invoice::find($invoice->id);
+    if (File::exists($del->path)) {
+    File::delete($del->path);
+    }
+    $del->delete();
+    }
+    $order->delete();
+    $this->delete = false;
+    return redirect()->route('orders')->with('notification', [
+    'message' => 'Record deleted successfully!',
+    'type' => 'success',
+    'title' => 'Success'
+    ]);
+    }
+    }
