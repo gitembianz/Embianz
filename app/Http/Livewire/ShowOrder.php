@@ -85,7 +85,7 @@ class ShowOrder extends Component
                             'envelope' => 1,
                         ],
                         'weight' => 1,
-                        'cod' => $this->order->final_amount,
+                        'cod' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
                         'payment' => 'expeditor',
                         'refund' => '',
                         'returnPayment' => '',
