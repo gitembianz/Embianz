@@ -79,12 +79,21 @@
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
+  <button class="button button--primary button--centered" tooltip="Generate tokens for awb" tooltip-top
+   wire:click="generate_tokens()">
+   <svg>
+    <path
+     d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+    </path>
+   </svg>
+  </button>
   <div class="dropdown dropdown--right">
    {{-- Dropdown Button --}}
    <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Generate awb"
     tooltip-top>
     <span>Generate AWB</span>
    </button>
+
    {{-- Dropdown Content --}}
    <div class="dropdown__content">
     <div class="dropdown__container">

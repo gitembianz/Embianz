@@ -478,7 +478,16 @@ class ShowOrder extends Component
     }
 
 
-
+    public function generate_tokens()
+    {
+        $this->get_fan_token();
+        $this->get_sameday_token();
+        session()->flash('notification', [
+            'message' => 'Tokens generated successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
 
     public function get_sameday_token()
     {
@@ -507,6 +516,8 @@ class ShowOrder extends Component
                     'updated_at' => now()
                 ]);
             }
+            $services = $this->get_services_sameday();
+            $addresses = $this->get_address_sameday();
             session()->flash('notification', [
                 'message' => 'Token generated successfully!',
                 'type' => 'success',
