@@ -501,6 +501,8 @@ class ShowOrder extends Component
     {
         $this->get_fan_token();
         $this->get_sameday_token();
+        $this->needupdatetokens = false;
+
         session()->flash('notification', [
             'message' => 'Tokens generated successfully!',
             'type' => 'success',
