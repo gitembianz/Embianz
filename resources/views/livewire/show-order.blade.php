@@ -21,49 +21,60 @@
  <aside>
   <div class="background background--center @if ($sameday) active @endif"></div>
   <div class="aside aside--confirm @if ($sameday) active @endif"
-   style="min-height: 50% !important; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+   style="@if (!$needupdatetokens) min-height: 50% !important;@else min-height: 175px !important; @endif padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
    <span style="font-size: 1.2em; font-weight: bold; margin-bottom: 10px; display: block;">
     Sameday AWB
    </span>
-   <span style="display: block;">
-    Please select a service
-   </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
-    <select wire:model.defer="service"
-     style="max-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
-     @foreach ($services as $service)
-      <option value="{{ $service['id'] }}">{{ $service['name'] }}</option>
-     @endforeach
-    </select>
-   </div>
-   <span style="display: block;">
-    Select a pickup-point
-   </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
-    <select wire:model.defer="pickup_point"
-     style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
-     @foreach ($addresses as $address)
-      <option value="{{ $address['id'] }}">{{ $address['alias'] }}, {{ $address['address'] }}</option>
-     @endforeach
-    </select>
-   </div>
-   <span style="display: block;">
-    Select a pickup contact person
-   </span>
-   <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
-    <select wire:model.defer="person"
-     style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
-     @foreach ($persons as $person)
-      <option value="{{ $person['id'] }}">{{ $person['name'] }}</option>
-     @endforeach
-    </select>
-   </div>
-   <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
-    <span>Generate AWB</span>
-   </button>
-   <button class="button button--danger button--long" wire:click.prevent="$set('sameday', false)">
-    <span>Cancel</span>
-   </button>
+   @if (!$needupdatetokens)
+
+    <span style="display: block;">
+     Please select a service
+    </span>
+    <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
+     <select wire:model.defer="service"
+      style="max-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+      @foreach ($services as $service)
+       <option value="{{ $service['id'] }}">{{ $service['name'] }}</option>
+      @endforeach
+     </select>
+    </div>
+    <span style="display: block;">
+     Select a pickup-point
+    </span>
+    <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
+     <select wire:model.defer="pickup_point"
+      style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+      @foreach ($addresses as $address)
+       <option value="{{ $address['id'] }}">{{ $address['alias'] }}, {{ $address['address'] }}</option>
+      @endforeach
+     </select>
+    </div>
+    <span style="display: block;">
+     Select a pickup contact person
+    </span>
+    <div class="input__tabs" style="max-height: 100px; overflow-y: auto; margin-top:0!important;">
+     <select wire:model.defer="person"
+      style="min-height: 40px; width: 100%; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+      @foreach ($persons as $person)
+       <option value="{{ $person['id'] }}">{{ $person['name'] }}</option>
+      @endforeach
+     </select>
+    </div>
+    <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
+     <span>Generate AWB</span>
+    </button>
+    <button class="button button--danger button--long" wire:click.prevent="$set('sameday', false)">
+     <span>Cancel</span>
+    </button>
+   @else
+    <span style="display: block; margin-bottom: 10px; font-size: 1.2em; font-weight: bold;">
+     Please update your tokens for generating sameday AWB
+    </span>
+    <button class="button button--danger button--long" wire:click.prevent="$set('sameday', false)">
+     <span>Cancel</span>
+    </button>
+   @endif
+
   </div>
  </aside>
 

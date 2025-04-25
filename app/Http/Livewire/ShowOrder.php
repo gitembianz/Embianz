@@ -39,6 +39,7 @@ class ShowOrder extends Component
     public $circle;
     public $fanUrl = 'https://api.fancourier.ro';
     public $samUrl = 'api.sameday.ro/';
+    public $needupdatetokens = false;
 
     protected $listeners = [
         'refreshComponent' => '$refresh'
@@ -53,8 +54,26 @@ class ShowOrder extends Component
             $this->person = $this->persons[0]['id'] ?? null;
             $this->service = $this->services[0]['id'] ?? null;
             $this->pickup_point = $this->addresses[0]['id'] ?? null;
+
+            if (
+                is_null($this->person) ||
+                is_null($this->service) ||
+                is_null($this->pickup_point) ||
+                is_null($this->addresses) ||
+                is_null($this->services)
+            ) {
+                $this->needupdatetokens = true;
+
+                session()->flash('notification', [
+                    'message' => 'Please generate Tokens first!',
+                    'type' => 'danger',
+                    'title' => 'Error'
+                ]);
+                return;
+            }
         }
     }
+
 
     public function updatedPickupPoint($value)
     {
