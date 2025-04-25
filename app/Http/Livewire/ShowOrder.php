@@ -39,6 +39,7 @@ class ShowOrder extends Component
     public $circle;
     public $fanUrl = 'https://api.fancourier.ro';
     public $samUrl = 'api.sameday.ro/';
+    public $needupdatetokens = false;
 
     protected $listeners = [
         'refreshComponent' => '$refresh'
@@ -53,8 +54,26 @@ class ShowOrder extends Component
             $this->person = $this->persons[0]['id'] ?? null;
             $this->service = $this->services[0]['id'] ?? null;
             $this->pickup_point = $this->addresses[0]['id'] ?? null;
+
+            if (
+                is_null($this->person) ||
+                is_null($this->service) ||
+                is_null($this->pickup_point) ||
+                is_null($this->addresses) ||
+                is_null($this->services)
+            ) {
+                $this->needupdatetokens = true;
+
+                session()->flash('notification', [
+                    'message' => 'Please generate Tokens first!',
+                    'type' => 'danger',
+                    'title' => 'Error'
+                ]);
+                return;
+            }
         }
     }
+
 
     public function updatedPickupPoint($value)
     {
@@ -478,7 +497,16 @@ class ShowOrder extends Component
     }
 
 
-
+    public function generate_tokens()
+    {
+        $this->get_fan_token();
+        $this->get_sameday_token();
+        session()->flash('notification', [
+            'message' => 'Tokens generated successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
 
     public function get_sameday_token()
     {
@@ -507,6 +535,8 @@ class ShowOrder extends Component
                     'updated_at' => now()
                 ]);
             }
+            $services = $this->get_services_sameday();
+            $addresses = $this->get_address_sameday();
             session()->flash('notification', [
                 'message' => 'Token generated successfully!',
                 'type' => 'success',
