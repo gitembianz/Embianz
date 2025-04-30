@@ -17,16 +17,28 @@
   </div>
  </aside>
 
- {{-- Sameday Services --}}
+ {{-- Sameday AWB's --}}
  <aside>
   <div class="background background--center @if ($sameday) active @endif"></div>
   <div class="aside aside--confirm @if ($sameday) active @endif"
-   style="@if (!$needupdatetokens) min-height: 45% !important;@else min-height: 175px !important; @endif">
-   <div class="tabs__content details__view active">
+   style="@if (!$needupdatetokens) min-height: 85% !important;@else min-height: 175px !important; @endif">
+   <div class="tabs__content details__view active" style="max-height: 100%;">
+    @if (isset($samedaymessage))
+     <span class="details__long" style="color: red !important;">
+      {{ $samedaymessage }}
+     </span>
+    @endif
     <span class="details__long"
      style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
      Sameday AWB
     </span>
+    <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
+     <span>Generate AWB</span>
+    </button>
+    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+     wire:click.prevent="$set('sameday', false)">
+     <span>Cancel</span>
+    </button>
     @if (!$needupdatetokens)
      <div class="input__tabs details__long">
       <select wire:model.defer="service">
@@ -34,7 +46,7 @@
         <option value="{{ $service['id'] }}">{{ $service['name'] }}</option>
        @endforeach
       </select>
-      <label> Please select a service</label>
+      <label> Service</label>
      </div>
 
      <div class="input__tabs details__long">
@@ -44,7 +56,7 @@
          {{ $address['address'] }}</option>
        @endforeach
       </select>
-      <label>Please select a pickup-point</label>
+      <label>Pickup-point</label>
      </div>
 
      <div class="input__tabs details__long">
@@ -56,24 +68,80 @@
       <label>Please select a pickup contact person</label>
      </div>
 
-     <div class="input__tabs details__long">
-      <input type="number" step="0.01" min="0" wire:model.defer="parcels.0.weight">
-      <label>Please type a weight for parcel (kg)</label>
+     <div class="input__tabs">
+      <input type="number" step="0.01" min="0" wire:model.defer="parcel.weight">
+      <label>Parcel weight (kg)</label>
      </div>
 
-     <div class="input__tabs details__long">
-      <input type="number" step="0.01" min="0" wire:model.defer="parcels.0.length">
-      <label>Please type a length for parcel (cm)</label>
+     <div class="input__tabs">
+      <input type="number" step="0.01" min="0" wire:model.defer="parcel.length">
+      <label>Parcel length (cm)</label>
      </div>
-     <div class="input__tabs details__long">
-      <input type="number" step="0.01" min="0" wire:model.defer="parcels.0.width">
-      <label>Please type a width for parcel (cm)</label>
+     <div class="input__tabs">
+      <input type="number" step="0.01" min="0" wire:model.defer="parcel.width">
+      <label>Parcel width (cm)</label>
      </div>
-     <div class="input__tabs details__long" style="margin-bottom: 10px !important">
-      <input type="number" step="0.01" min="0" wire:model.defer="parcels.0.height">
-      <label>Please type a height for parcel (cm)</label>
+     <div class="input__tabs">
+      <input type="number" step="0.01" min="0" wire:model.defer="parcel.height">
+      <label>Parcel height (cm)</label>
      </div>
 
+     {{-- recipe info --}}
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.name">
+      <label>Name</label>
+     </div>
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.phoneNumber">
+      <label>Phone</label>
+     </div>
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.countyString">
+      <label>CountyString</label>
+     </div>
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.cityString">
+      <label>CityString</label>
+     </div>
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.address">
+      <label>Address</label>
+     </div>
+     <div class="input__tabs">
+      <input type="text" wire:model.defer="recipe.postalCode">
+      <label>PostalCode</label>
+     </div>
+     @if (!empty($recipe['companyName']))
+      <div class="input__tabs">
+       <input type="text" wire:model.defer="recipe.companyName">
+       <label>CompanyName</label>
+      </div>
+     @endif
+     @if (!empty($recipe['companyOnrcNumber']))
+      <div class="input__tabs">
+       <input type="text" wire:model.defer="recipe.companyOnrcNumber">
+       <label>CompanyOnrcNumber</label>
+      </div>
+     @endif
+
+     @if (!empty($recipe['companyBank']))
+      <div class="input__tabs">
+       <input type="text" wire:model.defer="recipe.companyBank">
+       <label>CompanyBank</label>
+      </div>
+     @endif
+     @if (!empty($recipe['companyCui']))
+      <div class="input__tabs">
+       <input type="text" wire:model.defer="recipe.companyCui">
+       <label>CompanyCui</label>
+      </div>
+     @endif
+     @if (!empty($recipe['companyIban']))
+      <div class="input__tabs details__long">
+       <input type="text" wire:model.defer="recipe.companyIban">
+       <label>CompanyIban</label>
+      </div>
+     @endif
      <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
       <span>Generate AWB</span>
      </button>
@@ -93,6 +161,88 @@
   </div>
  </aside>
 
+ {{-- Fancourier AWB's --}}
+ <aside>
+  <div class="background background--center @if ($fancourier) active @endif"></div>
+  <div class="aside aside--confirm @if ($fancourier) active @endif"
+   style="min-height: 45% !important;">
+   <div class="tabs__content details__view active" style="max-height: 100%;">
+    @if (isset($fancouriermessage))
+     <span class="details__long" style="color: red !important;">
+      {{ $fancouriermessage }}
+     </span>
+    @endif
+    <span class="details__long"
+     style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+     Fancourier AWB
+    </span>
+    <div class="input__tabs">
+     <input type="number" step="0.01" min="0" wire:model.defer="parcel.weight">
+     <label>Parcel weight (kg)</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="number" step="0.01" min="0" wire:model.defer="parcel.length">
+     <label>Parcel length (cm)</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="number" step="0.01" min="0" wire:model.defer="parcel.width">
+     <label>Parcel width (cm)</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="number" step="0.01" min="0" wire:model.defer="parcel.height">
+     <label>Parcel height (cm)</label>
+    </div>
+
+    {{-- recipe info --}}
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.name">
+     <label>Name</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.phoneNumber">
+     <label>Phone</label>
+    </div>
+
+    <div class="input__tabs details__long">
+     <input type="text" wire:model.defer="recipe.email">
+     <label>Email</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.countyString">
+     <label>CountyString</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.cityString">
+     <label>CityString</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.address">
+     <label>Address</label>
+    </div>
+
+    <div class="input__tabs">
+     <input type="text" wire:model.defer="recipe.postalCode">
+     <label>PostalCode</label>
+    </div>
+
+    <button class="button button--primary button--long" wire:click.prevent="generate_awb_fancourier()">
+     <span>Generate AWB</span>
+    </button>
+    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+     wire:click.prevent="$set('sameday', false)">
+     <span>Cancel</span>
+    </button>
+   </div>
+  </div>
+ </aside>
+
  {{-- Navigation --}}
  <nav class="nav--controls">
   @if ($order->status_id === app('global_order_processing'))
@@ -100,7 +250,8 @@
   @endif
   <h1 class="table--name">Order: {{ $order->name }}</h1>
   {{-- Refresh Button --}}
-  <a class="button button--primary button--centered" tooltip="Back to Order" tooltip-top href="{{ route('orders') }}">
+  <a class="button button--primary button--centered" tooltip="Back to Order" tooltip-top
+   href="{{ route('orders') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
@@ -123,7 +274,7 @@
    {{-- Dropdown Content --}}
    <div class="dropdown__content">
     <div class="dropdown__container">
-     <button class="button button--primary button--long" wire:click="generate_awb_fancourier()">
+     <button class="button button--primary button--long" wire:click="$set('fancourier', true)">
       fancourier
      </button>
      <button class="button button--primary button--long" wire:click="$set('sameday', true)">
@@ -134,8 +285,8 @@
   </div>
   <div class="dropdown dropdown--right">
    {{-- Dropdown Button --}}
-   <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Actions with checked"
-    tooltip-top>
+   <button class="button button--primary  button--centered button--long dropdown__button"
+    tooltip="Actions with checked" tooltip-top>
     <span>Invoice</span>
    </button>
    {{-- Dropdown Content --}}
@@ -152,8 +303,8 @@
   </div>
   <div class="dropdown dropdown--right">
    {{-- Dropdown Button --}}
-   <button class="button button--primary  button--centered button--long dropdown__button" tooltip="Actions with checked"
-    tooltip-top>
+   <button class="button button--primary  button--centered button--long dropdown__button"
+    tooltip="Actions with checked" tooltip-top>
     <span>Storno</span>
    </button>
    {{-- Dropdown Content --}}

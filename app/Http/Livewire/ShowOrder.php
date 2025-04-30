@@ -27,6 +27,7 @@ class ShowOrder extends Component
     public $edititem = null;
     public bool $delete = false;
     public bool $sameday = false;
+    public bool $fancourier = false;
     public $services = [];
     public $addresses = [];
     public $persons = [];
@@ -40,18 +41,47 @@ class ShowOrder extends Component
     public $fanUrl = 'https://api.fancourier.ro';
     public $samUrl = 'api.sameday.ro/';
     public $needupdatetokens = false;
-    public array $parcels = [
-        [
-            'weight' => 0.1,
-            'length' => 15,
-            'width' => 10,
-            'height' => 3,
-        ]
+    public $samedaymessage = null;
+    public $fancouriermessage = null;
+    public array $parcel = [
+        'weight' => 0.1,
+        'length' => 15,
+        'width' => 10,
+        'height' => 3,
+    ];
+    public array $recipe = [
+        'name' => null,
+        'phoneNumber' => null,
+        'email' => null,
+        'countyString' => null,
+        'cityString' => null,
+        'address' => null,
+        'postalCode' => null,
+        'companyName' => null,
+        'companyOnrcNumber' => null,
+        'companyIban' => null,
+        'companyBank' => null,
+        'companyCui' => null,
     ];
 
     protected $listeners = [
         'refreshComponent' => '$refresh'
     ];
+
+    public function updatedFancourier($value)
+    {
+        if ($value) {
+            $this->recipe = [
+                'name' => $this->order->account->name,
+                'phoneNumber' => $this->order->account->phone,
+                'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
+                'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
+                'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
+                'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+                'email' => $this->order->account->email,
+            ];
+        }
+    }
 
     public function updatedSameday($value)
     {
@@ -79,6 +109,19 @@ class ShowOrder extends Component
                 ]);
                 return;
             }
+            $this->recipe = [
+                'name' => $this->order->account->name,
+                'phoneNumber' => $this->order->account->phone,
+                'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
+                'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
+                'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
+                'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+                'companyName' => $this->order->account->type != 'individual' ? $this->order->account->company_name : null,
+                'companyOnrcNumber' => $this->order->account->type != 'individual' ? $this->order->account->registration_number : null,
+                'companyIban' => $this->order->account->type != 'individual' ? $this->order->account->account : null,
+                'companyBank' => $this->order->account->type != 'individual' ? $this->order->account->bank_name : null,
+                'companyCui' => $this->order->account->type != 'individual' ? $this->order->account->registration_code : null,
+            ];
         }
     }
 
@@ -104,35 +147,36 @@ class ShowOrder extends Component
             'shipments' => [
                 [
                     'info' => [
-                        'service' => 'Cont Colector',
+                        'service' => $this->order->payment->name === 'cash' ? 'Cont Colector' : 'Standard',
                         'bank' => '',
                         'bankAccount' => '',
                         'packages' => [
-                            'parcel' => 0,
-                            'envelope' => 1,
+                            'parcel' => 1,
+                            'envelope' => 0,
                         ],
-                        'weight' => 1,
+
+                        'weight' => $this->parcel['weight'],
                         'cod' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
                         'payment' => 'expeditor',
-                        'refund' => '',
-                        'returnPayment' => '',
+                        'refund' => null,
+                        'returnPayment' => null,
                         'observation' => 'POS',
                         'content' => 'Comanda semintetop.ro',
                         'dimensions' => [
-                            'length' => 15,
-                            'height' => 3,
-                            'width' => 10,
+                            'length' => $this->parcel['length'],
+                            'height' => $this->parcel['height'],
+                            'width' => $this->parcel['width'],
                         ],
                     ],
                     'recipient' => [
-                        'name' => $this->order->account->name,
-                        'phone' => $this->order->account->phone,
-                        'email' => $this->order->account->email,
+                        'name' => $this->recipe['name'],
+                        'phone' => $this->recipe['phoneNumber'],
+                        'email' => $this->recipe['email'],
                         'address' => [
-                            'county' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
-                            'locality' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
-                            'street' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
-                            'zipCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+                            'county' => $this->recipe['countyString'],
+                            'locality' => $this->recipe['cityString'],
+                            'street' => $this->recipe['address'],
+                            'zipCode' => $this->recipe['postalCode'],
                         ],
                     ],
                 ],
@@ -151,11 +195,69 @@ class ShowOrder extends Component
                     CURLOPT_SSL_VERIFYPEER => false,
                 ],
             ]);
+            $responseData = json_decode($response->getBody(), true);
+            if ($responseData['response'][0]['errors'] == null) {
+                $awbNumber = $responseData['response'][0]['awbNumber'];
+
+                $pdfResponse = $client->get($this->fanUrl . '/awb/label', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Content-Type' => 'application/pdf',
+                    ],
+                    'query' => [
+                        'clientId' => $client_id,
+                        'awbs[]' => $awbNumber,
+                        'pdf' => 1,
+                    ],
+                    'curl' => [
+                        CURLOPT_SSL_VERIFYPEER => false,
+                    ],
+                ]);
+
+                $pdfContent = $pdfResponse->getBody()->getContents();
+                $dir = public_path('documents');
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                $pdfFilePath = $dir . '/awbfancourier_' . $this->order->order_number . '.pdf';
+
+                file_put_contents($pdfFilePath, $pdfContent);
+                $path = 'documents/awbfancourier_' . $this->order->order_number . '.pdf';
+                Awbs::create([
+                    'order_id' => $this->order->id,
+                    'date' => now(),
+                    'type' => 'fancourier',
+                    'path' => $path
+                ]);
+                session()->flash('notification', [
+                    'message' => 'AWB generated successfully!',
+                    'type' => 'success',
+                    'title' => 'Success'
+                ]);
+                $this->fancourier = false;
+                return;
+            } else {
+                $errors = $responseData['response'][0]['errors'];
+
+                if (!empty($errors)) {
+                    $errorMessages = collect($errors)
+                        ->map(function ($messages, $field) {
+                            return implode(', ', $messages);
+                        })
+                        ->implode(' | ');
+
+                    session()->flash('notification', [
+                        'message' => $errorMessages,
+                        'type' => 'warning',
+                        'title' => 'Warning'
+                    ]);
+                    $this->fancouriermessage = $errorMessages;
+                    return;
+                }
+            }
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
-
-            if (str_contains($errorMessage, 'credentials do not match') || str_contains($errorMessage, 'token expired')) {
-                // Refresh the token and retry
+            if (str_contains($errorMessage, 'credentials') || str_contains($errorMessage, 'token expired')) {
                 $newToken = $this->get_fan_token();
                 return $this->generate_awb_fancourier();
             }
@@ -165,67 +267,6 @@ class ShowOrder extends Component
                 'type' => 'error',
                 'title' => 'Error'
             ]);
-        }
-
-
-        $responseData = json_decode($response->getBody(), true);
-        if ($responseData['response'][0]['errors'] == null) {
-            $awbNumber = $responseData['response'][0]['awbNumber'];
-
-            $pdfResponse = $client->get($this->fanUrl . '/awb/label', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Content-Type' => 'application/pdf',
-                ],
-                'query' => [
-                    'clientId' => $client_id,
-                    'awbs[]' => $awbNumber,
-                    'pdf' => 1,
-                ],
-                'curl' => [
-                    CURLOPT_SSL_VERIFYPEER => false,
-                ],
-            ]);
-
-            $pdfContent = $pdfResponse->getBody()->getContents();
-            $dir = public_path('documents');
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-            }
-            $pdfFilePath = $dir . '/awbfancourier_' . $this->order->order_number . '.pdf';
-
-            file_put_contents($pdfFilePath, $pdfContent);
-            $path = 'documents/awbfancourier_' . $this->order->order_number . '.pdf';
-            Awbs::create([
-                'order_id' => $this->order->id,
-                'date' => now(),
-                'type' => 'fancourier',
-                'path' => $path
-            ]);
-            session()->flash('notification', [
-                'message' => 'AWB generated successfully!',
-                'type' => 'success',
-                'title' => 'Success'
-            ]);
-            return;
-        } else {
-            $errors = $responseData['response'][0]['errors'];
-
-            if (!empty($errors)) {
-                $errorMessages = collect($errors)
-                    ->map(function ($messages, $field) {
-                        return implode(', ', $messages);
-                    })
-                    ->implode(' | ');
-
-                session()->flash('notification', [
-                    'message' => $errorMessages,
-                    'type' => 'warning',
-                    'title' => 'Warning'
-                ]);
-
-                return;
-            }
         }
     }
 
@@ -408,7 +449,7 @@ class ShowOrder extends Component
             'service' => (int) $this->service,
             'packageType' => 0,
             'packageNumber' => 1,
-            'packageWeight' => $this->parcels[0]['weight'],
+            'packageWeight' => $this->parcel['weight'],
             'insuredValue' => 0,
             'cashOnDelivery' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
             'awbPayment' => 1,
@@ -416,26 +457,26 @@ class ShowOrder extends Component
 
 
             'awbRecipient' => array_merge([
-                'name' => $this->order->account->name,
-                'phoneNumber' => $this->order->account->phone,
+                'name' => $this->recipe['name'],
+                'phoneNumber' => $this->recipe['phoneNumber'],
                 'personType' => $this->order->account->type === 'individual' ? 0 : 1,
-                'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()?->county,
-                'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()?->city,
-                'address' => $this->order->account->addresses->where('type', 'shipping')->first()?->address1,
-                'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()?->zipcode,
+                'countyString' => $this->recipe['countyString'],
+                'cityString' => $this->recipe['cityString'],
+                'address' => $this->recipe['address'],
+                'postalCode' => $this->recipe['postalCode'],
             ], $this->order->account->type !== 'individual' ? [
-                'companyName' => $this->order->account->company_name,
-                'companyOnrcNumber' => $this->order->account->registration_number,
-                'companyIban' => $this->order->account->account ?? null,
-                'companyBank' => $this->order->account->bank_name,
-                'companyCui' => $this->order->account->registration_code,
+                'companyName' => $this->recipe['companyName'],
+                'companyOnrcNumber' => $this->recipe['companyOnrcNumber'],
+                'companyIban' => $this->recipe['companyIban'],
+                'companyBank' => $this->recipe['companyBank'],
+                'companyCui' => $this->recipe['companyCui'],
             ] : []),
             'parcels' => [
                 [
-                    'weight' => $this->parcels[0]['weight'],
-                    'length' =>  $this->parcels[0]['length'],
-                    'width' =>  $this->parcels[0]['width'],
-                    'height' =>  $this->parcels[0]['height'],
+                    'weight' => $this->parcel['weight'],
+                    'length' =>  $this->parcel['length'],
+                    'width' =>  $this->parcel['width'],
+                    'height' =>  $this->parcel['height'],
                 ],
             ],
         ];
@@ -484,6 +525,21 @@ class ShowOrder extends Component
                     'path' => $path
                 ]);
 
+                $this->recipe = [
+                    'name' => null,
+                    'phoneNumber' => null,
+                    'email' => null,
+                    'countyString' => null,
+                    'cityString' => null,
+                    'address' => null,
+                    'postalCode' => null,
+                    'companyName' => null,
+                    'companyOnrcNumber' => null,
+                    'companyIban' => null,
+                    'companyBank' => null,
+                    'companyCui' => null,
+                ];
+
                 session()->flash('notification', [
                     'message' => 'AWB generated and saved successfully!',
                     'type' => 'success',
@@ -493,6 +549,20 @@ class ShowOrder extends Component
                 throw new \Exception('AWB generated but PDF link not found.');
             }
             $this->sameday = false;
+            $this->recipe = [
+                'name' => null,
+                'phoneNumber' => null,
+                'email' => null,
+                'countyString' => null,
+                'cityString' => null,
+                'address' => null,
+                'postalCode' => null,
+                'companyName' => null,
+                'companyOnrcNumber' => null,
+                'companyIban' => null,
+                'companyBank' => null,
+                'companyCui' => null,
+            ];
             session()->flash('notification', [
                 'message' => 'AWB generated successfully!',
                 'type' => 'success',
@@ -504,6 +574,14 @@ class ShowOrder extends Component
 
             if ($e->hasResponse()) {
                 $errorBody = json_decode($e->getResponse()->getBody(), true);
+                if (
+                    isset($errorBody['error']['message']) &&
+                    $errorBody['error']['message'] === 'Invalid credentials.'
+                ) {
+                    $token = $this->get_sameday_token();
+
+                    return $this->generate_awb_sameday();
+                }
                 $allErrors = $this->extractErrors($errorBody['errors']['children'] ?? []);
 
                 session()->flash('notification', [
@@ -511,6 +589,7 @@ class ShowOrder extends Component
                     'type' => 'error',
                     'title' => 'Validation Error',
                 ]);
+                $this->samedaymessage = $allErrors[0];
             }
 
             return;
@@ -530,7 +609,6 @@ class ShowOrder extends Component
                 }
             }
 
-            // If it has children, go deeper
             if (isset($value['children']) && is_array($value['children'])) {
                 $flattened = array_merge($flattened, $this->extractErrors($value['children'], $path));
             }
