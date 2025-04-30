@@ -21,7 +21,7 @@
  <aside>
   <div class="background background--center @if ($sameday) active @endif"></div>
   <div class="aside aside--confirm @if ($sameday) active @endif"
-   style="@if (!$needupdatetokens) min-height: 85% !important;@else min-height: 175px !important; @endif">
+   style="@if (!$needupdatetokens) min-height: 50% !important;@else min-height: 175px !important; @endif">
    <div class="tabs__content details__view active" style="max-height: 100%;">
     @if (isset($samedaymessage))
      <span class="details__long" style="color: red !important;">
@@ -32,13 +32,6 @@
      style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
      Sameday AWB
     </span>
-    <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
-     <span>Generate AWB</span>
-    </button>
-    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-     wire:click.prevent="$set('sameday', false)">
-     <span>Cancel</span>
-    </button>
     @if (!$needupdatetokens)
      <div class="input__tabs details__long">
       <select wire:model.defer="service">
@@ -236,7 +229,7 @@
      <span>Generate AWB</span>
     </button>
     <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-     wire:click.prevent="$set('sameday', false)">
+     wire:click.prevent="$set('fancourier', false)">
      <span>Cancel</span>
     </button>
    </div>
