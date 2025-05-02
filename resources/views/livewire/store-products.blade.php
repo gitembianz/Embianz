@@ -32,7 +32,7 @@
     </a>
    </li>
   @endif
-  <!-------------------If Category is appear------------------>
+  <!-------------------If Category is appear---  --------------->
   @if ($category != null && $category->id != app('global_default_category'))
    @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
     @if ($breadcrumb['name'] === $category->name)
