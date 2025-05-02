@@ -73,12 +73,40 @@ class RelatedCost extends Component
         $record = ProductCost::find($id);
         $this->record[$index] = [
             'price' => $record->price,
-            'cost' => $record->cost,
-            'date' => $record->date,
+            'cost' => $record->cost
         ];
     }
     public function canceledit()
     {
+        $this->editindex = null;
+        $this->record = [];
+    }
+    public function saveitem($index, $id)
+    {
+        $record = $this->record[$index] ?? null;
+        if (!is_null($record)) {
+            $new = ProductCost::find($id);
+            if (array_key_exists('price', $record)) {
+                $new->price = $record['price'];
+            }
+            if (array_key_exists('cost', $record)) {
+                $new->cost = $record['cost'];
+            }
+
+            $new->save();
+
+            session()->flash('notification', [
+                'message' => 'Record edited successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+        } else {
+            session()->flash('notification', [
+                'message' => 'Nothing was edited!',
+                'type' => 'warning',
+                'title' => 'Warning'
+            ]);
+        }
         $this->editindex = null;
         $this->record = [];
     }
