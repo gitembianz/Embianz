@@ -285,6 +285,11 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
+     @if ($column === 'shipping_id' || $column === 'billing_id')
+     @php
+      continue;
+     @endphp
+     @endif
       <label class="switch switch--primary inline">
        <input type="checkbox" wire:ignore wire:model="selectedColumns" value="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
@@ -386,6 +391,11 @@
       </div>
      </th>
      @foreach ($selectedColumns as $index => $column)
+     @if ($column === 'shipping_id' || $column === 'billing_id')
+     @php
+      continue;
+     @endphp
+     @endif
       @if ($this->showColumn($column))
        <th @if ($index > 2) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
@@ -451,6 +461,11 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
+       @if ($column === 'shipping_id' || $column === 'billing_id')
+       @php
+        continue;
+       @endphp
+       @endif
         <td @if ($index > 2) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')

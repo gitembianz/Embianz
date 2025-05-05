@@ -18,6 +18,20 @@ return new class extends Migration
                     $table->longText('comments')->nullable()->after('session_id');
                 });
             }
+            if (!Schema::hasColumn('orders', 'billing_id')) {
+
+              Schema::table('orders', function (Blueprint $table) {
+                  $table->unsignedBigInteger('billing_id')->index()->nullable();
+                  $table->foreign('billing_id')->references('id')->on('addresses');
+              });
+            }
+            if (!Schema::hasColumn('orders', 'shipping_id')) {
+
+              Schema::table('orders', function (Blueprint $table) {
+                  $table->unsignedBigInteger('shipping_id')->index()->nullable();
+                  $table->foreign('shipping_id')->references('id')->on('addresses');
+              });
+            }
             if (!Schema::hasColumn('orders', 'avg_cost')) {
 
                 Schema::table('orders', function (Blueprint $table) {
