@@ -825,7 +825,19 @@ class StoreOrder extends Component
     }
   }
 
+  protected function findOrCreateAddress(array $data)
+  {
+      $query = Address::where('account_id', $data['account_id'])
+          ->where('type', $data['type']);
 
+      foreach ($data as $key => $value) {
+          if (!in_array($key, ['account_id', 'type'])) {
+              $query->where($key, $value);
+          }
+      }
+
+      return $query->first() ?? Address::create($data);
+  }
 
   public function confirm()
   {
@@ -907,7 +919,10 @@ class StoreOrder extends Component
         ]);
       }
 
-      $account = Account::create($accountData);
+      $account = Account::updateOrCreate(
+        ['email' => $accountData['email']],
+        $accountData
+    );
       cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
 
       $billingAddressData = [
@@ -927,7 +942,7 @@ class StoreOrder extends Component
         'zipcode' => $this->individual ? $this->individual_billing_zipcode : $this->juridic_billing_zipcode,
       ];
 
-      Address::create($billingAddressData);
+      $billing = $this->findOrCreateAddress($billingAddressData);
 
       if (!$this->individual_identic || !$this->juridic_identic) {
         $shippingAddressData = [
@@ -947,9 +962,9 @@ class StoreOrder extends Component
           'zipcode' => $this->individual ? $this->individual_shipping_zipcode : $this->juridic_shipping_zipcode,
         ];
 
-        Address::create($shippingAddressData);
+        $shipping = $this->findOrCreateAddress($shippingAddressData);
       } else {
-        Address::create(array_merge($billingAddressData, ['type' => 'shipping']));
+        $shipping = $this->findOrCreateAddress(array_merge($billingAddressData, ['type' => 'shipping']));
       }
 
       $baseName = 'Order';
@@ -978,6 +993,8 @@ class StoreOrder extends Component
         'name' => $uniqueName,
         'session_id' => $this->session_id,
         'account_id' => $account->id,
+        'billing_id' => $billing->id,
+        'shipping_id' => $shipping->id,
         'cart_id' => $this->cart->id,
         'order_number' => $this->orderNumber,
         'quantity_amount' => $this->cart->quantity_amount,
