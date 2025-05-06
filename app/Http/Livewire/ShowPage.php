@@ -83,6 +83,8 @@ class ShowPage extends Component
             }
         }
 
+        Cache::forget('static_pages');
+
         if (array_key_exists('display_in_footer', $rec)) {
             $this->page->display_in_footer = $rec['display_in_footer'];
         }

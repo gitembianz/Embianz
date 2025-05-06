@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Status;
+use App\Models\Static_Page;
 use App\Models\Country;
 use App\Models\Payment;
 use App\Models\Product;
@@ -42,6 +43,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
         $this->loadActiveCountries();
+        $this->loadActivePages();
+
 
         if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
 
@@ -64,6 +67,18 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             $this->app->instance('max_popularity', $highestPopularity);
         }
     }
+    private function loadActivePages()
+    {
+        if (Schema::hasTable('static_pages')) {
+
+            $pages = Cache::rememberForever('static_pages', function () {
+                return Static_Page::where('display_in_footer', true)->toArray();
+            });
+
+            $this->app->instance('static_pages', $pages);
+        }
+    }
+
     private function loadGlobalVariables()
     {
         if (Schema::hasTable('store__settings')) {

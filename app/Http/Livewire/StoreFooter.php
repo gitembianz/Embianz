@@ -27,9 +27,8 @@ class StoreFooter extends Component
   }
   public function mount($page = "")
   {
-    $this->staticpages = Cache::rememberForever('static_pages', function () {
-      return Static_Page::where('display_in_footer', 1)->get();
-    });
+    $this->staticpages = Cache::get('static_pages');
+
     $this->page = $page;
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
       $this->session_id = request()->cookie('sessionId') ?? session()->getId();
