@@ -232,22 +232,28 @@
     <div class="footer__bottom">
      <div class="footer__list">
       <h3 class="footer__title">Serviciu clienți</h3>
+      @if ($staticpages)
+
       @foreach ($staticpages as $page)
        @if ($page->sequence % 2 != 0)
         <a class="footer__link" href="{{ url($page->route) }}">{{ $page->name }}</a>
        @endif
       @endforeach
+      @endif
       <a class="footer__link" href="{{ url('/sitemap.xml') }}">Hartă Site</a>
       <a class="footer__link" target="blank" href="https://anpc.ro/">ANPC</a>
 
      </div>
      <div class="footer__list">
       <h3 class="footer__title">Informații</h3>
+      @if ($staticpages)
+
       @foreach ($staticpages as $page)
        @if ($page->sequence % 2 == 0)
         <a class="footer__link" href="{{ url($page->route) }}">{{ $page->name }}</a>
        @endif
       @endforeach
+      @endif
      </div>
     </div>
    @endif

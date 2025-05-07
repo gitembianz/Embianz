@@ -34,6 +34,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+      $this->loadActivePages();
         $this->loadGlobalVariables();
         $this->loadLabelVariables();
         $this->loadGlobalStatuses();
@@ -43,7 +44,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadHighestPopularity();
         $this->loadAllSpecificationsIntoCache();
         $this->loadActiveCountries();
-        $this->loadActivePages();
 
 
         if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {

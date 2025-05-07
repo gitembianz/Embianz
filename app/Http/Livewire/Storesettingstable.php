@@ -112,6 +112,7 @@ class Storesettingstable extends Component
     Cache::forget('global_statuses');
     Cache::forget('global_payments');
     Cache::forget('global_scripts');
+    Cache::forget('static_pages');
 
     session()->flash('notification', [
       'message' => 'Website is updated!',
