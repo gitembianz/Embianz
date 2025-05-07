@@ -14,10 +14,10 @@ use App\Models\TextLabel;
 use App\Models\CustomScript;
 use App\Models\Product_Spec;
 use App\Models\Store_Settings;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -69,13 +69,18 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadActivePages()
     {
-        if (Schema::hasTable('static_pages')) {
+        if (Schema::hasTable('static__pages')) {
 
             $pages = Cache::rememberForever('static_pages', function () {
-                return Static_Page::where('display_in_footer', true)->toArray();
+                return Static_Page::where('display_in_footer', true)->get();
             });
-
             $this->app->instance('static_pages', $pages);
+
+            foreach ($pages as $page) {
+              Route::get($page->route, function () use ($page) {
+                  return view('store.page', ['page' => $page]);
+              })->name($page->route);
+          }
         }
     }
 

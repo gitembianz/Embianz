@@ -27,7 +27,7 @@ class StoreFooter extends Component
   }
   public function mount($page = "")
   {
-    $this->staticpages = Cache::get('static_pages');
+    $this->staticpages = app('static_pages');
 
     $this->page = $page;
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {

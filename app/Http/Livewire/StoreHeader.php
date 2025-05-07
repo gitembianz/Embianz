@@ -57,7 +57,7 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-    $this->staticpages = Cache::get('static_pages');
+    $this->staticpages = app('static_pages');
     $counterpromo = $this->promotion->first();
     if (!$counterpromo) {
       return;
