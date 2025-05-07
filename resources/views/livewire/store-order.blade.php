@@ -1941,13 +1941,13 @@
      @if (app()->has('label_order_phone'))
       {!! app('label_order_phone') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->phone }}</strong>
+     <strong>{{ $new_order->billing->phone }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_email'))
       {!! app('label_order_email') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->email }}</strong>
+     <strong>{{ $new_order->billing->email }}</strong>
     </span>
     @if ($juridic)
      <span class="total__message">
@@ -1985,32 +1985,32 @@
      @if (app()->has('label_order_address1'))
       {!! app('label_order_address1') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address1 }}</strong>
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address2 }}</strong>
+     <strong>{{ $new_order->billing->address1 }}</strong>
+     <strong>{{ $new_order->billing->address2 }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_country'))
       {!! app('label_order_country') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->country }}</strong>
+     <strong>{{ $new_order->billing->country }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_county'))
       {!! app('label_order_county') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->county }}</strong>
+     <strong>{{ $new_order->billing->county }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_city'))
       {!! app('label_order_city') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->city }}</strong>
+     <strong>{{ $new_order->billing->city }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_zipcode'))
       {!! app('label_order_zipcode') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->zipcode }}</strong>
+     <strong>{{ $new_order->billing->zipcode }}</strong>
     </span>
 
     <h3>
@@ -2023,51 +2023,51 @@
      @if (app()->has('label_order_fullname'))
       {!! app('label_order_fullname') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->first_name }}</strong>
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->last_name }}</strong>
+     <strong>{{ $new_order->shipping->first_name }}</strong>
+     <strong>{{ $new_order->shipping->last_name }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_phone'))
       {!! app('label_order_phone') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->phone }}</strong>
+     <strong>{{ $new_order->shipping->phone }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_email'))
       {!! app('label_order_email') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->email }}</strong>
+     <strong>{{ $new_order->shipping->email }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_address1'))
       {!! app('label_order_address1') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address1 }}</strong>
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address2 }}</strong>
+     <strong>{{ $new_order->shipping->address1 }}</strong>
+     <strong>{{ $new_order->shipping->address2 }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_county'))
       {!! app('label_order_county') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->country }}</strong>
+     <strong>{{ $new_order->shipping->country }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_county'))
       {!! app('label_order_county') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->county }}</strong>
+     <strong>{{ $new_order->shipping->county }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_city'))
       {!! app('label_order_city') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->city }}</strong>
+     <strong>{{ $new_order->shipping->city }}</strong>
     </span>
     <span class="total__message">
      @if (app()->has('label_order_zipcode'))
       {!! app('label_order_zipcode') !!}
      @endif:
-     <strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->zipcode }}</strong>
+     <strong>{{ $new_order->shipping->zipcode }}</strong>
     </span>
    </div>
    <!----------------------- Order sumary ----------------------------->
