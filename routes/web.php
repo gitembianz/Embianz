@@ -196,20 +196,16 @@
   route::view('/redirect', 'store.redirect')->name('redirect');
   Route::view('/404', 'store.404')->name('404');
 
-  $pages = Cache::rememberForever('static_pages', function () {
-    if (!Schema::hasTable('static_pages')) {
-      return collect();
-    }
+  $pages = Cache::get('static_pages');
 
-    return Static_Page::all();
-  });
-
+if($pages){
 
   foreach ($pages as $page) {
     Route::get($page->route, function () use ($page) {
       return view('store.page', ['page' => $page]);
     })->name($page->route);
   }
+}
 
   //Functionality page routes
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
