@@ -46,6 +46,14 @@ class Order extends Model
   {
     return $this->belongsTo(Voucher::class);
   }
+  public function billing()
+  {
+    return $this->belongsTo(Address::class, 'billing_id');
+  }
+  public function shipping()
+  {
+    return $this->belongsTo(Address::class, 'shipping_id');
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()

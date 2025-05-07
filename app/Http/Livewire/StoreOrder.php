@@ -1071,12 +1071,13 @@ class StoreOrder extends Component
               ]);
           },
           'account' => function ($query) {
-            $query->select('id', 'name', 'phone', 'email', 'company_name', 'registration_code', 'registration_number', 'bank_name', 'account')
-              ->with([
-                'addresses' => function ($query) {
-                  $query->select('id', 'account_id', 'first_name', 'last_name', 'phone', 'email', 'address1', 'address2', 'type', 'country', 'county', 'city', 'zipcode');
-                },
-              ]);
+            $query->select('id', 'name', 'phone', 'email', 'company_name', 'registration_code', 'registration_number', 'bank_name', 'account');
+          },
+          'billing' => function ($query) {
+            $query->select('id', 'account_id', 'first_name', 'last_name', 'phone', 'email', 'address1', 'address2', 'type', 'country', 'county', 'city', 'zipcode');
+          },
+          'shipping' => function ($query) {
+            $query->select('id', 'account_id', 'first_name', 'last_name', 'phone', 'email', 'address1', 'address2', 'type', 'country', 'county', 'city', 'zipcode');
           },
           'currency' => function ($query) {
             $query->select('id', 'name');
