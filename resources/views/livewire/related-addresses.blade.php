@@ -132,6 +132,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Default'))
+      <th>
+       <button wire:click="sortBy('is_default')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Default
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('First Name'))
       <th>
        <button wire:click="sortBy('first_name')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -307,6 +317,21 @@
        @if ($this->showColumn('Type'))
         <td wire:click="expandRow({{ $index }})">
          {{ $address->type }}
+        </td>
+       @endif
+       @if ($this->showColumn('Default'))
+        <td wire:click="expandRow({{ $index }})">
+          @if ($address->is_default)
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled1" disabled checked>
+            <label for="disabled1"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled2" disabled>
+            <label for="disabled2"></label>
+           </div>
+          @endif
         </td>
        @endif
        @if ($this->showColumn('First Name'))

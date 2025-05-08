@@ -99,6 +99,12 @@ return new class extends Migration
                 $table->string('type')->nullable()->after('zipcode');
             });
         }
+        if (!Schema::hasColumn('addresses', 'is_default')) {
+
+            Schema::table('addresses', function (Blueprint $table) {
+                $table->boolean('is_default')->default(0)->after('type');
+            });
+      }
     }
 
     /**
