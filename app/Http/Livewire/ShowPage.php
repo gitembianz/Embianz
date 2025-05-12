@@ -47,6 +47,7 @@ class ShowPage extends Component
             'content' => $this->page->content,
             'sequence' => $this->page->sequence,
             'description' => $this->page->description,
+            'active' => $this->page->active == 1 ? true : false,
             'display_in_footer' => $this->page->display_in_footer == 1 ? true : false,
         ];
         $this->edititem = true;
@@ -63,7 +64,7 @@ class ShowPage extends Component
             return;
         }
 
-        $fields = ['name', 'route', 'content', 'description', 'sequence'];
+        $fields = ['name', 'active','route', 'content', 'description', 'sequence'];
         foreach ($fields as $field) {
             if (array_key_exists($field, $rec)) {
                 if (!empty($rec[$field])) {

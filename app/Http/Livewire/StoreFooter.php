@@ -27,7 +27,8 @@ class StoreFooter extends Component
   }
   public function mount($page = "")
   {
-    $this->staticpages = app('static_pages');
+    $this->staticpages = collect(app('static_pages'))->where('display_in_footer', true)->values();
+
 
     $this->page = $page;
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
