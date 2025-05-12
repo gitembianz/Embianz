@@ -22,7 +22,7 @@ class RelatedAddresses extends Component
     public $showrelatedadd = false;
     public $accountId;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'Country ISO', 'County', 'County ISO', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Default','First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'Country ISO', 'County', 'County ISO', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
     public $adress = [];
