@@ -231,6 +231,11 @@
       $decimal = ',';
   }
  @endphp
+ @push('scripts')
+<script>
+
+</script>
+@endpush
  @if (!$this->hasCartWithItems)
   <!-------------------- Error Message ------------------->
   <section>
@@ -1890,6 +1895,9 @@
     @endif
     <!------------------- Script for blade terms ------------------>
     <script>
+      window.addEventListener('beforeunload', function () {
+        Livewire.emit('saveFormToSession');
+    });
      window.addEventListener('terms__error', event => {
       var element = document.getElementById('termsbutton');
       if (element) {

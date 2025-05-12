@@ -240,22 +240,26 @@
      @endif
     @endforeach
     <li class="menufooter">Informații</li>
-    @if ($staticpages)
+  @if ($staticpages)
     @foreach ($staticpages as $page)
-    @if ($page->sequence % 2 == 0)
-      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
-    @endif
+        @if ($page['sequence'] % 2 == 0)
+            <li class="menufooter__item">
+                <a href="{{ url($page['route']) }}">{{ $page['name'] }}</a>
+            </li>
+        @endif
     @endforeach
-    @endif
+@endif
 
     <li class="menufooter">Serviciu clienți</li>
-    @if ($staticpages)
+     @if ($staticpages)
     @foreach ($staticpages as $page)
-     @if ($page->sequence % 2 != 0)
-      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
-     @endif
+        @if ($page['sequence'] % 2 != 0)
+            <li class="menufooter__item">
+                <a href="{{ url($page['route']) }}">{{ $page['name'] }}</a>
+            </li>
+        @endif
     @endforeach
-    @endif
+@endif
     <li class="menufooter__item"><a href="{{ url('/sitemap.xml') }}">Hartă Site</a></li>
     <li class="menufooter__item"><a target="blank" href="https://anpc.ro/">ANPC</a></li>
 
