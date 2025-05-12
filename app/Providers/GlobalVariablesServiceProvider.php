@@ -72,7 +72,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         if (Schema::hasTable('static__pages')) {
 
             $pages = Cache::rememberForever('static_pages', function () {
-                return Static_Page::where('display_in_footer', true)->get();
+                return Static_Page::where('active', true)->get();
             });
             $this->app->instance('static_pages', $pages);
 

@@ -16,7 +16,7 @@ class Static_Page extends Model
         'description',
         'display_in_footer',
         'created_by',
-        'last_modified_by'
+        'last_modified_by','active'
 
     ];
 

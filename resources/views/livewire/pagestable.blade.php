@@ -313,7 +313,8 @@
           <span class="show-less">
            {!! $page->$column !!}
           </span>
-         @elseif ($column === 'display_in_footer')
+         @elseif ($column === 'display_in_footer' || $column === 'active')
+          {{ str_replace('_id', '', $column) }}:
           @if ($page->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled1" disabled checked>
@@ -348,9 +349,9 @@
             @php
              continue;
             @endphp
-           @elseif ($column === 'display_in_footer')
+           @elseif ($column === 'display_in_footer'|| $column === 'active')
             <p>
-             <bold>{{ str_replace('_id', '', $column) }}:</bold>
+             {{ str_replace('_id', '', $column) }}:
              @if ($page->$column)
               <div class="checkbox--secondary disabled">
                <input type="checkbox" id="disabled1" disabled checked>
@@ -365,7 +366,7 @@
             </p>
            @else
             <p>
-             <bold>{{ str_replace('_id', '', $column) }}:</bold>
+             {{ str_replace('_id', '', $column) }}:
              {{ $page->$column }}
             </p>
            @endif
