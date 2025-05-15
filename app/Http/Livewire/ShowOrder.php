@@ -859,9 +859,9 @@ class ShowOrder extends Component
             }
             th, td {
                 padding: 8px;
-                word-wrap: break-word; 
+                word-wrap: break-word;
             }
-          
+
         </style>
          </head>
         <body>
@@ -1668,8 +1668,6 @@ class ShowOrder extends Component
 
             $updatableFields = [
                 'comments',
-                'invoice_date',
-                'storno_date',
                 'promotion_value',
                 'voucher_value',
                 'delivery_price'
@@ -1679,6 +1677,13 @@ class ShowOrder extends Component
                     $order->$field = $new[$field];
                 }
             }
+
+           if (array_key_exists('storno_date', $new)) {
+            $order->storno_date = $new['storno_date'] === '' ? null : $new['storno_date'];
+            } if (array_key_exists('invoice_date', $new)) {
+            $order->invoice_date = $new['invoice_date'] === '' ? null : $new['invoice_date'];
+            }
+
 
             if (isset($new['promotion_value']) || isset($new['voucher_value']) || isset($new['delivery_price'])) {
                 $order->final_amount = max(

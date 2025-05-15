@@ -314,7 +314,6 @@
            {!! $page->$column !!}
           </span>
          @elseif ($column === 'display_in_footer' || $column === 'active')
-          {{ str_replace('_id', '', $column) }}:
           @if ($page->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled1" disabled checked>

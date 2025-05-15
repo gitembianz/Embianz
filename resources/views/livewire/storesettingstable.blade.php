@@ -30,6 +30,7 @@
    @endforeach
   </div>
  </aside>
+
  <aside>
   <div class="background background--right" wire:ignore id="visi__backdrop"></div>
   <div class="aside aside--right" wire:ignore id="visi">
@@ -53,9 +54,117 @@
     </label>
    @endforeach
   </div>
- </aside>
+</aside>
 
- {{-- Navigation --}}
+<aside>
+  <div class="background background--center @if ($changelogodark || $changelogolight || $changefavicon) active @endif"></div>
+  <div style="min-height: 160px" class="aside aside--confirm @if ($changelogodark || $changelogolight || $changefavicon) active @endif">
+    @if (!$external && !$media)
+      <span style="margin: 0.5rem 0; width: 100%; text-align: center">How you will upload?</span>
+      <input style="display: none" id="localMedia"  wire:model="media" type="file" @if ($changefavicon) accept=".ico,image/x-icon" @else accept=".svg,image/svg+xml" @endif >
+      <label class="button button--primary button--long" type="button" for="localMedia">
+        <span>Local Pick</span>
+      </label>
+      <button class="button button--primary button--long" wire:click="$set('external', true)">
+        <span>External Pick</span>
+      </button>
+      <button class="button button--danger button--long" wire:click="closeModalLogo()">
+        <span>Close</span>
+      </button>
+    @elseif($external)
+      <div style="display: flex; align-items: center; flex-direction:column; justify-content: space-between; width: 100%;">
+      <span style="margin: 0.5rem 0; width: 100%; text-align: center; color: white">
+        @if ($changelogodark)
+          Logo dark
+        @elseif ($changelogolight)
+          Logo light
+          @elseif ($changefavicon)
+          Favicon
+        @endif
+      </span>
+    <div class="input__tabs details__long">
+        <input type="url" wire:model.defer="mediaurl">
+        <label>Insert the url</label>
+      </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1rem; gap:1rem;">
+      <button style="width: 100%" class="button button--secondary button--long" wire:click="updateLogo()">
+        <span>Update</span>
+      </button>
+      <button style="width: 100%" class="button button--danger button--long" wire:click="$set('external', false)">
+        <span>Cancel</span>
+      </button>
+    </div>
+    </div>
+    @endif
+    @if ($media)
+    <div style="display: flex; align-items: center; flex-direction:column; justify-content: space-between; width: 100%;">
+      <span style="margin: 0.5rem 0; width: 100%; text-align: center">
+        @if ($changelogodark)
+          Logo dark
+        @elseif ($changelogolight)
+          Logo light
+          @elseif ($changefavicon)
+          Favicon
+        @endif
+      </span>
+    <div class="logo_container" style="margin: auto">
+      <img loading="eager" src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}" width="50px">
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1rem; gap:1rem;">
+      <button style="width: 100%" class="button button--secondary button--long" wire:click="updateLogo()">
+        <span>Update</span>
+      </button>
+      <button style="width: 100%" class="button button--danger button--long" wire:click="$set('media', null)">
+        <span>Cancel</span>
+      </button>
+    </div>
+    </div>
+    @endif
+  </div>
+</aside>
+
+{{-- Navigation --}}
+<h1 class="table--name">{{ __('Logo & Favicon settings') }}</h1>
+
+<div class="logo_container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
+  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
+    <img src="/images/store/svg/logo-dark.svg" alt="Logodark" style="height: 40px; width: auto;">
+    <button class="button button--primary button--centered" tooltip="Update logo dark" tooltip-left wire:click.prevent="$set('changelogodark', true)">
+      <svg>
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
+    <img src="/images/store/svg/logo-light.svg" alt="Logolight" style="height: 40px; width: auto;">
+    <button class="button button--primary button--centered" tooltip="Update logo light" tooltip-left wire:click.prevent="$set('changelogolight', true)">
+      <svg>
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
+    <img src="/images/store/svg/favicon-48x48.png" alt="Favicon" style="height: 40px; width: auto;">
+    <button class="button button--primary button--centered" tooltip="Update favicon" tooltip-left wire:click.prevent="$set('changefavicon', true)">
+      <svg>
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Mobile responsive style -->
+<style>
+  @media (max-width: 768px) {
+    .logo_container {
+      grid-template-columns: 1fr !important;
+      grid-template-rows: repeat(3, auto);
+    }
+  }
+</style>
+
  <h1 class="table--name">{{ __('Store Settings') }} ({{ $storesettings->total() }})</h1>
  <nav class="nav--controls">
   {{-- Search Input --}}

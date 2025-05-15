@@ -9,6 +9,7 @@ use App\Models\Static_Page;
 
 use App\Models\Exchange;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use App\Models\Store_Settings;
 use Illuminate\Support\Carbon;
 use App\Models\PricelistEntries;
@@ -18,14 +19,15 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\ProductReviews as ModelsProductReviews;
-
-
+use Illuminate\Support\Facades\Storage;
 
 
 class Storesettingstable extends Component
 {
 
   use WithPagination;
+  use WithFileUploads;
+
   public $loadAmount = 30;
   public $search = '';
   public $orderBy = 'id';
@@ -36,6 +38,80 @@ class Storesettingstable extends Component
   public $editindex = null;
   public $settings = [];
   public $row = null;
+  public $changelogodark = false;
+  public $changelogolight = false;
+  public $changefavicon = false;
+  public $external = false;
+  public $media;
+  public $mediaurl =  null;
+
+
+public function saveexternal()
+  {
+    $filespath = 'images/store/';
+
+    $path = $filespath . $this->product->id . "/";
+
+
+      $urlComponents = parse_url($this->mediaurl);
+
+      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+      $this->mediaurl = $urlWithoutParams;
+      if($this->changefavicon) {
+        $name = 'favicon.' . pathinfo($this->mediaurl, PATHINFO_EXTENSION);
+      } elseif ($this->changelogodark) {
+        $name = 'logo_dark.' . pathinfo($this->mediaurl, PATHINFO_EXTENSION);
+      } elseif ($this->changelogolight) {
+        $name = 'logo_light.' . pathinfo($this->mediaurl, PATHINFO_EXTENSION);
+      }
+      $allowedExtensions = ['ico', 'svg'];
+      $fileExtension = strtolower(pathinfo($this->mediaurl, PATHINFO_EXTENSION));
+
+      if (!in_array($fileExtension, $allowedExtensions)) {
+        return session()->flash('notification', [
+          'message' => 'File type not allowed!',
+          'type' => 'warning',
+          'title' => 'Warning'
+        ]);
+      }
+      $fileContent = file_get_contents($this->mediaurl);
+      if ($fileContent == false) {
+        return session()->flash('notification', [
+          'message' => 'Not image file!',
+          'type' => 'warning',
+          'title' => 'Warning'
+        ]);
+      }
+      if ($this->changefavicon) {
+        $name = 'favicon.' . $fileExtension;
+      } elseif ($this->changelogodark) {
+        $name = 'logo_dark.' . $fileExtension;
+      } elseif ($this->changelogolight) {
+        $name = 'logo_light.' . $fileExtension;
+      }
+      Storage::disk('public_upload')->put($path . $name, $fileContent);
+
+
+
+      session()->flash('notification', [
+        'message' => 'Record related successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    $this->mediaurl = null;
+    $this->external = false;
+    $this->changelogodark = false;
+    $this->changelogolight = false;
+    $this->changefavicon = false;
+  }
+
+public function closeModalLogo()
+{
+    $this->changelogodark = false;
+    $this->changelogolight = false;
+    $this->changefavicon = false;
+    $this->external = false;
+}
 
 
   public function expandRow($index)
