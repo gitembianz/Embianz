@@ -72,35 +72,37 @@ class BeeingInOrder extends Component
 
         $this->orderBy = $columnName;
     }
-    public function getOrdersProperty()
-    {
-        if ($this->relatedby === 'order') {
+public function getOrdersProperty()
+{
+    if ($this->relatedby === 'order') {
+        $query = Order_Item::with(['order', 'product'])
+            ->where('product_id', $this->productid);
 
-            return Order_Item::with([
-                'order',
-                'product'
-            ])
-                ->where('product_id', $this->productid)
-                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
-                ->paginate($this->loadAmount); // Paginate the results
-        } elseif ($this->relatedby === 'supplier') {
-            return Order_Supplier_Item::with([
-                'order',
-                'product'
-            ])
-                ->where('product_id', $this->productid)
-                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
-                ->paginate($this->loadAmount); // Paginate the results
+        if ($this->orderBy === 'status') {
+            $query->join('orders', 'orders.id', '=', 'order_id')
+                  ->orderBy('orders.status_id', $this->orderAsc ? 'asc' : 'desc');
         } else {
-            return Cart_Item::with([
-                'cart',
-                'product'
-            ])
-                ->where('product_id', $this->productid)
-                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc') // Apply ordering
-                ->paginate($this->loadAmount); // Paginate the results 
+            $query->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
         }
+
+        return $query->paginate($this->loadAmount);
     }
+
+    elseif ($this->relatedby === 'supplier') {
+        return Order_Supplier_Item::with(['order', 'product'])
+            ->where('product_id', $this->productid)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
+            ->paginate($this->loadAmount);
+    }
+
+    else {
+        return Cart_Item::with(['cart', 'product'])
+            ->where('product_id', $this->productid)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
+            ->paginate($this->loadAmount);
+    }
+}
+
     public function loadMore()
     {
         $this->loadAmount += 10;
