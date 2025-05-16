@@ -19,8 +19,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
+
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductReviews as ModelsProductReviews;
+
+use Imagick;
+use ImagickPixel;
+
 
 
 class Storesettingstable extends Component
@@ -84,26 +89,42 @@ class Storesettingstable extends Component
 
         if ($this->changefavicon) {
             $sizes = [
-                // 'apple-touch-icon.png' => [180, 180],
-                // 'favicon-16x16.png' => [16, 16],
-                // 'favicon-32x32.png' => [32, 32],
-                // 'favicon-48x48.png' => [48, 48],
-                // 'favicon.ico' => [48, 48],
+                'apple-touch-icon.png' => [180, 180],
+                'favicon-16x16.png' => [16, 16],
+                'favicon-32x32.png' => [32, 32],
+                'favicon-48x48.png' => [48, 48],
+                'favicon.ico' => [48, 48],
                 'favicon.svg' => [48, 48],
                 'safari-pinned-tab.svg' => [48, 48],
             ];
 
             foreach ($sizes as $filename => [$width, $height]) {
-                if (Str::endsWith($filename, '.svg')) {
+                $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+                if ($extension === 'svg') {
                     $svgCopy = clone $svg;
                     $svgCopy['width'] = $width;
                     $svgCopy['height'] = $height;
                     Storage::disk('public_upload')->put($filespath . $filename, $svgCopy->asXML());
                 } else {
-                    $image = \Intervention\Image\Facades\Image::make($this->media->getRealPath())
-                        ->resize($width, $height)
-                        ->encode(pathinfo($filename, PATHINFO_EXTENSION));
-                    Storage::disk('public_upload')->put($filespath . $filename, $image);
+                    try {
+                        $imagick = new Imagick();
+                        $imagick->setBackgroundColor(new ImagickPixel('transparent'));
+                        $imagick->readImage($this->media->getRealPath());
+                        $imagick->setImageFormat($extension === 'ico' ? 'ico' : 'png');
+                        $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
+
+                        Storage::disk('public_upload')->put($filespath . $filename, $imagick->getImageBlob());
+
+                        $imagick->clear();
+                        $imagick->destroy();
+                    } catch (\Exception $e) {
+                        return session()->flash('notification', [
+                            'message' => 'Imagick failed: ' . $e->getMessage(),
+                            'type' => 'danger',
+                            'title' => 'Error'
+                        ]);
+                    }
                 }
             }
         } else {
@@ -118,6 +139,7 @@ class Storesettingstable extends Component
         }
     }
 
+    // Reset UI flags
     $this->media = null;
     $this->external = false;
     $this->changelogodark = false;
@@ -132,56 +154,49 @@ class Storesettingstable extends Component
 }
 
 
+
 public function updateexternal()
-  {
+{
     $filespath = 'images/store/svg/';
 
-      $urlComponents = parse_url($this->mediaurl);
+    $urlComponents = parse_url($this->mediaurl);
+    $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+    $this->mediaurl = $urlWithoutParams;
 
-      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
-      $this->mediaurl = $urlWithoutParams;
-      $fileExtension = strtolower(pathinfo($this->mediaurl, PATHINFO_EXTENSION));
-      if($fileExtension != 'svg') {
+    $fileExtension = strtolower(pathinfo($this->mediaurl, PATHINFO_EXTENSION));
+    if ($fileExtension !== 'svg') {
         return session()->flash('notification', [
-          'message' => 'File type not allowed! Only SVG is allowed!',
-          'type' => 'warning',
-          'title' => 'Warning'
+            'message' => 'File type not allowed! Only SVG is allowed!',
+            'type' => 'warning',
+            'title' => 'Warning'
         ]);
-      }
+    }
 
-      $allowedExtensions = ['ico', 'svg'];
-
-      if (!in_array($fileExtension, $allowedExtensions)) {
+    $fileContent = @file_get_contents($this->mediaurl);
+    if (!$fileContent) {
         return session()->flash('notification', [
-          'message' => 'File type not allowed!',
-          'type' => 'warning',
-          'title' => 'Warning'
+            'message' => 'Could not fetch the file from URL!',
+            'type' => 'warning',
+            'title' => 'Warning'
         ]);
-      }
-      $fileContent = file_get_contents($this->mediaurl);
-      if ($fileContent == false) {
-        return session()->flash('notification', [
-          'message' => 'Not image file!',
-          'type' => 'warning',
-          'title' => 'Warning'
-        ]);
-      }
+    }
 
-      $svg = simplexml_load_string($fileContent);
-      if ($svg === false) {
-          return session()->flash('notification', [
-              'message' => 'Invalid SVG format!',
-              'type' => 'warning',
-              'title' => 'Warning'
-          ]);
-      }
-      if ($this->changefavicon) {
+    $svg = simplexml_load_string($fileContent);
+    if ($svg === false) {
+        return session()->flash('notification', [
+            'message' => 'Invalid SVG format!',
+            'type' => 'warning',
+            'title' => 'Warning'
+        ]);
+    }
+
+    if ($this->changefavicon) {
         $sizes = [
-            // 'apple-touch-icon.png' => [180, 180],
-            // 'favicon-16x16.png' => [16, 16],
-            // 'favicon-32x32.png' => [32, 32],
-            // 'favicon-48x48.png' => [48, 48],
-            // 'favicon.ico' => [48, 48],
+            'apple-touch-icon.png' => [180, 180],
+            'favicon-16x16.png' => [16, 16],
+            'favicon-32x32.png' => [32, 32],
+            'favicon-48x48.png' => [48, 48],
+            'favicon.ico' => [48, 48],
             'favicon.svg' => [48, 48],
             'safari-pinned-tab.svg' => [48, 48],
         ];
@@ -193,45 +208,63 @@ public function updateexternal()
                 $svgCopy['height'] = $height;
                 Storage::disk('public_upload')->put($filespath . $filename, $svgCopy->asXML());
             } else {
-                $image = \Intervention\Image\Facades\Image::make($this->mediaurl)
-                            ->resize($width, $height)
-                            ->encode(pathinfo($filename, PATHINFO_EXTENSION));
-                Storage::disk('public_upload')->put($filespath . $filename, $image);
+                try {
+                    $imagick = new Imagick();
+                    $imagick->setBackgroundColor(new ImagickPixel('transparent'));
+
+                    // Load SVG directly from string content
+                    $imagick->readImageBlob($fileContent);
+
+                    $imagick->setImageFormat(pathinfo($filename, PATHINFO_EXTENSION));
+                    $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
+
+                    Storage::disk('public_upload')->put($filespath . $filename, $imagick->getImageBlob());
+
+                    $imagick->clear();
+                    $imagick->destroy();
+                } catch (\Exception $e) {
+                    return session()->flash('notification', [
+                        'message' => 'Imagick failed: ' . $e->getMessage(),
+                        'type' => 'danger',
+                        'title' => 'Error'
+                    ]);
+                }
             }
         }
-        $this->mediaurl = null;
-        $this->external = false;
-        $this->changelogodark = false;
-        $this->changelogolight = false;
-        $this->changefavicon = false;
+
         session()->flash('notification', [
             'message' => 'All favicon assets updated!',
             'type' => 'success',
             'title' => 'Success'
         ]);
-        return;
-      } elseif ($this->changelogodark) {
-        $name = 'logo-dark.' . pathinfo($this->mediaurl, PATHINFO_EXTENSION);
-      } elseif ($this->changelogolight) {
-        $name = 'logo-light.' . pathinfo($this->mediaurl, PATHINFO_EXTENSION);
-      }
-      $svg['width'] = '300';
-      unset($svg['height']);
+    } else {
+        $name = 'logo.svg';
+        if ($this->changelogodark) {
+            $name = 'logo-dark.svg';
+        } elseif ($this->changelogolight) {
+            $name = 'logo-light.svg';
+        }
 
-      $fileContent = $svg->asXML();
-        Storage::disk('public_upload')->put($filespath . $name, $fileContent);
+        $svg['width'] = '300';
+        unset($svg['height']);
 
-      session()->flash('notification', [
-        'message' => 'Record related successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-      $this->mediaurl = null;
-      $this->external = false;
-      $this->changelogodark = false;
-      $this->changelogolight = false;
-      $this->changefavicon = false;
-  }
+        Storage::disk('public_upload')->put($filespath . $name, $svg->asXML());
+
+        session()->flash('notification', [
+            'message' => 'Logo updated successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+
+    // Reset component state
+    $this->mediaurl = null;
+    $this->external = false;
+    $this->changelogodark = false;
+    $this->changelogolight = false;
+    $this->changefavicon = false;
+}
+
 
 public function closeModalLogo()
 {
