@@ -196,14 +196,16 @@ class ShowCategory extends Component
   }
   public function Productrelated()
   {
-    $products = Products_categories::where('category_id', $this->categoryId)
-      ->with(['product' => function ($query) {
-        $query->where('active', 1)
-          ->where('start_date', '<=', now()->format('Y-m-d'))
-          ->where('end_date', '>=', now()->format('Y-m-d'));
-      }])
-      ->get()
-      ->pluck('product');
+   $products = Products_categories::where('category_id', $this->categoryId)
+  ->with(['product' => function ($query) {
+    $query->where('active', 1)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'));
+  }])
+  ->get()
+  ->pluck('product')
+  ->filter();
+
 
     $relatedProductsData = [];
     foreach ($products as $parentProduct) {

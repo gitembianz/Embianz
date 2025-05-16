@@ -87,7 +87,7 @@
         <label>Insert the url</label>
       </div>
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1rem; gap:1rem;">
-      <button style="width: 100%" class="button button--secondary button--long" wire:click="updateLogo()">
+      <button style="width: 100%" class="button button--secondary button--long" wire:click="updateexternal()">
         <span>Update</span>
       </button>
       <button style="width: 100%" class="button button--danger button--long" wire:click="$set('external', false)">
@@ -111,7 +111,7 @@
       <img loading="eager" src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}" width="50px">
     </div>
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1rem; gap:1rem;">
-      <button style="width: 100%" class="button button--secondary button--long" wire:click="updateLogo()">
+      <button style="width: 100%" class="button button--secondary button--long" wire:click="updatelocal()">
         <span>Update</span>
       </button>
       <button style="width: 100%" class="button button--danger button--long" wire:click="$set('media', null)">
@@ -128,7 +128,7 @@
 
 <div class="logo_container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
   <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="/images/store/svg/logo-dark.svg" alt="Logodark" style="height: 40px; width: auto;">
+    <img src="\images\store\svg\logo-dark.svg" alt="Logodark" style="height: 40px; width: auto;">
     <button class="button button--primary button--centered" tooltip="Update logo dark" tooltip-left wire:click.prevent="$set('changelogodark', true)">
       <svg>
         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
@@ -137,7 +137,7 @@
   </div>
 
   <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="/images/store/svg/logo-light.svg" alt="Logolight" style="height: 40px; width: auto;">
+    <img src="\images\store\svg\logo-light.svg" alt="Logolight" style="height: 40px; width: auto;">
     <button class="button button--primary button--centered" tooltip="Update logo light" tooltip-left wire:click.prevent="$set('changelogolight', true)">
       <svg>
         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
@@ -146,7 +146,7 @@
   </div>
 
   <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="/images/store/svg/favicon-48x48.png" alt="Favicon" style="height: 40px; width: auto;">
+    <img src="\images\store\svg\favicon-48x48.png" alt="Favicon" style="height: 40px; width: auto;">
     <button class="button button--primary button--centered" tooltip="Update favicon" tooltip-left wire:click.prevent="$set('changefavicon', true)">
       <svg>
         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>

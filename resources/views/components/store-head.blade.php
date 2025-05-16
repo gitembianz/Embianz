@@ -14,16 +14,16 @@
  <meta name="description" content="{{ $description }}">
 
  <link rel="alternate" hreflang="{{ app()->getLocale() }}" href="{{ route('home') }}">
- <link rel="apple-touch-icon" sizes="180x180" href="/images/store/svg/apple-touch-icon.png">
- <link rel="icon" type="image/png" sizes="48x48" href="/images/store/svg/favicon-48x48.png">
- <link rel="icon" type="image/png" sizes="32x32" href="/images/store/svg/favicon-32x32.png">
- <link rel="icon" type="image/png" sizes="16x16" href="/images/store/svg/favicon-16x16.png">
- <link rel="icon" href="/images/store/svg/favicon.svg">
- <link rel="manifest" href="/images/store/svg/site.webmanifest">
- <link rel="mask-icon" href="/images/store/svg/safari-pinned-tab.svg" color="#333333">
- <link rel="shortcut icon" href="/images/store/svg/favicon.ico">
+ <link rel="apple-touch-icon" sizes="180x180" href="\images\store\svg\apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="48x48" href="\images\store\svg\favicon-48x48.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="\images\store\svg\favicon-32x32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="\images\store\svg\favicon-16x16.png">
+ <link rel="icon" href="\images\store\svg\favicon.svg">
+ <link rel="manifest" href="\images\store\svg\site.webmanifest">
+ <link rel="mask-icon" href="\images\store\svg\safari-pinned-tab.svg" color="#333333">
+ <link rel="shortcut icon" href="\images\store\svg\favicon.ico">
  <meta name="msapplication-TileColor" content="#fafafa">
- <meta name="msapplication-config" content="/images/store/svg/browserconfig.xml">
+ <meta name="msapplication-config" content="\images\store\svg\browserconfig.xml">
  <meta name="theme-color" content="#fafafa">
 
  {{-- dinamical image playload --}}
