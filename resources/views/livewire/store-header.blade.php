@@ -17,7 +17,7 @@
    <!-------------------------Logo------------------------->
 
    <a class="logo" href="{{ url('/') }}">
-    <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg" alt="Logo">
+    <img title="{{ app('global_site_name') }} logo" loading="eager" src="\images\store\svg\logo-dark.svg" alt="Logo">
    </a>
    <!---------------------NavMenu bar---------------------->
    <nav class="navbar__list">
@@ -95,7 +95,7 @@
       </svg>
      </button>
      <a class="logo__hidden" href="{{ url('/') }}">
-      <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
+      <img title="{{ app('global_site_name') }} logo" loading="eager" src="\images\store\svg\logo-dark.svg"
        alt="Logo">
      </a>
     </div>
