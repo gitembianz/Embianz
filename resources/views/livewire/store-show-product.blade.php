@@ -168,15 +168,20 @@
      {!! app('label_pdp_description_tag') !!}
     @endif
    </button>
+     @if ($product->product_specs->isNotEmpty())
+
    <button class="tab__button" onclick="switchTab(1)">
     @if (app()->has('label_pdp_details_tag'))
      {!! app('label_pdp_details_tag') !!}
     @endif
    </button>
+   @endif
   </div>
   <div class="tab__content active">
    <p class="tab__info">{!! $product->long_description !!}</p>
   </div>
+     @if ($product->product_specs->isNotEmpty())
+
   <div class="tab__content">
    <table class="tab__table">
     <thead>
@@ -194,7 +199,7 @@
      </tr>
     </thead>
     <tbody>
-     @if ($product->product_specs->first() !== null)
+     @if ($product->product_specs->isNotEmpty())
       @foreach ($product->product_specs->sortBy('sequence') as $spec)
        <tr>
         <td>{{ $spec->spec->name }}</td>
@@ -213,6 +218,12 @@
     </tbody>
    </table>
   </div>
+@endif
+  <!----------------- End Product details ---------------->
+  <!------------------------------------------------------>
+  <!--------------------- End Section --------------------->
+  <!------------------------------------------------------>
+  <!------------------ End Section Description ------------>
  </section>
 
  <script>

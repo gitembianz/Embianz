@@ -61,7 +61,7 @@
   <div style="min-height: 160px" class="aside aside--confirm @if ($changelogodark || $changelogolight || $changefavicon) active @endif">
     @if (!$external && !$media)
       <span style="margin: 0.5rem 0; width: 100%; text-align: center">How you will upload?</span>
-      <input style="display: none" id="localMedia"  wire:model="media" type="file" @if ($changefavicon) accept=".ico,image/x-icon" @else accept=".svg,image/svg+xml" @endif >
+      <input style="display: none" id="localMedia"  wire:model="media" type="file" accept=".svg,image/svg+xml" >
       <label class="button button--primary button--long" type="button" for="localMedia">
         <span>Local Pick</span>
       </label>
@@ -146,7 +146,7 @@
   </div>
 
   <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="\images\store\svg\favicon-48x48.png" alt="Favicon" style="height: 40px; width: auto;">
+    <img src="\images\store\svg\favicon.ico" alt="Favicon" style="height: 40px; width: auto;">
     <button class="button button--primary button--centered" tooltip="Update favicon" tooltip-left wire:click.prevent="$set('changefavicon', true)">
       <svg>
         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
