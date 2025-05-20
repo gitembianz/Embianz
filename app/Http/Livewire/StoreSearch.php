@@ -24,10 +24,18 @@ class StoreSearch extends Component
 
     public function render()
     {
-        return view('livewire.store-search', [
-            'products' => $this->products,
-            'categories' => $this->categories
-        ]);
+    if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+      return view('livewire.store-search', [
+          'products' => $this->products,
+          'categories' => collect()
+      ]);
+    }else{
+
+      return view('livewire.store-search', [
+          'products' => $this->products,
+          'categories' => $this->categories
+      ]);
+    }
     }
     public function mount($data = null)
     {
@@ -119,33 +127,69 @@ class StoreSearch extends Component
                     ['path' => LengthAwarePaginator::resolveCurrentPath()]
                 );
             } else {
-                return Product::search($this->search)
-                    ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
-                    ->where('active', true)
-                    ->where('type', '!=', 'parent')
-                    ->where('start_date', '<=',  now()->format('Y-m-d'))
-                    ->where('end_date', '>=',  now()->format('Y-m-d'))
-                    ->with([
-                        'media' => function ($query) {
-                            $query->select('path', 'name', 'type')->where('type', 'main');
-                        },
-                        'product_prices' => function ($query) {
-                            $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id');
-                        },
-                        'wishlists' => function ($query) {
-                            $query->select('id', 'product_id')->where('session_id', $this->session_id);
-                        },
-                        'product_categories' => function ($query) {
-                            $query->select('product_id', 'category_id', 'primary_category')
-                                ->where('primary_category', true);
-                            $query->with(['category' => function ($query) {
-                                $query->select('id', 'short_description', 'seo_id');
-                            }]);
-                        }
-                    ])
-                    ->orderBy('popularity', 'DESC')
-                    ->orderBy('innerid', 'ASC')
-                    ->paginate($this->loadAmount);
+    if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+      if (app()->has('one_product_ids') && app('one_product_ids') != null) {
+        $ids = array_column(app()->make('one_product_ids'), 'id');
+return Product::search($this->search)
+          ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
+          ->where('active', true)
+          ->where('type', '!=', 'parent')
+          ->where('start_date', '<=',  now()->format('Y-m-d'))
+          ->where('end_date', '>=',  now()->format('Y-m-d'))
+          ->whereIn('id', $ids)
+          ->with([
+              'media' => function ($query) {
+                  $query->select('path', 'name', 'type')->where('type', 'main');
+              },
+              'product_prices' => function ($query) {
+                  $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id');
+              },
+              'wishlists' => function ($query) {
+                  $query->select('id', 'product_id')->where('session_id', $this->session_id);
+              },
+              'product_categories' => function ($query) {
+                  $query->select('product_id', 'category_id', 'primary_category')
+                      ->where('primary_category', true);
+                  $query->with(['category' => function ($query) {
+                      $query->select('id', 'short_description', 'seo_id');
+                  }]);
+              }
+          ])
+          ->orderBy('popularity', 'DESC')
+          ->orderBy('innerid', 'ASC')
+          ->paginate($this->loadAmount);
+      }
+
+    }else{
+
+      return Product::search($this->search)
+          ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
+          ->where('active', true)
+          ->where('type', '!=', 'parent')
+          ->where('start_date', '<=',  now()->format('Y-m-d'))
+          ->where('end_date', '>=',  now()->format('Y-m-d'))
+          ->with([
+              'media' => function ($query) {
+                  $query->select('path', 'name', 'type')->where('type', 'main');
+              },
+              'product_prices' => function ($query) {
+                  $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id');
+              },
+              'wishlists' => function ($query) {
+                  $query->select('id', 'product_id')->where('session_id', $this->session_id);
+              },
+              'product_categories' => function ($query) {
+                  $query->select('product_id', 'category_id', 'primary_category')
+                      ->where('primary_category', true);
+                  $query->with(['category' => function ($query) {
+                      $query->select('id', 'short_description', 'seo_id');
+                  }]);
+              }
+          ])
+          ->orderBy('popularity', 'DESC')
+          ->orderBy('innerid', 'ASC')
+          ->paginate($this->loadAmount);
+    }
             }
         } else {
             return collect();

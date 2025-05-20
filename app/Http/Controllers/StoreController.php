@@ -17,19 +17,7 @@ class StoreController extends Controller
     } else {
       $data = null;
     }
-     if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
-    $ids = app()->make('one_product_ids');
-
-    if (count($ids) === 0) {
-        $categorySlug = app()->make('one_product_category') ?? app('global_default_category');
-        return redirect()->route('products', ['categorySlug' => $categorySlug]);
-    } else {
-        return redirect()->route('product', ['product' => $ids[0]]);
-    }
-} else {
         return view('store.search', compact('data'));
-
-}
   }
 
   public function products($categorySlug = null)
