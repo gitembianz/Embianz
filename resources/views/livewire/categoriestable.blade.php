@@ -306,11 +306,13 @@
          @if ($column === 'name')
           <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
          @elseif (
-             $column === 'active' ||
-                 $column === 'display_variant_price' ||
-                 $column === 'store_tab' ||
-                 $column === 'has_parent' ||
-                 $column === 'preload_image')
+            $column === 'active' ||
+            $column === 'display_variant_price' ||
+            $column === 'store_tab' ||
+            $column === 'has_parent' ||
+            $column === 'preload_image' ||
+            $column === 'one_product_page_category'
+                 )
           @if ($category->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled2" disabled checked>
@@ -362,7 +364,8 @@
                    $column === 'display_variant_price' ||
                    $column === 'store_tab' ||
                    $column === 'has_parent' ||
-                   $column === 'preload_image')
+                   $column === 'preload_image' ||
+                   $column === 'one_product_page_category')
             @if ($category->$column)
              <p>
               <bold>{{ $column }}:</bold>

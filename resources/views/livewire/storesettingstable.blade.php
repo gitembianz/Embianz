@@ -127,33 +127,49 @@
 <h1 class="table--name">{{ __('Logo & Favicon settings') }}</h1>
 
 <div class="logo_container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
-  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="\images\store\svg\logo-dark.svg" alt="Logodark" style="height: 40px; width: auto;">
-    <button class="button button--primary button--centered" tooltip="Update logo dark" tooltip-left wire:click.prevent="$set('changelogodark', true)">
-      <svg>
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-      </svg>
-    </button>
+
+  <!-- Dark Logo -->
+  <div style="position: relative; border: 1px solid #ccc; padding: 1.5rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div style="position: absolute; top: -0.75rem; left: 1rem; background: white; padding: 0 0.5rem; font-weight: bold;">
+      Dark Logo
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      <img src="/images/store/svg/logo-dark.svg" alt="Logodark" style="height: 40px; width: auto;">
+      <button class="button button--primary button--centered" tooltip="Update logo dark" tooltip-left wire:click.prevent="$set('changelogodark', true)">
+        <svg><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      </button>
+    </div>
   </div>
 
-  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="\images\store\svg\logo-light.svg" alt="Logolight" style="height: 40px; width: auto;">
-    <button class="button button--primary button--centered" tooltip="Update logo light" tooltip-left wire:click.prevent="$set('changelogolight', true)">
-      <svg>
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-      </svg>
-    </button>
+  <!-- Light Logo -->
+  <div style="position: relative; border: 1px solid #ccc; padding: 1.5rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div style="position: absolute; top: -0.75rem; left: 1rem; background: white; padding: 0 0.5rem; font-weight: bold;">
+      Light Logo
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      <img src="/images/store/svg/logo-light.svg" alt="Logolight" style="height: 40px; width: auto;">
+      <button class="button button--primary button--centered" tooltip="Update logo light" tooltip-left wire:click.prevent="$set('changelogolight', true)">
+        <svg><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      </button>
+    </div>
   </div>
 
-  <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ccc; padding: 1rem; gap: 1rem;">
-    <img src="\images\store\svg\favicon.ico" alt="Favicon" style="height: 40px; width: auto;">
-    <button class="button button--primary button--centered" tooltip="Update favicon" tooltip-left wire:click.prevent="$set('changefavicon', true)">
-      <svg>
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-      </svg>
-    </button>
+  <!-- Favicon -->
+  <div style="position: relative; border: 1px solid #ccc; padding: 1.5rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div style="position: absolute; top: -0.75rem; left: 1rem; background: white; padding: 0 0.5rem; font-weight: bold;">
+      Favicon
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      <img src="/images/store/svg/favicon.ico" alt="Favicon" style="height: 40px; width: auto;">
+      <button class="button button--primary button--centered" tooltip="Update favicon" tooltip-left wire:click.prevent="$set('changefavicon', true)">
+        <svg><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+      </button>
+    </div>
   </div>
+
 </div>
+
+
 
 <!-- Mobile responsive style -->
 <style>

@@ -15,6 +15,7 @@
       $decimal = ',';
   }
  @endphp
+ @if (app()->has('global_display_breadcrumbs') && app('global_display_breadcrumbs')==="true")
  <ol class="breadcrumbs container">
   <li>
    <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -52,6 +53,8 @@
    @endforeach
   @endif
  </ol>
+  @endif
+
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">

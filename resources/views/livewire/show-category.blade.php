@@ -180,6 +180,21 @@
    </div>
   </div>
 
+  <div class="checkbox__details ">
+    @if ($editcategory === null)
+     @if ($category->one_product_page_category)
+      <input type="checkbox" id="oneproduct1" checked class="disabled" disabled />
+      <label for="oneproduct1" class="disabled">Is one product page system category?</label>
+     @else
+      <input type="checkbox" id="oneproduct2" class="disabled" disabled />
+      <label for="oneproduct2" class="disabled">Is one product page system category?</label>
+     @endif
+    @else
+     <input type="checkbox" id="oneproduct3" wire:model.defer="cat.oneproduct" />
+     <label for="oneproduct3">Is one product page system category?</label>
+    @endif
+   </div>
+
   {{-- Category Start Date --}}
   <div class="input__tabs">
    @if ($editcategory === null)

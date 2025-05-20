@@ -86,6 +86,9 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'sam_token', 'value' => '', 'description' => 'Sameday token for awb, expires in 24h', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'sam_services', 'value' => '', 'description' => 'Sameday services for awb', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'sam_addreses', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'one_product_page_system', 'value' => 'false', 'description' => 'One product page sistem', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'display_breadcrumbs', 'value' => 'true', 'description' => 'Display breadcrumbs', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'display_search_button', 'value' => 'true', 'description' => 'Display search button', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

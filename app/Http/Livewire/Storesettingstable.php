@@ -290,6 +290,7 @@ public function closeModalLogo()
       }
     }
   }
+
   public function seedreviews()
   {
     $prods = Product::where('active', true)
@@ -357,7 +358,6 @@ public function closeModalLogo()
       'title' => 'Success'
     ]);
   }
-
 
   public function loadMore()
   {
@@ -678,12 +678,10 @@ public function closeModalLogo()
 
   private function createNewSitemap($filePath)
   {
-    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-    '</urlset>';
-file_put_contents($filePath, $xmlString);
-return simplexml_load_string($xmlString);
-}
+    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL . '</urlset>';
+    file_put_contents($filePath, $xmlString);
+    return simplexml_load_string($xmlString);
+  }
 
 
 public function sitemap()
@@ -758,7 +756,6 @@ $products = Product::where('active', true)
         }
 
         /**
-        * Generate paginated URLs for a category in the sitemap
         *
         * @param SimpleXMLElement $xml
         * @param Category $category
@@ -767,7 +764,6 @@ $products = Product::where('active', true)
         */
         private function generateCategoryPages(&$xml, $category, $isDefaultCategory = false)
         {
-        // Count the products associated with the category that meet the conditions
         $productsCount = $category->product_categories()
         ->whereHas('product', function ($query) {
         $query->where('active', true)
@@ -775,18 +771,17 @@ $products = Product::where('active', true)
             })
             ->count();
 
-            $limit = config('global.global_limit_load', 16); // Fetch the global limit, default to 16
+            $limit = app('global_limit_load');
             $totalPages = ceil($productsCount / $limit);
 
             for ($page = 1; $page <= $totalPages; $page++) { $url=$xml->addChild('url');
 
-                // Generate the category URL with pagination
                 $categoryUrl = route('products', [
                 'categorySlug' => $category->seo_id ?? $category->id
                 ]);
 
                 if ($page > 1) {
-                $categoryUrl .= "?page=" . $page; // Append ?page=N for paginated pages
+                $categoryUrl .= "?page=" . $page;
                 }
 
                 $url->addChild('loc', htmlspecialchars($categoryUrl));
