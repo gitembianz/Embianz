@@ -14,6 +14,8 @@
       $decimal = ',';
   }
  @endphp
+ @if (app()->has('global_display_breadcrumbs') && app('global_display_breadcrumbs')==="true")
+
  <ol class="breadcrumbs container">
   <li>
    <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -46,6 +48,8 @@
     class="breadcrumbs__link">{{ $product->name }}</a>
   </li>
  </ol>
+ @endif
+
  <section class="product container">
   <!-------------------- Slider Product ------------------>
   <div class="product-slider">
@@ -244,6 +248,8 @@
  </script>
  <h2></h2>
  {{-- Display all categories --}}
+@if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
+
  <section class="container">
   <div class="related__cat">
    @if (app()->has('label_pdp_category_tag'))
@@ -260,6 +266,8 @@
    @endif
   </div>
  </section>
+
+ @endif
  <!---------------------------------------------------------->
  <!------------------- Section Description ------------------>
  @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())

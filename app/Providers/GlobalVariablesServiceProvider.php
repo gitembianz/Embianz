@@ -45,6 +45,11 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadAllSpecificationsIntoCache();
         $this->loadActiveCountries();
 
+        if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+
+            $this->loadCategoryOneProduct();
+        }
+
 
         if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
 
@@ -112,6 +117,54 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
         }
     }
+
+private function loadCategoryOneProduct()
+{
+    if (
+        Schema::hasTable('categories') &&
+        app()->has('global_one_product_page_system') &&
+        app('global_one_product_page_system') === "true"
+    ) {
+        $category = Cache::rememberForever('category_one_product', function () {
+            return Category::where('one_product_page_category', true)
+                ->with([
+                    'product_categories.product' => function ($query) {
+                        $query->select('id', 'seo_id', 'innerid', 'active', 'start_date', 'end_date')
+                            ->where('active', true)
+                            ->whereDate('start_date', '<=', now())
+                            ->whereDate('end_date', '>=', now())
+                            ->orderBy('innerid');
+                    }
+                ])
+                ->first();
+        });
+
+        if ($category) {
+            $this->app->instance('one_product_category', $category->id);
+
+            $products = $category->product_categories
+                ->filter(fn ($pc) => $pc->product)
+                ->sortBy(fn ($pc) => $pc->product->innerid ?? PHP_INT_MAX)
+                ->map(fn ($pc) => [
+                    'id' => $pc->product->id,
+                    'seo_id' => $pc->product->seo_id,
+                ])
+                ->unique('id')
+                ->values()
+                ->toArray();
+
+            $this->app->instance('one_product_ids', $products);
+        }else{
+            $this->app->instance('one_product_ids', []);
+            $this->app->instance('one_product_category', null);
+
+        }
+    }
+}
+
+
+
+
     private function loadActiveCountries()
     {
         if (Schema::hasTable('countries') && Schema::hasTable('counties') && Schema::hasTable('cities')) {
@@ -172,6 +225,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
         }
     }
+
     private function loadGlobalPayments()
     {
         if (Schema::hasTable('payments')) {
@@ -186,6 +240,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
         }
     }
+
     private function loadGlobalStatuses()
     {
         if (Schema::hasTable('statuses')) {
@@ -210,6 +265,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
         }
     }
+
     private function loadGlobalCurrencies()
     {
         if (Schema::hasTable('price_lists') && Schema::hasTable('currencies')) {
@@ -228,6 +284,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
         }
     }
+
     private function loadAllProductsIntoCache()
     {
 
@@ -300,6 +357,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         $this->app->instance('cached_products', $products);
     }
+
     private function loadAllCategoriesIntoCache()
     {
         $defaultCategoryId = app('global_default_category');

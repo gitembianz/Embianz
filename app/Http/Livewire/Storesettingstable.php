@@ -290,6 +290,7 @@ public function closeModalLogo()
       }
     }
   }
+
   public function seedreviews()
   {
     $prods = Product::where('active', true)
@@ -357,7 +358,6 @@ public function closeModalLogo()
       'title' => 'Success'
     ]);
   }
-
 
   public function loadMore()
   {
@@ -678,12 +678,10 @@ public function closeModalLogo()
 
   private function createNewSitemap($filePath)
   {
-    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-    '</urlset>';
-file_put_contents($filePath, $xmlString);
-return simplexml_load_string($xmlString);
-}
+    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL . '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL . '</urlset>';
+    file_put_contents($filePath, $xmlString);
+    return simplexml_load_string($xmlString);
+  }
 
 
 public function sitemap()
