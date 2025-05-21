@@ -62,7 +62,9 @@
 
       route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
-
+      route::view('/users', 'admin.users')->name('users');
+      route::view('/add_user', 'admin.add_user')->name('add_user');
+      route::get('/show_user/{id}/', [AdminController::class, 'show_user'])->name('show_user');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
