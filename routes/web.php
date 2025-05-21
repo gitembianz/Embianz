@@ -64,6 +64,7 @@
 
       route::view('/users', 'admin.users')->name('users');
       route::view('/add_user', 'admin.add_user')->name('add_user');
+      route::post('/new_user', [AdminController::class, 'store_user'])->name('new_user');
       route::get('/show_user/{id}/', [AdminController::class, 'show_user'])->name('show_user');
 
       //carts route

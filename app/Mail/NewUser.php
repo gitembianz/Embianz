@@ -18,33 +18,21 @@ class NewUser extends Mailable
      * Create a new message instance.
      */
 
-     public $user;
-    public $plainPassword;
+     public $name;
+    public $email;
+    public $password;
 
-     public function __construct(User $user, $plainPassword)
+    public function __construct($name, $email, $password)
     {
-        $this->user = $user;
-        $this->plainPassword = $plainPassword;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'New User',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
+        return $this->subject('Your new account login details')
+                    ->view('emails.new_user_password');
     }
 
     /**
