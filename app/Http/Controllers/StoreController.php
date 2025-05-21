@@ -83,25 +83,26 @@ class StoreController extends Controller
 
     if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
 
-    $ids = app()->make('one_product_ids');
+      $ids = app()->make('one_product_ids');
 
     if (count($ids) != 0) {
         $first = $ids[0];
         $productRouteKey = $first['seo_id'] ?? $first['id'];
 
         return redirect()->route('product', ['product' => $productRouteKey]);
-    } else {
+    }
+    else {
       if (!app()->bound('one_product_category')) {
-    throw new NotFoundHttpException();
-}
+        throw new NotFoundHttpException();
+      }
       $id = app()->make('one_product_category');
       if($id != null && $id != $data->id){
         return redirect()->route('products', ['categorySlug' => $id]);
 
+      }
     }
-}
-return view('store.products', compact('data', 'can', 'preload'));
-    }
+  }
+  return view('store.products', compact('data', 'can', 'preload'));
 
   }
 
