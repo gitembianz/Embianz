@@ -286,6 +286,11 @@ public function store_user(Request $request)
     $data = Order_Supplier::find($id);
     return view('admin.show_supplier', compact('data'));
   }
+  public function show_user ($id)
+  {
+    $data = User::find($id);
+    return view('admin.show_user', compact('data'));
+  }
   public function show_country($id)
   {
     $data = Country::find($id);
