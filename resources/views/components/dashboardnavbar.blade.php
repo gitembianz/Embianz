@@ -54,7 +54,11 @@
   </div>
 
   <span class="aside--line"></span>
-  <button class="button button--fill button--flexed button--primary">
+   <button class="button button--fill button--flexed button--primary">
+   <svg ><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+   <span>{{ auth()->user()->name }}</span>
+  </button>
+  {{-- <button class="button button--fill button--flexed button--primary">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M14 4h6v6h-6z" />
@@ -63,7 +67,7 @@
     <path d="M7 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
    </svg>
    <span>Profile</span>
-  </button>
+  </button> --}}
   <a href="{{ route('forcelogout') }}" class="button button--fill button--flexed button--primary">
    <svg>
     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>

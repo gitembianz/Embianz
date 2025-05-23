@@ -45,7 +45,7 @@
  @endif
  <meta property="og:locale" content="{{ env('APP_LOCALE') }}">
  <!-- Open Graph / Facebook -->
- <meta property="og:url" content="{{ config('app.url') . '/' . $canonical }}" />
+ <meta property="og:url" content="{{ $canonical }}" />
  <meta property="og:type" content="website" />
  <meta property="og:image" content="{{ url('/' . $image) }}" />
  <meta property="og:title" content="{{ $title }}" />
