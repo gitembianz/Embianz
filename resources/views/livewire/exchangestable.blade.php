@@ -262,11 +262,11 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
-      <exchange class="switch switch--primary inline">
+      <label class="switch switch--primary inline">
        <input type="checkbox" wire:ignore wire:model="selectedColumns" iso_code="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
        <span>{{ $column }}</span>
-      </exchange>
+      </label>
      @endforeach
     </div>
    </div>
@@ -362,7 +362,7 @@
       </th>
      @endif
      @if ($this->showColumn('value'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('value')" class="table--btn @if ($orderBy === 'value' && $orderAsc === '1') active @endif">
         Value
         <svg>
@@ -372,7 +372,7 @@
       </th>
      @endif
      @if ($this->showColumn('date'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('date')" class="table--btn @if ($orderBy === 'date' && $orderAsc === '1') active @endif">
         date
         <svg>
@@ -382,7 +382,7 @@
       </th>
      @endif
      @if ($this->showColumn('created_by'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('created_by')" class="table--btn @if ($orderBy === 'created_by' && $orderAsc === '1') active @endif">
         Created by
         <svg>
@@ -392,7 +392,7 @@
       </th>
      @endif
      @if ($this->showColumn('last_modified_by'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('last_modified_by')"
         class="table--btn @if ($orderBy === 'last_modified_by' && $orderAsc === '1') active @endif">
         Last modified by
@@ -404,7 +404,7 @@
      @endif
 
      @if ($this->showColumn('created_at'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === 'created_at' && $orderAsc === '1') active @endif">
         created_at
         <svg>
@@ -414,7 +414,7 @@
       </th>
      @endif
      @if ($this->showColumn('updated_at'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('updated_at')" class="table--btn @if ($orderBy === 'updated_at' && $orderAsc === '1') active @endif">
         updated_at
         <svg>
@@ -439,13 +439,16 @@
       <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
      </tr>
     @else
+    @php
+     $i = 0;
+    @endphp
      @foreach ($exchanges as $index => $exchange)
       <tr @if ($loop->last) id="last_record" @endif>
        @if ($this->showColumn('id'))
-        <td>{{ $exchange->id }}</td>
+        <td wire:click="expandRow({{ $index }})">{{ $exchange->id }}</td>
        @endif
        @if ($this->showColumn('base_currency_id'))
-        <td>
+        <td wire:click="expandRow({{ $index }})">
          @if ($rowindex !== $index)
           {{ $exchange->base_currency->name }}
          @else
@@ -458,7 +461,7 @@
         </td>
        @endif
        @if ($this->showColumn('quote_currency_id'))
-        <td>
+        <td wire:click="expandRow({{ $index }})">
          @if ($rowindex !== $index)
           {{ $exchange->quote_currency->name }}
          @else
@@ -471,7 +474,7 @@
         </td>
        @endif
        @if ($this->showColumn('value'))
-        <td>
+        <td class="hidden">
          @if ($rowindex !== $index)
           {{ $exchange->value }}
          @else
@@ -482,7 +485,7 @@
         </td>
        @endif
        @if ($this->showColumn('date'))
-        <td>
+        <td class="hidden">
          @if ($rowindex !== $index)
           {{ $exchange->date }}
          @else
@@ -492,23 +495,23 @@
          @endif
        @endif
        @if ($this->showColumn('created_by'))
-        <td>
+        <td class="hidden">
          {{ $exchange->created_by }}
         </td>
        @endif
        @if ($this->showColumn('last_modified_by'))
-        <td>
+        <td class="hidden">
          {{ $exchange->last_modified_by }}
         </td>
        @endif
 
        @if ($this->showColumn('created_at'))
-        <td>
+        <td class="hidden">
          {{ $exchange->created_at }}
         </td>
        @endif
        @if ($this->showColumn('updated_at'))
-        <td>
+        <td class="hidden">
          {{ $exchange->updated_at }}
         </td>
        @endif
@@ -549,6 +552,70 @@
         </div>
        </td>
       </tr>
+      <tr class="details-row  @if ($row === $i) active @endif">
+      <td colspan="17">
+       <div class="details">
+        @if ($this->showColumn('value'))
+         @if ($rowindex !== $index)
+          <p>
+           Value:
+           {{ $exchange->value }}
+          </p>
+         @else
+          <p>
+           Value:
+          <div class="searchable">
+           <input type="number" class="input__searchable" wire:model.defer="element.{{ $index }}.value">
+          </div>
+          </p>
+         @endif
+        @endif
+        @if ($this->showColumn('date'))
+         @if ($rowindex !== $index)
+          <p>
+           Date:
+           {{ $exchange->date }}
+          </p>
+         @else
+          <p>
+           Date:
+           <div class="searchable">
+           <input type="date" class="input__searchable" wire:model.defer="element.{{ $index }}.date">
+          </div>
+          </p>
+         @endif
+        @endif
+        @if ($this->showColumn('created_by'))
+         <p>
+          Created by:
+          {{ $exchange->created_by }}
+         </p>
+        @endif
+        @if ($this->showColumn('last_modified_by'))
+         <p>
+          Last modified by:
+          {{ $exchange->last_modified_by }}
+         </p>
+        @endif
+        @if ($this->showColumn('created_at'))
+         <p>
+          Created At:
+          {{ $exchange->created_at }}
+         </p>
+        @endif
+        @if ($this->showColumn('updated_at'))
+         <p>
+          Updated At:
+          {{ $exchange->updated_at }}
+         </p>
+        @endif
+
+       </div>
+      </td>
+     </tr>
+      @php
+      $i++;
+     @endphp
      @endforeach
     @endif
    </tbody>
