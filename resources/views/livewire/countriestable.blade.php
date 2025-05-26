@@ -48,11 +48,11 @@
    </div>
    <span class="aside--line"></span>
    @foreach ($columns as $column)
-    <country class="switch switch--primary" style="margin: 0.25rem 0">
+    <label class="switch switch--primary" style="margin: 0.25rem 0">
      <input type="checkbox" wire:ignore wire:model="selectedColumns" iso_code="{{ $column }}"
       {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
      <span>{{ $column }}</span>
-    </country>
+    </label>
    @endforeach
   </div>
  </aside>
@@ -128,11 +128,11 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
-      <country class="switch switch--primary inline">
+      <label class="switch switch--primary inline">
        <input type="checkbox" wire:ignore wire:model="selectedColumns" iso_code="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
        <span>{{ $column }}</span>
-      </country>
+      </label>
      @endforeach
     </div>
    </div>
@@ -232,7 +232,7 @@
       </th>
      @endif
      @if ($this->showColumn('iso_code3'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('iso_code3')" class="table--btn @if ($orderBy === 'iso_code3' && $orderAsc === '1') active @endif">
         iso_code3
         <svg>
@@ -242,7 +242,7 @@
       </th>
      @endif
      @if ($this->showColumn('phone_code'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('phone_code')" class="table--btn @if ($orderBy === 'phone_code' && $orderAsc === '1') active @endif">
         phone_code
         <svg>
@@ -252,7 +252,7 @@
       </th>
      @endif
      @if ($this->showColumn('currency'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('currency')" class="table--btn @if ($orderBy === 'currency' && $orderAsc === '1') active @endif">
         currency
         <svg>
@@ -262,7 +262,7 @@
       </th>
      @endif
      @if ($this->showColumn('status'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('status')" class="table--btn @if ($orderBy === 'status' && $orderAsc === '1') active @endif">
         status
         <svg>
@@ -272,7 +272,7 @@
       </th>
      @endif
      @if ($this->showColumn('created_at'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === 'created_at' && $orderAsc === '1') active @endif">
         created_at
         <svg>
@@ -282,7 +282,7 @@
       </th>
      @endif
      @if ($this->showColumn('updated_at'))
-      <th>
+      <th class="hidden">
        <button wire:click="sortBy('updated_at')" class="table--btn @if ($orderBy === 'updated_at' && $orderAsc === '1') active @endif">
         updated_at
         <svg>
@@ -302,13 +302,16 @@
     </tr>
    </thead>
    <tbody>
+     @php
+     $i = 0;
+    @endphp
     @foreach ($countries as $index => $country)
      <tr @if ($loop->last) id="last_record" @endif>
       @if ($this->showColumn('id'))
-       <td>{{ $country->id }}</td>
+       <td wire:click="expandRow({{ $index }})">{{ $country->id }}</td>
       @endif
       @if ($this->showColumn('name'))
-       <td>
+       <td wire:click="expandRow({{ $index }})">
         @if ($rowindex !== $index)
          <a href="{{ route('show_country', ['id' => $country->id]) }}">{{ strip_tags($country->name) }}</a>
         @else
@@ -319,7 +322,7 @@
        </td>
       @endif
       @if ($this->showColumn('iso_code'))
-       <td>
+       <td wire:click="expandRow({{ $index }})">
         @if ($rowindex !== $index)
          {{ $country->iso_code }}
         @else
@@ -330,7 +333,7 @@
        </td>
       @endif
       @if ($this->showColumn('iso_code3'))
-       <td>
+       <td class="hidden">
         @if ($rowindex !== $index)
          {{ $country->iso_code3 }}
         @else
@@ -341,7 +344,7 @@
        </td>
       @endif
       @if ($this->showColumn('phone_code'))
-       <td>
+       <td class="hidden">
         @if ($rowindex !== $index)
          {{ $country->phone_code }}
         @else
@@ -352,7 +355,7 @@
        </td>
       @endif
       @if ($this->showColumn('currency'))
-       <td>
+       <td class="hidden">
         @if ($rowindex !== $index)
          {{ $country->currency }}
         @else
@@ -363,7 +366,7 @@
        </td>
       @endif
       @if ($this->showColumn('status'))
-       <td>
+       <td class="hidden">
 
         @if ($rowindex !== $index)
          @if ($country->status)
@@ -388,12 +391,12 @@
       @endif
 
       @if ($this->showColumn('created_at'))
-       <td>
+       <td class="hidden">
         {{ $country->created_at }}
        </td>
       @endif
       @if ($this->showColumn('updated_at'))
-       <td>
+       <td class="hidden">
         {{ $country->updated_at }}
        </td>
       @endif
@@ -424,6 +427,99 @@
        @endif
       </td>
      </tr>
+     <tr class="details-row  @if ($row === $i) active @endif">
+      <td colspan="17">
+       <div class="details">
+        @if ($this->showColumn('iso_code3'))
+         @if ($rowindex !== $index)
+          <p>
+           iso_code3:
+           {{ $country->iso_code3 }}
+          </p>
+         @else
+          <p>
+           iso_code3:
+          <div class="searchable">
+          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.iso_code3">
+         </div>
+          </p>
+         @endif
+        @endif
+        @if ($this->showColumn('phone_code'))
+         @if ($rowindex !== $index)
+          <p>
+           phone_code:
+           {{ $country->phone_code }}
+           </p>
+         @else
+          <p>
+           phone_code:
+           <div class="searchable">
+           <input type="date" class="input__searchable" wire:model.defer="element.{{ $index }}.date">
+          </div>
+          </p>
+         @endif
+        @endif
+        @if ($this->showColumn('currency'))
+         @if ($rowindex !== $index)
+          <p>
+           currency:
+           {{ $country->currency }}
+           </p>
+         @else
+          <p>
+           currency:
+           <div class="searchable">
+          <input type="text" class="input__searchable" wire:model.defer="element.{{ $index }}.currency">
+         </div>
+          </p>
+         @endif
+        @endif
+@if ($this->showColumn('status'))
+         @if ($rowindex !== $index)
+          <p>
+           status:
+           @if ($country->status)
+          <div class="checkbox--secondary">
+           <input type="checkbox" id="isactive{{ $index }}" disabled checked>
+           <label for="isactive{{ $index }}"></label>
+          </div>
+         @else
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" id="notactive{{ $index }}" disabled>
+           <label for="notactive{{ $index }}"></label>
+          </div>
+         @endif
+           </p>
+         @else
+          <p>
+           status:
+           <div class="checkbox--secondary inline">
+          <input type="checkbox" id="check{{ $index }}"
+           wire:model.lazy="element.{{ $index }}.status" />
+          <label for="check{{ $index }}"></label>
+         </div>
+          </p>
+         @endif
+        @endif
+        @if ($this->showColumn('created_at'))
+         <p>
+          Created At:
+          {{ $country->created_at }}
+         </p>
+        @endif
+        @if ($this->showColumn('updated_at'))
+         <p>
+          Updated At:
+          {{ $country->updated_at }}
+         </p>
+        @endif
+
+       </div>
+      </td>
+     @php
+      $i++;
+     @endphp
     @endforeach
    </tbody>
   </table>

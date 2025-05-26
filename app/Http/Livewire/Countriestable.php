@@ -22,6 +22,19 @@ class Countriestable extends Component
     public $selectedColumns = [];
     public $rowindex = null;
     public $element = [];
+      public $row = null;
+
+
+     public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
 
     public function render()
     {
