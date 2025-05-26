@@ -24,7 +24,6 @@ class Exchangestable extends Component
     public $rowindex = null;
     public $currencies;
     public $single = false;
-    public $tableName;
 
     public $add = false;
     public $rowadd;
@@ -33,18 +32,29 @@ class Exchangestable extends Component
     public $value = [];
     public $date = [];
     public $element = [];
-    public $row = 1;
+    public $row = null;
 
+
+     public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
     public function render()
     {
         return view('livewire.exchangestable', [
             'exchanges' => $this->exchanges
         ]);
     }
-    public function mount()
+    public function mount($tableName)
     {
         $this->rowadd = 1;
-        $this->columns = Schema::getColumnListing($this->tableName);
+        $this->columns = Schema::getColumnListing($tableName);
 
         $this->selectedColumns = $this->columns;
         $this->currencies = Currency::all();

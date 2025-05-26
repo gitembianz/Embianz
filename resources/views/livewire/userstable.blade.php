@@ -305,7 +305,6 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_user', ['id' => $user->id]) }}">{{ strip_tags($user->name) }}</a>
-
          @else
           {{ $user->$column }}
          @endif

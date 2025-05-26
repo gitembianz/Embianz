@@ -305,7 +305,7 @@
         </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > 1) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > 2) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_page', ['id' => $page->id]) }}">{{ $page->name }}</a>

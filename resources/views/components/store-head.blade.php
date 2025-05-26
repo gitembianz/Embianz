@@ -51,7 +51,7 @@
  <meta property="og:title" content="{{ $title }}" />
  <meta property="og:description" content="{{ $description }}" />
  <!-- Twitter -->
- <meta property="twitter:url" content="{{ config('app.url') . '/' . $canonical }}" />
+ <meta property="twitter:url" content="{{ $canonical }}" />
  <meta property="twitter:card" content="summary_large_image" />
  <meta property="twitter:image" content="{{ url('/' . $image) }}" />
  <meta property="twitter:title" content="{{ $title }}" />
