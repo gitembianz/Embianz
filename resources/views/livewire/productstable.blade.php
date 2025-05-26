@@ -18,6 +18,32 @@
   </div>
  </aside>
 
+ {{-- List view system --}}
+  <aside>
+  <div class="background background--center active"></div>
+  <div class="aside aside--confirm active">
+   <span>
+    @if ($single)
+     Are you sure to delete this record?
+    @else
+     Are you sure to delete those records?
+    @endif
+   </span>
+   @if ($single)
+    <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+     <span>Delete</span>
+    </button>
+   @else
+    <button class="button button--primary button--long" wire:click="deleteRecords()">
+     <span>Delete</span>
+    </button>
+   @endif
+   <button class="button button--danger button--long" wire:click="cancel_delete()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
+
  {{-- Delete Record OR Records --}}
  <aside>
   <div class="background background--center @if ($single || $multiple) active @endif"></div>
