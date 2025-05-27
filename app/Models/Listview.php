@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Listview extends Model
 {
     use HasFactory;
+    protected $fillable = ['user_id', 'model', 'name', 'columns', 'filters', 'sorts','created_at', 'updated_at'];
 }

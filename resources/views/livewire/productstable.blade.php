@@ -18,31 +18,41 @@
   </div>
  </aside>
 
- {{-- List view system --}}
-  <aside>
-  <div class="background background--center active"></div>
-  <div class="aside aside--confirm active">
-   <span>
-    @if ($single)
-     Are you sure to delete this record?
-    @else
-     Are you sure to delete those records?
-    @endif
-   </span>
-   @if ($single)
-    <button class="button button--primary button--long" wire:click="deleteSingleRecord">
-     <span>Delete</span>
-    </button>
-   @else
-    <button class="button button--primary button--long" wire:click="deleteRecords()">
-     <span>Delete</span>
-    </button>
-   @endif
-   <button class="button button--danger button--long" wire:click="cancel_delete()">
-    <span>Cancel</span>
-   </button>
+
+<aside>
+  <div class="background background--center @if ($addlistview) active @endif"></div>
+  <div class="aside aside--confirm @if ($addlistview) active @endif"
+   style="min-height: 175px !important;">
+   <div class="tabs__content details__view active" style="max-height: 100%;">
+
+    <span class="details__long"
+     style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+     New Listview
+    </span>
+     @foreach ($errors->all() as $error)
+      <span class="error active">{{ $error }}</span>
+    @endforeach
+
+     <div class="input__tabs details__long">
+      <input type="text"  wire:model.defer="listview.name">
+      <label>Listview name</label>
+     </div>
+
+
+     <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+      <span>Save</span>
+     </button>
+     <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+      wire:click.prevent="$set('addlistview', false)">
+      <span>Cancel</span>
+     </button>
+
+   </div>
   </div>
  </aside>
+
+
+
 
  {{-- Delete Record OR Records --}}
  <aside>
@@ -150,121 +160,10 @@
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
 
-  {{-- Refresh Button --}}
-  <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
-   wire:click="$refresh">
-   <svg>
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
-    <path d="M18.37 7.16l0 .01" />
-    <path d="M13 19.94l0 .01" />
-    <path d="M16.84 18.37l0 .01" />
-    <path d="M19.37 15.1l0 .01" />
-    <path d="M19.94 11l0 .01" />
-   </svg>
-  </button>
-  <a class="button button--primary button--centered display--desktop" tooltip="Generate products feed" tooltip-top
-   href="{{ route('create_feed') }}">
-   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-    class="feather feather-file-text">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-    <polyline points="14 2 14 8 20 8"></polyline>
-    <line x1="16" y1="13" x2="8" y2="13"></line>
-    <line x1="16" y1="17" x2="8" y2="17"></line>
-    <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>
-  </a>
-  {{-- import images from csv --}}
-  <button class="button button--primary button--centered display--desktop" tooltip="Import media from csv" tooltip-top
-   wire:click.prevent="$set('uploadcsv', true)">
-   <svg>
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-    <polyline points="21 15 16 10 5 21"></polyline>
-   </svg>
-  </button>
-  {{-- Add Product --}}
-  <a class="button button--primary button--centered display--desktop" tooltip="Add new product" tooltip-top
-   href="{{ route('add_product') }}">
-   <svg>
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-    <polyline points="14 2 14 8 20 8"></polyline>
-    <line x1="12" y1="18" x2="12" y2="12"></line>
-    <line x1="9" y1="15" x2="15" y2="15"></line>
-   </svg>
-  </a>
-  {{-- schuffle --}}
-  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle products innerids"
-   tooltip-top wire:click.prevent="ProductshuffledIds">
-   <svg>
-    <polyline points="16 3 21 3 21 8"></polyline>
-    <line x1="4" y1="20" x2="21" y2="3"></line>
-    <polyline points="21 16 21 21 16 21"></polyline>
-    <line x1="15" y1="15" x2="21" y2="21"></line>
-    <line x1="4" y1="4" x2="9" y2="9"></line>
-   </svg>
-  </button>
-  <button class="button button--primary button--centered display--desktop" tooltip="Shuffle sequence on related"
-   tooltip-top wire:click.prevent="Relatedshuffleseq">
-   <svg>
-    <polyline points="17 1 21 5 17 9"></polyline>
-    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-    <polyline points="7 23 3 19 7 15"></polyline>
-    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-   </svg>
-  </button>
-  {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
-   {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
-    <span>With Checked({{ count($checked) }})</span>
-   </button>
-   {{-- Dropdown Content --}}
-   <div class="dropdown__content">
-    <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
-     Delete
-    </button>
-   </div>
-  </div>
-  {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" wire:ignore>
-   {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
-    <svg>
-     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-     <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
-     <path d="M19 21h-4l4 -7h-4" />
-     <path d="M4 15l3 3l3 -3" />
-     <path d="M7 6v12" />
-    </svg>
-   </button>
-   {{-- Dropdown Content --}}
-   <div class="dropdown__content">
-    <div class="dropdown__container">
-     @foreach ($columns as $column)
-      <button
-       class="button button--primary button--long button--flexed button--arrow @if ($orderBy === $column && $orderAsc === '1') active @endif"
-       wire:click="sortBy('{{ $column }}')">
-       <svg>
-        <polyline points="6 9 12 15 18 9"></polyline>
-       </svg>
-       {{ $column }}
-      </button>
-     @endforeach
-    </div>
-   </div>
-  </div>
+
   {{-- Visible Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" wire:ignore>
-   {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
-    <svg>
-     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-     <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-     <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-    </svg>
-   </button>
+
    {{-- Dropdown Content --}}
    <div class="dropdown__content">
     <div class="dropdown__container">
@@ -279,9 +178,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile">
+  <div class="dropdown dropdown--right">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
+   <button class="button button--primary button--centered" tooltip="Table actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -303,6 +202,10 @@
        <path d="M19.94 11l0 .01" />
       </svg>
       <span>Refresh table</span>
+     </button>
+     <button class="button button--primary button--fill button--flexed" wire:click="$set('addlistview', true)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clipboard"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+      <span>Add listview</span>
      </button>
      <a class="button button--primary button--fill button--flexed" href="{{ route('create_feed') }}">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

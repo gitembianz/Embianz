@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Listview;
 use App\Models\ProductCost;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProductReviews as ModelsProductReviews;
 
+use Illuminate\Validation\Rule;
 
 class Productstable extends Component
 {
@@ -45,12 +47,61 @@ class Productstable extends Component
   public $single = false;
   public $multiple = false;
   public $uploadcsv = false;
+  public $addlistview = false;
   public $csvFile;
   public $relation = false;
+  public $tableName;
+  public array $listview = [
+        'name' => null,
+        'individual' => true,
+        'model' => null,
+        'columns' => [],
+        'filters' => [],
+        'sort' => [
+            'column' => 'id',
+            'direction' => 'asc',
+        ],
+    ];
 
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
   ];
+
+
+
+public function add_listview()
+{
+    $this->validate([
+        'listview.name' => [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('listviews', 'name')
+                ->where(fn ($query) => $query
+                    ->where('user_id', Auth::id())
+                    ->where('model', $this->tableName)
+                ),
+        ],
+    ]);
+
+    ListView::create([
+        'user_id' => Auth::id(),
+        'name' => $this->listview['name'],
+        'model' => $this->tableName,
+    ]);
+
+    $this->listview['name'] = '';
+    $this->addlistview = false;
+
+
+    session()->flash('notification', [
+        'message' => 'Listview added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
+
+
   public function updatingcsvFile($value)
   {
     ini_set('max_execution_time', 300);
@@ -285,6 +336,7 @@ class Productstable extends Component
   }
   public function mount($tableName)
   {
+    $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($tableName);
 
     $quantityIndex = array_search('quantity', $this->columns);
