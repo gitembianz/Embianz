@@ -22,7 +22,7 @@
 <aside>
   <div class="background background--center @if ($addlistview) active @endif"></div>
   <div class="aside aside--confirm @if ($addlistview) active @endif"
-   style="min-height: 175px !important;">
+   style="min-height: 225px !important;">
    <div class="tabs__content details__view active" style="max-height: 100%;">
 
     <span class="details__long"
@@ -30,7 +30,7 @@
      New Listview
     </span>
      @foreach ($errors->all() as $error)
-      <span class="error active">{{ $error }}</span>
+      <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
     @endforeach
 
      <div class="input__tabs details__long">
@@ -49,7 +49,112 @@
 
    </div>
   </div>
- </aside>
+</aside>
+
+<aside>
+  <div class="background background--center @if ($editlistview) active @endif"></div>
+  <div class="aside aside--confirm @if ($editlistview) active @endif" style="min-height: 400px;">
+    <div class="tabs__content details__view active" style="max-height: 100%;">
+       @foreach ($errors->all() as $error)
+      <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+    @endforeach
+
+     <div class="input__tabs details__long">
+      <input type="text"  wire:model.defer="listview.name">
+      <label>Listview name</label>
+     </div>
+     <div class="details__long">
+
+       <button style="max-width: none!important; width:100%!important" class="button button--danger button--long" wire:click.prevent="delete_listview()">
+       <span>Delete listview</span>
+      </button>
+     </div>
+      <button class="button button--secondary button--long" wire:click.prevent="">
+      <span>Edit listview</span>
+     </button>
+     <button class="button button--primary button--long" style="margin-bottom: 10px !important"
+      wire:click.prevent="$set('addlistview', false)">
+      <span>Add filter</span>
+     </button>
+      {{-- <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+        Edit Listview
+      </span> --}}
+
+
+
+
+      <div class="details__long" style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
+        <div style="flex: 1;">
+  <label style="font-weight: bold; color: white;">Columns</label>
+  <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+    @foreach ($availableFields as $field)
+      <option value="{{ $field }}">{{ $field }}</option>
+    @endforeach
+  </select>
+</div>
+
+        <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+          <button type="button" wire:click="moveToVisible" class="button">→</button>
+          <button type="button" wire:click="moveToAvailable" class="button">←</button>
+        </div>
+
+      <div style="flex: 1;">
+  <label style="font-weight: bold; color: white;">Visible Fields</label>
+  <select wire:model="selectedVisible" size="8" style="width: 100%;">
+    @foreach ($listview['columns'] as $field)
+      <option value="{{ $field }}">{{ $field }}</option>
+    @endforeach
+  </select>
+</div>
+         <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+    <button  type="button" wire:click="moveVisibleFieldUp" class="button">↑</button>
+    <button type="button" wire:click="moveVisibleFieldDown" class="button">↓</button>
+  </div>
+      </div>
+    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+      <span>Save</span>
+     </button>
+     <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+      wire:click.prevent="$set('editlistview', false)">
+      <span>Cancel</span>
+     </button>
+
+    </div>
+  </div>
+</aside>
+
+
+<aside>
+  <div class="background background--center @if ($addlistview) active @endif"></div>
+  <div class="aside aside--confirm @if ($addlistview) active @endif"
+   style="min-height: 225px !important;">
+   <div class="tabs__content details__view active" style="max-height: 100%;">
+
+    <span class="details__long"
+     style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+     New Listview
+    </span>
+     @foreach ($errors->all() as $error)
+      <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+    @endforeach
+
+     <div class="input__tabs details__long">
+      <input type="text"  wire:model.defer="listview.name">
+      <label>Listview name</label>
+     </div>
+
+
+     <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+      <span>Save</span>
+     </button>
+     <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+      wire:click.prevent="$set('addlistview', false)">
+      <span>Cancel</span>
+     </button>
+
+   </div>
+  </div>
+</aside>
 
 
 
@@ -157,9 +262,59 @@
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Products') }} ({{ $products->total() }})</h1>
  <nav class="nav--controls">
+  @if ($activelistview)
+
+  <div class="dropdown dropdown--right">
+   {{-- Dropdown Button --}}
+
+   <button class="button button--primary button--centered button--long" tooltip="Active listview" tooltip-top>
+    <span>{{ $activelistview->name }}</span>
+   </button>
+   {{-- Dropdown Content --}}
+  <div class="dropdown__content custom-dropdown-content"
+     style="gap: 5px; display: grid; left: 0; right: 0; max-height: 200px; overflow-y: auto;">
+
+    @foreach ($listviews as $listview)
+     <button class="button button--primary button--long" wire:click="setActiveListview({{ $listview->id }})">
+      {{ $listview->name }}
+     </button>
+    @endforeach
+    @if (count($listviews) < 1)
+     <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">No listviews found</span>
+    @endif
+
+
+  </div>
+  @endif
+  <style>
+   .custom-dropdown-content::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+   }
+  </style>
+  </div>
+   <button class="button button--primary button--centered" tooltip="Edit listview" tooltip-top
+   wire:click="$set('editlistview', true)">
+   <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+  </button>
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
-
+<div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
+   {{-- Dropdown Button --}}
+   <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
+    <span>With Checked({{ count($checked) }})</span>
+   </button>
+   {{-- Dropdown Content --}}
+   <div class="dropdown__content">
+    <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+     Delete
+    </button>
+   </div>
+  </div>
 
   {{-- Visible Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" wire:ignore>

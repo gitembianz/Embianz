@@ -9,4 +9,14 @@ class Listview extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id', 'model', 'name', 'columns', 'filters', 'sorts','created_at', 'updated_at'];
+    protected $casts = [
+    'columns' => 'array',
+    'filters' => 'array',
+    'sorts' => 'array',
+];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
