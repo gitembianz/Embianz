@@ -37,8 +37,8 @@ class Productstable extends Component
 
   public $loadAmount = 20;
   public $search = '';
-  public $orderBy = 'id';
-  public $orderAsc = true;
+  public $orderBy = null;
+  public $orderAsc = null;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
@@ -65,8 +65,8 @@ public string $selectedVisible = '';
         'columns' => [],
         'filters' => [],
         'sort' => [
-            'column' => 'id',
-            'direction' => 'asc',
+            'column' => null,
+            'direction' => null,
         ],
     ];
 
@@ -74,8 +74,8 @@ public string $selectedVisible = '';
     'csvFile' => 'required|mimes:csv,txt',
   ];
 
-    public function mount($tableName)
-  {
+public function mount($tableName)
+{
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($tableName);
     $this->availableFields = $this->columns ?? [];
@@ -83,23 +83,27 @@ public string $selectedVisible = '';
     $this->activelistview = $this->listviews->first() ?? null;
 
     $quantityIndex = array_search('quantity', $this->columns);
-
     if ($quantityIndex !== false) {
-      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
+        array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
     }
 
-    $this->listview = [
-      'name' => $this->activelistview?->name ?? '',
-      'model' => $this->activelistview?->model ?? $this->tableName,
-      'columns' => $this->activelistview?->columns ?? [],
-      'filters' => [],
-      'sort' => [
-        'column' => 'id',
-        'direction' => 'asc',
-      ],
-    ];
+    $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
+
+   $this->listview = [
+    'name' => $this->activelistview?->name ?? '',
+    'model' => $this->activelistview?->model ?? $this->tableName,
+    'columns' => $this->activelistview?->columns ?? [],
+    'filters' => $this->activelistview?->filters ?? [],
+    'sort' => [
+        'column' => $this->activelistview?->sorts['column'] ?? 'id',
+        'direction' => $this->activelistview?->sorts['direction'] ?? 'asc',
+    ],
+];
+    $this->orderBy = $this->listview['sort']['column'] ?? 'id';
+    $this->orderAsc = $this->listview['sort']['direction'] === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
-  }
+}
+
 
   public function delete_listview()
   {
@@ -123,7 +127,7 @@ $this->editlistview = false;
     }
   }
 
-  public function save_listview()
+  public function save_listview($recurency = false)
   {
     $this->validate([
       'listview.name' => [
@@ -134,13 +138,17 @@ $this->editlistview = false;
     ]);
 
     if ($this->activelistview) {
-      $this->activelistview->update([
+    $this->activelistview->update([
         'name' => $this->listview['name'],
         'columns' => $this->listview['columns'],
         'filters' => $this->listview['filters'],
-        'sorts' => $this->listview['sort'],
-      ]);
-    } else {
+        'sorts' => [
+            'column' => $this->orderBy ?? 'id',
+            'direction' => $this->orderAsc ? 'asc' : 'desc',
+        ],
+    ]);
+}
+ else {
       Listview::create([
         'user_id' => Auth::id(),
         'name' => $this->listview['name'],
@@ -150,12 +158,16 @@ $this->editlistview = false;
         'sorts' => $this->listview['sort'],
       ]);
     }
-$this->editlistview = false;
+    if(!$recurency) {
+      $this->editlistview = false;
+
     session()->flash('notification', [
       'message' => 'Listview saved successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
+    }
+
   }
 
   public function getListviewsProperty()
@@ -540,6 +552,7 @@ public function setActiveListview($id)
       $this->orderAsc = '1';
     }
     $this->orderBy = $columnName;
+    $this->save_listview(true);
   }
   public function swapSortDirection()
   {
