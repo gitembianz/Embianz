@@ -56,7 +56,9 @@ class Productstable extends Component
   public $tableName;
   public $activelistview;
   public string $selectedAvailable = '';
-public string $selectedVisible = '';
+  public string $selectedVisible = '';
+  public bool $edit = true;
+  public bool $filter = false;
 
   public array $availableFields = [];
   public array $listview = [
@@ -104,6 +106,15 @@ public function mount($tableName)
     $this->selectedColumns = $this->listview['columns'] ?? [];
 }
 
+
+public function toggle($item){
+if($item == 'edit') {
+    $this->edit = !$this->edit;
+    $this->filter = !$this->filter;
+} else {
+  $this->edit = !$this->edit;
+    $this->filter = !$this->filter;
+}}
 
   public function delete_listview()
   {

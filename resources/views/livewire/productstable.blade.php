@@ -53,7 +53,7 @@
 
 <aside>
   <div class="background background--center @if ($editlistview) active @endif"></div>
-  <div class="aside aside--confirm @if ($editlistview) active @endif" style="min-height: 400px;">
+  <div class="aside aside--confirm @if ($editlistview) active @endif" style="min-height: 450px;">
     <div class="tabs__content details__view active" style="max-height: 100%;">
        @foreach ($errors->all() as $error)
       <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
@@ -69,11 +69,13 @@
        <span>Delete listview</span>
       </button>
      </div>
-      <button class="button button--secondary button--long" wire:click.prevent="">
+      <button class="button @if ($edit)button--secondary @else button--primary @endif
+
+       button--long" wire:click.prevent="toggle('edit')">
       <span>Edit listview</span>
      </button>
-     <button class="button button--primary button--long" style="margin-bottom: 10px !important"
-      wire:click.prevent="$set('addlistview', false)">
+     <button class="button @if ($filter)button--secondary @else button--primary @endif button--long" style="margin-bottom: 10px !important"
+      wire:click.prevent="toggle('filter')">
       <span>Add filter</span>
      </button>
       {{-- <span class="details__long" style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
@@ -81,10 +83,10 @@
       </span> --}}
 
 
+@if ($edit)
 
-
-      <div class="details__long" style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
-        <div style="flex: 1;">
+<div class="details__long" style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
+    <div style="flex: 1;">
   <label style="font-weight: bold; color: white;">Columns</label>
   <select wire:model="selectedAvailable" size="8" style="width: 100%;">
     @foreach ($availableFields as $field)
@@ -93,12 +95,12 @@
   </select>
 </div>
 
-        <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-          <button type="button" wire:click="moveToVisible" class="button">→</button>
-          <button type="button" wire:click="moveToAvailable" class="button">←</button>
-        </div>
+  <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+    <button type="button" wire:click="moveToVisible" class="button">→</button>
+    <button type="button" wire:click="moveToAvailable" class="button">←</button>
+  </div>
 
-      <div style="flex: 1;">
+<div style="flex: 1;">
   <label style="font-weight: bold; color: white;">Visible Fields</label>
   <select wire:model="selectedVisible" size="8" style="width: 100%;">
     @foreach ($listview['columns'] as $field)
@@ -106,18 +108,48 @@
     @endforeach
   </select>
 </div>
-         <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+   <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
     <button  type="button" wire:click="moveVisibleFieldUp" class="button">↑</button>
     <button type="button" wire:click="moveVisibleFieldDown" class="button">↓</button>
   </div>
-      </div>
-    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
-      <span>Save</span>
-     </button>
-     <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-      wire:click.prevent="$set('editlistview', false)">
-      <span>Cancel</span>
-     </button>
+</div>
+<button class="button button--primary button--long" wire:click.prevent="save_listview()">
+  <span>Save</span>
+</button>
+<button class="button button--danger button--long" style="margin-bottom: 10px !important"
+wire:click.prevent="$set('editlistview', false)">
+<span>Cancel</span>
+</button>
+@else
+ <div class="input__tabs details__long">
+      <select wire:model.defer="selectedVisible">
+       @foreach ($listview['columns'] as $field)
+      <option value="{{ $field }}">{{ $field }}</option>
+    @endforeach
+      </select>
+      <label> Column</label>
+  </div>
+  <div class="input__tabs details__long">
+      <select wire:model.defer="operator">
+      <option value="=">equal</option>
+      <option value="like">contains</option>
+      <option value=">">greater than</option>
+      <option value="<">less than</option>
+      </select>
+      <label> Operator</label>
+  </div>
+  <div class="input__tabs details__long">
+      <input type="text"  wire:model.defer="value">
+      <label>Value</label>
+     </div>
+     <div class="details__long" style="margin-bottom: 5px;">
+
+       <button style="max-width: none!important; width:100%!important" class="button button--secondary button--long" wire:click.prevent="save_filter()">
+       <span>Save filter</span>
+      </button>
+     </div>
+@endif
+
 
     </div>
   </div>
