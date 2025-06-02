@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Listview;
 use App\Models\ProductCost;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
@@ -26,6 +27,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ProductReviews as ModelsProductReviews;
 
 
+
+use Illuminate\Validation\Rule;
+
 class Productstable extends Component
 {
   use WithPagination;
@@ -33,8 +37,8 @@ class Productstable extends Component
 
   public $loadAmount = 20;
   public $search = '';
-  public $orderBy = 'id';
-  public $orderAsc = true;
+  public $orderBy = null;
+  public $orderAsc = null;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
@@ -45,12 +49,223 @@ class Productstable extends Component
   public $single = false;
   public $multiple = false;
   public $uploadcsv = false;
+  public $addlistview = false;
   public $csvFile;
   public $relation = false;
+  public $editlistview = false;
+  public $tableName;
+  public $activelistview;
+  public string $selectedAvailable = '';
+  public string $selectedVisible = '';
+  public bool $edit = true;
+  public bool $filter = false;
+
+  public array $availableFields = [];
+  public array $listview = [
+        'name' => null,
+        'model' => null,
+        'columns' => [],
+        'filters' => [],
+        'sort' => [
+            'column' => null,
+            'direction' => null,
+        ],
+    ];
 
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
   ];
+
+public function mount($tableName)
+{
+    $this->tableName = $tableName;
+    $this->columns = Schema::getColumnListing($tableName);
+    $this->availableFields = $this->columns ?? [];
+
+    $this->activelistview = $this->listviews->first() ?? null;
+
+    $quantityIndex = array_search('quantity', $this->columns);
+    if ($quantityIndex !== false) {
+        array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
+    }
+
+    $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
+
+   $this->listview = [
+    'name' => $this->activelistview?->name ?? '',
+    'model' => $this->activelistview?->model ?? $this->tableName,
+    'columns' => $this->activelistview?->columns ?? [],
+    'filters' => $this->activelistview?->filters ?? [],
+    'sort' => [
+        'column' => $this->activelistview?->sorts['column'] ?? 'id',
+        'direction' => $this->activelistview?->sorts['direction'] ?? 'asc',
+    ],
+];
+    $this->orderBy = $this->listview['sort']['column'] ?? 'id';
+    $this->orderAsc = $this->listview['sort']['direction'] === 'asc' ? '1' : '0';
+    $this->selectedColumns = $this->listview['columns'] ?? [];
+}
+
+
+public function toggle($item){
+if($item == 'edit') {
+    $this->edit = !$this->edit;
+    $this->filter = !$this->filter;
+} else {
+  $this->edit = !$this->edit;
+    $this->filter = !$this->filter;
+}}
+
+  public function delete_listview()
+  {
+    if ($this->activelistview) {
+      $this->activelistview->delete();
+$this->editlistview = false;
+
+      session()->flash('notification', [
+        'message' => 'Listview deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    } else {
+$this->editlistview = false;
+
+      session()->flash('notification', [
+        'message' => 'Listview not found!',
+        'type' => 'danger',
+        'title' => 'Error'
+      ]);
+    }
+  }
+
+  public function save_listview($recurency = false)
+  {
+    $this->validate([
+      'listview.name' => [
+        'required',
+        'string',
+        'max:255'
+      ],
+    ]);
+
+    if ($this->activelistview) {
+    $this->activelistview->update([
+        'name' => $this->listview['name'],
+        'columns' => $this->listview['columns'],
+        'filters' => $this->listview['filters'],
+        'sorts' => [
+            'column' => $this->orderBy ?? 'id',
+            'direction' => $this->orderAsc ? 'asc' : 'desc',
+        ],
+    ]);
+}
+ else {
+      Listview::create([
+        'user_id' => Auth::id(),
+        'name' => $this->listview['name'],
+        'model' => $this->tableName,
+        'columns' => $this->listview['columns'],
+        'filters' => $this->listview['filters'],
+        'sorts' => $this->listview['sort'],
+      ]);
+    }
+    if(!$recurency) {
+      $this->editlistview = false;
+
+    session()->flash('notification', [
+      'message' => 'Listview saved successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+    }
+
+  }
+
+  public function getListviewsProperty()
+  {
+    return Listview::where('user_id', Auth::id())
+      ->where('model', $this->tableName)
+      ->orderBy('updated_at', 'desc')
+      ->get();
+  }
+
+public function moveToVisible()
+{
+    if ($this->selectedAvailable !== '') {
+        $this->listview['columns'][] = $this->selectedAvailable;
+        $this->availableFields = array_filter($this->availableFields, fn($field) => $field !== $this->selectedAvailable);
+        $this->listview['columns'] = array_values(array_unique($this->listview['columns']));
+        $this->selectedAvailable = '';
+    }
+}
+
+
+public function moveToAvailable()
+{
+    if ($this->selectedVisible !== '') {
+        $this->availableFields[] = $this->selectedVisible;
+        $this->listview['columns'] = array_filter($this->listview['columns'], fn($field) => $field !== $this->selectedVisible);
+        $this->availableFields = array_values(array_unique($this->availableFields));
+        $this->selectedVisible = '';
+    }
+}
+
+public function moveVisibleFieldUp()
+{
+    $index = array_search($this->selectedVisible, $this->listview['columns']);
+
+    if ($index !== false && $index > 0) {
+        [$this->listview['columns'][$index - 1], $this->listview['columns'][$index]] =
+            [$this->listview['columns'][$index], $this->listview['columns'][$index - 1]];
+    }
+}
+
+public function moveVisibleFieldDown()
+{
+    $index = array_search($this->selectedVisible, $this->listview['columns']);
+
+    if ($index !== false && $index < count($this->listview['columns']) - 1) {
+        [$this->listview['columns'][$index + 1], $this->listview['columns'][$index]] =
+            [$this->listview['columns'][$index], $this->listview['columns'][$index + 1]];
+    }
+}
+
+
+
+
+public function add_listview()
+{
+    $this->validate([
+        'listview.name' => [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('listviews', 'name')
+                ->where(fn ($query) => $query
+                    ->where('user_id', Auth::id())
+                    ->where('model', $this->tableName)
+                ),
+        ],
+    ]);
+
+    ListView::create([
+        'user_id' => Auth::id(),
+        'name' => $this->listview['name'],
+        'model' => $this->tableName,
+    ]);
+
+    $this->listview['name'] = '';
+    $this->addlistview = false;
+
+
+    session()->flash('notification', [
+        'message' => 'Listview added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
+
+
   public function updatingcsvFile($value)
   {
     ini_set('max_execution_time', 300);
@@ -277,24 +492,53 @@ class Productstable extends Component
     }
   }
 
-  public function render()
-  {
+public function render()
+{
+    $activeId = $this->activelistview?->id;
+
     return view('livewire.productstable', [
-      'products' => $this->products
+        'products' => $this->products,
+        'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
+            return $view->id !== $activeId;
+        }),
+
     ]);
-  }
-  public function mount($tableName)
-  {
-    $this->columns = Schema::getColumnListing($tableName);
+}
 
-    $quantityIndex = array_search('quantity', $this->columns);
+public function setActiveListview($id)
+{
+    $this->activelistview = Listview::find($id);
 
-    if ($quantityIndex !== false) {
-      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
+    if (!$this->activelistview) {
+        session()->flash('notification', [
+            'message' => 'Listview not found.',
+            'type' => 'error',
+            'title' => 'Error'
+        ]);
+        return;
     }
 
-    $this->selectedColumns = $this->columns;
-  }
+    // Update last used timestamp
+    $this->activelistview->update([
+        'updated_at' => now(),
+    ]);
+
+    // Populate the working listview state
+    $this->listview = [
+        'name' => $this->activelistview->name,
+        'columns' => $this->activelistview->columns ?? [],
+        'filters' => $this->activelistview->filters ?? [],
+        'sort' => $this->activelistview->sorts ?? [
+            'column' => 'id',
+            'direction' => 'asc',
+        ],
+    ];
+
+    $this->search = '';
+    $this->mount($this->tableName);
+}
+
+
   public function showColumn($column)
   {
     return in_array($column, $this->selectedColumns);
@@ -319,6 +563,7 @@ class Productstable extends Component
       $this->orderAsc = '1';
     }
     $this->orderBy = $columnName;
+    $this->save_listview(true);
   }
   public function swapSortDirection()
   {
@@ -339,17 +584,19 @@ class Productstable extends Component
       ->withCount([
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', 31); // Add status condition for orders
+            $q->where('status_id', 31);
           })->select(DB::raw('SUM(quantity)'));
         },
         'order_suppliers as quantity_ordered' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status', '!=', 'closed'); // Ensure status on parent is not closed
+            $q->where('status', '!=', 'closed');
           })->select(DB::raw('SUM(quantity)'));
         },
       ])
       ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
   }
+
+
 
 
   public function loadMore()
