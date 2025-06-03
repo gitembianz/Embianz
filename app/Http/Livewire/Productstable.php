@@ -59,68 +59,207 @@ class Productstable extends Component
   public string $selectedVisible = '';
   public bool $edit = true;
   public bool $filter = false;
+  public bool $filterlogic = false;
+
 
   public array $availableFields = [];
   public array $listview = [
-        'name' => null,
-        'model' => null,
-        'columns' => [],
-        'filters' => [],
-        'sort' => [
-            'column' => null,
-            'direction' => null,
-        ],
-    ];
+    'name' => null,
+    'logic' => null,
+    'model' => null,
+    'columns' => [],
+    'filters' => [],
+    'sort' => [
+      'column' => null,
+      'direction' => null,
+    ],
+  ];
+  public $addfilter = [
+    'column' => null,
+    'operator' => null,
+    'value' => null,
+  ];
+
+
+
+
+
 
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
   ];
 
-public function mount($tableName)
-{
+  public function mount($tableName)
+  {
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($tableName);
-    $this->availableFields = $this->columns ?? [];
 
     $this->activelistview = $this->listviews->first() ?? null;
 
     $quantityIndex = array_search('quantity', $this->columns);
     if ($quantityIndex !== false) {
-        array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
+      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity']);
     }
 
     $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
 
-   $this->listview = [
-    'name' => $this->activelistview?->name ?? '',
-    'model' => $this->activelistview?->model ?? $this->tableName,
-    'columns' => $this->activelistview?->columns ?? [],
-    'filters' => $this->activelistview?->filters ?? [],
-    'sort' => [
+    $this->listview = [
+      'name' => $this->activelistview?->name ?? '',
+      'logic' => $this->activelistview?->logic ?? '',
+      'model' => $this->activelistview?->model ?? $this->tableName,
+      'columns' => $this->activelistview?->columns ?? [],
+      'filters' => $this->activelistview?->filters ?? [],
+      'sort' => [
         'column' => $this->activelistview?->sorts['column'] ?? 'id',
         'direction' => $this->activelistview?->sorts['direction'] ?? 'asc',
-    ],
-];
+      ],
+    ];
+    $this->availableFields = array_values(array_diff($this->columns ?? [], $this->listview['columns'] ?? []));
+
     $this->orderBy = $this->listview['sort']['column'] ?? 'id';
     $this->orderAsc = $this->listview['sort']['direction'] === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
+  }
+
+  public function getProductsProperty()
+  {
+    return $this->productsQuery->paginate($this->loadAmount);
+  }
+  public function getProductsQueryProperty()
+  {
+    return Product::search($this->search)
+      ->withCount([
+        'orders_item as interim_quantity' => function ($query) {
+          $query->whereHas('order', function ($q) {
+            $q->where('status_id', 31);
+          })->select(DB::raw('SUM(quantity)'));
+        },
+        'order_suppliers as quantity_ordered' => function ($query) {
+          $query->whereHas('order', function ($q) {
+            $q->where('status', '!=', 'closed');
+          })->select(DB::raw('SUM(quantity)'));
+        },
+      ])
+      ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
+  }
+  public function clearAllFilters()
+  {
+    $this->listview['filters'] = [];
+    $this->listview['logic'] = null;
+  }
+  public function save_filter()
+  {
+    $this->validate([
+      'addfilter.column' => 'required|string',
+      'addfilter.operator' => 'required|string',
+      'addfilter.value' => 'required|string',
+    ]);
+
+    $operatorLabels = [
+      '=' => 'equals',
+      'like' => 'contains',
+      '>' => 'greater than',
+      '<' => 'less than',
+    ];
+
+    $operator = $this->addfilter['operator'];
+    $column = $this->addfilter['column'];
+    $value = $this->addfilter['value'];
+
+    $newFilter = [
+      'column' => $column,
+      'operator' => $operator,
+      'value' => $value,
+      'label' => $operatorLabels[$operator] ?? $operator,
+      'display' => $column . ' ' . ($operatorLabels[$operator] ?? $operator) . ' ' . $value,
+    ];
+
+    $this->listview['filters'][] = $newFilter;
+    $index = count($this->listview['filters']) - 1;
+    $logic = trim($this->listview['logic'] ?? '');
+      if ($logic === '' || $logic === null) {
+        $logic = (string) $index;
+      } else {
+        $logic .= ' AND ' . $index;
+      }
+      $this->listview['logic'] = $logic;
+
+    $this->addfilter = [
+      'column' => null,
+      'operator' => null,
+      'value' => null,
+    ];
+  }
+
+
+public function removeFilter($index)
+{
+    unset($this->listview['filters'][$index]);
+
+    $this->listview['filters'] = array_values($this->listview['filters']);
+
+    if ($this->activelistview) {
+        $originalLogic = $this->listview['logic'] ?? '';
+        $updatedLogic = $originalLogic;
+
+        $oldToNew = [];
+        $filterCountBefore = count($this->listview['filters']) + 1;
+        for ($i = 0, $j = 0; $i < $filterCountBefore; $i++) {
+            if ($i == $index) continue;
+            $oldToNew[$i] = $j++;
+        }
+
+        $updatedLogic = preg_replace_callback('/\d+/', function ($matches) use ($oldToNew, $index) {
+            $oldIndex = (int) $matches[0];
+            if ($oldIndex === $index) {
+                return '__REMOVED__';
+            }
+            return $oldToNew[$oldIndex] ?? $matches[0];
+        }, $updatedLogic);
+
+        $updatedLogic = preg_replace([
+            '/\bAND\s+__REMOVED__\b/',
+            '/\bOR\s+__REMOVED__\b/',
+            '/\b__REMOVED__\s+AND\b/',
+            '/\b__REMOVED__\s+OR\b/',
+            '/\b__REMOVED__\b/',
+        ], '', $updatedLogic);
+
+        $updatedLogic = preg_replace('/\(\s*(\d+)\s*\)/', '$1', $updatedLogic);
+
+        $updatedLogic = preg_replace('/\(\s*\)/', '', $updatedLogic);
+
+        $updatedLogic = trim(preg_replace('/\s+/', ' ', $updatedLogic));
+        $updatedLogic = preg_replace('/^(AND|OR)\s+/', '', $updatedLogic);
+        $updatedLogic = preg_replace('/\s+(AND|OR)$/', '', $updatedLogic);
+
+        $this->listview['logic'] = $updatedLogic;
+    }
 }
 
 
-public function toggle($item){
-if($item == 'edit') {
-    $this->edit = !$this->edit;
-    $this->filter = !$this->filter;
-} else {
-  $this->edit = !$this->edit;
-    $this->filter = !$this->filter;
-}}
+
+
+
+
+
+
+  public function toggle($item)
+  {
+    if ($item == 'edit') {
+      $this->edit = !$this->edit;
+      $this->filter = !$this->filter;
+    } else {
+      $this->edit = !$this->edit;
+      $this->filter = !$this->filter;
+    }
+  }
 
   public function delete_listview()
   {
     if ($this->activelistview) {
       $this->activelistview->delete();
-$this->editlistview = false;
+      $this->editlistview = false;
 
       session()->flash('notification', [
         'message' => 'Listview deleted successfully!',
@@ -128,7 +267,7 @@ $this->editlistview = false;
         'title' => 'Success'
       ]);
     } else {
-$this->editlistview = false;
+      $this->editlistview = false;
 
       session()->flash('notification', [
         'message' => 'Listview not found!',
@@ -149,17 +288,17 @@ $this->editlistview = false;
     ]);
 
     if ($this->activelistview) {
-    $this->activelistview->update([
+      $this->activelistview->update([
         'name' => $this->listview['name'],
+        'logic' => $this->listview['logic'],
         'columns' => $this->listview['columns'],
         'filters' => $this->listview['filters'],
         'sorts' => [
-            'column' => $this->orderBy ?? 'id',
-            'direction' => $this->orderAsc ? 'asc' : 'desc',
+          'column' => $this->orderBy ?? 'id',
+          'direction' => $this->orderAsc ? 'asc' : 'desc',
         ],
-    ]);
-}
- else {
+      ]);
+    } else {
       Listview::create([
         'user_id' => Auth::id(),
         'name' => $this->listview['name'],
@@ -167,18 +306,19 @@ $this->editlistview = false;
         'columns' => $this->listview['columns'],
         'filters' => $this->listview['filters'],
         'sorts' => $this->listview['sort'],
+        'logic' => $this->listview['logic'],
+
       ]);
     }
-    if(!$recurency) {
+    if (!$recurency) {
       $this->editlistview = false;
 
-    session()->flash('notification', [
-      'message' => 'Listview saved successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
+      session()->flash('notification', [
+        'message' => 'Listview saved successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
-
   }
 
   public function getListviewsProperty()
@@ -189,69 +329,70 @@ $this->editlistview = false;
       ->get();
   }
 
-public function moveToVisible()
-{
+  public function moveToVisible()
+  {
     if ($this->selectedAvailable !== '') {
-        $this->listview['columns'][] = $this->selectedAvailable;
-        $this->availableFields = array_filter($this->availableFields, fn($field) => $field !== $this->selectedAvailable);
-        $this->listview['columns'] = array_values(array_unique($this->listview['columns']));
-        $this->selectedAvailable = '';
+      $this->listview['columns'][] = $this->selectedAvailable;
+      $this->availableFields = array_filter($this->availableFields, fn($field) => $field !== $this->selectedAvailable);
+      $this->listview['columns'] = array_values(array_unique($this->listview['columns']));
+      $this->selectedAvailable = '';
     }
-}
+  }
 
 
-public function moveToAvailable()
-{
+  public function moveToAvailable()
+  {
     if ($this->selectedVisible !== '') {
-        $this->availableFields[] = $this->selectedVisible;
-        $this->listview['columns'] = array_filter($this->listview['columns'], fn($field) => $field !== $this->selectedVisible);
-        $this->availableFields = array_values(array_unique($this->availableFields));
-        $this->selectedVisible = '';
+      $this->availableFields[] = $this->selectedVisible;
+      $this->listview['columns'] = array_filter($this->listview['columns'], fn($field) => $field !== $this->selectedVisible);
+      $this->availableFields = array_values(array_unique($this->availableFields));
+      $this->selectedVisible = '';
     }
-}
+  }
 
-public function moveVisibleFieldUp()
-{
+  public function moveVisibleFieldUp()
+  {
     $index = array_search($this->selectedVisible, $this->listview['columns']);
 
     if ($index !== false && $index > 0) {
-        [$this->listview['columns'][$index - 1], $this->listview['columns'][$index]] =
-            [$this->listview['columns'][$index], $this->listview['columns'][$index - 1]];
+      [$this->listview['columns'][$index - 1], $this->listview['columns'][$index]] =
+        [$this->listview['columns'][$index], $this->listview['columns'][$index - 1]];
     }
-}
+  }
 
-public function moveVisibleFieldDown()
-{
+  public function moveVisibleFieldDown()
+  {
     $index = array_search($this->selectedVisible, $this->listview['columns']);
 
     if ($index !== false && $index < count($this->listview['columns']) - 1) {
-        [$this->listview['columns'][$index + 1], $this->listview['columns'][$index]] =
-            [$this->listview['columns'][$index], $this->listview['columns'][$index + 1]];
+      [$this->listview['columns'][$index + 1], $this->listview['columns'][$index]] =
+        [$this->listview['columns'][$index], $this->listview['columns'][$index + 1]];
     }
-}
+  }
 
 
 
 
-public function add_listview()
-{
+  public function add_listview()
+  {
     $this->validate([
-        'listview.name' => [
-            'required',
-            'string',
-            'max:255',
-            Rule::unique('listviews', 'name')
-                ->where(fn ($query) => $query
-                    ->where('user_id', Auth::id())
-                    ->where('model', $this->tableName)
-                ),
-        ],
+      'listview.name' => [
+        'required',
+        'string',
+        'max:255',
+        Rule::unique('listviews', 'name')
+          ->where(
+            fn($query) => $query
+              ->where('user_id', Auth::id())
+              ->where('model', $this->tableName)
+          ),
+      ],
     ]);
 
     ListView::create([
-        'user_id' => Auth::id(),
-        'name' => $this->listview['name'],
-        'model' => $this->tableName,
+      'user_id' => Auth::id(),
+      'name' => $this->listview['name'],
+      'model' => $this->tableName,
     ]);
 
     $this->listview['name'] = '';
@@ -259,11 +400,11 @@ public function add_listview()
 
 
     session()->flash('notification', [
-        'message' => 'Listview added successfully!',
-        'type' => 'success',
-        'title' => 'Success'
+      'message' => 'Listview added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
     ]);
-}
+  }
 
 
   public function updatingcsvFile($value)
@@ -492,51 +633,51 @@ public function add_listview()
     }
   }
 
-public function render()
-{
+  public function render()
+  {
     $activeId = $this->activelistview?->id;
 
     return view('livewire.productstable', [
-        'products' => $this->products,
-        'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
-            return $view->id !== $activeId;
-        }),
+      'products' => $this->products,
+      'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
+        return $view->id !== $activeId;
+      }),
 
     ]);
-}
+  }
 
-public function setActiveListview($id)
-{
+  public function setActiveListview($id)
+  {
     $this->activelistview = Listview::find($id);
 
     if (!$this->activelistview) {
-        session()->flash('notification', [
-            'message' => 'Listview not found.',
-            'type' => 'error',
-            'title' => 'Error'
-        ]);
-        return;
+      session()->flash('notification', [
+        'message' => 'Listview not found.',
+        'type' => 'error',
+        'title' => 'Error'
+      ]);
+      return;
     }
 
     // Update last used timestamp
     $this->activelistview->update([
-        'updated_at' => now(),
+      'updated_at' => now(),
     ]);
 
     // Populate the working listview state
     $this->listview = [
-        'name' => $this->activelistview->name,
-        'columns' => $this->activelistview->columns ?? [],
-        'filters' => $this->activelistview->filters ?? [],
-        'sort' => $this->activelistview->sorts ?? [
-            'column' => 'id',
-            'direction' => 'asc',
-        ],
+      'name' => $this->activelistview->name,
+      'columns' => $this->activelistview->columns ?? [],
+      'filters' => $this->activelistview->filters ?? [],
+      'sort' => $this->activelistview->sorts ?? [
+        'column' => 'id',
+        'direction' => 'asc',
+      ],
     ];
 
     $this->search = '';
     $this->mount($this->tableName);
-}
+  }
 
 
   public function showColumn($column)
@@ -574,30 +715,6 @@ public function setActiveListview($id)
     $this->selectAll = true;
     $this->checked = $this->productsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
-  public function getProductsProperty()
-  {
-    return $this->productsQuery->paginate($this->loadAmount);
-  }
-  public function getProductsQueryProperty()
-  {
-    return Product::search($this->search)
-      ->withCount([
-        'orders_item as interim_quantity' => function ($query) {
-          $query->whereHas('order', function ($q) {
-            $q->where('status_id', 31);
-          })->select(DB::raw('SUM(quantity)'));
-        },
-        'order_suppliers as quantity_ordered' => function ($query) {
-          $query->whereHas('order', function ($q) {
-            $q->where('status', '!=', 'closed');
-          })->select(DB::raw('SUM(quantity)'));
-        },
-      ])
-      ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
-  }
-
-
-
 
   public function loadMore()
   {

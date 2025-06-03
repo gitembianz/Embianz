@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Listview extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'model', 'name', 'columns', 'filters', 'sorts','created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'model', 'logic', 'name', 'columns', 'filters', 'sorts','created_at', 'updated_at'];
     protected $casts = [
     'columns' => 'array',
     'filters' => 'array',
