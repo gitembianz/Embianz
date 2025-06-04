@@ -125,15 +125,17 @@
                     </button>
                 @else
                     <div class="input__tabs details__long">
-                        <select wire:model.defer="selectedVisible">
-                            @foreach ($listview['columns'] as $field)
+                        <select wire:model.defer="addfilter.column">
+                            <option value="">Select a column</option>
+                            @foreach ($columns as $field)
                                 <option value="{{ $field }}">{{ $field }}</option>
                             @endforeach
                         </select>
                         <label> Column</label>
                     </div>
                     <div class="input__tabs details__long">
-                        <select wire:model.defer="operator">
+                        <select wire:model.defer="addfilter.operator">
+                            <option value="">Select a operator</option>
                             <option value="=">equal</option>
                             <option value="like">contains</option>
                             <option value=">">greater than</option>
@@ -142,20 +144,69 @@
                         <label> Operator</label>
                     </div>
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="value">
+                        <input type="text" wire:model.defer="addfilter.value">
                         <label>Value</label>
                     </div>
                     <div class="details__long" style="margin-bottom: 5px;">
 
                         <button style="max-width: none!important; width:100%!important"
                             class="button button--secondary button--long" wire:click.prevent="save_filter()">
-                            <span>Save filter</span>
+                            <span>Add filter</span>
                         </button>
                     </div>
+                    @if (!empty($listview['filters']))
+                        <label class="details__long"
+                            style="font-weight: bold; text-align:center; color: white; padding-top:10px">Listview
+                            filters</label>
+
+                        @foreach ($listview['filters'] as $index => $filter)
+                            <div class="details__long"
+                                style="display: flex; align-items: center; justify-content: space-between; background-color: #f3f3f3; padding: 10px; border-radius: 6px; margin-bottom: 8px;">
+                                <div>{{ $index }}.
+                                    <strong>{{ $filter['column'] }}</strong>
+                                    {{ $filter['label'] ?? $filter['operator'] }}
+                                    <em>{{ $filter['value'] }}</em>
+                                </div>
+
+                                <button wire:click.prevent="removeFilter({{ $index }})"
+                                    style="border: none; background: none; color: red; font-weight: bold;">✕</button>
+                            </div>
+                        @endforeach
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--danger button--long" wire:click.prevent="clearAllFilters()">
+                                <span>Remove all filters</span>
+                            </button>
+                        </div>
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--primary button--long"
+                                wire:click.prevent="$set('filterlogic', true)">
+                                <span>Edit filters logic</span>
+                            </button>
+                        </div>
+                        @if ($filterlogic)
+                            <div class="textarea__tabs details__long" style="margin-bottom: 5px">
+                                <textarea wire:model="listview.logic" name="textarea" id="textarea10" cols="30" rows="3"></textarea>
+                                <label>Filter logic (AND & OR)</label>
+                              </div>
+                        @endif
+                        @endif
+                        <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                            <span>Save and close</span>
+                        </button>
+                        <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                            wire:click.prevent="$set('editlistview', false)">
+                            <span>Cancel</span>
+                        </button>
+
                 @endif
 
 
-            </div>
+        </div>
+        </div>
         </div>
     </aside>
 
@@ -318,7 +369,7 @@
                     @if (count($listviews) < 1)
                         <span class="details__long"
                             style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">No
-                            listviews found</span>
+                            others listviews found</span>
                     @endif
 
 
@@ -531,6 +582,11 @@
                     </th>
                 </tr>
             </thead>
+
+
+
+
+
             <tbody>
                 @if ($products->isEmpty())
                     <tr>
@@ -575,10 +631,6 @@
                                                 <label for="disabled2"></label>
                                             </div>
                                         @endif
-                                    @elseif($column === 'interim_quantity')
-                                        <span>
-                                            {{ $product->quantity + $product->$column }}
-                                        </span>
                                     @elseif($column === 'quantity_supplier_ordered')
                                         <span>
                                             {{ $product->quantity_ordered }}
