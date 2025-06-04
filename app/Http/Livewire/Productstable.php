@@ -115,11 +115,12 @@ class Productstable extends Component
       ],
     ];
     $this->availableFields = array_values(array_diff($this->columns ?? [], $this->listview['columns'] ?? []));
-
     $this->orderBy = $this->listview['sort']['column'] ?? 'id';
     $this->orderAsc = $this->listview['sort']['direction'] === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
+
+
 
   public function getProductsProperty()
   {
@@ -132,7 +133,13 @@ class Productstable extends Component
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
             $q->where('status_id', 31);
-          })->select(DB::raw('SUM(quantity)'));
+          })
+            ->select(DB::raw('
+                CASE
+                  WHEN COUNT(*) = 0 THEN products.quantity
+                  ELSE SUM(quantity) + products.quantity
+                END
+              '));
         },
         'order_suppliers as quantity_ordered' => function ($query) {
           $query->whereHas('order', function ($q) {
@@ -142,6 +149,8 @@ class Productstable extends Component
       ])
       ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
   }
+
+
   public function clearAllFilters()
   {
     $this->listview['filters'] = [];
@@ -177,12 +186,12 @@ class Productstable extends Component
     $this->listview['filters'][] = $newFilter;
     $index = count($this->listview['filters']) - 1;
     $logic = trim($this->listview['logic'] ?? '');
-      if ($logic === '' || $logic === null) {
-        $logic = (string) $index;
-      } else {
-        $logic .= ' AND ' . $index;
-      }
-      $this->listview['logic'] = $logic;
+    if ($logic === '' || $logic === null) {
+      $logic = (string) $index;
+    } else {
+      $logic .= ' AND ' . $index;
+    }
+    $this->listview['logic'] = $logic;
 
     $this->addfilter = [
       'column' => null,
@@ -192,50 +201,50 @@ class Productstable extends Component
   }
 
 
-public function removeFilter($index)
-{
+  public function removeFilter($index)
+  {
     unset($this->listview['filters'][$index]);
 
     $this->listview['filters'] = array_values($this->listview['filters']);
 
     if ($this->activelistview) {
-        $originalLogic = $this->listview['logic'] ?? '';
-        $updatedLogic = $originalLogic;
+      $originalLogic = $this->listview['logic'] ?? '';
+      $updatedLogic = $originalLogic;
 
-        $oldToNew = [];
-        $filterCountBefore = count($this->listview['filters']) + 1;
-        for ($i = 0, $j = 0; $i < $filterCountBefore; $i++) {
-            if ($i == $index) continue;
-            $oldToNew[$i] = $j++;
+      $oldToNew = [];
+      $filterCountBefore = count($this->listview['filters']) + 1;
+      for ($i = 0, $j = 0; $i < $filterCountBefore; $i++) {
+        if ($i == $index) continue;
+        $oldToNew[$i] = $j++;
+      }
+
+      $updatedLogic = preg_replace_callback('/\d+/', function ($matches) use ($oldToNew, $index) {
+        $oldIndex = (int) $matches[0];
+        if ($oldIndex === $index) {
+          return '__REMOVED__';
         }
+        return $oldToNew[$oldIndex] ?? $matches[0];
+      }, $updatedLogic);
 
-        $updatedLogic = preg_replace_callback('/\d+/', function ($matches) use ($oldToNew, $index) {
-            $oldIndex = (int) $matches[0];
-            if ($oldIndex === $index) {
-                return '__REMOVED__';
-            }
-            return $oldToNew[$oldIndex] ?? $matches[0];
-        }, $updatedLogic);
+      $updatedLogic = preg_replace([
+        '/\bAND\s+__REMOVED__\b/',
+        '/\bOR\s+__REMOVED__\b/',
+        '/\b__REMOVED__\s+AND\b/',
+        '/\b__REMOVED__\s+OR\b/',
+        '/\b__REMOVED__\b/',
+      ], '', $updatedLogic);
 
-        $updatedLogic = preg_replace([
-            '/\bAND\s+__REMOVED__\b/',
-            '/\bOR\s+__REMOVED__\b/',
-            '/\b__REMOVED__\s+AND\b/',
-            '/\b__REMOVED__\s+OR\b/',
-            '/\b__REMOVED__\b/',
-        ], '', $updatedLogic);
+      $updatedLogic = preg_replace('/\(\s*(\d+)\s*\)/', '$1', $updatedLogic);
 
-        $updatedLogic = preg_replace('/\(\s*(\d+)\s*\)/', '$1', $updatedLogic);
+      $updatedLogic = preg_replace('/\(\s*\)/', '', $updatedLogic);
 
-        $updatedLogic = preg_replace('/\(\s*\)/', '', $updatedLogic);
+      $updatedLogic = trim(preg_replace('/\s+/', ' ', $updatedLogic));
+      $updatedLogic = preg_replace('/^(AND|OR)\s+/', '', $updatedLogic);
+      $updatedLogic = preg_replace('/\s+(AND|OR)$/', '', $updatedLogic);
 
-        $updatedLogic = trim(preg_replace('/\s+/', ' ', $updatedLogic));
-        $updatedLogic = preg_replace('/^(AND|OR)\s+/', '', $updatedLogic);
-        $updatedLogic = preg_replace('/\s+(AND|OR)$/', '', $updatedLogic);
-
-        $this->listview['logic'] = $updatedLogic;
+      $this->listview['logic'] = $updatedLogic;
     }
-}
+  }
 
 
 
