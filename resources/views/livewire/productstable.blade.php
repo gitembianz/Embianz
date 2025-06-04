@@ -127,7 +127,7 @@
                     <div class="input__tabs details__long">
                         <select wire:model.defer="addfilter.column">
                             <option value="">Select a column</option>
-                            @foreach ($listview['columns'] as $field)
+                            @foreach ($columns as $field)
                                 <option value="{{ $field }}">{{ $field }}</option>
                             @endforeach
                         </select>
@@ -582,6 +582,11 @@
                     </th>
                 </tr>
             </thead>
+
+
+
+
+
             <tbody>
                 @if ($products->isEmpty())
                     <tr>
