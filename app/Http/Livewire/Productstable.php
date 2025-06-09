@@ -341,7 +341,7 @@ public function mount($tableName)
   public function clearAllFilters()
   {
     $this->listview['filters'] = [];
-    $this->listview['logic'] = null;
+    $this->listview['logic'] = '';
   }
   public function save_filter()
   {
