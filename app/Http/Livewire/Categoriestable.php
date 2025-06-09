@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Auth;
 class Categoriestable extends Component
 {
   use WithPagination;
-  public $loadAmount = 20;
+  public $loadAmount;
   public $search = '';
-  public $orderBy = 'id';
-  public $orderAsc = true;
+  public $orderBy;
+  public $orderAsc;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
