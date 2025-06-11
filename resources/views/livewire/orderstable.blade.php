@@ -304,7 +304,7 @@
     <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;"
             wire:model="status31Only"> Show Processing Only</div>
     <nav class="nav--controls">
-      @if ($activelistview)
+        @if ($activelistview)
 
             <div class="dropdown dropdown--right">
                 {{-- Dropdown Button --}}
@@ -361,35 +361,6 @@
             </div>
         </div>
 
-        {{-- xml generator --}}
-        <div class="dropdown dropdown--right" wire:ignore>
-            {{-- Dropdown Button --}}
-            <button class="button button--primary button--centered" tooltip="Generate xml for orders" tooltip-left>
-                <svg>
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                    <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
-                    <path d="M4 15l4 6" />
-                    <path d="M4 21l4 -6" />
-                    <path d="M19 15v6h3" />
-                    <path d="M11 21v-6l2.5 3l2.5 -3v6" />
-                </svg>
-            </button>
-
-            {{-- Dropdown Content --}}
-            <div class="dropdown__content">
-                <div class="dropdown__container">
-                    <button class="button button--primary button--long button--flexed button--arrow"
-                        wire:click="xmlinvoices">
-                        for invoices
-                    </button>
-                    <button class="button button--primary button--long button--flexed button--arrow"
-                        wire:click="xmlstorno">
-                        for storno
-                    </button>
-                </div>
-            </div>
-        </div>
 
         {{-- Optional Dropdown --}}
         <div class="dropdown dropdown--right">
@@ -417,6 +388,40 @@
                         </svg>
                         <span>Refresh table</span>
                     </button>
+                    <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('addlistview', true)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-clipboard">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        <span>Add listview</span>
+                    </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="xmlinvoices">
+                        <svg>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M4 15l4 6" />
+                            <path d="M4 21l4 -6" />
+                            <path d="M19 15v6h3" />
+                            <path d="M11 21v-6l2.5 3l2.5 -3v6" />
+                        </svg>
+                        <span>XML for invoice</span>
+                    </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="MLstorno">
+                        <svg>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M4 15l4 6" />
+                            <path d="M4 21l4 -6" />
+                            <path d="M19 15v6h3" />
+                            <path d="M11 21v-6l2.5 3l2.5 -3v6" />
+                        </svg>
+                        <span>XML for storno</span>
+                    </button>
                     <a class="button button--primary button--fill button--flexed" href="{{ route('getavgvalues') }}">
                         <svg>
                             <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -435,7 +440,7 @@
                         </svg>
                         <span>Check order values</span>
                     </a>
-                    <button class="button button--primary button--fill button--flexed" wire:click="$refresh">
+                    <button class="button button--primary button--fill button--flexed" wire:click="$set('filteractive', true)">
                         <svg>
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
