@@ -2,7 +2,7 @@
     {{-- X-Components --}}
     <x-alert />
 
-        {{-- Modal add new listview --}}
+    {{-- Modal add new listview --}}
     <aside>
         <div class="background background--center @if ($addlistview) active @endif"></div>
         <div class="aside aside--confirm @if ($addlistview) active @endif"
@@ -405,59 +405,61 @@
                         <td colspan="17">
                             <div class="details">
                                 @foreach ($selectedColumns as $index => $column)
-                                    @if (
-                                        $column === 'name' ||
-                                            $column === 'iso_code' ||
-                                            $column === 'iso_code3' ||
-                                            $column === 'phone_code' ||
-                                            $column === 'currency')
-                                        @if ($rowindex !== $index)
+                                    @if ($index > 1)
+                                        @if (
+                                            $column === 'name' ||
+                                                $column === 'iso_code' ||
+                                                $column === 'iso_code3' ||
+                                                $column === 'phone_code' ||
+                                                $column === 'currency')
+                                            @if ($rowindex !== $index)
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    {{ $country->$column }}
+                                                </p>
+                                            @else
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                <div class="searchable">
+                                                    <input type="text" class="input__searchable"
+                                                        wire:model.defer="element.{{ $index }}.{{ $column }}">
+                                                </div>
+                                                </p>
+                                            @endif
+                                        @elseif ($column === 'status')
+                                            @if ($rowindex !== $index)
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    @if ($country->$column)
+                                                        <div class="checkbox--secondary">
+                                                            <input type="checkbox" id="isactive{{ $index }}"
+                                                                disabled checked>
+                                                            <label for="isactive{{ $index }}"></label>
+                                                        </div>
+                                                    @else
+                                                        <div class="checkbox--secondary disabled">
+                                                            <input type="checkbox" id="notactive{{ $index }}"
+                                                                disabled>
+                                                            <label for="notactive{{ $index }}"></label>
+                                                        </div>
+                                                    @endif
+                                                </p>
+                                            @else
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                <div class="checkbox--secondary inline">
+                                                    <input type="checkbox" id="check{{ $index }}"
+                                                        wire:model.lazy="element.{{ $index }}.{{ $column }}" />
+                                                    <label for="check{{ $index }}"></label>
+                                                </div>
+                                                </p>
+                                            @endif
+                                        @else
                                             <p>
                                                 <bold>{{ $column }}:</bold>
                                                 {{ $country->$column }}
                                             </p>
-                                        @else
-                                            <p>
-                                                <bold>{{ $column }}:</bold>
-                                            <div class="searchable">
-                                                <input type="text" class="input__searchable"
-                                                    wire:model.defer="element.{{ $index }}.{{ $column }}">
-                                            </div>
-                                            </p>
                                         @endif
-                                    @elseif ($column === 'status')
-                                        @if ($rowindex !== $index)
-                                            <p>
-                                                <bold>{{ $column }}:</bold>
-                                                @if ($country->$column)
-                                                    <div class="checkbox--secondary">
-                                                        <input type="checkbox" id="isactive{{ $index }}"
-                                                            disabled checked>
-                                                        <label for="isactive{{ $index }}"></label>
-                                                    </div>
-                                                @else
-                                                    <div class="checkbox--secondary disabled">
-                                                        <input type="checkbox" id="notactive{{ $index }}"
-                                                            disabled>
-                                                        <label for="notactive{{ $index }}"></label>
-                                                    </div>
-                                                @endif
-                                            </p>
-                                        @else
-                                            <p>
-                                                <bold>{{ $column }}:</bold>
-                                            <div class="checkbox--secondary inline">
-                                                <input type="checkbox" id="check{{ $index }}"
-                                                    wire:model.lazy="element.{{ $index }}.{{ $column }}" />
-                                                <label for="check{{ $index }}"></label>
-                                            </div>
-                                            </p>
-                                        @endif
-                                    @else
-                                        <p>
-                                            <bold>{{ $column }}:</bold>
-                                            {{ $country->$column }}
-                                        </p>
                                     @endif
                                 @endforeach
                             </div>
