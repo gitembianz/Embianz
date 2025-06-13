@@ -413,12 +413,12 @@
                                             $column === 'currency')
                                         @if ($rowindex !== $index)
                                             <p>
-                                                {{ $column }}:
+                                                <bold>{{ $column }}:</bold>
                                                 {{ $country->$column }}
                                             </p>
                                         @else
                                             <p>
-                                                {{ $column }}:
+                                                <bold>{{ $column }}:</bold>
                                             <div class="searchable">
                                                 <input type="text" class="input__searchable"
                                                     wire:model.defer="element.{{ $index }}.{{ $column }}">
@@ -428,7 +428,7 @@
                                     @elseif ($column === 'status')
                                         @if ($rowindex !== $index)
                                             <p>
-                                                {{ $column }}:
+                                                <bold>{{ $column }}:</bold>
                                                 @if ($country->$column)
                                                     <div class="checkbox--secondary">
                                                         <input type="checkbox" id="isactive{{ $index }}"
@@ -445,7 +445,7 @@
                                             </p>
                                         @else
                                             <p>
-                                                {{ $column }}:
+                                                <bold>{{ $column }}:</bold>
                                             <div class="checkbox--secondary inline">
                                                 <input type="checkbox" id="check{{ $index }}"
                                                     wire:model.lazy="element.{{ $index }}.{{ $column }}" />
@@ -455,7 +455,7 @@
                                         @endif
                                     @else
                                         <p>
-                                            {{ $column }}:
+                                            <bold>{{ $column }}:</bold>
                                             {{ $country->$column }}
                                         </p>
                                     @endif
