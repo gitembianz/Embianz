@@ -50,7 +50,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <div class="table--btn">Nr.</div>
+                                <div class="table--btn">index.</div>
 
                             </th>
                             <th style="min-width: 30%">
@@ -146,6 +146,198 @@
         </form>
     </aside>
 
+      {{-- Modal add new listview --}}
+    <aside>
+        <div class="background background--center @if ($addlistview) active @endif"></div>
+        <div class="aside aside--confirm @if ($addlistview) active @endif"
+            style="min-height: 225px !important;">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    New Listview
+                </span>
+                @foreach ($errors->all() as $error)
+                    <span class="details__long"
+                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+                @endforeach
+
+                <div class="input__tabs details__long">
+                    <input type="text" wire:model.defer="listview.name">
+                    <label>Listview name</label>
+                </div>
+
+
+                <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+                    <span>Save</span>
+                </button>
+                <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                    wire:click.prevent="$set('addlistview', false)">
+                    <span>Cancel</span>
+                </button>
+
+            </div>
+        </div>
+    </aside>
+
+    {{-- Modal edit listview --}}
+    <aside>
+        <div class="background background--center @if ($editlistview) active @endif"></div>
+        <div class="aside aside--confirm @if ($editlistview) active @endif" style="min-height: 450px;">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+                @foreach ($errors->all() as $error)
+                    <span class="details__long"
+                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+                @endforeach
+
+
+                <button
+                    class="button @if ($edit) button--secondary @else button--primary @endif button--long"
+                    wire:click.prevent="toggle('edit')">
+                    <span>Edit listview</span>
+                </button>
+                <button
+                    class="button @if ($filter) button--secondary @else button--primary @endif button--long"
+                    style="margin-bottom: 10px !important" wire:click.prevent="toggle('filter')">
+                    <span>Add filter</span>
+                </button>
+
+
+                @if ($edit)
+                    <div class="input__tabs details__long">
+                        <input type="text" wire:model.defer="listview.name">
+                        <label>Listview name</label>
+                    </div>
+                    <div class="details__long">
+
+                        <button style="max-width: none!important; width:100%!important"
+                            class="button button--danger button--long" wire:click.prevent="delete_listview()">
+                            <span>Delete listview</span>
+                        </button>
+                    </div>
+                    <div class="details__long"
+                        style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
+                        <div style="flex: 1;">
+                            <label style="font-weight: bold; color: white;">Columns</label>
+                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                                @foreach ($availableFields as $field)
+                                    <option value="{{ $field }}">{{ $field }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                            <button type="button" wire:click="moveToVisible" class="button">→</button>
+                            <button type="button" wire:click="moveToAvailable" class="button">←</button>
+                        </div>
+
+                        <div style="flex: 1;">
+                            <label style="font-weight: bold; color: white;">Visible Fields</label>
+                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                                @foreach ($listview['columns'] as $field)
+                                    <option value="{{ $field }}">{{ $field }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+                            <button type="button" wire:click="moveVisibleFieldUp" class="button">↑</button>
+                            <button type="button" wire:click="moveVisibleFieldDown" class="button">↓</button>
+                        </div>
+                    </div>
+                    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                        <span>Save</span>
+                    </button>
+                    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                        wire:click.prevent="$set('editlistview', false)">
+                        <span>Cancel</span>
+                    </button>
+                @else
+                    <div class="input__tabs details__long">
+                        <select wire:model.defer="addfilter.column">
+                            <option value="">Select a column</option>
+                            @foreach ($columns as $field)
+                                <option value="{{ $field }}">{{ $field }}</option>
+                            @endforeach
+                        </select>
+                        <label> Column</label>
+                    </div>
+                    <div class="input__tabs details__long">
+                        <select wire:model.defer="addfilter.operator">
+                            <option value="">Select a operator</option>
+                            <option value="=">equal</option>
+                            <option value="like">contains</option>
+                            <option value=">">greater than</option>
+                            <option value="<">less than</option>
+                        </select>
+                        <label> Operator</label>
+                    </div>
+                    <div class="input__tabs details__long">
+                        <input type="text" wire:model.defer="addfilter.value">
+                        <label>Value</label>
+                    </div>
+                    <div class="details__long" style="margin-bottom: 5px;">
+
+                        <button style="max-width: none!important; width:100%!important"
+                            class="button button--secondary button--long" wire:click.prevent="save_filter()">
+                            <span>Add filter</span>
+                        </button>
+                    </div>
+                    @if (!empty($listview['filters']))
+                        <label class="details__long"
+                            style="font-weight: bold; text-align:center; color: white; padding-top:10px">Listview
+                            filters</label>
+
+                        @foreach ($listview['filters'] as $index => $filter)
+                            <div class="details__long"
+                                style="display: flex; align-items: center; justify-content: space-between; background-color: #f3f3f3; padding: 10px; border-radius: 6px; margin-bottom: 8px;">
+                                <div>{{ $index }}.
+                                    <strong>{{ $filter['column'] }}</strong>
+                                    {{ $filter['label'] ?? $filter['operator'] }}
+                                    <em>{{ $filter['value'] }}</em>
+                                </div>
+
+                                <button wire:click.prevent="removeFilter({{ $index }})"
+                                    style="border: none; background: none; color: red; font-weight: bold;">✕</button>
+                            </div>
+                        @endforeach
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--danger button--long" wire:click.prevent="clearAllFilters()">
+                                <span>Remove all filters</span>
+                            </button>
+                        </div>
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--primary button--long"
+                                wire:click.prevent="$set('filterlogic', true)">
+                                <span>Edit filters logic</span>
+                            </button>
+                        </div>
+                        @if ($filterlogic)
+                            <div class="textarea__tabs details__long" style="margin-bottom: 5px">
+                                <textarea wire:model="listview.logic" name="textarea" id="textarea10" cols="30" rows="3"></textarea>
+                                <label>Filter logic (AND & OR)</label>
+                            </div>
+                        @endif
+                    @endif
+                    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                        <span>Save and close</span>
+                    </button>
+                    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                        wire:click.prevent="$set('editlistview', false)">
+                        <span>Cancel</span>
+                    </button>
+
+                @endif
+
+
+            </div>
+        </div>
+        </div>
+    </aside>
+
 
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Exchanges rate') }} ({{ count($exchanges) }})</h1>
@@ -201,7 +393,7 @@
             {{-- Dropdown Content --}}
             <div class="dropdown__content">
                 <div class="dropdown__container">
-                    <button class="button button--primary button--long button--flexed" wire:click="$refresh">
+                    <button class="button button--primary button--fill button--flexed" wire:click="$refresh">
                         <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -249,7 +441,7 @@
                         </div>
                     </th>
                     @foreach ($selectedColumns as $index => $column)
-                        <th @if ($index >= 2) class="hidden" @endif>
+                        <th @if ($index > 1) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
                                 class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
                                 {{ $column }}
@@ -280,7 +472,7 @@
                     @php
                         $i = 0;
                     @endphp
-                    @foreach ($exchanges as $nr => $exchange)
+                    @foreach ($exchanges as $index => $exchange)
                         <tr @if ($loop->last) id="last_record" @endif
                             class="expandable-row @if ($this->isChecked($exchange->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
@@ -290,9 +482,9 @@
                                     <label for="{{ $exchange->id }}"></label>
                                 </div>
                             </td>
-                            @foreach ($selectedColumns as $index => $column)
-                                <td @if ($index > 1) class="hidden" @endif
-                                    wire:click="expandRow({{ $nr }})">
+                            @foreach ($selectedColumns as $j => $column)
+                                <td @if ($j > 1) class="hidden" @endif
+                                    wire:click="expandRow({{ $index }})">
                                     @if ($column === 'base_currency_id')
                                         @if ($rowindex !== $index)
                                             {{ $exchange->base_currency->name }}
@@ -341,9 +533,9 @@
                             @endforeach
                             <td style="border-right: none">
                                 <div style="display:flex;">
-                                    @if ($rowindex !== $nr)
+                                    @if ($rowindex !== $index)
                                         <button class="button button--secondary button--sm"
-                                            wire:click.prevent="edititem({{ $nr }}, {{ $exchange->id }})">
+                                            wire:click.prevent="edititem({{ $index }}, {{ $exchange->id }})">
                                             <svg>
                                                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                                                 </path>
@@ -360,13 +552,13 @@
                                         </button>
                                     @else
                                         <button class="button button--secondary button--sm"
-                                            wire:click.prevent="saveitem({{ $nr }} , {{ $exchange->id }})">
+                                            wire:click.prevent="saveitem({{ $index }} , {{ $exchange->id }})">
                                             <svg>
                                                 <polyline points="20 6 9 17 4 12"></polyline>
                                             </svg>
                                         </button>
                                         <button class="button button--secondary button--sm"
-                                            wire:click.prevent="canceledit()">
+                                            wire:click.prevent="cancelitem()">
                                             <svg>
                                                 <line x1="18" y1="6" x2="6" y2="18">
                                                 </line>
