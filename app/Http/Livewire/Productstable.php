@@ -35,10 +35,10 @@ class Productstable extends Component
   use WithPagination;
   use WithFileUploads;
 
-  public $loadAmount = 20;
+  public $loadAmount;
   public $search = '';
-  public $orderBy = null;
-  public $orderAsc = null;
+  public $orderBy;
+  public $orderAsc;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
@@ -60,8 +60,6 @@ class Productstable extends Component
   public bool $edit = true;
   public bool $filter = false;
   public bool $filterlogic = false;
-
-
   public array $availableFields = [];
   public array $listview = [
     'name' => null,
@@ -79,70 +77,258 @@ class Productstable extends Component
     'operator' => null,
     'value' => null,
   ];
-
-
-
-
-
-
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
   ];
 
-  public function mount($tableName)
+
+  public function render()
   {
+    $activeId = $this->activelistview?->id;
+
+    return view('livewire.productstable', [
+      'products' => $this->products,
+      'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
+        return $view->id !== $activeId;
+      }),
+
+    ]);
+  }
+public function mount($tableName)
+{
+    $this->loadAmount = app()->bound('global_dashboard_limit_load')
+        ? app('global_dashboard_limit_load') ?? 50
+        : 50;
+
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($tableName);
-     sort($this->columns);
+    sort($this->columns);
 
-    $this->activelistview = $this->listviews->first() ?? null;
+    $quantityIndex = array_search('quantity', $this->columns);
+    if ($quantityIndex !== false) {
+        array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity', 'quantity_ordered']);
+    }
 
-   $quantityIndex = array_search('quantity', $this->columns);
+    $listviews = $this->getListviewsProperty();
+    $this->activelistview = $listviews->first();
 
-if ($quantityIndex !== false) {
-    array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity', 'quantity_ordered']);
+    if (!$this->activelistview) {
+        $defaultColumns = ['id', 'created_at', 'updated_at'];
+        $preferredColumn = 'name';
+
+        if (in_array($preferredColumn, $this->columns)) {
+            $nextColumn = $preferredColumn;
+        } else {
+            $idIndex = array_search('id', $this->columns);
+            $nextColumn = null;
+
+            if ($idIndex !== false && isset($this->columns[$idIndex + 1])) {
+                $nextCandidate = $this->columns[$idIndex + 1];
+                if (!in_array($nextCandidate, $defaultColumns)) {
+                    $nextColumn = $nextCandidate;
+                }
+            }
+
+            if (!$nextColumn) {
+                $nextColumn = collect($this->columns)
+                    ->reject(fn($col) => in_array($col, $defaultColumns))
+                    ->first();
+            }
+        }
+
+        $selectedColumns = array_filter([
+            'id',
+            $nextColumn,
+            'created_at',
+            'updated_at',
+        ]);
+
+        Listview::create([
+            'user_id' => Auth::id(),
+            'name' => 'default',
+            'model' => $this->tableName,
+            'columns' => $selectedColumns,
+            'filters' => [],
+            'sort' => [
+                'column' => 'id',
+                'direction' => 'asc',
+            ],
+            'logic' => null,
+        ]);
+
+        $listviews = $this->getListviewsProperty();
+        $this->activelistview = $listviews->first();
+    }
+
+    if ($this->activelistview) {
+        $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
+
+        $this->listview = [
+            'name' => $this->activelistview->name ?? '',
+            'logic' => $this->activelistview->logic ?? '',
+            'model' => $this->activelistview->model ?? $this->tableName,
+            'columns' => $this->activelistview->columns ?? [],
+            'filters' => $this->activelistview->filters ?? [],
+            'sort' => [
+                'column' => $sorts['column'] ?? 'id',
+                'direction' => $sorts['direction'] ?? 'asc',
+            ],
+        ];
+    }
+
+    $this->availableFields = array_values(array_diff($this->columns ?? [], $this->listview['columns'] ?? []));
+    sort($this->availableFields);
+
+    $this->orderBy = $this->listview['sort']['column'] ?? 'id';
+    $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
+    $this->selectedColumns = $this->listview['columns'] ?? [];
 }
 
-    $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
 
-    $this->listview = [
-      'name' => $this->activelistview?->name ?? '',
-      'logic' => $this->activelistview?->logic ?? '',
-      'model' => $this->activelistview?->model ?? $this->tableName,
-      'columns' => $this->activelistview?->columns ?? [],
-      'filters' => $this->activelistview?->filters ?? [],
-      'sort' => [
-        'column' => $this->activelistview?->sorts['column'] ?? 'id',
-        'direction' => $this->activelistview?->sorts['direction'] ?? 'asc',
-      ],
-    ];
-    $this->availableFields = array_values(array_diff($this->columns ?? [], $this->listview['columns'] ?? []));
-     sort($this->availableFields);
-    $this->orderBy = $this->listview['sort']['column'] ?? 'id';
-    $this->orderAsc = $this->listview['sort']['direction'] === 'asc' ? '1' : '0';
-    $this->selectedColumns = $this->listview['columns'] ?? [];
+  public function updatingAddlistview($value)
+  {
+    if ($value) {
+      $this->listview['name'] = null;
+    }
   }
+  public function updatingEditlistview($value)
+  {
+    if ($value) {
+      $this->listview['name'] = $this->activelistview?->name ?? '';
+    }
+  }
+  public function applyFilters($query)
+  {
+    $filters = $this->activelistview?->filters ?? [];
+    $logic = $this->activelistview?->logic ?? null;
+
+    if (empty($filters)) return $query;
+
+    $closures = [];
+
+    foreach ($filters as $index => $filter) {
+      $column = $filter['column'];
+      $operator = strtolower($filter['operator']);
+      $value = $filter['value'];
+
+      if (in_array($value, [true, 'true', '1'], true)) {
+        $type = 'boolean';
+        $value = 1;
+      } elseif (in_array($value, [false, 'false', '0'], true)) {
+        $type = 'boolean';
+        $value = 0;
+      } elseif (is_numeric($value)) {
+        $type = 'number';
+        $value = (float) $value;
+      } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+        $type = 'date';
+        try {
+          $value = \Carbon\Carbon::parse($value)->format('Y-m-d');
+        } catch (\Exception $e) {
+          continue;
+        }
+      } else {
+        $type = 'string';
+      }
+
+      $closures[$index] = function ($q) use ($column, $operator, $value, $type) {
+        if ($operator === 'like') {
+          $q->where($column, 'like', "%$value%");
+        } elseif ($type === 'date' && in_array($operator, ['=', '!=', '<', '>', '<=', '>='])) {
+          $q->whereDate($column, $operator, $value);
+        } else {
+          $q->where($column, $operator, $value);
+        }
+      };
+    }
 
 
+    if ($logic === null) {
+      return $query->where(function ($q) use ($closures) {
+        foreach ($closures as $closure) {
+          $closure($q);
+        }
+      });
+    }
 
+    $tokens = preg_split('/\s+/', trim(str_replace(['(', ')'], [' ( ', ' ) '], $logic)));
+
+    $buildExpression = function (&$tokens) use (&$buildExpression, $closures) {
+      $stack = [];
+
+      while (!empty($tokens)) {
+        $token = array_shift($tokens);
+
+        if ($token === '(') {
+          $stack[] = $buildExpression($tokens);
+        } elseif ($token === ')') {
+          break;
+        } elseif (strtoupper($token) === 'AND' || strtoupper($token) === 'OR') {
+          $stack[] = strtoupper($token);
+        } elseif (is_numeric($token)) {
+          $stack[] = $closures[(int) $token] ?? null;
+        }
+      }
+
+      $reduce = function ($stack) use (&$reduce) {
+        while (count($stack) > 1) {
+          $a = array_shift($stack);
+          $op = array_shift($stack);
+          $b = array_shift($stack);
+
+          $combined = function ($q) use ($a, $b, $op) {
+            if ($op === 'AND') {
+              $q->where(function ($q) use ($a) {
+                $a($q);
+              })->where(function ($q) use ($b) {
+                $b($q);
+              });
+            } elseif ($op === 'OR') {
+              $q->where(function ($q) use ($a) {
+                $a($q);
+              })->orWhere(function ($q) use ($b) {
+                $b($q);
+              });
+            }
+          };
+
+          array_unshift($stack, $combined);
+        }
+
+        return $stack[0];
+      };
+
+      return $reduce($stack);
+    };
+
+    $final = $buildExpression($tokens);
+
+    return $query->where(function ($q) use ($final) {
+      $final($q);
+    });
+  }
   public function getProductsProperty()
   {
     return $this->productsQuery->paginate($this->loadAmount);
   }
   public function getProductsQueryProperty()
   {
-    return Product::search($this->search)
+    $query = Product::search($this->search);
+
+    $query = $this->applyFilters($query);
+
+    return $query
       ->withCount([
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
             $q->where('status_id', 31);
           })
             ->select(DB::raw('
-                CASE
-                  WHEN COUNT(*) = 0 THEN products.quantity
-                  ELSE SUM(quantity) + products.quantity
-                END
-              '));
+                    CASE
+                        WHEN COUNT(*) = 0 THEN products.quantity
+                        ELSE SUM(quantity) + products.quantity
+                    END
+                '));
         },
         'order_suppliers as quantity_ordered' => function ($query) {
           $query->whereHas('order', function ($q) {
@@ -150,14 +336,12 @@ if ($quantityIndex !== false) {
           })->select(DB::raw('SUM(quantity)'));
         },
       ])
-      ->orderBy($this->orderBy ?? 'created_at', $this->orderAsc ? 'asc' : 'desc');
+      ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
-
-
   public function clearAllFilters()
   {
     $this->listview['filters'] = [];
-    $this->listview['logic'] = null;
+    $this->listview['logic'] = '';
   }
   public function save_filter()
   {
@@ -202,8 +386,6 @@ if ($quantityIndex !== false) {
       'value' => null,
     ];
   }
-
-
   public function removeFilter($index)
   {
     unset($this->listview['filters'][$index]);
@@ -248,14 +430,6 @@ if ($quantityIndex !== false) {
       $this->listview['logic'] = $updatedLogic;
     }
   }
-
-
-
-
-
-
-
-
   public function toggle($item)
   {
     if ($item == 'edit') {
@@ -266,7 +440,6 @@ if ($quantityIndex !== false) {
       $this->filter = !$this->filter;
     }
   }
-
   public function delete_listview()
   {
     if ($this->activelistview) {
@@ -287,69 +460,67 @@ if ($quantityIndex !== false) {
         'title' => 'Error'
       ]);
     }
+    return $this->mount($this->tableName);
   }
-
- public function save_listview($recurency = false)
-{
+  public function save_listview($recurency = false)
+  {
     $this->validate([
-        'listview.name' => [
-            'required',
-            'string',
-            'max:255'
-        ],
+      'listview.name' => [
+        'required',
+        'string',
+        'max:255'
+      ],
     ]);
 
-    // Validate logic expression
     if (!$this->isValidLogicExpression($this->listview['logic'])) {
-        session()->flash('notification', [
-            'message' => 'Invalid logic expression. Only numbers, AND, OR, and balanced parentheses are allowed.',
-            'type' => 'error',
-            'title' => 'Validation Error'
-        ]);
-        return;
+      session()->flash('notification', [
+        'message' => 'Invalid logic expression. Only numbers, AND, OR, and balanced parentheses are allowed.',
+        'type' => 'error',
+        'title' => 'Validation Error'
+      ]);
+      return;
     }
 
     if ($this->activelistview) {
-        $this->activelistview->update([
-            'name' => $this->listview['name'],
-            'logic' => $this->listview['logic'],
-            'columns' => $this->listview['columns'],
-            'filters' => $this->listview['filters'],
-            'sorts' => [
-                'column' => $this->orderBy ?? 'id',
-                'direction' => $this->orderAsc ? 'asc' : 'desc',
-            ],
-        ]);
+      $this->activelistview->update([
+        'name' => $this->listview['name'],
+        'logic' => $this->listview['logic'],
+        'columns' => $this->listview['columns'],
+        'filters' => $this->listview['filters'],
+        'sorts' => [
+          'column' => $this->orderBy ?? 'id',
+          'direction' => $this->orderAsc ? 'asc' : 'desc',
+        ],
+      ]);
     } else {
-        Listview::create([
-            'user_id' => Auth::id(),
-            'name' => $this->listview['name'],
-            'model' => $this->tableName,
-            'columns' => $this->listview['columns'],
-            'filters' => $this->listview['filters'],
-            'sorts' => $this->listview['sort'],
-            'logic' => $this->listview['logic'],
-        ]);
+      Listview::create([
+        'user_id' => Auth::id(),
+        'name' => $this->listview['name'],
+        'model' => $this->tableName,
+        'columns' => $this->listview['columns'],
+        'filters' => $this->listview['filters'],
+        'sorts' => $this->listview['sort'],
+        'logic' => $this->listview['logic'],
+      ]);
     }
 
     if (!$recurency) {
-        $this->editlistview = false;
+      $this->editlistview = false;
 
-        session()->flash('notification', [
-            'message' => 'Listview saved successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
+      session()->flash('notification', [
+        'message' => 'Listview saved successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
 
     return $this->mount($this->tableName);
-}
-
-protected function isValidLogicExpression(string $logic): bool
-{
+  }
+  protected function isValidLogicExpression(string $logic): bool
+  {
     $logic = trim($logic);
     if ($logic === '') {
-        return true;
+      return true;
     }
 
     $tokens = preg_split('/\s+/', str_replace(['(', ')'], [' ( ', ' ) '], $logic));
@@ -360,45 +531,42 @@ protected function isValidLogicExpression(string $logic): bool
     $prev = null;
 
     foreach ($tokens as $token) {
-        $upper = strtoupper($token);
+      $upper = strtoupper($token);
 
-        if (!is_numeric($token) && !in_array($upper, $validTokens)) {
-            return false;
+      if (!is_numeric($token) && !in_array($upper, $validTokens)) {
+        return false;
+      }
+
+      if ($token === '(') {
+        $openParens++;
+      } elseif ($token === ')') {
+        $openParens--;
+        if ($openParens < 0) return false;
+      }
+
+      if ($prev !== null) {
+        if ((is_numeric($prev) || $prev === ')') && (is_numeric($token) || $token === '(')) {
+          return false;
         }
 
-        if ($token === '(') {
-            $openParens++;
-        } elseif ($token === ')') {
-            $openParens--;
-            if ($openParens < 0) return false;
+        if (in_array(strtoupper($prev), ['AND', 'OR']) && in_array($upper, ['AND', 'OR', ')'])) {
+          return false;
         }
 
-        if ($prev !== null) {
-            if ((is_numeric($prev) || $prev === ')') && (is_numeric($token) || $token === '(')) {
-                return false;
-            }
-
-            if (in_array(strtoupper($prev), ['AND', 'OR']) && in_array($upper, ['AND', 'OR', ')'])) {
-                return false;
-            }
-
-            if ($prev === '(' && in_array($upper, ['AND', 'OR', ')'])) {
-                return false;
-            }
-
-            if ($token === ')' && in_array(strtoupper($prev), ['AND', 'OR', '('])) {
-                return false;
-            }
+        if ($prev === '(' && in_array($upper, ['AND', 'OR', ')'])) {
+          return false;
         }
 
-        $prev = $token;
+        if ($token === ')' && in_array(strtoupper($prev), ['AND', 'OR', '('])) {
+          return false;
+        }
+      }
+
+      $prev = $token;
     }
 
     return $openParens === 0;
-}
-
-
-
+  }
   public function getListviewsProperty()
   {
     return Listview::where('user_id', Auth::id())
@@ -406,7 +574,6 @@ protected function isValidLogicExpression(string $logic): bool
       ->orderBy('updated_at', 'desc')
       ->get();
   }
-
   public function moveToVisible()
   {
     if ($this->selectedAvailable !== '') {
@@ -416,8 +583,6 @@ protected function isValidLogicExpression(string $logic): bool
       $this->selectedAvailable = '';
     }
   }
-
-
   public function moveToAvailable()
   {
     if ($this->selectedVisible !== '') {
@@ -427,7 +592,6 @@ protected function isValidLogicExpression(string $logic): bool
       $this->selectedVisible = '';
     }
   }
-
   public function moveVisibleFieldUp()
   {
     $index = array_search($this->selectedVisible, $this->listview['columns']);
@@ -437,7 +601,6 @@ protected function isValidLogicExpression(string $logic): bool
         [$this->listview['columns'][$index], $this->listview['columns'][$index - 1]];
     }
   }
-
   public function moveVisibleFieldDown()
   {
     $index = array_search($this->selectedVisible, $this->listview['columns']);
@@ -447,10 +610,6 @@ protected function isValidLogicExpression(string $logic): bool
         [$this->listview['columns'][$index], $this->listview['columns'][$index + 1]];
     }
   }
-
-
-
-
   public function add_listview()
   {
     $this->validate([
@@ -483,8 +642,6 @@ protected function isValidLogicExpression(string $logic): bool
       'title' => 'Success'
     ]);
   }
-
-
   public function updatingcsvFile($value)
   {
     ini_set('max_execution_time', 300);
@@ -505,8 +662,6 @@ protected function isValidLogicExpression(string $logic): bool
       'title' => 'Success'
     ]);
   }
-
-
   public function processRow($row)
   {
     $id = $row[0]; // id
@@ -584,10 +739,8 @@ protected function isValidLogicExpression(string $logic): bool
       $media->save();
       $product->media()->attach($media->id);
 
-      //Resize system
       $filePath = $path . $name;
       $file = Storage::disk('public_upload')->get($filePath);
-      // Set the file content
 
       $ismin = $product->media()->where('type', 'min')->first();
 
@@ -710,20 +863,6 @@ protected function isValidLogicExpression(string $logic): bool
       $this->row = null;
     }
   }
-
-  public function render()
-  {
-    $activeId = $this->activelistview?->id;
-
-    return view('livewire.productstable', [
-      'products' => $this->products,
-      'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
-        return $view->id !== $activeId;
-      }),
-
-    ]);
-  }
-
   public function setActiveListview($id)
   {
     $this->activelistview = Listview::find($id);
@@ -737,12 +876,10 @@ protected function isValidLogicExpression(string $logic): bool
       return;
     }
 
-    // Update last used timestamp
     $this->activelistview->update([
       'updated_at' => now(),
     ]);
 
-    // Populate the working listview state
     $this->listview = [
       'name' => $this->activelistview->name,
       'columns' => $this->activelistview->columns ?? [],
@@ -755,12 +892,6 @@ protected function isValidLogicExpression(string $logic): bool
 
     $this->search = '';
     $this->mount($this->tableName);
-  }
-
-
-  public function showColumn($column)
-  {
-    return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
   {
@@ -793,7 +924,6 @@ protected function isValidLogicExpression(string $logic): bool
     $this->selectAll = true;
     $this->checked = $this->productsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
-
   public function loadMore()
   {
     $this->loadAmount += 10;
@@ -984,7 +1114,6 @@ protected function isValidLogicExpression(string $logic): bool
     $this->multiple = false;
     $this->single = false;
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);

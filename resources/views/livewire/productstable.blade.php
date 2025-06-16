@@ -191,56 +191,22 @@
                             <div class="textarea__tabs details__long" style="margin-bottom: 5px">
                                 <textarea wire:model="listview.logic" name="textarea" id="textarea10" cols="30" rows="3"></textarea>
                                 <label>Filter logic (AND & OR)</label>
-                              </div>
+                            </div>
                         @endif
-                        @endif
-                        <button class="button button--primary button--long" wire:click.prevent="save_listview()">
-                            <span>Save and close</span>
-                        </button>
-                        <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-                            wire:click.prevent="$set('editlistview', false)">
-                            <span>Cancel</span>
-                        </button>
+                    @endif
+                    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                        <span>Save and close</span>
+                    </button>
+                    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                        wire:click.prevent="$set('editlistview', false)">
+                        <span>Cancel</span>
+                    </button>
 
                 @endif
 
 
-        </div>
-        </div>
-        </div>
-    </aside>
-
-
-    <aside>
-        <div class="background background--center @if ($addlistview) active @endif"></div>
-        <div class="aside aside--confirm @if ($addlistview) active @endif"
-            style="min-height: 225px !important;">
-            <div class="tabs__content details__view active" style="max-height: 100%;">
-
-                <span class="details__long"
-                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
-                    New Listview
-                </span>
-                @foreach ($errors->all() as $error)
-                    <span class="details__long"
-                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
-                @endforeach
-
-                <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
-                </div>
-
-
-                <button class="button button--primary button--long" wire:click.prevent="add_listview()">
-                    <span>Save</span>
-                </button>
-                <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-                    wire:click.prevent="$set('addlistview', false)">
-                    <span>Cancel</span>
-                </button>
-
             </div>
+        </div>
         </div>
     </aside>
 
@@ -290,63 +256,11 @@
             </button>
         </div>
     </aside>
-    {{-- Asides --}}
-    <aside>
-        <div class="background background--right" wire:ignore id="sort__backdrop"></div>
-        <div class="aside aside--right" wire:ignore id="sort">
-            <div class="aside--controls">
-                <button class="button button--flexed button--primary" id="sort__close">
-                    <svg>
-                        <polyline points="4 14 10 14 10 20"></polyline>
-                        <polyline points="20 10 14 10 14 4"></polyline>
-                        <line x1="14" y1="10" x2="21" y2="3"></line>
-                        <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                </button>
-                <h3>Sorting Data</h3>
-            </div>
-            <span class="aside--line"></span>
-            @foreach ($columns as $column)
-                <button
-                    class="button button--primary button--long button--flexed button--arrow @if ($orderBy === $column && $orderAsc === '1') active @endif"
-                    wire:click="sortBy('{{ $column }}')">
-                    <svg>
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                    {{ $column }}
-                </button>
-            @endforeach
-        </div>
-    </aside>
-    <aside>
-        <div class="background background--right" wire:ignore id="visi__backdrop"></div>
-        <div class="aside aside--right" wire:ignore id="visi">
-            <div class="aside--controls">
-                <button class="button button--flexed button--primary" id="visi__close">
-                    <svg>
-                        <polyline points="4 14 10 14 10 20"></polyline>
-                        <polyline points="20 10 14 10 14 4"></polyline>
-                        <line x1="14" y1="10" x2="21" y2="3"></line>
-                        <line x1="3" y1="21" x2="10" y2="14"></line>
-                    </svg>
-                </button>
-                <h3>Visibility Data</h3>
-            </div>
-            <span class="aside--line"></span>
-            @foreach ($columns as $column)
-                <label class="switch switch--primary" style="margin: 0.25rem 0">
-                    <input type="checkbox" wire:ignore wire:model="selectedColumns" value="{{ $column }}"
-                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-                    <span>{{ $column }}</span>
-                </label>
-            @endforeach
-        </div>
-    </aside>
-
 
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Products') }} ({{ $products->total() }})</h1>
     <nav class="nav--controls">
+        {{-- Listview --}}
         @if ($activelistview)
 
             <div class="dropdown dropdown--right">
@@ -374,22 +288,15 @@
 
 
                 </div>
+            </div>
+            <button class="button button--primary button--centered" tooltip="Edit listview" tooltip-top
+                wire:click="$set('editlistview', true)">
+                <svg>
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                    </path>
+                </svg>
+            </button>
         @endif
-        <style>
-            .custom-dropdown-content::before {
-                content: "";
-                position: absolute;
-                left: 10px;
-            }
-        </style>
-        </div>
-        <button class="button button--primary button--centered" tooltip="Edit listview" tooltip-top
-            wire:click="$set('editlistview', true)">
-            <svg>
-                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                </path>
-            </svg>
-        </button>
         {{-- Search Input --}}
         <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
@@ -405,25 +312,6 @@
                 </button>
             </div>
         </div>
-
-        {{-- Visible Dropdown --}}
-        <div class="dropdown dropdown--right display--desktop" wire:ignore>
-
-            {{-- Dropdown Content --}}
-            <div class="dropdown__content">
-                <div class="dropdown__container">
-                    @foreach ($columns as $column)
-                        <label class="switch switch--primary inline">
-                            <input type="checkbox" wire:ignore wire:model="selectedColumns"
-                                value="{{ $column }}"
-                                {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
-                            <span>{{ $column }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        {{-- Optional Dropdown --}}
         <div class="dropdown dropdown--right">
             {{-- Dropdown Button --}}
             <button class="button button--primary button--centered" tooltip="Table actions" tooltip-left>
@@ -509,30 +397,10 @@
                         </svg>
                         <span>Schuffle sequences</span>
                     </button>
-                    <button class="button button--primary button--fill button--flexed" id="sort__open">
-                        <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
-                            <path d="M19 21h-4l4 -7h-4" />
-                            <path d="M4 15l3 3l3 -3" />
-                            <path d="M7 6v12" />
-                        </svg>
-                        <span>Sorting data</span>
-                    </button>
-                    <button class="button button--primary button--fill button--flexed" id="visi__open">
-                        <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                            <path
-                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                        </svg>
-                        <span>Visible</span>
-                    </button>
                 </div>
             </div>
         </div>
     </nav>
-
 
     {{-- Select All --}}
     @if ($selectPage && $selectAll)
@@ -544,7 +412,6 @@
             You selected {{ count($checked) }} items, select all?
         </button>
     @endif
-
 
     {{-- Table --}}
     <div class="table" @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
@@ -558,17 +425,15 @@
                         </div>
                     </th>
                     @foreach ($selectedColumns as $index => $column)
-                        @if ($this->showColumn($column))
-                            <th @if ($index > 2) class="hidden" @endif>
-                                <button wire:click="sortBy('{{ $column }}')"
-                                    class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-                                    {{ $column }}
-                                    <svg>
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </button>
-                            </th>
-                        @endif
+                        <th @if ($index >= 2) class="hidden" @endif>
+                            <button wire:click="sortBy('{{ $column }}')"
+                                class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                                {{ $column }}
+                                <svg>
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </th>
                     @endforeach
                     <th style="border-left: none; border-right: none;">
                         <button class="button button--secondary button--sm" style="opacity: 0">
@@ -582,11 +447,6 @@
                     </th>
                 </tr>
             </thead>
-
-
-
-
-
             <tbody>
                 @if ($products->isEmpty())
                     <tr>
@@ -607,7 +467,7 @@
                                 </div>
                             </td>
                             @foreach ($selectedColumns as $index => $column)
-                                <td @if ($index > 2) class="hidden" @endif
+                                <td @if ($index >= 2) class="hidden" @endif
                                     data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
                                     @if ($column === 'name')
                                         <a
@@ -631,31 +491,7 @@
                                                 <label for="disabled2"></label>
                                             </div>
                                         @endif
-                                    @elseif($column === 'quantity_supplier_ordered')
-                                        <span>
-                                            {{ $product->quantity_ordered }}
-                                        </span>
-                                    @elseif($column === 'long_description')
-                                        <span class="show-less">
-                                            {!! $product->$column !!}
-                                        </span>
-                                    @elseif($column === 'comments')
-                                        <span class="show-less">
-                                            {!! $product->$column !!}
-                                        </span>
-                                    @elseif($column === 'short_description')
-                                        <span class="show-less">
-                                            {!! $product->$column !!}
-                                        </span>
-                                    @elseif($column === 'meta_description')
-                                        <span class="show-less">
-                                            {!! $product->$column !!}
-                                        </span>
-                                    @elseif($column === 'seo_id')
-                                        <span class="show-less">
-                                            {!! $product->$column !!}
-                                        </span>
-                                    @elseif($column === 'seo_title')
+                                    @elseif($column === 'long_description' || $column === 'comments' || $column === 'short_description')
                                         <span class="show-less">
                                             {!! $product->$column !!}
                                         </span>
@@ -676,10 +512,10 @@
                             </td>
                         </tr>
                         <tr class="details-row  @if ($row === $i) active @endif">
-                            <td colspan="17">
+                            <td colspan="4">
                                 <div class="details">
                                     @foreach ($selectedColumns as $index => $column)
-                                        @if ($index >= 3)
+                                        @if ($index >= 2)
                                             <p>
                                                 @if ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock')
                                                     <bold>{{ $column }}:</bold>
@@ -695,7 +531,14 @@
                                                         </div>
                                                     @endif
                                                 @else
-                                                    <bold>{{ $column }}:</bold> {{ $product->$column }}
+                                                    <bold>{{ $column }}:</bold>
+                                                    @if ($column === 'long_description' || $column === 'comments' || $column === 'short_description')
+                                                        <span class="show-less">
+                                                            {!! $product->$column !!}
+                                                        </span>
+                                                    @else
+                                                        {{ $product->$column }}
+                                                    @endif
                                                 @endif
                                             </p>
                                         @endif
@@ -710,10 +553,7 @@
                 @endif
             </tbody>
         </table>
-
         <x-admin-lazyload />
-
-
         {{-- Load More Manual --}}
         @if ($loadAmount <= count($products))
             <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
@@ -721,5 +561,14 @@
             </button>
         @endif
     </div>
-
+    <script>
+    window.addEventListener('hydrateSortFromStorage', event => {
+        const table = event.detail.table;
+        const col = localStorage.getItem(`listview_sort_${table}_column`);
+        const dir = localStorage.getItem(`listview_sort_${table}_direction`);
+        if (col && dir) {
+            Livewire.dispatch('setSortFromStorage', { column: col, direction: dir });
+        }
+    });
+</script>
 </section>

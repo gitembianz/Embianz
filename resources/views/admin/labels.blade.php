@@ -1,5 +1,5 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 <x-dashboardsidebar :active="'labels'" />
-@livewire('labelstable')
+@livewire('labelstable', ['tableName' => 'text_labels'])
 <x-dashboardfooter />
