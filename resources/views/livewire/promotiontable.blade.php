@@ -329,24 +329,13 @@
                         </svg>
                         <span>Add Promotions</span>
                     </a>
-                    <button class="button button--primary button--fill button--flexed" id="sort__open">
+                     <button class="button button--primary button--fill button--flexed" wire:click="exportData">
                         <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
-                            <path d="M19 21h-4l4 -7h-4" />
-                            <path d="M4 15l3 3l3 -3" />
-                            <path d="M7 6v12" />
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
-                        <span>Sorting data</span>
-                    </button>
-                    <button class="button button--primary button--fill button--flexed" id="visi__open">
-                        <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                            <path
-                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                        </svg>
-                        <span>Columns</span>
+                        <span>Export data</span>
                     </button>
                 </div>
             </div>

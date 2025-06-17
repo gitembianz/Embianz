@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 
+use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -79,7 +82,12 @@ class Productstable extends Component
   ];
   protected $rules = [
     'csvFile' => 'required|mimes:csv,txt',
+    'csvimportdata' => 'required|mimes:csv,txt',
   ];
+  // importdata
+  public $importdata = false;
+  public $csvimportdata;
+
 
 
   public function render()
@@ -94,11 +102,11 @@ class Productstable extends Component
 
     ]);
   }
-public function mount($tableName)
-{
+  public function mount($tableName)
+  {
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
-        ? app('global_dashboard_limit_load') ?? 50
-        : 50;
+      ? app('global_dashboard_limit_load') ?? 50
+      : 50;
 
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($tableName);
@@ -106,74 +114,74 @@ public function mount($tableName)
 
     $quantityIndex = array_search('quantity', $this->columns);
     if ($quantityIndex !== false) {
-        array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity', 'quantity_ordered']);
+      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity', 'quantity_ordered']);
     }
 
     $listviews = $this->getListviewsProperty();
     $this->activelistview = $listviews->first();
 
     if (!$this->activelistview) {
-        $defaultColumns = ['id', 'created_at', 'updated_at'];
-        $preferredColumn = 'name';
+      $defaultColumns = ['id', 'created_at', 'updated_at'];
+      $preferredColumn = 'name';
 
-        if (in_array($preferredColumn, $this->columns)) {
-            $nextColumn = $preferredColumn;
-        } else {
-            $idIndex = array_search('id', $this->columns);
-            $nextColumn = null;
+      if (in_array($preferredColumn, $this->columns)) {
+        $nextColumn = $preferredColumn;
+      } else {
+        $idIndex = array_search('id', $this->columns);
+        $nextColumn = null;
 
-            if ($idIndex !== false && isset($this->columns[$idIndex + 1])) {
-                $nextCandidate = $this->columns[$idIndex + 1];
-                if (!in_array($nextCandidate, $defaultColumns)) {
-                    $nextColumn = $nextCandidate;
-                }
-            }
-
-            if (!$nextColumn) {
-                $nextColumn = collect($this->columns)
-                    ->reject(fn($col) => in_array($col, $defaultColumns))
-                    ->first();
-            }
+        if ($idIndex !== false && isset($this->columns[$idIndex + 1])) {
+          $nextCandidate = $this->columns[$idIndex + 1];
+          if (!in_array($nextCandidate, $defaultColumns)) {
+            $nextColumn = $nextCandidate;
+          }
         }
 
-        $selectedColumns = array_filter([
-            'id',
-            $nextColumn,
-            'created_at',
-            'updated_at',
-        ]);
+        if (!$nextColumn) {
+          $nextColumn = collect($this->columns)
+            ->reject(fn($col) => in_array($col, $defaultColumns))
+            ->first();
+        }
+      }
 
-        Listview::create([
-            'user_id' => Auth::id(),
-            'name' => 'default',
-            'model' => $this->tableName,
-            'columns' => $selectedColumns,
-            'filters' => [],
-            'sort' => [
-                'column' => 'id',
-                'direction' => 'asc',
-            ],
-            'logic' => null,
-        ]);
+      $selectedColumns = array_filter([
+        'id',
+        $nextColumn,
+        'created_at',
+        'updated_at',
+      ]);
 
-        $listviews = $this->getListviewsProperty();
-        $this->activelistview = $listviews->first();
+      Listview::create([
+        'user_id' => Auth::id(),
+        'name' => 'default',
+        'model' => $this->tableName,
+        'columns' => $selectedColumns,
+        'filters' => [],
+        'sort' => [
+          'column' => 'id',
+          'direction' => 'asc',
+        ],
+        'logic' => null,
+      ]);
+
+      $listviews = $this->getListviewsProperty();
+      $this->activelistview = $listviews->first();
     }
 
     if ($this->activelistview) {
-        $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
+      $sorts = is_array($this->activelistview?->sorts) ? $this->activelistview->sorts : [];
 
-        $this->listview = [
-            'name' => $this->activelistview->name ?? '',
-            'logic' => $this->activelistview->logic ?? '',
-            'model' => $this->activelistview->model ?? $this->tableName,
-            'columns' => $this->activelistview->columns ?? [],
-            'filters' => $this->activelistview->filters ?? [],
-            'sort' => [
-                'column' => $sorts['column'] ?? 'id',
-                'direction' => $sorts['direction'] ?? 'asc',
-            ],
-        ];
+      $this->listview = [
+        'name' => $this->activelistview->name ?? '',
+        'logic' => $this->activelistview->logic ?? '',
+        'model' => $this->activelistview->model ?? $this->tableName,
+        'columns' => $this->activelistview->columns ?? [],
+        'filters' => $this->activelistview->filters ?? [],
+        'sort' => [
+          'column' => $sorts['column'] ?? 'id',
+          'direction' => $sorts['direction'] ?? 'asc',
+        ],
+      ];
     }
 
     $this->availableFields = array_values(array_diff($this->columns ?? [], $this->listview['columns'] ?? []));
@@ -182,7 +190,7 @@ public function mount($tableName)
     $this->orderBy = $this->listview['sort']['column'] ?? 'id';
     $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
-}
+  }
 
 
   public function updatingAddlistview($value)
@@ -1218,5 +1226,86 @@ public function mount($tableName)
       }
     }
     $this->deleteRecord();
+  }
+
+  // export-import data
+  public function exportData()
+  {
+    $selectedColumns = $this->listview['columns'] ?? [];
+
+    if (empty($selectedColumns)) {
+      session()->flash('notification', ['message' => 'No columns selected for export.', 'type' => 'error']);
+      return;
+    }
+
+    $filename = $this->tableName.'.csv';
+    $checked = $this->checked;
+
+    return Response::streamDownload(function () use ($selectedColumns, $checked) {
+      $handle = fopen('php://output', 'w');
+
+      fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+      fputcsv($handle, $selectedColumns);
+
+      if (empty($checked)) {
+        fclose($handle);
+        return;
+      }
+
+      $realColumns = array_filter($selectedColumns, function ($col) {
+        static $dbColumns = null;
+        $dbColumns = $dbColumns ?? Schema::getColumnListing($this->tableName);
+        return in_array($col, $dbColumns);
+      });
+
+      Product::select($realColumns)
+        ->withCount([
+          'orders_item as interim_quantity' => function ($query) {
+            $query->whereHas('order', function ($q) {
+              $q->where('status_id', 31);
+            })->select(DB::raw('
+                        CASE
+                            WHEN COUNT(*) = 0 THEN products.quantity
+                            ELSE SUM(quantity) + products.quantity
+                        END
+                    '));
+          },
+          'order_suppliers as quantity_ordered' => function ($query) {
+            $query->whereHas('order', function ($q) {
+              $q->where('status', '!=', 'closed');
+            })->select(DB::raw('SUM(quantity)'));
+          },
+        ])
+        ->whereIn('id', $checked)
+        ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')
+        ->chunk(1000, function ($items) use ($handle, $selectedColumns) {
+          foreach ($items as $item) {
+            $row = [];
+
+            foreach ($selectedColumns as $column) {
+              $value = data_get($item, $column, '');
+
+              if ($value instanceof Carbon) {
+                $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+              } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
+                try {
+                  $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+                } catch (\Exception $e) {
+                }
+              }
+
+              $row[] = is_scalar($value) ? $value : json_encode($value);
+            }
+
+            fputcsv($handle, $row);
+          }
+        });
+
+      fclose($handle);
+    }, $filename, [
+      'Content-Type' => 'text/csv; charset=UTF-8',
+      'Content-Disposition' => "attachment; filename=\"$filename\"",
+    ]);
   }
 }

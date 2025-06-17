@@ -54,6 +54,9 @@ class Storesettingstable extends Component
   public $external = false;
   public $media;
   public $mediaurl =  null;
+    public $checked = [];
+  public $selectPage = false;
+  public $selectAll = false;
 
     // listview variables
   public $relation = false;

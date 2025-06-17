@@ -257,6 +257,32 @@
         </div>
     </aside>
 
+    {{-- Import Data --}}
+    <aside>
+        <div class="background background--center @if ($importdata == true) active @endif"></div>
+        <div class="aside aside--confirm @if ($importdata == true) active @endif">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    Select CSV file
+                </span>
+                <input style="display: none;" id="CSVImport" wire:model="csvimportdata" type="file"
+                    accept="csv/*">
+                <label class="button button--primary button--long" type="button" for="CSVImport">
+                    <span>
+                        Select
+                    </span>
+                </label>
+                <button class="button button--danger button--long" wire:click.prevent="$set('importdata', false)">
+                    <span>
+                        Cancel
+                    </span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Products') }} ({{ $products->total() }})</h1>
     <nav class="nav--controls">
@@ -337,6 +363,7 @@
                         </svg>
                         <span>Refresh table</span>
                     </button>
+
                     <button class="button button--primary button--fill button--flexed"
                         wire:click="$set('addlistview', true)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -397,6 +424,32 @@
                         </svg>
                         <span>Schuffle sequences</span>
                     </button>
+                    {{-- data import/export --}}
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
+                    {{-- <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('importdata', true)">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Import data</span>
+                    </button> --}}
                 </div>
             </div>
         </div>
@@ -562,13 +615,16 @@
         @endif
     </div>
     <script>
-    window.addEventListener('hydrateSortFromStorage', event => {
-        const table = event.detail.table;
-        const col = localStorage.getItem(`listview_sort_${table}_column`);
-        const dir = localStorage.getItem(`listview_sort_${table}_direction`);
-        if (col && dir) {
-            Livewire.dispatch('setSortFromStorage', { column: col, direction: dir });
-        }
-    });
-</script>
+        window.addEventListener('hydrateSortFromStorage', event => {
+            const table = event.detail.table;
+            const col = localStorage.getItem(`listview_sort_${table}_column`);
+            const dir = localStorage.getItem(`listview_sort_${table}_direction`);
+            if (col && dir) {
+                Livewire.dispatch('setSortFromStorage', {
+                    column: col,
+                    direction: dir
+                });
+            }
+        });
+    </script>
 </section>
