@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Carbon\Carbon;
+
+
 class Wishliststable extends Component
 {
   use WithPagination;
@@ -651,7 +656,7 @@ class Wishliststable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->wishlists->pluck('session_id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->wishlistsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -667,7 +672,7 @@ class Wishliststable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->wishlists->pluck('session_id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->wishlistsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function isChecked($id)
   {
@@ -720,6 +725,70 @@ class Wishliststable extends Component
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
+    ]);
+  }
+   // export-import data
+  public function exportData()
+  {
+    $selectedColumns = $this->listview['columns'] ?? [];
+
+    if (empty($selectedColumns)) {
+      session()->flash('notification', ['message' => 'No columns selected for export.', 'type' => 'error']);
+      return;
+    }
+
+    $filename = $this->tableName . '.csv';
+    $checked = $this->checked;
+
+    return Response::streamDownload(function () use ($selectedColumns, $checked) {
+      $handle = fopen('php://output', 'w');
+
+      fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+      fputcsv($handle, $selectedColumns);
+
+      if (empty($checked)) {
+        fclose($handle);
+        return;
+      }
+
+      $realColumns = array_filter($selectedColumns, function ($col) {
+        static $dbColumns = null;
+        $dbColumns = $dbColumns ?? Schema::getColumnListing($this->tableName);
+        return in_array($col, $dbColumns);
+      });
+
+      $query = $this->getWishlistsQueryProperty();
+
+      $query->select($realColumns)->whereIn('id', $checked);
+
+      $query->chunk(1000, function ($items) use ($handle, $selectedColumns) {
+        foreach ($items as $item) {
+          $row = [];
+
+          foreach ($selectedColumns as $column) {
+            $value = data_get($item, $column, '');
+
+            if ($value instanceof Carbon) {
+              $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+            } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
+              try {
+                $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+              } catch (\Exception $e) {
+              }
+            }
+
+            $row[] = is_scalar($value) ? $value : json_encode($value);
+          }
+
+          fputcsv($handle, $row);
+        }
+      });
+
+      fclose($handle);
+    }, $filename, [
+      'Content-Type' => 'text/csv; charset=UTF-8',
+      'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
 }

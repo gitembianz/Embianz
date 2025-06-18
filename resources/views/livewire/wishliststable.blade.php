@@ -319,6 +319,14 @@
                         </svg>
                         <span>Add listview</span>
                     </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -382,12 +390,12 @@
                     @endphp
                     @foreach ($wishlists as $nr => $item)
                         <tr @if ($loop->last) id="last_record" @endif
-                            class="expandable-row @if ($this->isChecked($item->session_id)) active @endif">
+                            class="expandable-row @if ($this->isChecked($item->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
-                                    <input type="checkbox" value="{{ $item->session_id }}"
-                                        id="{{ $item->session_id }}" wire:model="checked">
-                                    <label for="{{ $item->session_id }}"></label>
+                                    <input type="checkbox" value="{{ $item->id }}"
+                                        id="{{ $item->id }}" wire:model="checked">
+                                    <label for="{{ $item->id }}"></label>
                                 </div>
                             </td>
                             @foreach ($selectedColumns as $index => $column)
