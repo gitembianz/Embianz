@@ -471,13 +471,30 @@
                         </svg>
                         <span>Generate Sitemap</span>
                     </button>
+                     <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
-
+    {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+        <button class="button button--fill button--primary" style="margin-top: 10px;">
+            You selected {{ count($checked) }} items.
+        </button>
+    @elseif($selectPage)
+        <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click="selectAll">
+            You selected {{ count($checked) }} items, select all?
+        </button>
+    @endif
     {{-- Table --}}
-    <div class="table">
+    <div class="table"  @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
         <table class="expandable-table">
             <thead>
                 <tr>
@@ -515,7 +532,7 @@
                     $i = 0;
                 @endphp
                 @foreach ($storesettings as $nr => $store)
-                    <tr @if ($loop->last) id="last_record" @endif class="expandable-row">
+                    <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($store->id)) active @endif">
                         <td style="border-left: none" data-title="Check">
                             <div class="checkbox--primary">
                                 <input type="checkbox" value="{{ $store->id }}" id="{{ $store->id }}"
