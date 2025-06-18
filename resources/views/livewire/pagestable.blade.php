@@ -226,7 +226,7 @@
     <h1 class="table--name">{{ __('Static pages') }} ({{ $pages->total() }})</h1>
 
     <nav class="nav--controls">
-      @if ($activelistview)
+        @if ($activelistview)
 
             <div class="dropdown dropdown--right">
                 {{-- Dropdown Button --}}
@@ -285,7 +285,7 @@
         {{-- Optional Dropdown --}}
         <div class="dropdown dropdown--right">
             {{-- Dropdown Button --}}
-            <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left>
+            <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
                 <svg>
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -327,7 +327,14 @@
                         </svg>
                         <span>Add page</span>
                     </a>
-
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -358,15 +365,15 @@
                         </div>
                     </th>
                     @foreach ($selectedColumns as $index => $column)
-                            <th @if ($index > 1) class="hidden" @endif>
-                                <button wire:click="sortBy('{{ $column }}')"
-                                    class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-                                    {{ str_replace('_id', '', $column) }}
-                                    <svg>
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </button>
-                            </th>
+                        <th @if ($index > 1) class="hidden" @endif>
+                            <button wire:click="sortBy('{{ $column }}')"
+                                class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                                {{ str_replace('_id', '', $column) }}
+                                <svg>
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </th>
                     @endforeach
                     <th style="border-left: none; border-right: none;">
                         <button class="button button--secondary button--sm" style="opacity: 0">

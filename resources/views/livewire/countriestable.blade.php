@@ -282,17 +282,41 @@
                         </svg>
                         <span>Update countries</span>
                     </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
+    {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+        <button class="button button--fill button--primary" style="margin-top: 10px;">
+            You selected {{ count($checked) }} items.
+        </button>
+    @elseif($selectPage)
+        <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click="selectAll">
+            You selected {{ count($checked) }} items, select all?
+        </button>
+    @endif
 
     {{-- Table --}}
-    <div class="table">
+    <div class="table"@if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
         <table class="expandable-table">
             <thead>
                 <tr>
+                    <th style="border-right: none; border-left: none;">
+                        <div class="checkbox--primary">
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
+                        </div>
+                    </th>
                     @foreach ($selectedColumns as $index => $column)
                         <th @if ($index >= 2) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
@@ -322,8 +346,16 @@
                 @endphp
                 @foreach ($countries as $index => $country)
                     <tr>
+                        <td style="border-left: none" data-title="Check">
+                            <div class="checkbox--primary">
+                                <input type="checkbox" value="{{ $country->id }}" id="{{ $country->id }}"
+                                    wire:model="checked">
+                                <label for="{{ $country->id }}"></label>
+                            </div>
+                        </td>
                         @foreach ($selectedColumns as $j => $column)
-                            <td @if ($j >= 2) class="hidden"@else wire:click="expandRow({{ $index }})" @endif
+                            <td class="expandable-row @if ($this->isChecked($country->id)) active @endif"
+                                @if ($j >= 2) class="hidden"@else wire:click="expandRow({{ $index }})" @endif
                                 @if ($j === 0) style="border-left: none" @endif>
                                 @if (
                                     $column === 'name' ||
@@ -464,9 +496,10 @@
                                 @endforeach
                             </div>
                         </td>
-                        @php
-                            $i++;
-                        @endphp
+                    </tr>
+                    @php
+                        $i++;
+                    @endphp
                 @endforeach
             </tbody>
         </table>
