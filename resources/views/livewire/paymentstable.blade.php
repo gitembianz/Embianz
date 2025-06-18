@@ -2,7 +2,7 @@
     {{-- X-Components --}}
     <x-alert />
 
-   {{-- Modal add new listview --}}
+    {{-- Modal add new listview --}}
     <aside>
         <div class="background background--center @if ($addlistview) active @endif"></div>
         <div class="aside aside--confirm @if ($addlistview) active @endif"
@@ -276,17 +276,41 @@
                         </svg>
                         <span>Add listview</span>
                     </button>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
+    {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+        <button class="button button--fill button--primary" style="margin-top: 10px;">
+            You selected {{ count($checked) }} items.
+        </button>
+    @elseif($selectPage)
+        <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click="selectAll">
+            You selected {{ count($checked) }} items, select all?
+        </button>
+    @endif
 
     {{-- Table --}}
     <div class="table" @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
         <table class="expandable-table">
             <thead>
                 <tr>
+                  <th style="border-right: none; border-left: none;">
+                        <div class="checkbox--primary">
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
+                        </div>
+                    </th>
                     @foreach ($selectedColumns as $index => $column)
                         <th @if ($index > count($selectedColumns) - 5) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
@@ -320,6 +344,13 @@
                     @foreach ($payments as $index => $item)
                         <tr @if ($loop->last) id="last_record" @endif
                             class="expandable-row @if ($this->isChecked($item->id)) active @endif">
+                            <td style="border-left: none" data-title="Check">
+                                <div class="checkbox--primary">
+                                    <input type="checkbox" value="{{ $item->id }}" id="{{ $item->id }}"
+                                        wire:model="checked">
+                                    <label for="{{ $item->id }}"></label>
+                                </div>
+                            </td>
                             @foreach ($selectedColumns as $inde => $column)
                                 <td @if ($inde > 1) class="hidden" @endif
                                     wire:click="expandRow({{ $index }})">
@@ -333,7 +364,8 @@
                                                 </div>
                                             @else
                                                 <div class="checkbox--primary disabled">
-                                                    <input type="checkbox" id="notactive{{ $index }}" disabled>
+                                                    <input type="checkbox" id="notactive{{ $index }}"
+                                                        disabled>
                                                     <label for="notactive{{ $index }}"></label>
                                                 </div>
                                             @endif
@@ -399,8 +431,8 @@
                                                         <bold>{{ $column }}:</bold>
                                                         @if ($item->active)
                                                             <div class="checkbox--primary disabled">
-                                                                <input type="checkbox" id="isactive{{ $nr }}"
-                                                                    disabled checked>
+                                                                <input type="checkbox"
+                                                                    id="isactive{{ $nr }}" disabled checked>
                                                                 <label for="isactive{{ $nr }}"></label>
                                                             </div>
                                                         @else

@@ -281,16 +281,39 @@
                         </svg>
                         <span>Add Currency</span>
                     </a>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
-
+ {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+        <button class="button button--fill button--primary" style="margin-top: 10px;">
+            You selected {{ count($checked) }} items.
+        </button>
+    @elseif($selectPage)
+        <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click="selectAll">
+            You selected {{ count($checked) }} items, select all?
+        </button>
+    @endif
     {{-- Table --}}
     <div class="table">
         <table class="expandable-table">
             <thead>
                 <tr>
+                  <th style="border-right: none; border-left: none;">
+                        <div class="checkbox--primary">
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
+                        </div>
+                    </th>
                     @foreach ($selectedColumns as $index => $column)
                         <th @if ($index > count($selectedColumns) - 5) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
@@ -326,6 +349,13 @@
                     @foreach ($currencies as $nr => $item)
                         <tr @if ($loop->last) id="last_record" @endif
                             class="expandable-row @if ($this->isChecked($item->id)) active @endif">
+                            <td style="border-left: none" data-title="Check">
+                                <div class="checkbox--primary">
+                                    <input type="checkbox" value="{{ $item->id }}" id="{{ $item->id }}"
+                                        wire:model="checked">
+                                    <label for="{{ $item->id }}"></label>
+                                </div>
+                            </td>
                             @foreach ($selectedColumns as $index => $column)
                                 <td @if ($index > count($selectedColumns) - 5) class="hidden" @endif
                                     data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">

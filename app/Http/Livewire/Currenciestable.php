@@ -677,7 +677,7 @@ class Currenciestable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->currenciesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->currencies->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function isChecked($id)
   {
@@ -754,7 +754,7 @@ class Currenciestable extends Component
         return in_array($col, $dbColumns);
       });
 
-      $query = $this->getCategoriesQueryProperty();
+      $query = $this->getQueryBuilder();
 
       $query->select($realColumns)->whereIn('id', $checked);
 
@@ -794,7 +794,8 @@ class Currenciestable extends Component
     if (!empty($this->search)) {
       $query->where(function ($q) {
         $q->where('id', 'like', '%' . $this->search . '%')
-          ->orWhere('user_agent', 'like', '%' . $this->search . '%');
+      ->orWhere('name', 'like', '%' . $this->search . '%')
+      ->orWhere('symbol', 'like', '%' . $this->search . '%');
       });
     }
 
