@@ -2,15 +2,16 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Listview;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
+use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
-use Livewire\WithPagination;
-use Carbon\Carbon;
 
 
 class Jobstable extends Component
@@ -805,4 +806,38 @@ public function deleteRecords()
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
+
+public function downloadErrors($id)
+{
+    $record = DB::table($this->tableName)->find($id);
+
+    if (!$record || !property_exists($record, 'error_file') || !$record->error_file) {
+        session()->flash('notification', [
+            'message' => 'No error file found for this record.',
+            'type' => 'error',
+            'title' => 'Download Failed',
+        ]);
+        return;
+    }
+
+    $path = $record->error_file;
+
+    if (!Storage::exists($path)) {
+        session()->flash('notification', [
+            'message' => 'The error file does not exist on the server.',
+            'type' => 'error',
+            'title' => 'File Missing',
+        ]);
+        return;
+    }
+
+    // Force file download via browser redirect
+    return response()->streamDownload(function () use ($path) {
+        echo Storage::get($path);
+    }, basename($path), [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="' . basename($path) . '"',
+    ]);
+}
+
 }
