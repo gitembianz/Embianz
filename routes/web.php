@@ -53,6 +53,7 @@
       route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
       route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
 
+      route::view('/jobs', 'admin.jobs')->name('jobs');
 
 
       // brands routes
