@@ -2,22 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Payment;
 use Livewire\Component;
-use Livewire\WithPagination;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Listview;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Livewire\WithPagination;
 use Carbon\Carbon;
 
 
-
-class Paymentstable extends Component
+class Jobstable extends Component
 {
   use WithPagination;
   public $loadAmount;
@@ -31,10 +27,12 @@ class Paymentstable extends Component
   public $columns;
   public $selectedColumns = [];
   public $editindex = null;
-  public $isactive = [];
   public $row = null;
-
+  public $single = false;
+  public $multiple = false;
   // listview variables
+  public $idbeingremoved = null;
+
   public $relation = false;
   public $editlistview = false;
   public $tableName;
@@ -63,64 +61,65 @@ class Paymentstable extends Component
     'value' => null,
   ];
 
-
   public function render()
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.paymentstable', [
-      'payments' => $this->payments,
+    return view('livewire.jobstable', [
+      'jobs' => $this->jobs,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
 
     ]);
   }
-
   public function mount($tableName)
   {
+    $this->tableName = session('last_table_name', 'default_table') ?? $tableName;
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
 
-    $this->tableName = $tableName;
-    $this->columns = Schema::getColumnListing($tableName);
-    sort($this->columns);
+    $this->loadTableData();
+  }
 
+
+  public function updatedTableName($value)
+  {
+    session(['last_table_name' => $value]);
+    $this->loadTableData();
+  }
+
+
+  public function loadTableData()
+  {
+    $this->columns = Schema::getColumnListing($this->tableName);
+    sort($this->columns);
 
     $listviews = $this->getListviewsProperty();
     $this->activelistview = $listviews->first();
 
     if (!$this->activelistview) {
       $defaultColumns = ['id', 'created_at', 'updated_at'];
-      $preferredColumn = 'name';
+      $idIndex = array_search('id', $this->columns);
+      $nextColumn = null;
 
-      if (in_array($preferredColumn, $this->columns)) {
-        $nextColumn = $preferredColumn;
-      } else {
-        $idIndex = array_search('id', $this->columns);
-        $nextColumn = null;
-
-        if ($idIndex !== false && isset($this->columns[$idIndex + 1])) {
-          $nextCandidate = $this->columns[$idIndex + 1];
-          if (!in_array($nextCandidate, $defaultColumns)) {
-            $nextColumn = $nextCandidate;
+      if ($idIndex !== false) {
+        for ($i = $idIndex + 1; $i < count($this->columns); $i++) {
+          if (!in_array($this->columns[$i], $defaultColumns)) {
+            $nextColumn = $this->columns[$i];
+            break;
           }
-        }
-
-        if (!$nextColumn) {
-          $nextColumn = collect($this->columns)
-            ->reject(fn($col) => in_array($col, $defaultColumns))
-            ->first();
         }
       }
 
-      $selectedColumns = array_filter([
-        'id',
-        $nextColumn,
-        'created_at',
-        'updated_at',
-      ]);
+      if (!$nextColumn) {
+        $nextColumn = collect($this->columns)
+          ->reject(fn($col) => in_array($col, $defaultColumns))
+          ->first();
+      }
+
+      $selectedColumns = array_filter(['id', $nextColumn]);
 
       Listview::create([
         'user_id' => Auth::id(),
@@ -163,14 +162,19 @@ class Paymentstable extends Component
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
 
-  public function getPaymentsProperty()
+  public function getJobsProperty()
   {
-    $query = Payment::search($this->search);
-    $query = $this->applyFilters($query);
-    return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')->paginate($this->loadAmount);
+    if (Schema::hasTable($this->tableName)) {
+      $query = DB::table($this->tableName)
+        ->where(function ($query) {
+          $query->where('id', 'like', '%' . $this->search . '%');
+        });
+      $query = $this->applyFilters($query);
+      return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')->paginate($this->loadAmount);
+    } else {
+      return collect();
+    }
   }
-
-
 
   // listview functions
   public function updatingAddlistview($value)
@@ -640,6 +644,50 @@ class Paymentstable extends Component
     $this->save_listview(true);
   }
   // default functions
+  public function deleteSingleRecord()
+{
+    $id = $this->idbeingremoved;
+
+    DB::table($this->tableName)->where('id', $id)->delete();
+
+    $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
+
+    session()->flash('notification', [
+        'message' => 'Record deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
+
+  public function confirmItemRemoval($id)
+  {
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
+  }
+public function deleteRecords()
+{
+    DB::table($this->tableName)->whereIn('id', $this->checked)->delete();
+
+    $this->checked = [];
+    $this->selectPage = false;
+    $this->multiple = false;
+
+    session()->flash('notification', [
+        'message' => 'Records deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
 
   public function loadMore()
   {
@@ -663,7 +711,7 @@ class Paymentstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->payments->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->jobs->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -679,92 +727,12 @@ class Paymentstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->payments->pluck('id')->map(fn($item) => (string) $item)->toArray();
-  }
-  public function deleteRecords()
-  {
-    $items = Payment::whereKey($this->checked)->get();
-
-    foreach ($items as $item) {
-      $del = Payment::find($item->id);
-      $del->delete();
-    }
-    $this->selectPage = false;
-    $this->checked = [];
-    session()->flash('notification', [
-      'message' => 'Records deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function deleteSingleRecord()
-  {
-    $item = Payment::findOrFail($this->removedid);
-    $item->delete();
-    $this->checked = array_diff($this->checked, [$this->removedid]);
-    session()->flash('notification', [
-      'message' => 'Record deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function confirmItemRemoval($id)
-  {
-    $this->removedid = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
-  public function confirmItemsRemovalmultiple()
-  {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->checked = $this->jobs->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
-  public function edit($index, $id)
-  {
-    $this->editindex = $index;
-    $this->row = $index;
-    $item = Payment::find($id);
-    $this->isactive = [
-      $index . '.active' => $item->active == 1 ? true : false,
-      $index . '.description' => $item->description
-
-    ];
-  }
-  public function cancel()
-  {
-    $this->editindex = null;
-    $this->isactive = [];
-  }
-  public function save($index, $id)
-  {
-    $new = $this->isactive[$index] ?? NULL;
-
-    if (!is_null($new)) {
-      $item = Payment::find($id);
-      if (array_key_exists('active', $new)) {
-
-        $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
-      }
-      if (array_key_exists('description', $new)) {
-
-        $item->description = $new['description'];
-      }
-      $item->save();
-      Cache::forget('global_payments');
-
-      session()->flash('notification', [
-        'message' => 'Record edited successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-    }
-
-    $this->isactive = [];
-    $this->editindex = null;
-  }
-  // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -830,7 +798,10 @@ class Paymentstable extends Component
   }
   public function getQueryBuilder()
   {
-    $query = Payment::search($this->search);
+    $query = DB::table($this->tableName)
+      ->where(function ($query) {
+        $query->where('id', 'like', '%' . $this->search . '%');
+      });
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
