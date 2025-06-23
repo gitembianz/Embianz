@@ -2,36 +2,38 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
+use App\Models\Job;
 use App\Models\Media;
+use App\Models\JobLog;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Listview;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
-use App\Models\Listview;
 use App\Models\ProductCost;
+use App\Models\CsvImportJob;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
 use App\Models\Related_Products;
+use App\Jobs\DynamicCsvImportJob;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Carbon\Carbon;
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
-
-
-
-use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Productstable extends Component
 {
@@ -1238,7 +1240,7 @@ class Productstable extends Component
       return;
     }
 
-    $filename = $this->tableName.'.csv';
+    $filename = $this->tableName . '.csv';
     $checked = $this->checked;
 
     return Response::streamDownload(function () use ($selectedColumns, $checked) {
@@ -1306,6 +1308,76 @@ class Productstable extends Component
     }, $filename, [
       'Content-Type' => 'text/csv; charset=UTF-8',
       'Content-Disposition' => "attachment; filename=\"$filename\"",
+    ]);
+  }
+
+  public function updatingcsvimportdata($value)
+  {
+    ini_set('max_execution_time', 300);
+    ini_set('memory_limit', '512M');
+
+    if (!$value->isValid() || $value->getClientOriginalExtension() !== 'csv') {
+      session()->flash('notification', [
+        'message' => 'Invalid CSV file.',
+        'type' => 'error',
+        'title' => 'Upload Failed'
+      ]);
+      return;
+    }
+
+    $filename = 'import_' . $this->tableName . uniqid() . '.csv';
+    $path = 'imports/' . $filename;
+
+    $csv = fopen($value->getRealPath(), 'r');
+    $header = fgetcsv($csv);
+
+    // Remove created_at and updated_at columns from header
+    $skip = ['created_at', 'updated_at'];
+    $keepIndexes = array_filter(array_keys($header), fn($i) => !in_array($header[$i], $skip));
+    $filteredHeader = array_intersect_key($header, array_flip($keepIndexes));
+
+    $rows = [];
+    while ($row = fgetcsv($csv)) {
+      $filteredRow = array_intersect_key($row, array_flip($keepIndexes));
+      $rows[] = $filteredRow;
+    }
+    fclose($csv);
+
+    // Save cleaned CSV
+    $fullPath = storage_path("app/{$path}");
+    if (!file_exists(dirname($fullPath))) {
+      mkdir(dirname($fullPath), 0755, true);
+    }
+    $csvOut = fopen($fullPath, 'w');
+    fputcsv($csvOut, $filteredHeader);
+    foreach ($rows as $row) {
+      fputcsv($csvOut, $row);
+    }
+    fclose($csvOut);
+
+
+    $job = CsvImportJob::create([
+      'queue' => 'default',
+      'name' => 'CSV Import for ' . $this->tableName,
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'meta' => [
+        'table_name' => $this->tableName,
+        'csv_path' => $path,
+      ]
+    ]);
+
+    DB::afterCommit(function () use ($job, $path) {
+      DynamicCsvImportJob::dispatch($this->tableName, $path, $job->id);
+    });
+
+
+    $this->importdata = false;
+
+    session()->flash('notification', [
+      'message' => 'CSV import has started in the background.',
+      'type' => 'success',
+      'title' => 'Import Queued'
     ]);
   }
 }
