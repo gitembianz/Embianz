@@ -222,7 +222,12 @@
     </aside>
 
     {{-- Navigation --}}
-    <h1 class="table--name">{{ __('Jobs') }} ({{ $jobs->total() }})</h1>
+    <h1 class="table--name">{{ __('Jobs') }} (@if ($jobs instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            {{ $jobs->total() }}
+        @else
+            0
+        @endif
+        )</h1>
     <nav class="nav--controls">
         @if ($activelistview)
 
@@ -435,14 +440,14 @@
                                     </button>
 
                                     @if (property_exists($item, 'error_file') && $item->error_file)
-                                    <button wire:click.prevent="downloadErrors('{{ $item->id }}')"
-                                        class="button button--secondary button--sm" title="Download errors">
-                                        <svg>
+                                        <button wire:click.prevent="downloadErrors('{{ $item->id }}')"
+                                            class="button button--secondary button--sm" title="Download errors">
+                                            <svg>
                                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                                 <polyline points="7 10 12 15 17 10" />
                                                 <line x1="12" y1="15" x2="12" y2="3" />
                                             </svg>
-                                    </button>
+                                        </button>
                                     @endif
                                 </div>
                             </td>

@@ -1331,7 +1331,6 @@ class Productstable extends Component
     $csv = fopen($value->getRealPath(), 'r');
     $header = fgetcsv($csv);
 
-    // Remove created_at and updated_at columns from header
     $skip = ['created_at', 'updated_at'];
     $keepIndexes = array_filter(array_keys($header), fn($i) => !in_array($header[$i], $skip));
     $filteredHeader = array_intersect_key($header, array_flip($keepIndexes));

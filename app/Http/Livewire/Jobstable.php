@@ -166,10 +166,7 @@ class Jobstable extends Component
   public function getJobsProperty()
   {
     if (Schema::hasTable($this->tableName)) {
-      $query = DB::table($this->tableName)
-        ->where(function ($query) {
-          $query->where('id', 'like', '%' . $this->search . '%');
-        });
+      $query = DB::table($this->tableName);
       $query = $this->applyFilters($query);
       return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')->paginate($this->loadAmount);
     } else {
@@ -646,7 +643,7 @@ class Jobstable extends Component
   }
   // default functions
   public function deleteSingleRecord()
-{
+  {
     $id = $this->idbeingremoved;
 
     DB::table($this->tableName)->where('id', $id)->delete();
@@ -655,11 +652,11 @@ class Jobstable extends Component
     $this->single = false;
 
     session()->flash('notification', [
-        'message' => 'Record deleted successfully!',
-        'type' => 'success',
-        'title' => 'Success'
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
     ]);
-}
+  }
 
   public function confirmItemRemoval($id)
   {
@@ -675,8 +672,8 @@ class Jobstable extends Component
     $this->multiple = false;
     $this->single = false;
   }
-public function deleteRecords()
-{
+  public function deleteRecords()
+  {
     DB::table($this->tableName)->whereIn('id', $this->checked)->delete();
 
     $this->checked = [];
@@ -684,11 +681,11 @@ public function deleteRecords()
     $this->multiple = false;
 
     session()->flash('notification', [
-        'message' => 'Records deleted successfully!',
-        'type' => 'success',
-        'title' => 'Success'
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
     ]);
-}
+  }
 
   public function loadMore()
   {
@@ -807,37 +804,36 @@ public function deleteRecords()
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
 
-public function downloadErrors($id)
-{
+  public function downloadErrors($id)
+  {
     $record = DB::table($this->tableName)->find($id);
 
     if (!$record || !property_exists($record, 'error_file') || !$record->error_file) {
-        session()->flash('notification', [
-            'message' => 'No error file found for this record.',
-            'type' => 'error',
-            'title' => 'Download Failed',
-        ]);
-        return;
+      session()->flash('notification', [
+        'message' => 'No error file found for this record.',
+        'type' => 'error',
+        'title' => 'Download Failed',
+      ]);
+      return;
     }
 
     $path = $record->error_file;
 
     if (!Storage::exists($path)) {
-        session()->flash('notification', [
-            'message' => 'The error file does not exist on the server.',
-            'type' => 'error',
-            'title' => 'File Missing',
-        ]);
-        return;
+      session()->flash('notification', [
+        'message' => 'The error file does not exist on the server.',
+        'type' => 'error',
+        'title' => 'File Missing',
+      ]);
+      return;
     }
 
     // Force file download via browser redirect
     return response()->streamDownload(function () use ($path) {
-        echo Storage::get($path);
+      echo Storage::get($path);
     }, basename($path), [
-        'Content-Type' => 'text/csv',
-        'Content-Disposition' => 'attachment; filename="' . basename($path) . '"',
+      'Content-Type' => 'text/csv',
+      'Content-Disposition' => 'attachment; filename="' . basename($path) . '"',
     ]);
-}
-
+  }
 }
