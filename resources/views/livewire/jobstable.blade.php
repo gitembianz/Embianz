@@ -222,7 +222,12 @@
     </aside>
 
     {{-- Navigation --}}
-    <h1 class="table--name">{{ __('Jobs') }} ({{ $jobs->total() }})</h1>
+    <h1 class="table--name">{{ __('Jobs') }} (@if ($jobs instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            {{ $jobs->total() }}
+        @else
+            0
+        @endif
+        )</h1>
     <nav class="nav--controls">
         @if ($activelistview)
 
@@ -422,16 +427,31 @@
                                 </td>
                             @endforeach
                             <td style="border-right: none">
-                                <button wire:click.prevent="confirmItemRemoval('{{ $item->id }}')"
-                                    class="button button--secondary button--sm">
-                                    <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
-                                    </svg>
-                                </button>
+                                <div style="display:flex;">
+
+                                    <button wire:click.prevent="confirmItemRemoval('{{ $item->id }}')"
+                                        class="button button--secondary button--sm" title="Delete">
+                                        <svg>
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
+
+                                    @if (property_exists($item, 'error_file') && $item->error_file)
+                                        <button wire:click.prevent="downloadErrors('{{ $item->id }}')"
+                                            class="button button--secondary button--sm" title="Download errors">
+                                            <svg>
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="7 10 12 15 17 10" />
+                                                <line x1="12" y1="15" x2="12" y2="3" />
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </div>
                             </td>
+
                         </tr>
                         <tr class="details-row  @if ($row === $i) active @endif">
                             <td colspan="17">
