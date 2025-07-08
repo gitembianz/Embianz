@@ -33,7 +33,7 @@ class DynamicCsvImportJob implements ShouldQueue
     try {
       $jobRecord = CsvImportJob::find($this->jobId);
       if (!$jobRecord) {
-        Log::error(" Job ID {$this->jobId} not found.");
+        Log::error("Job ID {$this->jobId} not found.");
         return;
       }
 
@@ -113,7 +113,7 @@ class DynamicCsvImportJob implements ShouldQueue
         $invalid = $this->validateRow($data, $columnInfo);
 
         if (!empty($invalid)) {
-          $errors[] = array_merge($data, ['__error' => implode('; ', $invalid)]);
+          $errors[] = array_merge(['__row' => $totalRows], $data, ['__error' => implode('; ', $invalid)]);
           continue;
         }
 
@@ -124,14 +124,13 @@ class DynamicCsvImportJob implements ShouldQueue
 
       if (!empty($errors)) {
         $errorFile = 'imports/review_errors_' . now()->timestamp . '.csv';
-    $this->exportErrorCsv($errors, $errorFile, $jobRecord);
+        $this->exportErrorCsv($errors, $errorFile, $jobRecord);
 
-    $jobRecord->update([
-      'status' => 'finished',
-      'finished_at' => now(),
-      'errors' => "Completed with errors. {$totalRows} rows processed, " . count($errors) . " failed.",
-      // 'error_file' => $errorFile, // no need, already updated inside exportErrorCsv
-    ]);
+        $jobRecord->update([
+          'status' => 'finished',
+          'finished_at' => now(),
+          'errors' => "Completed with errors. {$totalRows} rows processed, " . count($errors) . " failed.",
+        ]);
       } else {
         $jobRecord->update([
           'status' => 'finished',
@@ -167,10 +166,16 @@ protected function validateRow(array &$data, $columnInfo): array
 
         if (!isset($columnInfo[$col])) continue;
 
+        $value = trim((string) $value);
         $type = strtolower($columnInfo[$col]->DATA_TYPE);
-        $value = trim($value);
+        $isRequired = $columnInfo[$col]->IS_NULLABLE === 'NO' && $columnInfo[$col]->COLUMN_DEFAULT === null;
 
-        if ($value === '') continue;
+        if (!$value) {
+            if ($isRequired) {
+                $errors[] = "Empty value for required field `$col`.";
+            }
+            continue;
+        }
 
         $valid = match ($type) {
             'int', 'bigint', 'tinyint' => filter_var($value, FILTER_VALIDATE_INT) !== false,
@@ -202,40 +207,40 @@ protected function validateRow(array &$data, $columnInfo): array
 }
 
 
-protected function insertOrUpdate(array $data): void
-{
+
+  protected function insertOrUpdate(array $data): void
+  {
     unset($data['created_at'], $data['updated_at']);
 
     if (!empty($data['id']) && DB::table($this->table)->where('id', $data['id'])->exists()) {
-        DB::table($this->table)->where('id', $data['id'])->update($data);
+      DB::table($this->table)->where('id', $data['id'])->update($data);
     } else {
-        unset($data['id']);
-        DB::table($this->table)->insert($data);
+      unset($data['id']);
+      DB::table($this->table)->insert($data);
     }
-}
+  }
 
-protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
-{
+  protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
+  {
     $fullPath = storage_path('app/' . $path);
 
     if (!file_exists(dirname($fullPath))) {
-        mkdir(dirname($fullPath), 0755, true);
+      mkdir(dirname($fullPath), 0755, true);
     }
 
     $handle = fopen($fullPath, 'w');
 
     if (!empty($rows)) {
-        fputcsv($handle, array_keys($rows[0]));
-        foreach ($rows as $row) {
-            fputcsv($handle, $row);
-        }
+      fputcsv($handle, array_keys($rows[0]));
+      foreach ($rows as $row) {
+        fputcsv($handle, $row);
+      }
     }
 
     fclose($handle);
 
     $jobRecord->update([
-        'error_file' => $path,
+      'error_file' => $path,
     ]);
-}
-
+  }
 }
