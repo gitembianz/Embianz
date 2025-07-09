@@ -154,79 +154,79 @@ class DynamicCsvImportJob implements ShouldQueue
     }
   }
 
-protected function validateRow(array &$data, $columnInfo): array
-{
+  protected function validateRow(array &$data, $columnInfo): array
+  {
     $errors = [];
 
     foreach ($data as $col => &$value) {
-        if (in_array($col, ['created_at', 'updated_at'])) {
-            unset($data[$col]);
-            continue;
+      if (in_array($col, ['created_at', 'updated_at'])) {
+        unset($data[$col]);
+        continue;
+      }
+
+      if (!isset($columnInfo[$col])) continue;
+
+      $value = trim((string) $value);
+      $type = strtolower($columnInfo[$col]->DATA_TYPE);
+      $isRequired = $columnInfo[$col]->IS_NULLABLE === 'NO' && $columnInfo[$col]->COLUMN_DEFAULT === null;
+
+      if ($value === '' || $value === null) {
+        if ($isRequired) {
+          $errors[] = "Empty value for required field `$col`.";
+        }
+        continue;
+      }
+
+      $valid = match ($type) {
+        'int', 'bigint', 'tinyint' => filter_var($value, FILTER_VALIDATE_INT) !== false,
+        'decimal', 'float', 'double' => filter_var($value, FILTER_VALIDATE_FLOAT) !== false,
+        'varchar', 'text', 'char' => is_string($value),
+        'boolean', 'bool' => in_array(strtolower($value), ['1', '0', 'true', 'false', 'yes', 'no'], true),
+        'date', 'datetime' => strtotime($value) !== false,
+        default => true
+      };
+
+      if (!$valid) {
+        $errors[] = "Invalid value for `$col` as `$type`: $value";
+      } else {
+        if (in_array($type, ['boolean', 'bool'])) {
+          $value = in_array(strtolower($value), ['1', 'true', 'yes']) ? 1 : 0;
         }
 
-        if (!isset($columnInfo[$col])) continue;
-
-        $value = trim((string) $value);
-        $type = strtolower($columnInfo[$col]->DATA_TYPE);
-        $isRequired = $columnInfo[$col]->IS_NULLABLE === 'NO' && $columnInfo[$col]->COLUMN_DEFAULT === null;
-
-        if (!$value) {
-            if ($isRequired) {
-                $errors[] = "Empty value for required field `$col`.";
-            }
-            continue;
+        if (in_array($type, ['date', 'datetime'])) {
+          try {
+            $value = Carbon::parse($value)->toDateTimeString();
+          } catch (\Exception $e) {
+            $errors[] = "Invalid date format for `$col`: $value";
+          }
         }
-
-        $valid = match ($type) {
-            'int', 'bigint', 'tinyint' => filter_var($value, FILTER_VALIDATE_INT) !== false,
-            'decimal', 'float', 'double' => filter_var($value, FILTER_VALIDATE_FLOAT) !== false,
-            'varchar', 'text', 'char' => is_string($value),
-            'boolean', 'bool' => in_array(strtolower($value), ['1', '0', 'true', 'false', 'yes', 'no'], true),
-            'date', 'datetime' => strtotime($value) !== false,
-            default => true
-        };
-
-        if (!$valid) {
-            $errors[] = "Invalid value for `$col` as `$type`: $value";
-        } else {
-            if (in_array($type, ['boolean', 'bool'])) {
-                $value = in_array(strtolower($value), ['1', 'true', 'yes']) ? 1 : 0;
-            }
-
-            if (in_array($type, ['date', 'datetime'])) {
-                try {
-                    $value = Carbon::parse($value)->toDateTimeString();
-                } catch (\Exception $e) {
-                    $errors[] = "Invalid date format for `$col`: $value";
-                }
-            }
-        }
+      }
     }
 
     return $errors;
-}
+  }
 
 
 
   protected function insertOrUpdate(array $data): void
-{
+  {
     unset($data['created_at'], $data['updated_at']);
 
     try {
-        if (!empty($data['id']) && DB::table($this->table)->where('id', $data['id'])->exists()) {
-            DB::table($this->table)->where('id', $data['id'])->update($data);
-        } else {
-            unset($data['id']);
-            DB::table($this->table)->insert($data);
-        }
+      if (!empty($data['id']) && DB::table($this->table)->where('id', $data['id'])->exists()) {
+        DB::table($this->table)->where('id', $data['id'])->update($data);
+      } else {
+        unset($data['id']);
+        DB::table($this->table)->insert($data);
+      }
     } catch (\Throwable $e) {
-        Log::error("Insert/update failed on table `{$this->table}` for data: " . json_encode($data), [
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString(),
-        ]);
-        throw $e;
+      Log::error("Insert/update failed on table `{$this->table}` for data: " . json_encode($data), [
+        'message' => $e->getMessage(),
+        'trace' => $e->getTraceAsString(),
+      ]);
+      throw $e;
     }
-}
+  }
 
 
   protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
