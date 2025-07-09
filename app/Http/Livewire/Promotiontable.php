@@ -24,7 +24,7 @@ use Livewire\WithFileUploads;
 class Promotiontable extends Component
 {
   use WithFileUploads;
-   // importdata
+  // importdata
   public $importdata = false;
   public $csvimportdata;
 
@@ -856,7 +856,7 @@ class Promotiontable extends Component
       'title' => 'Success'
     ]);
   }
-   // export-import data
+  // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -920,7 +920,7 @@ class Promotiontable extends Component
       'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
-    public function updatingcsvimportdata($value)
+  public function updatingcsvimportdata($value)
   {
     ini_set('max_execution_time', 0);
     ini_set('memory_limit', '1024M');
