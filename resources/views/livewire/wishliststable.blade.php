@@ -221,7 +221,31 @@
         </div>
     </aside>
 
+    {{-- Import Data --}}
+    <aside>
+        <div class="background background--center @if ($importdata == true) active @endif"></div>
+        <div class="aside aside--confirm @if ($importdata == true) active @endif">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
 
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    Select CSV file
+                </span>
+                <input style="display: none;" id="CSVImport" wire:model="csvimportdata" type="file"
+                    accept="csv/*">
+                <label class="button button--primary button--long" type="button" for="CSVImport">
+                    <span>
+                        Select
+                    </span>
+                </label>
+                <button class="button button--danger button--long" wire:click.prevent="$set('importdata', false)">
+                    <span>
+                        Cancel
+                    </span>
+                </button>
+            </div>
+        </div>
+    </aside>
 
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Wishlists') }} ({{ $wishlists->total() }})</h1>
@@ -327,6 +351,15 @@
                         </svg>
                         <span>Export data</span>
                     </button>
+                    <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('importdata', true)">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Import data</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -393,8 +426,8 @@
                             class="expandable-row @if ($this->isChecked($item->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
-                                    <input type="checkbox" value="{{ $item->id }}"
-                                        id="{{ $item->id }}" wire:model="checked">
+                                    <input type="checkbox" value="{{ $item->id }}" id="{{ $item->id }}"
+                                        wire:model="checked">
                                     <label for="{{ $item->id }}"></label>
                                 </div>
                             </td>
