@@ -117,7 +117,7 @@ class DynamicCsvImportJob implements ShouldQueue
           continue;
         }
 
-        $this->insertOrUpdate($data);
+        $insert = $this->insertOrUpdate($data);
       }
 
       fclose($file);
@@ -209,16 +209,25 @@ protected function validateRow(array &$data, $columnInfo): array
 
 
   protected function insertOrUpdate(array $data): void
-  {
+{
     unset($data['created_at'], $data['updated_at']);
 
-    if (!empty($data['id']) && DB::table($this->table)->where('id', $data['id'])->exists()) {
-      DB::table($this->table)->where('id', $data['id'])->update($data);
-    } else {
-      unset($data['id']);
-      DB::table($this->table)->insert($data);
+    try {
+        if (!empty($data['id']) && DB::table($this->table)->where('id', $data['id'])->exists()) {
+            DB::table($this->table)->where('id', $data['id'])->update($data);
+        } else {
+            unset($data['id']);
+            DB::table($this->table)->insert($data);
+        }
+    } catch (\Throwable $e) {
+        Log::error("Insert/update failed on table `{$this->table}` for data: " . json_encode($data), [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+        throw $e;
     }
-  }
+}
+
 
   protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
   {

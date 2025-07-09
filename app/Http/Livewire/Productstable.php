@@ -12,16 +12,18 @@ use App\Models\Listview;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\ProductCost;
-use App\Models\CsvImportJob;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
 use App\Models\Related_Products;
-use App\Jobs\DynamicCsvImportJob;
 
+use App\Jobs\DynamicCsvImportJob;
 use Illuminate\Support\Facades\DB;
+use App\Models\CsvImportJob;
+use Livewire\WithFileUploads;
+
+
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +35,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Productstable extends Component
 {
@@ -86,6 +87,7 @@ class Productstable extends Component
     'csvFile' => 'required|mimes:csv,txt',
     'csvimportdata' => 'required|mimes:csv,txt',
   ];
+
   // importdata
   public $importdata = false;
   public $csvimportdata;
@@ -1313,8 +1315,8 @@ class Productstable extends Component
 
   public function updatingcsvimportdata($value)
   {
-    ini_set('max_execution_time', 300);
-    ini_set('memory_limit', '512M');
+    ini_set('max_execution_time', 0);
+    ini_set('memory_limit', '1024M');
 
     if (!$value->isValid() || $value->getClientOriginalExtension() !== 'csv') {
       session()->flash('notification', [
@@ -1325,35 +1327,46 @@ class Productstable extends Component
       return;
     }
 
-    $filename = 'import_' . $this->tableName . uniqid() . '.csv';
-    $path = 'imports/' . $filename;
+    $filenameBase = 'import_' . $this->tableName . '_' . uniqid();
+    $chunkSize = app()->bound('global_import_chunkSize')
+      ? app('global_import_chunkSize')
+      : 500;
+
+    $chunkDir = storage_path('app/import_chunks/' . $filenameBase);
+
+    if (!file_exists($chunkDir)) {
+      mkdir($chunkDir, 0755, true);
+    }
 
     $csv = fopen($value->getRealPath(), 'r');
     $header = fgetcsv($csv);
-
     $skip = ['created_at', 'updated_at'];
     $keepIndexes = array_filter(array_keys($header), fn($i) => !in_array($header[$i], $skip));
     $filteredHeader = array_intersect_key($header, array_flip($keepIndexes));
 
-    $rows = [];
+    $chunk = [];
+    $chunkIndex = 0;
+    $rowCount = 0;
+
     while ($row = fgetcsv($csv)) {
       $filteredRow = array_intersect_key($row, array_flip($keepIndexes));
-      $rows[] = $filteredRow;
+      $chunk[] = $filteredRow;
+      $rowCount++;
+
+      if ($rowCount % $chunkSize === 0) {
+        $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
+        $this->writeChunk($chunkFile, $filteredHeader, $chunk);
+        $chunkIndex++;
+        $chunk = [];
+      }
     }
+
+    if (!empty($chunk)) {
+      $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
+      $this->writeChunk($chunkFile, $filteredHeader, $chunk);
+    }
+
     fclose($csv);
-
-    // Save cleaned CSV
-    $fullPath = storage_path("app/{$path}");
-    if (!file_exists(dirname($fullPath))) {
-      mkdir(dirname($fullPath), 0755, true);
-    }
-    $csvOut = fopen($fullPath, 'w');
-    fputcsv($csvOut, $filteredHeader);
-    foreach ($rows as $row) {
-      fputcsv($csvOut, $row);
-    }
-    fclose($csvOut);
-
 
     $job = CsvImportJob::create([
       'queue' => 'default',
@@ -1362,21 +1375,34 @@ class Productstable extends Component
       'status' => 'pending',
       'meta' => [
         'table_name' => $this->tableName,
-        'csv_path' => $path,
+        'chunk_count' => $chunkIndex + 1,
+        'base_path' => 'import_chunks/' . $filenameBase,
       ]
     ]);
 
-    DB::afterCommit(function () use ($job, $path) {
-      DynamicCsvImportJob::dispatch($this->tableName, $path, $job->id);
+    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase) {
+      for ($i = 0; $i <= $chunkIndex; $i++) {
+        $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
+        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id);
+      }
     });
-
 
     $this->importdata = false;
 
     session()->flash('notification', [
-      'message' => 'CSV import has started in the background.',
+      'message' => 'Large CSV import started in background with multiple jobs.',
       'type' => 'success',
       'title' => 'Import Queued'
     ]);
+  }
+
+  protected function writeChunk(string $path, array $header, array $rows): void
+  {
+    $handle = fopen($path, 'w');
+    fputcsv($handle, $header);
+    foreach ($rows as $row) {
+      fputcsv($handle, $row);
+    }
+    fclose($handle);
   }
 }
