@@ -229,27 +229,30 @@ class DynamicCsvImportJob implements ShouldQueue
   }
 
 
-  protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
-  {
+protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
+{
     $fullPath = storage_path('app/' . $path);
 
     if (!file_exists(dirname($fullPath))) {
-      mkdir(dirname($fullPath), 0755, true);
+        mkdir(dirname($fullPath), 0755, true);
     }
 
     $handle = fopen($fullPath, 'w');
 
+    fwrite($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
     if (!empty($rows)) {
-      fputcsv($handle, array_keys($rows[0]));
-      foreach ($rows as $row) {
-        fputcsv($handle, $row);
-      }
+        fputcsv($handle, array_keys($rows[0]));
+        foreach ($rows as $row) {
+            fputcsv($handle, $row);
+        }
     }
 
     fclose($handle);
 
     $jobRecord->update([
-      'error_file' => $path,
+        'error_file' => $path,
     ]);
-  }
+}
+
 }
