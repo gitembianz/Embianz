@@ -38,7 +38,7 @@ class StoreOrder extends Component
   public $new_order;
   public $modification = false;
   public $country;
-  public $countries;
+  public array $countries = [];
   public $Counties = [];
   public $cities = [];
 
@@ -137,166 +137,26 @@ class StoreOrder extends Component
     'saveFormToSession' => 'updateFormSession',
   ];
 
-  // Reset every county model on change country
-  public function updatedIndividualBillingCountry()
-  {
-    $this->individual_billing_county = null;
-  }
-  public function updatedIndividualShippingCountry()
-  {
-    $this->individual_billing_county = null;
-  }
-  public function updatedJuridicBillingCountry()
-  {
-    $this->individual_billing_county = null;
-  }
-  public function updatedJuridicShippingCountry()
-  {
-    $this->individual_billing_county = null;
-  }
-
-  // Reset every city model on change county
-  public function updatedIndividualBillingCounty()
-  {
-    $this->individual_billing_city = null;
-  }
-  public function updatedIndividualShippingCounty()
-  {
-    $this->individual_billing_city = null;
-  }
-  public function updatedJuridicBillingCounty()
-  {
-    $this->individual_billing_city = null;
-  }
-  public function updatedJuridicShippingCounty()
-  {
-    $this->individual_billing_city = null;
-  }
-
-
-  // Update counties when the country is changed
   public function updated($propertyName)
   {
-    if (in_array($propertyName, ['icountylist', 'individual_billing_county'])) {
-      $this->Counties = $this->getCounties($this->individual_billing_county, $this->individual_billing_country) ?? null;
-    }
-    if (in_array($propertyName, ['iscountylist', 'individual_shipping_county'])) {
-      $this->Counties = $this->getCounties($this->individual_shipping_county, $this->individual_shipping_country) ?? null;
-    }
-    if (in_array($propertyName, ['jcountylist', 'juridic_billing_county'])) {
-      $this->Counties = $this->getCounties($this->juridic_billing_county, $this->juridic_billing_country) ?? null;
-    }
-    if (in_array($propertyName, ['jscountylist', 'juridic_shipping_county'])) {
-      $this->Counties = $this->getCounties($this->juridic_shipping_county, $this->juridic_shipping_country) ?? null;
-    }
-    if (in_array($propertyName, ['icitylist', 'individual_billing_city'])) {
-      $this->cities = $this->getCities($this->individual_billing_country, $this->individual_billing_county, $this->individual_billing_city) ?? null;
-    }
-    if (in_array($propertyName, ['iscitylist', 'individual_shipping_city'])) {
-      $this->cities = $this->getCities($this->individual_shipping_country, $this->individual_shipping_county, $this->individual_shipping_city) ?? null;
-    }
-    if (in_array($propertyName, ['jcitylist', 'juridic_billing_city'])) {
-      $this->cities = $this->getCities($this->juridic_billing_country, $this->juridic_billing_county, $this->juridic_billing_city) ?? null;
-    }
-    if (in_array($propertyName, ['jscitylist', 'juridic_shipping_city'])) {
-      $this->cities = $this->getCities($this->juridic_shipping_country, $this->juridic_shipping_county, $this->juridic_shipping_city) ?? null;
+    $resetMap = [
+      'individual_billing_country' => 'individual_billing_county',
+      'individual_shipping_country' => 'individual_shipping_county',
+      'juridic_billing_country' => 'juridic_billing_county',
+      'juridic_shipping_country' => 'juridic_shipping_county',
+      'individual_billing_county' => 'individual_billing_city',
+      'individual_shipping_county' => 'individual_shipping_city',
+      'juridic_billing_county' => 'juridic_billing_city',
+      'juridic_shipping_county' => 'juridic_shipping_city',
+    ];
+
+    if (isset($resetMap[$propertyName])) {
+      $this->{$resetMap[$propertyName]} = null;
     }
   }
 
 
-  public function getCounties($model, $country)
-  {
-    $activeCountries = collect($this->countries);
-    $selectedCountry = $activeCountries->firstWhere('name', $country);
 
-    if (!$selectedCountry) {
-      return null;
-    }
-
-    if (empty($model)) {
-      return $selectedCountry['counties'];
-    }
-
-    $counties = collect($selectedCountry['counties'])->filter(function ($county) use ($model) {
-      return Str::contains(Str::lower($county['name']), Str::lower($model));
-    })->toArray();
-
-    return $counties;
-  }
-
-  public function getCities($countryName, $countyName, $model = null)
-  {
-    $activeCountries = collect($this->countries);
-    $selectedCountry = $activeCountries->firstWhere('name', $countryName);
-
-    if (!$selectedCountry) {
-      return null;
-    }
-
-    $selectedCounty = collect($selectedCountry['counties'])->firstWhere('name', $countyName);
-
-    if (!$selectedCounty) {
-      return null;
-    }
-
-    if (empty($model)) {
-      return $selectedCounty['cities'];
-    }
-
-    $cities = collect($selectedCounty['cities'])->filter(function ($city) use ($model) {
-      return Str::contains(Str::lower($city['name']), Str::lower($model));
-    })->toArray();
-
-    return $cities;
-  }
-
-
-  public function selectBillingCounty($countyName)
-  {
-    $this->individual_billing_county = $countyName;
-    $this->icountylist = false;
-  }
-
-  public function selectJBillingCounty($countyName)
-  {
-    $this->juridic_billing_county = $countyName;
-    $this->jcountylist = false;
-  }
-
-  public function selectShippingCounty($countyName)
-  {
-    $this->individual_shipping_county = $countyName;
-    $this->iscountylist = false;
-  }
-
-  public function selectJShippingCounty($countyName)
-  {
-    $this->juridic_shipping_county = $countyName;
-    $this->jscountylist = false;
-  }
-  public function selectBillingCity($cityName)
-  {
-    $this->individual_billing_city = $cityName;
-    $this->icitylist = false;
-  }
-
-  public function selectJBillingCity($cityName)
-  {
-    $this->juridic_billing_city = $cityName;
-    $this->jcitylist = false;
-  }
-
-  public function selectShippingCity($cityName)
-  {
-    $this->individual_shipping_city = $cityName;
-    $this->iscitylist = false;
-  }
-
-  public function selectJShippingCity($cityName)
-  {
-    $this->juridic_shipping_city = $cityName;
-    $this->jscitylist = false;
-  }
 
   public function getPromotionsProperty()
   {

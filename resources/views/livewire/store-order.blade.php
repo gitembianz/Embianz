@@ -380,50 +380,93 @@
                             @endif
 
                             <!-----------------------   county individual billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active @error('individual_b_county') error @enderror"
-                                id="individualBillingCountyParent">
-                                <input type="text" wire:model="individual_billing_county"
-                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="county" required id="individualBillingCounty"
-                                    wire:focus="$set('icountylist', true)" wire:blur="$set('icountylist', false)">
-                                <span>
-                                    @error('individual_b_county')
-                                        {{ $message }}
-                                    @enderror
-                                </span>
+                            <div class="checkout__item checkout__item--required searchable active"
+                                id="individualBillingCountyParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('individual_billing_country'),
+                                    county: @entangle('individual_billing_county'),
+                                    city: @entangle('individual_billing_city'),
+                                    open: false,
+
+                                    counties() {
+                                        const selected = this.countries.find(c =>
+                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                        );
+                                        return selected?.counties || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.county || '').toLowerCase();
+                                        return this.counties().filter(c =>
+                                            c.name.toLowerCase().includes(searchTerm)
+                                        );
+                                    },
+
+                                    select(name) {
+                                        this.county = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore.self>
+                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
+                                    placeholder="County" class="input" autocomplete="off"
+                                    aria-label="County selection">
+
+                                <span></span>
                                 <label for="individualBillingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
                                     @endif
                                 </label>
 
-                                @if ($icountylist && !empty($Counties))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($Counties as $county)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectBillingCounty('{{ addslashes($county['name']) }}')">
-                                                    {{ $county['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
+                                <div x-show="open" x-trap="open" class="content__searchable" style="display: none;">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
+                                            <button class="item__searchable">No record found</button>
+                                        </template>
                                     </div>
-                                @elseif ($icountylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
 
                             <!-----------------------   city individual billing   ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="individualBillingCityParent">
-                                <input type="text" wire:model="individual_billing_city"
-                                    placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="city" required id="individualBillingCity"
-                                    wire:focus="$set('icitylist', true)" wire:blur="$set('icitylist', false)">
+                                id="individualBillingCityParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('individual_billing_country'),
+                                    county: @entangle('individual_billing_county'),
+                                    city: @entangle('individual_billing_city'),
+                                    open: false,
+
+                                    cities() {
+                                        const selectedCountry = this.countries.find(
+                                            c => c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                        );
+                                        const selectedCounty = selectedCountry?.counties?.find(
+                                            cc => cc.name.toLowerCase() === (this.county || '').toLowerCase()
+                                        );
+                                        return selectedCounty?.cities || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.city || '').toLowerCase();
+                                        return this.cities().filter(c =>
+                                            c.name.toLowerCase().includes(searchTerm)
+                                        );
+                                    },
+
+                                    select(name) {
+                                        this.city = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore.self>
+                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
+                                    placeholder="City" class="input" autocomplete="off" aria-label="City selection">
+
                                 <span></span>
                                 <label for="individualBillingCity">
                                     @if (app()->has('label_order_city'))
@@ -431,26 +474,19 @@
                                     @endif
                                 </label>
 
-                                @if ($icitylist && !empty($cities))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($cities as $city)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectBillingCity('{{ addslashes($city['name']) }}')">
-                                                    {{ $city['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
+                                <div x-show="open" x-trap="open" class="content__searchable"
+                                    style="display: none;">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
+                                            <button class="item__searchable">No record found</button>
+                                        </template>
                                     </div>
-                                @elseif ($icitylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
-
 
                             <!-----------------------   address1 individual billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -592,11 +628,40 @@
 
                             <!-----------------------   county individual shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active @error('individual_s_county') error @enderror"
-                                id="individualShippingCountyParent">
-                                <input type="text" wire:model="individual_shipping_county"
+                                id="individualShippingCountyParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('individual_shipping_country'),
+                                    county: @entangle('individual_shipping_county'),
+                                    city: @entangle('individual_shipping_city'),
+                                    open: false,
+
+                                    counties() {
+                                        const selected = this.countries.find(c =>
+                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                        );
+                                        return selected?.counties || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.county || '').toLowerCase();
+                                        return this.counties().filter(c =>
+                                            c.name.toLowerCase().includes(searchTerm)
+                                        );
+                                    },
+
+                                    select(name) {
+                                        this.county = name;
+                                        this.open = false;
+                                        // Optional: if you want to call Livewire method explicitly:
+                                        // $wire.selectShippingCounty(name);
+                                    }
+                                }"
+                                @click.away="open = false" wire:ignore.self>
+                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="county" required id="individualShippingCounty"
-                                    wire:focus="$set('iscountylist', true)" wire:blur="$set('iscountylist', false)">
+                                    class="input" autocomplete="off" id="individualShippingCounty"
+                                    aria-label="Shipping County" required>
+
                                 <span>
                                     @error('individual_s_county')
                                         {{ $message }}
@@ -608,60 +673,80 @@
                                     @endif
                                 </label>
 
-                                @if ($iscountylist && !empty($Counties))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($Counties as $county)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectShippingCounty('{{ addslashes($county['name']) }}')">
-                                                    {{ $county['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
+                                <div x-show="open" x-trap="open" class="content__searchable"
+                                    style="display: none;">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
+                                            <button class="item__searchable">No record found</button>
+                                        </template>
                                     </div>
-                                @elseif ($iscountylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
+
 
                             <!-----------------------   city individual shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="individualShippingCityParent">
-                                <input type="text" wire:model="individual_shipping_city"
+                                id="individualShippingCityParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('individual_shipping_country'),
+                                    county: @entangle('individual_shipping_county'),
+                                    city: @entangle('individual_shipping_city'),
+                                    open: false,
+
+                                    cities() {
+                                        const selectedCountry = this.countries.find(c =>
+                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                        );
+                                        const selectedCounty = selectedCountry?.counties?.find(cc =>
+                                            cc.name.toLowerCase() === (this.county || '').toLowerCase()
+                                        );
+                                        return selectedCounty?.cities || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.city || '').toLowerCase();
+                                        return this.cities().filter(c =>
+                                            c.name.toLowerCase().includes(searchTerm)
+                                        );
+                                    },
+
+                                    select(name) {
+                                        this.city = name;
+                                        this.open = false;
+                                        // Optional: $wire.selectShippingCity(name);
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore.self>
+                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="city" required id="individualShippingCity"
-                                    wire:focus="$set('iscitylist', true)" wire:blur="$set('iscitylist', false)">
-                                <span>
-                                </span>
+                                    class="input" autocomplete="off" id="individualShippingCity"
+                                    aria-label="Shipping City" required>
+
+                                <span></span>
                                 <label for="individualShippingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif
                                 </label>
 
-                                @if ($iscitylist && !empty($cities))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($cities as $city)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectShippingCity('{{ addslashes($city['name']) }}')">
-                                                    {{ $city['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
+                                <div x-show="open" x-trap="open" class="content__searchable"
+                                    style="display: none;">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
+                                            <button class="item__searchable">No record found</button>
+                                        </template>
                                     </div>
-                                @elseif ($iscitylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
+
 
                             <!-----------------------   address1 individual shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -865,75 +950,107 @@
 
                             <!-----------------------   county juridic billing  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active @error('juridic_b_county') error @enderror"
-                                id="juridicBillingCountyParent">
-                                <input type="text" wire:model="juridic_billing_county"
+                                id="juridicBillingCountyParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('juridic_billing_country'),
+                                    county: @entangle('juridic_billing_county'),
+                                    open: false,
+
+                                    counties() {
+                                        const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
+                                        return selected?.counties || [];
+                                    },
+                                    filtered() {
+                                        return this.counties().filter(c =>
+                                            c.name.toLowerCase().includes((this.county || '').toLowerCase())
+                                        );
+                                    },
+                                    select(name) {
+                                        this.county = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore>
+                                <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="county" required id="juridicBillingCounty"
-                                    wire:focus="$set('jcountylist', true)" wire:blur="$set('jcountylist', false)">
+                                    class="input" autocomplete="off" required id="juridicBillingCounty">
+
                                 <span>
                                     @error('juridic_b_county')
                                         {{ $message }}
                                     @enderror
                                 </span>
+
                                 <label for="juridicBillingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
                                     @endif
                                 </label>
 
-                                @if ($jcountylist && !empty($Counties))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($Counties as $county)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectJBillingCounty('{{ addslashes($county['name']) }}')">
-                                                    {{ $county['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif ($jcountylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
+                                <div x-show="open" class="content__searchable">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
                                             <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
+                                        </template>
                                     </div>
-                                @endif
+                                </div>
                             </div>
+
                             <!-----------------------   city juridic billing  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="juridicBillingCityParent">
-                                <input type="text" wire:model="juridic_billing_city"
+                                id="juridicBillingCityParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('juridic_billing_country'),
+                                    county: @entangle('juridic_billing_county'),
+                                    city: @entangle('juridic_billing_city'),
+                                    open: false,
+
+                                    cities() {
+                                        const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
+                                        const selectedCounty = selectedCountry?.counties?.find(cc => cc.name.toLowerCase() === (this.county || '').toLowerCase());
+                                        return selectedCounty?.cities || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.city || '').toLowerCase();
+                                        return this.cities().filter(c => c.name.toLowerCase().includes(searchTerm));
+                                    },
+
+                                    select(name) {
+                                        this.city = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore>
+                                <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="off" required id="juridicBillingCity"
-                                    wire:focus="$set('jcitylist', true)" wire:blur="$set('jcitylist', false)">
-                                <span>
-                                </span>
+                                    class="input" autocomplete="off" required id="juridicBillingCity">
+
+                                <span></span>
+
                                 <label for="juridicBillingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif
                                 </label>
 
-                                @if ($jcitylist && !empty($cities))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($cities as $city)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectJBillingCity('{{ addslashes($city['name']) }}')">
-                                                    {{ $city['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif ($jcitylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
+                                <div x-show="open" class="content__searchable">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
                                             <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
+                                        </template>
                                     </div>
-                                @endif
+                                </div>
                             </div>
+
 
                             <!-----------------------   address1 juridic billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1076,75 +1193,106 @@
 
                             <!-----------------------   county juridic shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active @error('juridic_s_county') error @enderror"
-                                id="juridicShippingCountyParent">
-                                <input type="text" wire:model="juridic_shipping_county"
+                                id="juridicShippingCountyParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('juridic_shipping_country'),
+                                    county: @entangle('juridic_shipping_county'),
+                                    open: false,
+
+                                    counties() {
+                                        const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
+                                        return selected?.counties || [];
+                                    },
+
+                                    filtered() {
+                                        const search = (this.county || '').toLowerCase();
+                                        return this.counties().filter(c => c.name.toLowerCase().includes(search));
+                                    },
+
+                                    select(name) {
+                                        this.county = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore>
+                                <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="county" required id="juridicShippingCounty"
-                                    wire:focus="$set('jscountylist', true)" wire:blur="$set('jscountylist', false)">
+                                    autocomplete="county" required id="juridicShippingCounty" class="input">
+
                                 <span>
                                     @error('juridic_s_county')
                                         {{ $message }}
                                     @enderror
                                 </span>
+
                                 <label for="juridicShippingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
                                     @endif
                                 </label>
 
-                                @if ($jscountylist && !empty($Counties))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($Counties as $county)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectJShippingCounty('{{ addslashes($county['name']) }}')">
-                                                    {{ $county['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif ($jcountylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
+                                <div x-show="open" class="content__searchable">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
                                             <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
+                                        </template>
                                     </div>
-                                @endif
+                                </div>
                             </div>
 
                             <!-----------------------   city juridic shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="juridicShippingCityParent">
-                                <input type="text" wire:model="juridic_billing_city"
+                                id="juridicShippingCityParent" x-data="{
+                                    countries: @js($countries),
+                                    country: @entangle('juridic_shipping_country'),
+                                    county: @entangle('juridic_shipping_county'),
+                                    city: @entangle('juridic_shipping_city'),
+                                    open: false,
+
+                                    cities() {
+                                        const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
+                                        const selectedCounty = selectedCountry?.counties?.find(cc => cc.name.toLowerCase() === (this.county || '').toLowerCase());
+                                        return selectedCounty?.cities || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.city || '').toLowerCase();
+                                        return this.cities().filter(c => c.name.toLowerCase().includes(searchTerm));
+                                    },
+
+                                    select(name) {
+                                        this.city = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore>
+                                <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="off" required id="juridicShippingCity"
-                                    wire:focus="$set('jscitylist', true)" wire:blur="$set('jscitylist', false)">
-                                <span>
-                                </span>
+                                    autocomplete="off" required id="juridicShippingCity" class="input">
+
+                                <span></span>
+
                                 <label for="juridicShippingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif
                                 </label>
 
-                                @if ($jscitylist && !empty($cities))
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
-                                            @foreach ($cities as $city)
-                                                <button type="button" class="item__searchable"
-                                                    wire:click="selectJShippingCity('{{ addslashes($city['name']) }}')">
-                                                    {{ $city['name'] }}
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @elseif ($jscitylist)
-                                    <div class="content__searchable">
-                                        <div class="list__searchable">
+                                <div x-show="open" class="content__searchable">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
                                             <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </div>
+                                        </template>
                                     </div>
-                                @endif
+                                </div>
                             </div>
 
                             <!-----------------------   address1 juridic shipping  ----------------------------->
