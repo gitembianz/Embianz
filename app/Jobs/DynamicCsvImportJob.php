@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Models\ProductReviews as ModelsProductReviews;
+use App\Models\Products_categories;
+use Illuminate\Support\Facades\Cache;
+
 
 class DynamicCsvImportJob implements ShouldQueue
 {
@@ -217,7 +221,30 @@ class DynamicCsvImportJob implements ShouldQueue
         DB::table($this->table)->where('id', $data['id'])->update($data);
       } else {
         unset($data['id']);
-        DB::table($this->table)->insert($data);
+        $insertedId = DB::table($this->table)->insertGetId($data);
+        if ($this->table === 'products') {
+          Cache::forget('max_popularity');
+          $insertedProduct = DB::table($this->table)->where('id', $insertedId)->first();
+          if (app('global_default_category') != 0) {
+            $defaultcategory = new Products_categories();
+            $defaultcategory->product_id = $insertedId;
+            $defaultcategory->category_id = app('global_default_category');
+            $defaultcategory->save();
+          }
+          if ($insertedProduct && $insertedProduct->popularity > app('max_popularity')) {
+            $value = (100 / ($insertedProduct->popularity / $insertedProduct->popularity)) / 20;
+          } else if ($insertedProduct) {
+            $value = (100 / (app('max_popularity') / $insertedProduct->popularity)) / 20;
+          } else {
+            $value = 0;
+          }
+
+          ModelsProductReviews::create([
+            'product_id' => $insertedId,
+            'count' => 1,
+            'value' => $value
+          ]);
+        }
       }
     } catch (\Throwable $e) {
       Log::error("Insert/update failed on table `{$this->table}` for data: " . json_encode($data), [
@@ -229,12 +256,12 @@ class DynamicCsvImportJob implements ShouldQueue
   }
 
 
-protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
-{
+  protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
+  {
     $fullPath = storage_path('app/' . $path);
 
     if (!file_exists(dirname($fullPath))) {
-        mkdir(dirname($fullPath), 0755, true);
+      mkdir(dirname($fullPath), 0755, true);
     }
 
     $handle = fopen($fullPath, 'w');
@@ -242,17 +269,16 @@ protected function exportErrorCsv(array $rows, string $path, $jobRecord): void
     fwrite($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
     if (!empty($rows)) {
-        fputcsv($handle, array_keys($rows[0]));
-        foreach ($rows as $row) {
-            fputcsv($handle, $row);
-        }
+      fputcsv($handle, array_keys($rows[0]));
+      foreach ($rows as $row) {
+        fputcsv($handle, $row);
+      }
     }
 
     fclose($handle);
 
     $jobRecord->update([
-        'error_file' => $path,
+      'error_file' => $path,
     ]);
-}
-
+  }
 }

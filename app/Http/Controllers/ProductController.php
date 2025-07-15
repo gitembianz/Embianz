@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Products_categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\ProductReviews as ModelsProductReviews;
+use App\Models\Products_categories;
 
 
 
@@ -29,6 +30,12 @@ class ProductController extends Controller
       $counter++;
     }
     return $seoId;
+  }
+
+  public function create()
+  {
+    $brands = Brand::all();
+    return view('admin.add_products', compact('brands'));
   }
 
   public function new(Request $request)
