@@ -63,7 +63,6 @@ class Category extends Model
     'active',
     'long_description',
     'long_description_bottom',
-
     'meta_description',
     'short_description',
     'sequence',
@@ -97,8 +96,8 @@ class Category extends Model
                             EXISTS (
                                 SELECT 1
                                 FROM (
-                                    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 
-                                    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 
+                                    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+                                    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
                                     UNION ALL SELECT 9 UNION ALL SELECT 10
                                 ) AS numbers,
                                categories AS p

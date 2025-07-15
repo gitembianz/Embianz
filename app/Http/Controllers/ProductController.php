@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Products_categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Models\ProductReviews as ModelsProductReviews;
+use App\Models\Products_categories;
 
 
 
@@ -29,6 +30,12 @@ class ProductController extends Controller
       $counter++;
     }
     return $seoId;
+  }
+
+  public function create()
+  {
+    $brands = Brand::all();
+    return view('admin.add_products', compact('brands'));
   }
 
   public function new(Request $request)
@@ -53,22 +60,28 @@ class ProductController extends Controller
     }
     $newproduct = Product::create([
       'name' => $request->product_name,
-      'sku' => $request->sku,
-      'ean' => $request->ean,
-      'long_description' => $request->long_description,
-      'short_description' => $request->short_description,
-      'meta_description' => $request->meta_description,
-      'quantity' => $request->quantity,
-      'start_date' => $request->start_date,
-      'end_date' => $request->end_date,
-      'seo_title' => $request->seo_title,
-      'popularity' => $request->popularity,
       'active' => $request->has('active'),
       'preorder' => $request->has('preorder'),
+      'low_stock' => $request->has('low_stock'),
       'is_new' => $request->has('is_new'),
+      'brand_id' => $request->brand,
+      'type' => $request->type,
+      'quantity' => $request->quantity,
+      'quantity' => $request->quantity,
+      'low_stock_quantity' => $request->low_stock_quantity,
+      'popularity' => $request->popularity,
+      'sku' => $request->sku,
+      'ean' => $request->ean,
+      'short_description' => $request->short_description,
+      'start_date' => $request->start_date,
+      'end_date' => $request->end_date,
+      'meta_description' => $request->meta_description,
+      'comments' => $request->comments,
+      'long_description' => $request->long_description,
+      'seo_title' => $request->seo_title,
+      'seo_id' => $seo_id,
       'created_by' => Auth::user()->name,
       'last_modified_by' => Auth::user()->name,
-      'seo_id' => $seo_id
     ]);
     Cache::forget('max_popularity');
     if (app('global_default_category') != 0) {

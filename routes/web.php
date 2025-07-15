@@ -43,7 +43,8 @@
 
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
-      route::view('/add_product', 'admin.add_products')->name('add_product');
+      Route::get('/add_product', [ProductController::class, 'create'])->name('add_product');
+
       route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
       route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');

@@ -1,7 +1,7 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 <x-alert />
-<x-dashboardsidebar :active="__('variants')" />
+<x-dashboardsidebar :active="__('variant')" />
 <form class="content" method="POST" action="{{ route('add_variant') }}">
 
  @csrf
