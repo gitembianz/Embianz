@@ -54,13 +54,22 @@
                 <label for="is_new">Is new?</label>
             </div>
             <div class="checkbox__details ">
-                <input type="checkbox" id="is_new" name="low_stock" value="{{ old('low_stock') }}" />
-                <label for="is_new">Low Stock</label>
+                <input type="checkbox" id="low_stock" name="low_stock" value="{{ old('low_stock') }}" />
+                <label for="low_stock">Low Stock</label>
             </div>
             <div class="checkbox__details ">
                 <input type="checkbox" id="preorder" name="preorder" value="{{ old('preorder') }}" />
                 <label for="preorder">Preorder</label>
             </div>
+        </div>
+
+        <div class="input__tabs">
+            <select name="brand" value="{{ old('brand') }}">
+              @foreach ($brands as $index => $brand)
+                <option @if ($index === 0) selected @endif value="{{ $brand->id }}">{{ $brand->name }}</option>
+              @endforeach
+            </select>
+            <label>brand</label>
         </div>
 
         <div class="input__tabs">
@@ -78,6 +87,40 @@
             <label>Quantity</label>
         </div>
 
+           <div class="input__tabs">
+            <input type="number" name="low_stock_quantity" placeholder=" " value="{{ old('low_stock_quantity') }}">
+            <label for="low_stock_quantity">Low Stock Quantity</label>
+        </div>
+
+         {{-- Product Popularity --}}
+        <div class="input__tabs">
+            <input type="number" min="0" placeholder=" " name="popularity" required
+                value="{{ old('popularity') }}">
+            <label>Popularity</label>
+        </div>
+        <div class="details__checkboxes">
+
+            {{-- Product SKU --}}
+        <div class="input__tabs">
+            <input type="text" name="sku" placeholder=" " required value="{{ old('sku') }}">
+            <label>SKU</label>
+        </div>
+
+        {{-- Product EAN --}}
+        <div class="input__tabs">
+            <input type="text" name="ean" placeholder=" " required value="{{ old('ean') }}">
+            <label>EAN</label>
+        </div>
+        </div>
+
+          {{-- Product Short Description --}}
+        <div class="input__tabs">
+            <input type="text" name="short_description" placeholder=" " value="{{ old('short_description') }}">
+            <label>Short Description</label>
+        </div>
+
+        <div class="details__checkboxes">
+
         {{-- Product Start Date --}}
         <div class="input__tabs">
             <input type="date" id="start_date" placeholder=" " name="start_date" value="{{ old('start_date') }}">
@@ -89,38 +132,18 @@
             <input type="date" id="end_date" placeholder=" " name="end_date" value="{{ old('end_date') }}">
             <label>End Date</label>
         </div>
-
-        {{-- Product SKU --}}
-        <div class="input__tabs">
-            <input type="text" name="sku" placeholder=" " required value="{{ old('sku') }}">
-            <label>SKU</label>
-        </div>
-
-        {{-- Product EAN --}}
-        <div class="input__tabs">
-            <input type="text" name="ean" placeholder=" " required value="{{ old('ean') }}">
-            <label>EAN</label>
-        </div>
-
-
-
-        {{-- Product Popularity --}}
-        <div class="input__tabs">
-            <input type="number" min="0" placeholder=" " name="popularity" required
-                value="{{ old('popularity') }}">
-            <label>Popularity</label>
-        </div>
-
-        {{-- Product Short Description --}}
-        <div class="input__tabs details__long">
-            <input type="text" name="short_description" placeholder=" " value="{{ old('short_description') }}">
-            <label>Short Description</label>
         </div>
 
         {{-- Product Meta Description --}}
         <div class="input__tabs details__long">
             <input type="text" name="meta_description" placeholder=" " value="{{ old('meta_description') }}">
             <label>Meta Description</label>
+        </div>
+
+         {{-- Product Long Description --}}
+        <div class="textarea__tabs details__long">
+            <textarea name="comments" placeholder=" ">{{ old('comments') }}</textarea>
+            <label>Comments</label>
         </div>
 
         {{-- Product Long Description --}}
