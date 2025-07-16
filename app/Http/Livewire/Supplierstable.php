@@ -655,7 +655,7 @@ class Supplierstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->categories->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->suppliers->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }

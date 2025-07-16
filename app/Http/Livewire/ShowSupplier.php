@@ -108,7 +108,8 @@ class ShowSupplier extends Component
             'supplier_name' => $this->supplier->supplier_name,
             'date' => $this->supplier->date,
             'status' => $this->supplier->status,
-            'currency' => $this->supplier->currency
+            'currency' => $this->supplier->currency,
+            'quote_currency' => $this->supplier->quote_currency
         ];
         $this->edititem = true;
     }
@@ -127,6 +128,7 @@ class ShowSupplier extends Component
         $this->supplier->name = $rec['name'];
         $this->supplier->supplier_name = $rec['supplier_name'] ?? null;
         $this->supplier->currency = $rec['currency'];
+        $this->supplier->quote_currency = $rec['quote_currency'] ?? null;
         $this->supplier->date = $rec['date'];
         $this->supplier->status = $rec['status'];
 
