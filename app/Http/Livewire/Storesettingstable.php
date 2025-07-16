@@ -1142,25 +1142,25 @@ class Storesettingstable extends Component
   }
   public function refreshprices()
   {
+    $epsilon = 0.0099;
+
     $prices = PricelistEntries::all();
 
     foreach ($prices as $price) {
       if (!is_null($price->value_no_vat) && is_null($price->value)) {
-        $price->value_no_discount = round($price->value_no_vat * (1 + $price->vat / 100), 2);
-
-        $price->value = round($price->value_no_discount * (1 - $price->discount / 100), 2);
+        $price->value_no_discount = $price->value_no_vat * (1 + $price->vat / 100);
+        $price->value = $price->value_no_discount * (1 - $price->discount / 100);
       } elseif (!is_null($price->value) && $price->discount > 0) {
-        $price->value_no_discount = round($price->value / (1 - $price->discount / 100), 2);
-
-        $price->value_no_vat = round($price->value_no_discount / (1 + $price->vat / 100), 2);
+        $price->value_no_discount = $price->value / (1 - $price->discount / 100);
+        $price->value_no_vat = $price->value_no_discount / (1 + $price->vat / 100);
       } elseif (!is_null($price->value) && $price->discount == 0) {
-        $price->value_no_vat = round($price->value / (1 + $price->vat / 100), 2);
-
-        $price->value_no_discount = round($price->value_no_vat * (1 + $price->vat / 100), 2);
+        $price->value_no_vat = $price->value / (1 + $price->vat / 100);
+        $price->value_no_discount = $price->value_no_vat * (1 + $price->vat / 100);
       }
 
       $price->save();
     }
+
     $products = Product::where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
       ->where('end_date', '>=', now()->format('Y-m-d'))
@@ -1168,14 +1168,13 @@ class Storesettingstable extends Component
 
     foreach ($products as $product) {
       $cartPrices = $product->carts_item()->pluck('price');
-      if ($cartPrices->isNotEmpty()) {
-        $averagePrice = $cartPrices->avg();
-      } else {
-        $averagePrice = optional($product->product_prices->first())->value;
-      }
+      $averagePrice = $cartPrices->isNotEmpty()
+        ? $cartPrices->avg()
+        : optional($product->product_prices->first())->value;
 
       $totalCost = 0;
       $count = 0;
+
       foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
         $cost = $orderSupplier->price;
         $supplierCurrency = $orderSupplier->order->currency ?? null;
@@ -1209,12 +1208,11 @@ class Storesettingstable extends Component
         }
       }
 
-
       $averageCost = $count > 0 ? ($totalCost / $count) : null;
 
-      $oldprice = optional($product->costs()->latest()->first())->price ?? null;
+      $oldPrice = optional($product->costs()->latest()->first())->price ?? null;
 
-      if ($oldprice && $oldprice != $averagePrice) {
+      if ($oldPrice && abs($oldPrice - $averagePrice) > $epsilon) {
         DB::table('product_costs')->insert([
           'product_id' => $product->id,
           'price' => $averagePrice,
@@ -1225,11 +1223,18 @@ class Storesettingstable extends Component
           'created_at' => now(),
           'updated_at' => now()
         ]);
-      } elseif (!$oldprice) {
-
+      } elseif (!$oldPrice) {
         DB::table('product_costs')->updateOrInsert(
           ['product_id' => $product->id],
-          ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+          [
+            'price' => $averagePrice,
+            'cost' => $averageCost,
+            'date' => now(),
+            'created_by' => auth()->user()->name,
+            'last_modified_by' => auth()->user()->name,
+            'created_at' => now(),
+            'updated_at' => now()
+          ]
         );
       }
     }
@@ -1240,6 +1245,7 @@ class Storesettingstable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function initializeSitemap()
   {
     $filePath = public_path('sitemap.xml');

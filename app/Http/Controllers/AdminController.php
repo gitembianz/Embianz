@@ -39,45 +39,45 @@ class AdminController extends Controller
 {
 
 
-public function store_user(Request $request)
-{
+  public function store_user(Request $request)
+  {
     $validated = $request->validate([
-        'name'     => 'required|string|max:255',
-        'email'    => 'required|email|max:255|unique:users,email',
-        'password' => 'required|string|min:6',
+      'name'     => 'required|string|max:255',
+      'email'    => 'required|email|max:255|unique:users,email',
+      'password' => 'required|string|min:6',
     ]);
 
     $rawPassword = $validated['password'];
 
     $values = [
-        "name"              => $validated['name'],
-        "usertype"          => $request->has('usertype'),
-        "email"             => $validated['email'],
-        "phone"             => $request->phone,
-        "adress"            => $request->adress,
-        "password"          => bcrypt($rawPassword),
-        "created_at"        => now(),
-        "updated_at"        => now(),
+      "name"              => $validated['name'],
+      "usertype"          => $request->has('usertype'),
+      "email"             => $validated['email'],
+      "phone"             => $request->phone,
+      "adress"            => $request->adress,
+      "password"          => bcrypt($rawPassword),
+      "created_at"        => now(),
+      "updated_at"        => now(),
     ];
 
     User::insert($values);
 
     try {
-        Mail::to($validated['email'])->send(new NewUser($validated['name'], $validated['email'], $rawPassword));
+      Mail::to($validated['email'])->send(new NewUser($validated['name'], $validated['email'], $rawPassword));
 
-        return redirect()->back()->with('notification', [
-            'message' => 'User created and email sent successfully!',
-            'type'    => 'success',
-            'title'   => 'Success'
-        ]);
+      return redirect()->back()->with('notification', [
+        'message' => 'User created and email sent successfully!',
+        'type'    => 'success',
+        'title'   => 'Success'
+      ]);
     } catch (\Exception $e) {
-        return redirect()->back()->with('notification', [
-            'message' => 'User created, but email could not be sent.',
-            'type'    => 'warning',
-            'title'   => 'Email Not Sent'
-        ]);
+      return redirect()->back()->with('notification', [
+        'message' => 'User created, but email could not be sent.',
+        'type'    => 'warning',
+        'title'   => 'Email Not Sent'
+      ]);
     }
-}
+  }
 
 
 
@@ -152,7 +152,8 @@ public function store_user(Request $request)
   public function add_supplier()
   {
     $currencies = Currency::all();
-    return view('admin.add_supplier', compact('currencies'));
+    $exchanges = Exchange::all();
+    return view('admin.add_supplier', compact('currencies', 'exchanges'));
   }
 
   public function corectparent()
@@ -188,6 +189,8 @@ public function store_user(Request $request)
       "date" => $request->date,
       "status" => "draft",
       'currency' => $request->currency,
+      'quote_currency' => $request->exchange,
+      'exchange_id' => $request->exchange,
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
       "created_at" => now(),
@@ -287,7 +290,7 @@ public function store_user(Request $request)
     $data = Order_Supplier::find($id);
     return view('admin.show_supplier', compact('data'));
   }
-  public function show_user ($id)
+  public function show_user($id)
   {
     $data = User::find($id);
     return view('admin.show_user', compact('data'));
