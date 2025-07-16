@@ -20,7 +20,8 @@ class TrackUserSession
             $sessionId = $request->cookie('sessionId') ?? Session::getId();
             $ipAddress = ServerRequest::ip();
             $userAgent = ServerRequest::header('User-Agent');
-            $httpReferer = $request->headers->get('referer');
+            $httpReferer = $request->headers->get('referer') ?? $request->fullUrl();
+
 
             // Check if User-Agent contains bot or crawler keywords
             if ($this->isBot($userAgent)) {
