@@ -3,21 +3,22 @@
 namespace App\Http\Livewire;
 
 use Carbon\Carbon;
+use App\Models\AllJob;
 use Livewire\Component;
 use App\Models\Listview;
+use App\Models\CsvImportJob;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+
 use App\Models\Order_Supplier;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+use App\Jobs\DynamicCsvImportJob;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
-use App\Jobs\DynamicCsvImportJob;
-use Illuminate\Support\Facades\DB;
-use App\Models\CsvImportJob;
-use Livewire\WithFileUploads;
 
 class Supplierstable extends Component
 {
@@ -871,10 +872,21 @@ class Supplierstable extends Component
       ]
     ]);
 
-    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase) {
+    $allJob = AllJob::create([
+      'name' => 'DynamicCsvImportJob',
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'payload' => [
+        'table_name' => $this->tableName,
+        'csv_import_job_id' => $job->id,
+      ],
+      'related_table' => $this->tableName,
+    ]);
+
+    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase, $allJob) {
       for ($i = 0; $i <= $chunkIndex; $i++) {
         $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
-        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id);
+        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id, $allJob->id);
       }
     });
 
