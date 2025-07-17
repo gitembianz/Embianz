@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Models\Media;
+use App\Models\AllJob;
 use App\Models\JobLog;
 use App\Models\Product;
 use Livewire\Component;
@@ -12,25 +13,25 @@ use App\Models\Listview;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\ProductCost;
+use App\Models\CsvImportJob;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+
 use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
 use App\Models\Related_Products;
-
 use App\Jobs\DynamicCsvImportJob;
+
+
 use Illuminate\Support\Facades\DB;
-use App\Models\CsvImportJob;
-use Livewire\WithFileUploads;
-
-
 use App\Models\Products_categories;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
-use Intervention\Image\Facades\Image;
 
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
@@ -1379,11 +1380,21 @@ class Productstable extends Component
         'base_path' => 'import_chunks/' . $filenameBase,
       ]
     ]);
+    $allJob = AllJob::create([
+      'name' => 'DynamicCsvImportJob',
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'payload' => [
+        'table_name' => $this->tableName,
+        'csv_import_job_id' => $job->id,
+      ],
+      'related_table' => $this->tableName,
+    ]);
 
-    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase) {
+    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase, $allJob) {
       for ($i = 0; $i <= $chunkIndex; $i++) {
         $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
-        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id);
+        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id, $allJob->id);
       }
     });
 
