@@ -2,19 +2,20 @@
 
 namespace App\Jobs;
 
+use App\Models\AllJob;
 use App\Models\CsvImportJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Products_categories;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\ProductReviews as ModelsProductReviews;
-use App\Models\Products_categories;
-use Illuminate\Support\Facades\Cache;
 
 
 class DynamicCsvImportJob implements ShouldQueue
@@ -24,18 +25,21 @@ class DynamicCsvImportJob implements ShouldQueue
   protected string $table;
   protected string $csvPath;
   protected int $jobId;
+  protected int $allJobId;
 
-  public function __construct(string $table, string $csvPath, int $jobId)
+  public function __construct(string $table, string $csvPath, int $jobId, int $allJobId)
   {
     $this->table = $table;
     $this->csvPath = $csvPath;
     $this->jobId = $jobId;
+    $this->allJobId = $allJobId;
   }
 
   public function handle()
   {
     try {
       $jobRecord = CsvImportJob::find($this->jobId);
+      $allJobRecord = AllJob::find($this->allJobId);
       if (!$jobRecord) {
         Log::error("Job ID {$this->jobId} not found.");
         return;
@@ -45,12 +49,18 @@ class DynamicCsvImportJob implements ShouldQueue
         'status' => 'processing',
         'started_at' => now(),
       ]);
+      $allJobRecord?->update(['status' => 'processing', 'started_at' => now()]);
 
       if (!Schema::hasTable($this->table)) {
         $jobRecord->update([
           'status' => 'failed',
           'finished_at' => now(),
           'errors' => "Table {$this->table} does not exist.",
+        ]);
+        $allJobRecord?->update([
+          'status' => 'failed',
+          'finished_at' => now(),
+          'error' => "Table {$this->table} does not exist."
         ]);
         return;
       }
@@ -61,6 +71,11 @@ class DynamicCsvImportJob implements ShouldQueue
           'status' => 'failed',
           'finished_at' => now(),
           'errors' => "CSV file not found at {$filePath}.",
+        ]);
+        $allJobRecord?->update([
+          'status' => 'failed',
+          'finished_at' => now(),
+          'error' => "CSV file not found at {$filePath}."
         ]);
         return;
       }
@@ -74,6 +89,11 @@ class DynamicCsvImportJob implements ShouldQueue
           'status' => 'failed',
           'finished_at' => now(),
           'errors' => "CSV header missing.",
+        ]);
+        $allJobRecord?->update([
+          'status' => 'failed',
+          'finished_at' => now(),
+          'error' => "CSV header missing."
         ]);
         return;
       }
@@ -102,6 +122,11 @@ class DynamicCsvImportJob implements ShouldQueue
             'finished_at' => now(),
             'errors' => "Missing required column: {$required}.",
           ]);
+           $allJobRecord?->update([
+          'status' => 'failed',
+          'finished_at' => now(),
+          'error' => "Missing required column: {$required}."
+        ]);
           return;
         }
       }
@@ -142,6 +167,11 @@ class DynamicCsvImportJob implements ShouldQueue
           'errors' => null,
         ]);
       }
+       $allJobRecord?->update([
+          'status' => 'finished',
+          'finished_at' => now(),
+          'errors' => null,
+        ]);
     } catch (\Throwable $e) {
       $jobRecord = CsvImportJob::find($this->jobId);
       if ($jobRecord) {

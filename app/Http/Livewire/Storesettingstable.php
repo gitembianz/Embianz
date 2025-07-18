@@ -4,37 +4,38 @@ namespace App\Http\Livewire;
 
 use Imagick;
 use ImagickPixel;
+use Carbon\Carbon;
+use App\Models\AllJob;
+
 use App\Models\Product;
 use Livewire\Component;
-
 use App\Models\Category;
 use App\Models\Exchange;
 use App\Models\Listview;
 use App\Models\Static_Page;
 use Illuminate\Support\Str;
+use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Store_Settings;
+
+use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
+
+use App\Jobs\DynamicCsvImportJob;
 use Database\Seeders\StoreSeeder;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use App\Models\ProductReviews as ModelsProductReviews;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Response;
+use App\Models\ProductReviews as ModelsProductReviews;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Carbon\Carbon;
-
-use App\Jobs\DynamicCsvImportJob;
-use App\Models\CsvImportJob;
 
 class Storesettingstable extends Component
 {
@@ -1552,10 +1553,21 @@ class Storesettingstable extends Component
       ]
     ]);
 
-    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase) {
+    $allJob = AllJob::create([
+      'name' => 'DynamicCsvImportJob',
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'payload' => [
+        'table_name' => $this->tableName,
+        'csv_import_job_id' => $job->id,
+      ],
+      'related_table' => $this->tableName,
+    ]);
+
+    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase, $allJob) {
       for ($i = 0; $i <= $chunkIndex; $i++) {
         $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
-        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id);
+        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id, $allJob->id);
       }
     });
 

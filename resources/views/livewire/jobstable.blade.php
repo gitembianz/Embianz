@@ -308,6 +308,9 @@
                 <button class="button button--primary button--long" wire:click="$set('tableName', 'jobs')">
                     Queued Jobs
                 </button>
+                 <button class="button button--primary button--long" wire:click="$set('tableName', 'all_jobs')">
+                    All Jobs
+                </button>
             </div>
         </div>
 
