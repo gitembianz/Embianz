@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Log;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Models\Media;
@@ -16,26 +17,27 @@ use App\Models\ProductCost;
 use App\Models\CsvImportJob;
 use App\Models\Product_Spec;
 use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 
+use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
 use App\Models\Related_Products;
+
+
 use App\Jobs\DynamicCsvImportJob;
-
-
 use Illuminate\Support\Facades\DB;
-use App\Models\Products_categories;
 
+use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
 
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class Productstable extends Component
 {
@@ -655,12 +657,14 @@ class Productstable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function updatingcsvFile($value)
   {
     ini_set('max_execution_time', 300);
     ini_set('memory_limit', '512M');
 
     $file = fopen($value->getRealPath(), 'r');
+
     // Skip the header row
     $header = fgetcsv($file);
     while ($row = fgetcsv($file)) {
@@ -675,197 +679,224 @@ class Productstable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function processRow($row)
   {
-    $id = $row[0]; // id
-    $mediaLink = $row[1]; // media link
+    $id = $row[0]; // product ID
+    $mediaLink = $row[1]; // image URL
 
     $product = Product::find($id);
 
-    if ($product) {
-      $productType = class_basename(get_class($product));
-      //check for directory
-      $filespath = 'media/' . $productType . '/';
-      if (!File::exists($filespath)) {
-        File::makeDirectory($filespath, 0755, true);
-      }
-      if (!File::exists($filespath . $product->id)) {
-        File::makeDirectory($filespath . $product->id, 0755, true);
-      }
-      $path = $filespath . $product->id . "/";
-      $urlComponents = parse_url($mediaLink);
-
-      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
-      $mediaLink = $urlWithoutParams;
-      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-      $fileExtension = strtolower(pathinfo($mediaLink, PATHINFO_EXTENSION));
-
-      if (!in_array($fileExtension, $allowedExtensions)) {
-        return;
-      }
-      $fileContent = file_get_contents($mediaLink);
-      if ($fileContent == false) {
-        return;
-      }
-      $imageInfo = getimagesizefromstring($fileContent);
-      if (app()->has('global_auto_webp') &&  app('global_auto_webp') === 'true') {
-        $image = Image::make($fileContent);
-        $webpContent = $image->encode('webp')->__toString();
-        $fileExtension = 'webp';
-        $name = strtolower(preg_replace('/\s+/', '-', $product->name));
-        if (file_exists($path . $name)) {
-          $j = 1;
-          while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
-            $j++;
-          }
-          $name = $product->name . '(' . $j . ').' . $fileExtension;
-        }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
-      } else {
-        $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = $product->name . '.' . $fileExtension;
-        if (file_exists($path . $name)) {
-          $j = 1;
-          while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
-            $j++;
-          }
-          $name = $product->name . '(' . $j . ').' . $fileExtension;
-        }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
-      }
-
-      $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
-      if ($isoriginal) {
-        $isoriginal->delete();
-      }
-      $media = new Media();
-      $media->name = $name;
-      $media->extension = $fileExtension;
-      $media->width = $imageInfo[0];
-      $media->height =  $imageInfo[1];
-      $media->size = strlen($fileContent);
-      $media->type = 'original';
-      $media->sequence = 1;
-      $media->path = $path;
-      $media->createdby = Auth::user()->name;
-      $media->lastmodifiedby = Auth::user()->name;
-      $media->save();
-      $product->media()->attach($media->id);
-
-      $filePath = $path . $name;
-      $file = Storage::disk('public_upload')->get($filePath);
-
-      $ismin = $product->media()->where('type', 'min')->first();
-
-      if (!$ismin) {
-        $this->resizeImage(
-          $file,
-          $path,
-          70,
-          'min',
-          $name,
-          $fileExtension,
-          true,
-          1,
-          $product
-        );
-      } else {
-        $oldPath = $ismin->path . $ismin->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
-        }
-
-        $resizedImage = Image::make($file)
-          ->resize(70, 70, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-          });
-
-        $newPath = $ismin->path . "resized70_" . $name;
-        $resizedImage->encode('webp')->save($newPath);
-        $ismin->path = $ismin->path;
-        $ismin->name = "resized70_" . $name;
-        $ismin->sequence = 1;
-        $ismin->extension = $fileExtension;
-        $ismin->width = $resizedImage->width();
-        $ismin->height = $resizedImage->height();
-        $ismin->size = File::size($newPath);
-        $ismin->lastmodifiedby = Auth::user()->name;
-        $ismin->save();
-      }
-
-      $ismaim = $product->media()->where('type', 'main')->first();
-      if (!$ismaim) {
-        $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
-      } else {
-        $oldPath = $ismaim->path . $ismaim->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
-        }
-
-        $resizedImage = Image::make($file)
-          ->resize(300, 300, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-          });
-
-        $newPath = $ismaim->path . "resized300_" . $name;
-        $resizedImage->encode('webp')->save($newPath);
-        $ismaim->path = $ismaim->path;
-        $ismaim->name = "resized300_" . $name;
-        $ismaim->sequence = 1;
-        $ismaim->extension = $fileExtension;
-        $ismaim->width = $resizedImage->width();
-        $ismaim->height = $resizedImage->height();
-        $ismaim->size = File::size($newPath);
-        $ismaim->lastmodifiedby = Auth::user()->name;
-        $ismaim->save();
-      }
-
-      $isfull = $product->media()->where('type', 'full')->where('sequence', '1')->first();
-      if ($isfull) {
-        $isfull->delete();
-      }
-      $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, 1, $product);
-      return;
-    } else {
+    if (!$product) {
+      FacadesLog::warning("Product not found: ID {$id}");
       return;
     }
+
+    $productType = class_basename(get_class($product));
+    $filespath = 'media/' . $productType . '/';
+
+    if (!File::exists($filespath)) {
+      File::makeDirectory($filespath, 0755, true);
+    }
+    if (!File::exists($filespath . $product->id)) {
+      File::makeDirectory($filespath . $product->id, 0755, true);
+    }
+
+    $path = $filespath . $product->id . "/";
+
+    $urlComponents = parse_url($mediaLink);
+    $mediaLink = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+    $fileExtension = strtolower(pathinfo($mediaLink, PATHINFO_EXTENSION));
+
+    if (!in_array($fileExtension, $allowedExtensions)) {
+      FacadesLog::warning("Skipped unsupported extension: $fileExtension");
+      return;
+    }
+
+    $fileContent = @file_get_contents($mediaLink);
+    if (!$fileContent) {
+      FacadesLog::error("Failed to get file from URL: $mediaLink");
+      return;
+    }
+
+    $imageInfo = @getimagesizefromstring($fileContent);
+    if (!$imageInfo) {
+      FacadesLog::error("Image not valid or corrupted: $mediaLink");
+      return;
+    }
+
+    $sanitizedName = strtolower(preg_replace('/[^a-z0-9_-]/i', '-', $product->name));
+
+    if (app()->has('global_auto_webp') && app('global_auto_webp') === 'true') {
+      $image = Image::make($fileContent);
+      $webpContent = $image->encode('webp')->__toString();
+      $fileExtension = 'webp';
+      $name = $sanitizedName . '.' . $fileExtension;
+
+      $j = 1;
+      while (file_exists($path . $name)) {
+        $name = "{$sanitizedName}({$j}).{$fileExtension}";
+        $j++;
+      }
+
+      Storage::disk('public_upload')->put($path . $name, $webpContent);
+    } else {
+      $fileExtension = image_type_to_extension($imageInfo[2], false);
+      $name = $sanitizedName . '.' . $fileExtension;
+
+      $j = 1;
+      while (file_exists($path . $name)) {
+        $name = "{$sanitizedName}({$j}).{$fileExtension}";
+        $j++;
+      }
+
+      Storage::disk('public_upload')->put($path . $name, $fileContent);
+    }
+
+    // Remove old original
+    $isoriginal = $product->media()->where('type', 'original')->where('sequence', 1)->first();
+    if ($isoriginal) {
+      $isoriginal->delete();
+    }
+
+    // Save original media
+    $media = new Media();
+    $media->name = $name;
+    $media->extension = $fileExtension;
+    $media->width = $imageInfo[0];
+    $media->height = $imageInfo[1];
+    $media->size = strlen($fileContent);
+    $media->type = 'original';
+    $media->sequence = 1;
+    $media->path = $path;
+    $media->createdby = Auth::user()->name;
+    $media->lastmodifiedby = Auth::user()->name;
+    $media->save();
+    $product->media()->attach($media->id);
+
+    $filePath = $path . $name;
+    $file = Storage::disk('public_upload')->get($filePath);
+
+    // Handle min image
+    $ismin = $product->media()->where('type', 'min')->first();
+    if (!$ismin) {
+      $this->resizeImage($file, $path, 70, 'min', $name, $fileExtension, true, 1, $product);
+    } else {
+      $oldPath = $ismin->path . $ismin->name;
+      if (File::exists($oldPath)) {
+        File::delete($oldPath);
+      }
+
+      $resizedImage = Image::make($file)
+        ->resize(70, 70, function ($constraint) {
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        });
+
+      $newPath = $ismin->path . "resized70_" . $name;
+      $resizedImage->encode('webp')->save($newPath);
+      $ismin->path = $ismin->path;
+      $ismin->name = "resized70_" . $name;
+      $ismin->sequence = 1;
+      $ismin->extension = 'webp';
+      $ismin->width = $resizedImage->width();
+      $ismin->height = $resizedImage->height();
+      $ismin->size = File::size($newPath);
+      $ismin->lastmodifiedby = Auth::user()->name;
+      $ismin->save();
+    }
+
+    // Handle main image
+    $ismaim = $product->media()->where('type', 'main')->first();
+    if (!$ismaim) {
+      $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
+    } else {
+      $oldPath = $ismaim->path . $ismaim->name;
+      if (File::exists($oldPath)) {
+        File::delete($oldPath);
+      }
+
+      $resizedImage = Image::make($file)
+        ->resize(300, 300, function ($constraint) {
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        });
+
+      $newPath = $ismaim->path . "resized300_" . $name;
+      $resizedImage->encode('webp')->save($newPath);
+      $ismaim->path = $ismaim->path;
+      $ismaim->name = "resized300_" . $name;
+      $ismaim->sequence = 1;
+      $ismaim->extension = 'webp';
+      $ismaim->width = $resizedImage->width();
+      $ismaim->height = $resizedImage->height();
+      $ismaim->size = File::size($newPath);
+      $ismaim->lastmodifiedby = Auth::user()->name;
+      $ismaim->save();
+    }
+
+    // Replace full if exists
+    $isfull = $product->media()->where('type', 'full')->where('sequence', 1)->first();
+    if ($isfull) {
+      $isfull->delete();
+    }
+
+    $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, 1, $product);
   }
+
   private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence, $product)
   {
-    if ($external) {
-      $resizedImage = Image::make($file)
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
-    } else {
+    try {
+      if ($external) {
+        if (!$file || strlen($file) < 100) {
+          FacadesLog::error("Invalid file content for external image resize.");
+          return;
+        }
 
-      $resizedImage = Image::make($file->getRealPath())
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
+        $resizedImage = Image::make($file)
+          ->resize($size, $size, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+          });
+      } else {
+        if (!$file->isValid()) {
+          FacadesLog::error("Uploaded file is not valid.");
+          return;
+        }
+
+        $resizedImage = Image::make($file->getRealPath())
+          ->resize($size, $size, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+          });
+      }
+
+      $resizedImage->encode('webp');
+      $resizedName = "resized{$size}_" . pathinfo($name, PATHINFO_FILENAME) . '.webp';
+      $resizedImage->save($path . $resizedName);
+
+      $resizedMedia = new Media();
+      $resizedMedia->path = $path;
+      $resizedMedia->name = $resizedName;
+      $resizedMedia->sequence = $sequence;
+      $resizedMedia->extension = 'webp';
+      $resizedMedia->type = $type;
+      $resizedMedia->width = $resizedImage->width();
+      $resizedMedia->height = $resizedImage->height();
+      $resizedMedia->size = File::size($path . $resizedName);
+      $resizedMedia->createdby = Auth::user()->name;
+      $resizedMedia->lastmodifiedby = Auth::user()->name;
+      $resizedMedia->save();
+
+      $product->media()->attach($resizedMedia->id);
+    } catch (\Exception $e) {
+      FacadesLog::error("Failed to resize image: " . $e->getMessage());
     }
-
-    $resizedImage->encode('webp')->save($path . "resized{$size}_" . $name);
-
-    $resizedMedia = new Media();
-    $resizedMedia->path = $path;
-    $resizedMedia->name = "resized{$size}_" . $name;
-    $resizedMedia->sequence = $sequence;
-    $resizedMedia->extension = $extension;
-    $resizedMedia->type = $type;
-    $resizedMedia->width = $resizedImage->width();
-    $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = File::size($path . "resized{$size}_" . $name);
-    $resizedMedia->createdby = Auth::user()->name;
-    $resizedMedia->lastmodifiedby = Auth::user()->name;
-    $resizedMedia->save();
-
-    $product->media()->attach($resizedMedia->id);
   }
+
+
   public function expandRow($index)
   {
     if ($this->row  === null) {
