@@ -85,7 +85,7 @@ class Jobstable extends Component
   }
   public function mount($tableName)
   {
-    $this->tableName = session('last_table_name', 'default_table') ?? $tableName;
+    $this->tableName = session('last_table_name', 'all_jobs') ?? $tableName;
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
