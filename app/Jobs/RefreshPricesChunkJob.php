@@ -28,11 +28,10 @@ class RefreshPricesChunkJob implements ShouldQueue
   {
     AllJob::where('id', $this->allJobId)->update(['status' => 'processing']);
 
-    try{
+    try {
 
       $epsilon = 0.0099;
 
-      // First: Update PricelistEntries in chunks of 500
       PricelistEntries::chunk(500, function ($entries) {
         foreach ($entries as $price) {
           if (!is_null($price->value_no_vat) && is_null($price->value)) {
@@ -50,19 +49,11 @@ class RefreshPricesChunkJob implements ShouldQueue
         }
       });
 
-      // Now: Process Products in chunks of 500
       Product::where('active', true)
         ->where('start_date', '<=', now()->format('Y-m-d'))
         ->where('end_date', '>=', now()->format('Y-m-d'))
         ->chunk(500, function ($products) use ($epsilon) {
           foreach ($products as $product) {
-            $product->loadMissing([
-              'carts_item',
-              'product_prices.pricelist.currency',
-              'order_suppliers.order.currency',
-              'costs',
-            ]);
-
             $cartPrices = $product->carts_item->pluck('price');
             $averagePrice = $cartPrices->isNotEmpty()
               ? $cartPrices->avg()
@@ -73,7 +64,7 @@ class RefreshPricesChunkJob implements ShouldQueue
 
             foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
               $cost = $orderSupplier->price;
-              $supplierCurrency = $orderSupplier->order->currency->name ?? null;
+              $supplierCurrency = $orderSupplier->order->currency ?? null;
               $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
 
               if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
@@ -130,16 +121,18 @@ class RefreshPricesChunkJob implements ShouldQueue
             }
           }
         });
-        AllJob::where('id', $this->allJobId)->update(['status' => 'processing']);
+      AllJob::where('id', $this->allJobId)->update([
+        'status' => 'finished',
+        'finished_at' => now(),
+      ]);
+      Log::info('RefreshPricesChunkJob completed successfully.');
     } catch (\Throwable $e) {
-            AllJob::where('id', $this->allJobId)->update([
-                'status' => 'failed',
-                'error' => $e->getMessage(),
-            ]);
+      AllJob::where('id', $this->allJobId)->update([
+        'status' => 'failed',
+        'error' => $e->getMessage(),
+      ]);
 
-            throw $e; // re-throw so Laravel can mark job as failed too
-        }
-
-    Log::info('RefreshPricesChunkJob completed successfully.');
+      throw $e;
+    }
   }
 }
