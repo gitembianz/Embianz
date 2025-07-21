@@ -20,8 +20,6 @@ class AllJob extends Model
     ];
 
     protected $casts = [
-        'payload' => 'array',
-        'started_at' => 'datetime',
-        'finished_at' => 'datetime',
+        'payload' => 'array'
     ];
 }

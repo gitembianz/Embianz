@@ -247,6 +247,42 @@
         </div>
     </aside>
 
+
+    {{-- Modal add new listview --}}
+    <aside>
+        <div class="background background--center @if ($addlistview) active @endif"></div>
+        <div class="aside aside--confirm @if ($addlistview) active @endif"
+            style="min-height: 225px !important;">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    New Jobs
+                </span>
+                @foreach ($errors->all() as $error)
+                    <span class="details__long"
+                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+                @endforeach
+
+                <div class="input__tabs details__long">
+                    <input type="text" wire:model.defer="listview.name">
+                    <label>Listview name</label>
+                </div>
+
+
+                <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+                    <span>Save</span>
+                </button>
+                <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                    wire:click.prevent="$set('addlistview', false)">
+                    <span>Cancel</span>
+                </button>
+
+            </div>
+        </div>
+    </aside>
+
+
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Jobs') }} (@if ($jobs instanceof \Illuminate\Pagination\LengthAwarePaginator)
             {{ $jobs->total() }}
