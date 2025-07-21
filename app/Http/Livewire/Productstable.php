@@ -714,23 +714,23 @@ class Productstable extends Component
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-');
 
 
-        if (file_exists($path . $name)) {
+        if (file_exists($path . $name . '.' . $fileExtension)) {
           $j = 1;
-          while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
+          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
             $j++;
           }
-          $name = $product->name . '(' . $j . ').' . $fileExtension;
+          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = $product->name . '.' . $fileExtension;
+        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
         if (file_exists($path . $name)) {
           $j = 1;
-          while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
+          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
             $j++;
           }
-          $name = $product->name . '(' . $j . ').' . $fileExtension;
+          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
         Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
