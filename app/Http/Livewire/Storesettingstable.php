@@ -18,6 +18,7 @@ use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Store_Settings;
+use App\Jobs\RefreshPricesChunkJob;
 
 use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
@@ -1143,108 +1144,28 @@ class Storesettingstable extends Component
   }
   public function refreshprices()
   {
-    $epsilon = 0.0099;
 
-    $prices = PricelistEntries::all();
+    DB::transaction(function () {
+      $allJob = AllJob::create([
+        'name' => RefreshPricesChunkJob::class,
+        'type' => 'price_refresh',
+        'status' => 'pending',
+        'payload' => [], // You can include model counts or other context if needed
+        'related_table' => 'products',
+      ]);
 
-    foreach ($prices as $price) {
-      if (!is_null($price->value_no_vat) && is_null($price->value)) {
-        $price->value_no_discount = $price->value_no_vat * (1 + $price->vat / 100);
-        $price->value = $price->value_no_discount * (1 - $price->discount / 100);
-      } elseif (!is_null($price->value) && $price->discount > 0) {
-        $price->value_no_discount = $price->value / (1 - $price->discount / 100);
-        $price->value_no_vat = $price->value_no_discount / (1 + $price->vat / 100);
-      } elseif (!is_null($price->value) && $price->discount == 0) {
-        $price->value_no_vat = $price->value / (1 + $price->vat / 100);
-        $price->value_no_discount = $price->value_no_vat * (1 + $price->vat / 100);
-      }
-
-      $price->save();
-    }
-
-    $products = Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
-      ->get();
-
-    foreach ($products as $product) {
-      $cartPrices = $product->carts_item()->pluck('price');
-      $averagePrice = $cartPrices->isNotEmpty()
-        ? $cartPrices->avg()
-        : optional($product->product_prices->first())->value;
-
-      $totalCost = 0;
-      $count = 0;
-
-      foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
-        $cost = $orderSupplier->price;
-        $supplierCurrency = $orderSupplier->order->currency ?? null;
-        $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
-
-        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
-          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
-            $q->where('name', $supplierCurrency);
-          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
-            $q->where('name', $productCurrency);
-          })->latest()->first();
-
-          if (!$exchange) {
-            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
-              $q->where('name', $productCurrency);
-            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
-              $q->where('name', $supplierCurrency);
-            })->latest()->first();
-
-            if ($exchange) {
-              $cost /= $exchange->value;
-            }
-          } else {
-            $cost *= $exchange->value;
-          }
-        }
-
-        if ($cost) {
-          $totalCost += $cost;
-          $count++;
-        }
-      }
-
-      $averageCost = $count > 0 ? ($totalCost / $count) : null;
-
-      $oldPrice = optional($product->costs()->latest()->first())->price ?? null;
-
-      if ($oldPrice && abs($oldPrice - $averagePrice) > $epsilon) {
-        DB::table('product_costs')->insert([
-          'product_id' => $product->id,
-          'price' => $averagePrice,
-          'cost' => $averageCost,
-          'date' => now(),
-          'created_by' => auth()->user()->name,
-          'last_modified_by' => auth()->user()->name,
-          'created_at' => now(),
-          'updated_at' => now()
-        ]);
-      } elseif (!$oldPrice) {
-        DB::table('product_costs')->updateOrInsert(
-          ['product_id' => $product->id],
-          [
-            'price' => $averagePrice,
-            'cost' => $averageCost,
-            'date' => now(),
-            'created_by' => auth()->user()->name,
-            'last_modified_by' => auth()->user()->name,
-            'created_at' => now(),
-            'updated_at' => now()
-          ]
-        );
-      }
-    }
+      DB::afterCommit(function () use ($allJob) {
+        RefreshPricesChunkJob::dispatch($allJob->id);
+      });
+    });
 
     session()->flash('notification', [
-      'message' => 'Prices corrected successfully!',
+      'message' => 'Prices corrected successfully started by job!',
       'type' => 'success',
       'title' => 'Success'
     ]);
+
+
   }
 
   public function initializeSitemap()

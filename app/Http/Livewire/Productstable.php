@@ -655,6 +655,7 @@ class Productstable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function updatingcsvFile($value)
   {
     ini_set('max_execution_time', 300);
@@ -684,7 +685,6 @@ class Productstable extends Component
 
     if ($product) {
       $productType = class_basename(get_class($product));
-      //check for directory
       $filespath = 'media/' . $productType . '/';
       if (!File::exists($filespath)) {
         File::makeDirectory($filespath, 0755, true);
@@ -693,10 +693,9 @@ class Productstable extends Component
         File::makeDirectory($filespath . $product->id, 0755, true);
       }
       $path = $filespath . $product->id . "/";
-      $urlComponents = parse_url($mediaLink);
+      $mediaLink = strtok($mediaLink, '?');
+      $mediaLink = preg_replace('/(_\d+x\d+)?(\.\w+)$/', '$2', $mediaLink);
 
-      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
-      $mediaLink = $urlWithoutParams;
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
       $fileExtension = strtolower(pathinfo($mediaLink, PATHINFO_EXTENSION));
 
@@ -712,7 +711,9 @@ class Productstable extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
-        $name = strtolower(preg_replace('/\s+/', '-', $product->name));
+        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-');
+
+
         if (file_exists($path . $name)) {
           $j = 1;
           while (file_exists($path . $product->name . '(' . $j . ').' . $fileExtension)) {
@@ -866,6 +867,7 @@ class Productstable extends Component
 
     $product->media()->attach($resizedMedia->id);
   }
+
   public function expandRow($index)
   {
     if ($this->row  === null) {
