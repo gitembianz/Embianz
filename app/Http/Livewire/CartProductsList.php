@@ -48,11 +48,24 @@ class CartProductsList extends Component
   {
     if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
       $user = UserSessions::where('sessions', $this->session_id)->first();
-      return $user->promotions;
-    } else {
-      return collect();
+
+      if (!$user) {
+        return collect();
+      }
+
+      return $user->promotions()
+        ->whereHas('promotion', function ($query) {
+          $query->where('active', true)
+            ->where('start_date', '<=', now()->format('Y-m-d'))
+            ->where('end_date', '>=', now()->format('Y-m-d'));
+        })
+        ->with('promotion') // optional: eager load to avoid N+1
+        ->get();
     }
+
+    return collect();
   }
+
 
   public function getGlobalPromotionsProperty()
   {
