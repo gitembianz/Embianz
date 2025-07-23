@@ -419,7 +419,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" x-trap="open" class="content__searchable" style="display: none;">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
                                             <button type="button" class="item__searchable" @click="select(c.name)"
@@ -474,7 +474,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" x-trap="open" class="content__searchable"
+                                <div x-show="open" class="content__searchable"
                                     style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
@@ -673,7 +673,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" x-trap="open" class="content__searchable"
+                                <div x-show="open" class="content__searchable"
                                     style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
@@ -733,7 +733,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" x-trap="open" class="content__searchable"
+                                <div x-show="open" class="content__searchable"
                                     style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
