@@ -418,17 +418,30 @@
                         @endif
                     </a>
                     <span class="item__text--disabled" id="headerContinue">
-                        @if (app()->has('label_cart_order_mesage'))
-                            {!! app('label_cart_order_mesage') !!}
+                        @if (app()->has('label_	cart_order_error'))
+                            {!! app('label_	cart_order_error') !!}
                         @endif
                     </span>
                 @else
-                    <a class="leftbar__button leftbar__button--long" id="headerContinue"
-                        wire:click.prevent="continue()">
-                        @if (app()->has('label_cart_order'))
-                            {!! app('label_cart_order') !!}
-                        @endif
-                    </a>
+                    @if ($cart->final_amount < 0 || $cart->sum_amount <= $cart->promotion_value || $cart->sum_amount <= $cart->voucher_value)
+                        <a class="leftbar__button leftbar__button--long item__button--disabled">
+                            @if (app()->has('label_cart_order'))
+                                {!! app('label_cart_order') !!}
+                            @endif
+                        </a>
+                        <span class="item__text--disabled" id="headerContinue">
+                            @if (app()->has('label_cart_order_mesage'))
+                                {!! app('label_cart_order_mesage') !!}
+                            @endif
+                        </span>
+                    @else
+                        <a class="leftbar__button leftbar__button--long" id="headerContinue"
+                            wire:click.prevent="continue()">
+                            @if (app()->has('label_cart_order'))
+                                {!! app('label_cart_order') !!}
+                            @endif
+                        </a>
+                    @endif
                 @endif
             </div>
             <input type="hidden" value={{ $timer }} id="remaningtime">
@@ -518,7 +531,7 @@
 
                     products.forEach(function(product) {
                         let productName = product.querySelector('.leftbar__link--title')
-                        .innerText; // Extrage numele produsului
+                            .innerText; // Extrage numele produsului
                         let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText
                             .replace('RON', '')
                             .trim());
