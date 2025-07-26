@@ -349,6 +349,8 @@ class CartProductsList extends Component
       } elseif ($this->cart->voucher->value !== null) {
         $voucherValue = $this->cart->voucher->value;
       }
+    }else{
+      $this->removevoucher();
     }
 
     // If cart is empty, clear voucher info
@@ -476,6 +478,8 @@ class CartProductsList extends Component
       } elseif ($this->cart->voucher->value !== null) {
         $voucherValue = $this->cart->voucher->value;
       }
+    }else{
+      $this->removevoucher();
     }
 
     $this->cart->sum_amount = $sumAmount;
@@ -547,6 +551,8 @@ class CartProductsList extends Component
       } elseif ($this->cart->voucher->value !== null) {
         $voucherValue = $this->cart->voucher->value;
       }
+    }else{
+      $this->removevoucher();
     }
 
     $this->cart->sum_amount = $sumAmount;
