@@ -410,7 +410,7 @@
                                 wire:ignore.self>
                                 <input type="text" x-model.debounce.300ms="county" @focus="open = true"
                                     placeholder="County" class="input" autocomplete="off"
-                                    aria-label="County selection">
+                                    aria-label="County selection" id="individualBillingCounty">
 
                                 <span></span>
                                 <label for="individualBillingCounty">
@@ -465,7 +465,7 @@
                                 }" @click.away="open = false"
                                 wire:ignore.self>
                                 <input type="text" x-model.debounce.300ms="city" @focus="open = true"
-                                    placeholder="City" class="input" autocomplete="off" aria-label="City selection">
+                                    placeholder="City" class="input" autocomplete="off" aria-label="City selection" id="individualBillingCity">
 
                                 <span></span>
                                 <label for="individualBillingCity">
