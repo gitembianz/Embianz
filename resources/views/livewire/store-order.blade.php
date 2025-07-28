@@ -1906,7 +1906,7 @@
                                             {!! app('label_cart_total_tag') !!}
                                         @endif
                                     </span>
-                                    <span>{{ number_format($cart->final_amount - $cart->promotion_value, 2, $decimal, $mill) }}
+                                    <span>{{ number_format($cart->final_amount, 2, $decimal, $mill) }}
                                         @if (app()->has('global_currency_primary_symbol'))
                                             {!! app('global_currency_primary_symbol') !!}
                                         @endif
