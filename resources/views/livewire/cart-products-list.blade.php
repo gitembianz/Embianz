@@ -483,6 +483,7 @@
                                 }
 
                                 @this.call('checkpromotions');
+                                Livewire.emit('countdownExpired');
                             }
                         }, 1000);
                     }

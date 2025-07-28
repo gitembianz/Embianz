@@ -135,6 +135,7 @@ class StoreOrder extends Component
     'isdisabled' => 'checkIsDisabled',
     'timmerexpired' => 'checkpromotions',
     'saveFormToSession' => 'updateFormSession',
+    'countdownExpired' => 'mount',
   ];
 
   public function updated($propertyName)
@@ -525,6 +526,7 @@ class StoreOrder extends Component
       $this->invoice = true;
     }
   }
+
 
   public function mount()
   {
