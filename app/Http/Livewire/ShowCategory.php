@@ -4,12 +4,14 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Subcategory;
+use Illuminate\Support\Str;
 use App\Models\Related_Products;
 use App\Models\Products_categories;
-use App\Models\Subcategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+  use Illuminate\Support\Facades\Artisan;
 
 
 class ShowCategory extends Component
@@ -54,7 +56,9 @@ class ShowCategory extends Component
       'slider_sequence' => $this->category->slider_sequence,
       'acc_items' => $this->category->accepted_items,
       'preload' => $this->category->preload_image,
-      'varprice' => $this->category->display_variant_price
+      'varprice' => $this->category->display_variant_price,
+      'oneproduct' => $this->category->one_product_page_category == 1 ? true : false,
+
 
     ];
     $this->editcategory = true;
@@ -134,6 +138,16 @@ class ShowCategory extends Component
       if (array_key_exists('seo_title', $category_new)) {
         $new->seo_title = $category_new['seo_title'];
       }
+      if (array_key_exists('oneproduct', $category_new)) {
+        $new->one_product_page_category = $category_new['oneproduct'] == true ? 1 : 0;
+        if($category_new['oneproduct']){
+         Category::query()->update(['one_product_page_category' => 0]);
+        }
+        Cache::forget('one_product_ids');
+        Cache::forget('one_product_category');
+        Artisan::call('cache:clear');
+
+      }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();
       $new->save();
@@ -196,14 +210,16 @@ class ShowCategory extends Component
   }
   public function Productrelated()
   {
-    $products = Products_categories::where('category_id', $this->categoryId)
-      ->with(['product' => function ($query) {
-        $query->where('active', 1)
-          ->where('start_date', '<=', now()->format('Y-m-d'))
-          ->where('end_date', '>=', now()->format('Y-m-d'));
-      }])
-      ->get()
-      ->pluck('product');
+   $products = Products_categories::where('category_id', $this->categoryId)
+  ->with(['product' => function ($query) {
+    $query->where('active', 1)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'));
+  }])
+  ->get()
+  ->pluck('product')
+  ->filter();
+
 
     $relatedProductsData = [];
     foreach ($products as $parentProduct) {

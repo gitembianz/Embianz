@@ -17,8 +17,9 @@
    <!-------------------------Logo------------------------->
 
    <a class="logo" href="{{ url('/') }}">
-    <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg" alt="Logo">
+    <img title="{{ app('global_site_name') }} logo" loading="eager" src="\images\store\svg\logo-dark.svg" alt="Logo">
    </a>
+@if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
    <!---------------------NavMenu bar---------------------->
    <nav class="navbar__list">
     <ul class="navbar__list">
@@ -84,6 +85,8 @@
      @endforeach
     </ul>
    </nav>
+@endif
+
    <!---------------------Right-Buttons--------------------->
    <div class="header__buttons">
     <div class="head__button__left">
@@ -95,18 +98,21 @@
       </svg>
      </button>
      <a class="logo__hidden" href="{{ url('/') }}">
-      <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
+      <img title="{{ app('global_site_name') }} logo" loading="eager" src="\images\store\svg\logo-dark.svg"
        alt="Logo">
      </a>
     </div>
     <div class="head__button__right">
      {{-- search button --}}
+@if (app()->has('global_display_search_button') && app('global_display_search_button') === 'true')
+
      <button class="header__btn" wire:click="$emit('showsearch')" id="searchOpen" aria-label="Open Searchbar button">
       <svg>
        <circle cx="11" cy="11" r="8"></circle>
        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
      </button>
+     @endif
      @if (app()->has('global_support_on') && app('global_support_on') === 'true')
       <a href="tel: @if (app()->has('global_support_phone_number')) {!! app('global_support_phone_number') !!} @endif" class="header__btn"
        aria-label="Call">
@@ -162,6 +168,8 @@
     </button>
    </div>
    <ul class="menu__list">
+@if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
+
     @foreach ($categories as $category)
      @if ($category->subcategory->count() != 0)
       <li class="dropmenu">
@@ -239,19 +247,28 @@
       </li>
      @endif
     @endforeach
+@endif
     <li class="menufooter">Informații</li>
+  @if ($staticpages)
     @foreach ($staticpages as $page)
-     @if ($page->sequence % 2 == 0)
-      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
-     @endif
+        @if ($page['sequence'] % 2 == 0)
+            <li class="menufooter__item">
+                <a href="{{ url($page['route']) }}">{{ $page['name'] }}</a>
+            </li>
+        @endif
     @endforeach
+@endif
 
     <li class="menufooter">Serviciu clienți</li>
+     @if ($staticpages)
     @foreach ($staticpages as $page)
-     @if ($page->sequence % 2 != 0)
-      <li class="menufooter__item"><a href="{{ url($page->route) }}">{{ $page->name }}</a></li>
-     @endif
+        @if ($page['sequence'] % 2 != 0)
+            <li class="menufooter__item">
+                <a href="{{ url($page['route']) }}">{{ $page['name'] }}</a>
+            </li>
+        @endif
     @endforeach
+@endif
     <li class="menufooter__item"><a href="{{ url('/sitemap.xml') }}">Hartă Site</a></li>
     <li class="menufooter__item"><a target="blank" href="https://anpc.ro/">ANPC</a></li>
 

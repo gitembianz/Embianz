@@ -57,9 +57,7 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-    $this->staticpages = Cache::rememberForever('static_pages', function () {
-      return Static_Page::where('display_in_footer', 1)->get();
-    });
+    $this->staticpages = collect(app('static_pages'))->where('display_in_footer', true)->values();
     $counterpromo = $this->promotion->first();
     if (!$counterpromo) {
       return;

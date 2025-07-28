@@ -154,6 +154,20 @@
      <label for="active3">Display in footer</label>
     @endif
    </div>
+      <div class="checkbox__details ">
+    @if ($edititem === null)
+     @if ($page->active)
+      <input type="checkbox" id="active12" checked class="disabled" disabled />
+      <label for="active12" class="disabled">Active</label>
+     @else
+      <input type="checkbox" id="active22" class="disabled" disabled />
+      <label for="active22" class="disabled">Active</label>
+     @endif
+    @else
+     <input type="checkbox" id="active32" wire:model.defer="record.active" />
+     <label for="active32">Active</label>
+    @endif
+   </div>
   </div>
 
 

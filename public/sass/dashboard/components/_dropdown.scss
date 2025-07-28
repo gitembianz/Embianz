@@ -2,6 +2,12 @@ $triangle-size: 10px;
 $dropdown-width: 220px;
 $dropdown-height: 330px;
 
+.custom-dropdown-content::before {
+                content: "";
+                position: absolute;
+                left: 10px;
+            }
+
 .dropdown{
   position: relative;
 

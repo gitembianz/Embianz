@@ -49,6 +49,12 @@ return new class extends Migration
                 $table->boolean('display_variant_price')->nullable()->after('preload_image');
             });
         }
+        if (!Schema::hasColumn('categories', 'one_product_page_category')) {
+
+            Schema::table('categories', function (Blueprint $table) {
+                $table->boolean('one_product_page_category')->nullable()->after('preload_image');
+            });
+        }
         if (!Schema::hasColumn('categories', 'store_tab')) {
 
             Schema::table('categories', function (Blueprint $table) {

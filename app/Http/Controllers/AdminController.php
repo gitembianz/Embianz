@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Order;
+use App\Models\County;
 use App\Models\Account;
 use App\Models\Country;
 use App\Models\Product;
@@ -13,6 +15,7 @@ use App\Models\Voucher;
 use App\Models\Currency;
 use App\Models\Exchange;
 use App\Models\Promotion;
+use App\Models\Static_Page;
 use App\Models\CustomScript;
 use App\Models\UserSessions;
 use Illuminate\Http\Request;
@@ -21,19 +24,63 @@ use App\Models\ProductVariant;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\County;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Route;
-
 use App\Models\ProductReviews as ModelsProductReviews;
-use App\Models\Static_Page;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewUser;
 
 class AdminController extends Controller
 {
+
+
+  public function store_user(Request $request)
+  {
+    $validated = $request->validate([
+      'name'     => 'required|string|max:255',
+      'email'    => 'required|email|max:255|unique:users,email',
+      'password' => 'required|string|min:6',
+    ]);
+
+    $rawPassword = $validated['password'];
+
+    $values = [
+      "name"              => $validated['name'],
+      "usertype"          => $request->has('usertype'),
+      "email"             => $validated['email'],
+      "phone"             => $request->phone,
+      "adress"            => $request->adress,
+      "password"          => bcrypt($rawPassword),
+      "created_at"        => now(),
+      "updated_at"        => now(),
+    ];
+
+    User::insert($values);
+
+    try {
+      Mail::to($validated['email'])->send(new NewUser($validated['name'], $validated['email'], $rawPassword));
+
+      return redirect()->back()->with('notification', [
+        'message' => 'User created and email sent successfully!',
+        'type'    => 'success',
+        'title'   => 'Success'
+      ]);
+    } catch (\Exception $e) {
+      return redirect()->back()->with('notification', [
+        'message' => 'User created, but email could not be sent.',
+        'type'    => 'warning',
+        'title'   => 'Email Not Sent'
+      ]);
+    }
+  }
+
+
+
 
   public function store_page(Request $request)
   {
@@ -52,7 +99,8 @@ class AdminController extends Controller
       "route" => str_replace(' ', '-', $request->route),
       "content" => $request->content,
       "sequence" => $request->sequence,
-      'display_in_footer' => $request->has('active'),
+      "active" => $request->has('active'),
+      'display_in_footer' => $request->has('display_in_footer'),
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
       "created_at" => now(),
@@ -104,7 +152,8 @@ class AdminController extends Controller
   public function add_supplier()
   {
     $currencies = Currency::all();
-    return view('admin.add_supplier', compact('currencies'));
+    $exchanges = Exchange::all();
+    return view('admin.add_supplier', compact('currencies', 'exchanges'));
   }
 
   public function corectparent()
@@ -140,6 +189,8 @@ class AdminController extends Controller
       "date" => $request->date,
       "status" => "draft",
       'currency' => $request->currency,
+      'quote_currency' => $request->exchange,
+      'exchange_id' => $request->exchange,
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
       "created_at" => now(),
@@ -238,6 +289,11 @@ class AdminController extends Controller
   {
     $data = Order_Supplier::find($id);
     return view('admin.show_supplier', compact('data'));
+  }
+  public function show_user($id)
+  {
+    $data = User::find($id);
+    return view('admin.show_user', compact('data'));
   }
   public function show_country($id)
   {

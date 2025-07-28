@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class HomeController extends Controller
 {
@@ -43,6 +45,27 @@ class HomeController extends Controller
     } else {
       $preload = "";
     }
+  if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+    if (!app()->bound('one_product_ids')) {
+    throw new NotFoundHttpException();
+}
+    $ids = app()->make('one_product_ids');
+
+    if (count($ids) === 0) {
+      if (!app()->bound('one_product_category')) {
+    throw new NotFoundHttpException();
+}
+        $categorySlug = app()->make('one_product_category');
+        return redirect()->route('products', ['categorySlug' => $categorySlug]);
+    } else {
+        $first = $ids[0]; // ['id' => 12, 'seo_id' => 'cool-product']
+        $productRouteKey = $first['seo_id'] ?? $first['id'];
+
+        return redirect()->route('product', ['product' => $productRouteKey]);
+    }
+} else {
     return view('store.home', compact('preload'));
+}
+
   }
 }

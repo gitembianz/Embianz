@@ -17,11 +17,19 @@ class GeneralSearch extends Component
     public function render()
     {
         if ($this->active) {
+    if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+       $data = [
+          'objects' => $this->objects,
+          'cats' => collect(),
+      ];
+    }else{
 
-            $data = [
-                'objects' => $this->objects,
-                'cats' => $this->cats,
-            ];
+      $data = [
+          'objects' => $this->objects,
+          'cats' => $this->cats,
+      ];
+    }
+
 
             return view('livewire.general-search', $data);
         } else {
@@ -69,24 +77,50 @@ class GeneralSearch extends Component
                         && $product->end_date >= now()->format('Y-m-d');
                 })->sortByDesc('popularity')->sortByDesc('innerid')->take(app('global_limit_searchitems'));
             } else {
-                return Product::search($this->search)
-                    ->select('id', 'name', 'seo_id', 'type', 'short_description')
-                    ->where('active', true)
-                    ->where('type', '!=', 'parent')
-                    ->where('start_date', '<=', now()->format('Y-m-d'))
-                    ->where('end_date', '>=', now()->format('Y-m-d'))
-                    ->with([
-                        'media' => function ($query) {
-                            $query->select('path', 'name', 'type')->where('type', 'min');
-                        },
-                        'product_prices' => function ($query) {
-                            $query->select('product_id', 'value', 'pricelist_id');
-                        }
-                    ])
-                    ->orderBy('popularity', 'DESC')
-                    ->orderBy('innerid', 'ASC')
-                    ->limit(app('global_limit_searchitems'))
-                    ->get();
+    if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
+      if (app()->has('one_product_ids') && app('one_product_ids') != null){
+        $ids = array_column(app()->make('one_product_ids'), 'id');
+        return Product::search($this->search)
+          ->select('id', 'name', 'seo_id', 'type', 'short_description')
+          ->where('active', true)
+          ->where('type', '!=', 'parent')
+          ->where('start_date', '<=', now()->format('Y-m-d'))
+          ->where('end_date', '>=', now()->format('Y-m-d'))
+          ->whereIn('id', $ids)
+          ->with([
+              'media' => function ($query) {
+                  $query->select('path', 'name', 'type')->where('type', 'min');
+              },
+              'product_prices' => function ($query) {
+                  $query->select('product_id', 'value', 'pricelist_id');
+              }
+          ])
+          ->orderBy('popularity', 'DESC')
+          ->orderBy('innerid', 'ASC')
+          ->limit(app('global_limit_searchitems'))
+          ->get();
+      }
+    }else{
+
+      return Product::search($this->search)
+          ->select('id', 'name', 'seo_id', 'type', 'short_description')
+          ->where('active', true)
+          ->where('type', '!=', 'parent')
+          ->where('start_date', '<=', now()->format('Y-m-d'))
+          ->where('end_date', '>=', now()->format('Y-m-d'))
+          ->with([
+              'media' => function ($query) {
+                  $query->select('path', 'name', 'type')->where('type', 'min');
+              },
+              'product_prices' => function ($query) {
+                  $query->select('product_id', 'value', 'pricelist_id');
+              }
+          ])
+          ->orderBy('popularity', 'DESC')
+          ->orderBy('innerid', 'ASC')
+          ->limit(app('global_limit_searchitems'))
+          ->get();
+    }
             }
         } else {
             return collect();

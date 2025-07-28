@@ -132,6 +132,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Default'))
+      <th>
+       <button wire:click="sortBy('is_default')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+        Default
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('First Name'))
       <th>
        <button wire:click="sortBy('first_name')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
@@ -309,6 +319,29 @@
          {{ $address->type }}
         </td>
        @endif
+       @if ($this->showColumn('Default'))
+        <td class="hidden">
+         @if ($editindex !== $index)
+          @if ($address->is_default)
+           <div class="checkbox--secondary">
+            <input type="checkbox" id="isactive{{ $index }}" disabled checked>
+            <label for="isactive{{ $index }}"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="notactive{{ $index }}" disabled>
+            <label for="notactive{{ $index }}"></label>
+           </div>
+          @endif
+         @else
+          <div class="checkbox--secondary inline">
+           <input type="checkbox" id="check{{ $index }}"
+            wire:model.lazy="adress.{{ $index }}.is_default" />
+           <label for="check{{ $index }}"></label>
+          </div>
+         @endif
+        </td>
+       @endif
        @if ($this->showColumn('First Name'))
         <td wire:click="expandRow({{ $index }})">
          @if ($editindex !== $index)
@@ -448,7 +481,7 @@
             <polyline points="20 6 9 17 4 12"></polyline>
            </svg>
           </button>
-          <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
            <svg>
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>

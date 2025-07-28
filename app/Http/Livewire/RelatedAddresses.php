@@ -22,7 +22,7 @@ class RelatedAddresses extends Component
     public $showrelatedadd = false;
     public $accountId;
     public $idbeingremoved = null;
-    public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'Country ISO', 'County', 'County ISO', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'Default','First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'Country ISO', 'County', 'County ISO', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
     public $adress = [];
@@ -54,21 +54,22 @@ class RelatedAddresses extends Component
     {
         $this->editindex = $index;
         $record = Address::find($id);
-        $this->adress = [
-            $index . '.first_name' => $record->first_name,
-            $index . '.last_name' => $record->last_name,
-            $index . '.phone' => $record->phone,
-            $index . '.email' => $record->email,
-            $index . '.address1' => $record->address1,
-            $index . '.address2' => $record->address2,
-            $index . '.country' => $record->country,
-            $index . '.country_iso' => $record->country_iso,
+        $this->adress[$index] = [
+             'first_name' => $record->first_name,
+             'last_name' => $record->last_name,
+             'phone' => $record->phone,
+             'email' => $record->email,
+             'address1' => $record->address1,
+             'address2' => $record->address2,
+             'country' => $record->country,
+             'country_iso' => $record->country_iso,
 
-            $index . '.county' => $record->county,
-            $index . '.county_iso' => $record->county_iso,
+             'county' => $record->county,
+             'county_iso' => $record->county_iso,
+             'is_default' => $record->is_default,
 
-            $index . '.city' => $record->city,
-            $index . '.zipcode' => $record->zipcode,
+             'city' => $record->city,
+             'zipcode' => $record->zipcode,
         ];
     }
 
@@ -112,6 +113,16 @@ class RelatedAddresses extends Component
             }
             if (array_key_exists('zipcode', $record)) {
                 $new->zipcode = $record['zipcode'];
+            }
+
+            if (array_key_exists('is_default', $record)) {
+              if ($record['is_default']) {
+                Address::where('account_id', $this->accountId)
+                  ->where('is_default', true)
+                  ->where('type', $new->type)
+                  ->update(['is_default' => false]);
+                  $new->is_default = $record['is_default'];
+              }
             }
             $new->save();
             session()->flash('notification', [

@@ -14,6 +14,8 @@
       $decimal = ',';
   }
  @endphp
+ @if (app()->has('global_display_breadcrumbs') && app('global_display_breadcrumbs')==="true")
+
  <ol class="breadcrumbs container">
   <li>
    <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -46,6 +48,8 @@
     class="breadcrumbs__link">{{ $product->name }}</a>
   </li>
  </ol>
+ @endif
+
  <section class="product container">
   <!-------------------- Slider Product ------------------>
   <div class="product-slider">
@@ -168,15 +172,20 @@
      {!! app('label_pdp_description_tag') !!}
     @endif
    </button>
+     @if ($product->product_specs->isNotEmpty())
+
    <button class="tab__button" onclick="switchTab(1)">
     @if (app()->has('label_pdp_details_tag'))
      {!! app('label_pdp_details_tag') !!}
     @endif
    </button>
+   @endif
   </div>
   <div class="tab__content active">
    <p class="tab__info">{!! $product->long_description !!}</p>
   </div>
+     @if ($product->product_specs->isNotEmpty())
+
   <div class="tab__content">
    <table class="tab__table">
     <thead>
@@ -194,7 +203,7 @@
      </tr>
     </thead>
     <tbody>
-     @if ($product->product_specs->first() !== null)
+     @if ($product->product_specs->isNotEmpty())
       @foreach ($product->product_specs->sortBy('sequence') as $spec)
        <tr>
         <td>{{ $spec->spec->name }}</td>
@@ -213,6 +222,12 @@
     </tbody>
    </table>
   </div>
+@endif
+  <!----------------- End Product details ---------------->
+  <!------------------------------------------------------>
+  <!--------------------- End Section --------------------->
+  <!------------------------------------------------------>
+  <!------------------ End Section Description ------------>
  </section>
 
  <script>
@@ -233,6 +248,8 @@
  </script>
  <h2></h2>
  {{-- Display all categories --}}
+@if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
+
  <section class="container">
   <div class="related__cat">
    @if (app()->has('label_pdp_category_tag'))
@@ -249,6 +266,8 @@
    @endif
   </div>
  </section>
+
+ @endif
  <!---------------------------------------------------------->
  <!------------------- Section Description ------------------>
  @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())

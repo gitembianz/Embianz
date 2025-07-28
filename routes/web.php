@@ -43,7 +43,8 @@
 
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
-      route::view('/add_product', 'admin.add_products')->name('add_product');
+      Route::get('/add_product', [ProductController::class, 'create'])->name('add_product');
+
       route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
       route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');
@@ -53,6 +54,7 @@
       route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
       route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
 
+      route::view('/jobs', 'admin.jobs')->name('jobs');
 
 
       // brands routes
@@ -62,7 +64,10 @@
 
       route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
 
-
+      route::view('/users', 'admin.users')->name('users');
+      route::view('/add_user', 'admin.add_user')->name('add_user');
+      route::post('/new_user', [AdminController::class, 'store_user'])->name('new_user');
+      route::get('/show_user/{id}/', [AdminController::class, 'show_user'])->name('show_user');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
@@ -196,20 +201,16 @@
   route::view('/redirect', 'store.redirect')->name('redirect');
   Route::view('/404', 'store.404')->name('404');
 
-  $pages = Cache::rememberForever('static_pages', function () {
-    if (!Schema::hasTable('static_pages')) {
-      return collect();
-    }
+  $pages = Cache::get('static_pages');
 
-    return Static_Page::all();
-  });
-
+if($pages){
 
   foreach ($pages as $page) {
     Route::get($page->route, function () use ($page) {
       return view('store.page', ['page' => $page]);
     })->name($page->route);
   }
+}
 
   //Functionality page routes
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');

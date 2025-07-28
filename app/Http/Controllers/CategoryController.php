@@ -46,19 +46,25 @@ class CategoryController extends Controller
     } else {
       $seo_id = $this->generateUniqueSeoId($request->category);
     }
-    $data = new category;
+    $data = new Category;
     $data->name = $request->category;
-    $data->long_description = $request->long_description;
-    $data->short_description = $request->short_description;
-    $data->meta_description = $request->meta_description;
-    $data->sequence = $request->sequence;
+    $data->active = $request->has('active');
+    $data->store_tab = $request->has('visible');
+    $data->one_product_page_category = $request->has('one_product_page_category');
+    $data->display_variant_price = $request->has('display_variant_price');
+    $data->preload_image = $request->has('preload_image');
     $data->start_date = $request->start_date;
     $data->end_date = $request->end_date;
+    $data->sequence = $request->sequence;
+    $data->slider_sequence = $request->slider_sequence;
+    $data->meta_description = $request->meta_description;
+    $data->short_description = $request->short_description;
+    $data->accepted_items = $request->accepted_items;
+    $data->long_description = $request->long_description;
+    $data->long_description_bottom = $request->long_description_bottom;
     $data->createdby = Auth::user()->name;
     $data->lastmodifiedby = Auth::user()->name;
     $data->seo_title = $request->seo_title;
-    $data->active = $request->has('active');
-    $data->store_tab = $request->has('visible');
     $data->seo_id = $seo_id;
     $data->save();
     return redirect()->back()->with([

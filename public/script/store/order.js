@@ -108,17 +108,6 @@ function applyValidations(parentId, validations, triggerImmediately) {
 }
 
 function validateIndividual() {
-    applyValidations("individualShippingCityParent", cityValidations, true);
-    applyValidations("individualShippingCountyParent", countyValidations, true);
-    applyValidations("individualShippingAddressParent", addressValidations, true);
-    applyValidations("individualShippingPhoneParent", phoneValidation, true);
-    applyValidations("individualShippingEmailParent", emailValidation, true);
-    applyValidations("individualShippingLastNameParent", lastNameValidation, true);
-    applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
-}
-
-function validateIndividualIdentic() {
-    validateIndividual();
     applyValidations("individualBillingCityParent", cityValidations, true);
     applyValidations("individualBillingCountyParent", countyValidations, true);
     applyValidations("individualBillingAddressParent", addressValidations, true);
@@ -128,21 +117,23 @@ function validateIndividualIdentic() {
     applyValidations("individualBillingFirstNameParent", firstNameValidation, true);
 }
 
+function validateIndividualIdentic() {
+    applyValidations("individualShippingCityParent", cityValidations, true);
+    applyValidations("individualShippingCountyParent", countyValidations, true);
+    applyValidations("individualShippingAddressParent", addressValidations, true);
+    applyValidations("individualShippingPhoneParent", phoneValidation, true);
+    applyValidations("individualShippingEmailParent", emailValidation, true);
+    applyValidations("individualShippingLastNameParent", lastNameValidation, true);
+    applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
+    validateIndividual();
+}
+
 function validateJuridic() {
+
     applyValidations("registerCodeParent", registerCode, true);
     applyValidations("juridicShippingCountyParent", countyValidations, true);
     applyValidations("registerNumberParent", registerNumber, true);
     applyValidations("companyNameParent", companyName, true);
-    applyValidations("juridicShippingCityParent", cityValidations, true);
-    applyValidations("juridicShippingAddressParent", addressValidations, true);
-    applyValidations("juridicShippingPhoneParent", phoneValidation, true);
-    applyValidations("juridicShippingEmailParent", emailValidation, true);
-    applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
-    applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
-}
-
-function validateJuridicIdentic() {
-    validateJuridic();
     applyValidations("juridicBillingCityParent", cityValidations, true);
     applyValidations("juridicBillingCountyParent", countyValidations, true);
     applyValidations("juridicBillingAddressParent", addressValidations, true);
@@ -150,6 +141,17 @@ function validateJuridicIdentic() {
     applyValidations("juridicBillingEmailParent", emailValidation, true);
     applyValidations("juridicBillingLastNameParent", lastNameValidation, true);
     applyValidations("juridicBillingFirstNameParent", firstNameValidation, true);
+}
+
+function validateJuridicIdentic() {
+    applyValidations("juridicShippingCountyParent", countyValidations, true);
+    applyValidations("juridicShippingCityParent", cityValidations, true);
+    applyValidations("juridicShippingAddressParent", addressValidations, true);
+    applyValidations("juridicShippingPhoneParent", phoneValidation, true);
+    applyValidations("juridicShippingEmailParent", emailValidation, true);
+    applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
+    applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
+    validateJuridic();
 }
 
 window.addEventListener("update-validation", (event) => {

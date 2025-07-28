@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Static_Page;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Route;
 
 
 class ShowPage extends Component
@@ -48,6 +47,7 @@ class ShowPage extends Component
             'content' => $this->page->content,
             'sequence' => $this->page->sequence,
             'description' => $this->page->description,
+            'active' => $this->page->active == 1 ? true : false,
             'display_in_footer' => $this->page->display_in_footer == 1 ? true : false,
         ];
         $this->edititem = true;
@@ -64,7 +64,7 @@ class ShowPage extends Component
             return;
         }
 
-        $fields = ['name', 'route', 'content', 'description', 'sequence'];
+        $fields = ['name', 'active','route', 'content', 'description', 'sequence'];
         foreach ($fields as $field) {
             if (array_key_exists($field, $rec)) {
                 if (!empty($rec[$field])) {
@@ -83,6 +83,7 @@ class ShowPage extends Component
             }
         }
 
+
         if (array_key_exists('display_in_footer', $rec)) {
             $this->page->display_in_footer = $rec['display_in_footer'];
         }
@@ -91,35 +92,22 @@ class ShowPage extends Component
         $this->page->save();
 
         $this->emit('itemSaved');
+        $this->record = [];
+        $this->edititem = null;
+        Cache::forget('static_pages');
         session()->flash('notification', [
             'message' => 'Record edited successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
 
-        $this->record = [];
-        $this->edititem = null;
-        Cache::forget('static_pages');
-        $this->registerDynamicRoutes();
     }
-    public function registerDynamicRoutes()
-    {
-        $pages = Cache::rememberForever('static_pages', function () {
-            return Static_Page::all();
-        });
 
-        foreach ($pages as $page) {
-            Route::get($page->route, function () use ($page) {
-                return view('store.page', ['page' => $page]);
-            })->name($page->route);
-        }
-    }
     public function deleteSingleRecord()
     {
         $this->page->delete();
         Cache::forget('static_pages');
 
-        $this->registerDynamicRoutes();
 
         $this->delete = false;
         return redirect()->route('pages')->with('notification', [

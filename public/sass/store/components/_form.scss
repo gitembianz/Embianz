@@ -411,7 +411,6 @@ $transition__searchable: all 0.3s ease-in-out;
 .searchable {
   position: relative;
   width: $max-width__searchable;
-  height: 25px;
 
   &.active .content__searchable {
     opacity: 1;
@@ -419,38 +418,11 @@ $transition__searchable: all 0.3s ease-in-out;
     transform: translateY($triangle__searchable);
   }
 
-  &.active .button__searchable--line {
-    opacity: 1;
-  }
-}
-
-.button__searchable {
-  position: absolute;
-  transform: translateY(-50%) scale(0.85);
-  top: 17px;
-  right: 7px;
-  border: none;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  & svg {
-    transform: scale(0.7);
-    transition: $transition__searchable;
-  }
-
-  &--line {
-    opacity: 0;
-    transition: $transition__searchable;
-  }
 }
 
 
-/// Searchable Body
+
+
 .content__searchable {
   position: absolute;
   z-index: 1;
@@ -464,6 +436,9 @@ $transition__searchable: all 0.3s ease-in-out;
   visibility: hidden;
   transform: translateY($triangle__searchable + $padding__searchable);
   z-index: 500;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+
 
   &::after {
     position: absolute;
@@ -486,6 +461,7 @@ $transition__searchable: all 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: $padding__searchable;
+  background: $bg__searchable;
   overflow: auto;
 }
 
@@ -500,6 +476,7 @@ $transition__searchable: all 0.3s ease-in-out;
   text-align: left;
   text-wrap: balance;
   cursor: pointer;
+  background: $bg__searchable;
   transition: $transition__searchable;
 
   &:active {
