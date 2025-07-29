@@ -9,6 +9,7 @@ class Kernel extends ConsoleKernel
 {
   protected $commands = [
     \App\Console\Commands\UpdateSeoIdsCommand::class,
+    \App\Console\Commands\EnsureListviewsTable::class,
     // Other commands...
   ];
   /**

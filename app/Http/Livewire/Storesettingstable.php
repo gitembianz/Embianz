@@ -562,6 +562,10 @@ class Storesettingstable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')

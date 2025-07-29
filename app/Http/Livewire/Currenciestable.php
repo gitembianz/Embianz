@@ -14,6 +14,7 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use App\Jobs\DynamicCsvImportJob;
+use Illuminate\Support\Facades\Artisan;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -533,6 +534,10 @@ class Currenciestable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')

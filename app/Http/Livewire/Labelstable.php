@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use App\Jobs\DynamicCsvImportJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Artisan;
 
 use Database\Seeders\TextLabelSeeder;
 use Illuminate\Support\Facades\Cache;
@@ -537,6 +538,10 @@ class Labelstable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')

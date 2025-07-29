@@ -359,7 +359,6 @@
                     <div style="display: none" class="json-ld-data" data-product-json='@json($element)'>
                     </div>
                 </div>
-                @include('partials.jsonld', ['product' => $product])
 
             @endforeach
             @unless (app()->has('global_pagination') && app('global_pagination') === 'links')

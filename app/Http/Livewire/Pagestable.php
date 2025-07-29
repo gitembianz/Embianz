@@ -11,6 +11,7 @@ use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Artisan;
 
 use App\Jobs\DynamicCsvImportJob;
 use Illuminate\Support\Facades\DB;
@@ -530,6 +531,10 @@ class Pagestable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')
