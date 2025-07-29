@@ -271,6 +271,13 @@ class TextLabelSeeder extends Seeder
       ['parameter' => 'xml_FurnizorAdresa', 'value' => 'BUCURESTI sect. 1 str. BLV.BUCURESTII NOI nr. 50A bl. TRS.A+C ap. 64', 'description' => 'XML', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'xml_FurnizorInformatiiSuplimentare', 'value' => 'Tel. 0757.527.656', 'description' => 'XML', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'xml_filename', 'value' => 'F_41903669', 'description' => 'XML file prefix', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'maintenance_page_title', 'value' => 'maintenance', 'description' => 'maintenance title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'maintenance_page_content', 'value' => 'Site-ul este în mentenanță
+Ne cerem scuze pentru inconvenient. Efectuăm lucrări de întreținere programată pentru a îmbunătăți experiența dumneavoastră.
+
+Vă rugăm să reveniți mai târziu.
+
+Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
     ];
