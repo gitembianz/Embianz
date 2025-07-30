@@ -233,3 +233,7 @@
   });
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
+
+  Route::get('/test1', function () {
+    return response('', 200);
+});
