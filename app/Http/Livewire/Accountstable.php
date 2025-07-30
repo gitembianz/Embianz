@@ -11,6 +11,7 @@ use Livewire\Component;
 use App\Models\Listview;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Artisan;
 
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -538,6 +539,10 @@ class Accountstable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')

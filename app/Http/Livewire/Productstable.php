@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Cache;
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
@@ -582,11 +583,17 @@ class Productstable extends Component
   }
   public function getListviewsProperty()
   {
+     if (!Schema::hasTable('listviews')) {
+        Artisan::call('ensure:listviews-table');
+    }
+
     return Listview::where('user_id', Auth::id())
       ->where('model', $this->tableName)
       ->orderBy('updated_at', 'desc')
       ->get();
   }
+
+
   public function moveToVisible()
   {
     if ($this->selectedAvailable !== '') {
