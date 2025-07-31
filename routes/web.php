@@ -238,7 +238,7 @@ if($pages){
 
 // Speed test with minimal Blade rendering
 Route::get('/test2', function () {
-    return view('speedtest2');
+    return view('speedtest');
 });
 
 Route::get('/sapi', function () {
