@@ -17,7 +17,7 @@ class StoreController extends Controller
     } else {
       $data = null;
     }
-        return view('store.search', compact('data'));
+    return view('store.search', compact('data'));
   }
 
   public function products($categorySlug = null)
@@ -57,7 +57,7 @@ class StoreController extends Controller
       ? app()->make('cached_products')->filter(function ($product) use ($category) {
         return collect($product->product_categories)->contains('category_id', $category->id);
       })->sortByDesc('popularity')
-      ->sortByDesc('id')
+      ->sortByAsc('innerid')
       ->first()
       : Product::where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
@@ -74,7 +74,7 @@ class StoreController extends Controller
         }
       ])
       ->orderBy('popularity', 'desc')
-      ->orderBy('id', 'desc')
+      ->orderBy('innerid', 'ASC')
       ->first();
     if ($product) {
 
@@ -85,25 +85,22 @@ class StoreController extends Controller
 
       $ids = app()->make('one_product_ids');
 
-    if (count($ids) != 0) {
+      if (count($ids) != 0) {
         $first = $ids[0];
         $productRouteKey = $first['seo_id'] ?? $first['id'];
 
         return redirect()->route('product', ['product' => $productRouteKey]);
-    }
-    else {
-      if (!app()->bound('one_product_category')) {
-        throw new NotFoundHttpException();
+      } else {
+        if (!app()->bound('one_product_category')) {
+          throw new NotFoundHttpException();
+        }
+        $id = app()->make('one_product_category');
+        if ($id != null && $id != $data->id) {
+          return redirect()->route('products', ['categorySlug' => $id]);
+        }
       }
-      $id = app()->make('one_product_category');
-      if($id != null && $id != $data->id){
-        return redirect()->route('products', ['categorySlug' => $id]);
-
-      }
     }
-  }
-  return view('store.products', compact('data', 'can', 'preload'));
-
+    return view('store.products', compact('data', 'can', 'preload'));
   }
 
   private function isCategoryInvalid($category)
@@ -117,19 +114,18 @@ class StoreController extends Controller
   private function getPreloadImage($product, $data, $useCache)
   {
     $media = $useCache ? $product->media->where('type', 'main')->first() : $product->media->first();
-    if (app()->has('global_'))
-      if (!$data->preload_image) {
-        return '';
-      }
+    if (!$data->preload_image) {
+      return '';
+    }
 
     if ($product && $product->product_categories != null && $product->type != 'parent') {
       return "/" . optional($media)->path . optional($media)->name;
     }
 
-    if ($product && $product->product_categories != null && $product->type == 'parent' && $product->variants->count() != 0) {
+    if ($product && $product->product_categories != null && $product->type === 'parent' && $product->variants->count() != 0) {
       $variant = $product->variants->where('default_variant', true)->first() ?? $product->variants->first();
       $element = $variant->product;
-      $mediaa = $useCache ? $element->media->where('type', 'main')->first() : $element->media->first();
+      $mediaa = $element->media->where('type', 'main')->first() ?? $element->media->first();
       return "/" . optional($mediaa)->path . optional($mediaa)->name;
     }
 
@@ -147,30 +143,30 @@ class StoreController extends Controller
     }
 
     if (
-        app()->has('global_one_product_page_system') &&
-        app('global_one_product_page_system') === 'true'
+      app()->has('global_one_product_page_system') &&
+      app('global_one_product_page_system') === 'true'
     ) {
       if (!app()->bound('one_product_ids')) {
-    throw new NotFoundHttpException();
-}
-        $ids = app()->make('one_product_ids');
+        throw new NotFoundHttpException();
+      }
+      $ids = app()->make('one_product_ids');
 
-        $validIds = collect($ids)->pluck('id')->all();
-        $validSeoIds = collect($ids)->pluck('seo_id')->filter()->all();
+      $validIds = collect($ids)->pluck('id')->all();
+      $validSeoIds = collect($ids)->pluck('seo_id')->filter()->all();
 
-        $isAllowed = (isset($productId) && in_array($productId, $validIds)) ||
-                     (isset($seoId) && in_array($seoId, $validSeoIds));
+      $isAllowed = (isset($productId) && in_array($productId, $validIds)) ||
+        (isset($seoId) && in_array($seoId, $validSeoIds));
 
-        if (!$isAllowed) {
-            if (count($ids) === 0) {
-                $categorySlug = app()->make('one_product_category') ?? app('global_default_category');
-                return redirect()->route('products', ['categorySlug' => $categorySlug]);
-            } else {
-                $first = $ids[0];
-                $productRouteKey = $first['seo_id'] ?? $first['id'];
-                return redirect()->route('product', ['product' => $productRouteKey]);
-            }
+      if (!$isAllowed) {
+        if (count($ids) === 0) {
+          $categorySlug = app()->make('one_product_category') ?? app('global_default_category');
+          return redirect()->route('products', ['categorySlug' => $categorySlug]);
+        } else {
+          $first = $ids[0];
+          $productRouteKey = $first['seo_id'] ?? $first['id'];
+          return redirect()->route('product', ['product' => $productRouteKey]);
         }
+      }
     }
 
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
