@@ -233,3 +233,18 @@
   });
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
+
+
+  //Speed test
+  Route::get('/test1', function () {
+    return response('', 200);
+});
+
+// Speed test with minimal Blade rendering
+Route::get('/test2', function () {
+    return view('speedtest');
+});
+
+Route::get('/sapi', function () {
+    return php_sapi_name();
+});
