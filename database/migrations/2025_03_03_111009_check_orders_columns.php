@@ -38,6 +38,12 @@ return new class extends Migration
                     $table->decimal('avg_cost', 10, 4)->default(0)->after('promotion_value');
                 });
             }
+             if (!Schema::hasColumn('orders', 'delivery_price_vat')) {
+
+                Schema::table('orders', function (Blueprint $table) {
+                    $table->decimal('delivery_price_vat', 5, 2)->default(19)->after('delivery_price');
+                });
+            }
         });
     }
 
