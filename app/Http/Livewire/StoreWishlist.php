@@ -101,6 +101,7 @@ class StoreWishlist extends Component
         'session_id' => $this->session_id,
         'name' => $uniqueName,
         'delivery_price' => app('global_delivery_price'),
+        'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
         'status_id' => app('global_cart_new'),
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
