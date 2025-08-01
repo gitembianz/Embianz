@@ -474,7 +474,7 @@
                 @else
                     <input type="text" wire:model.defer="record.delivery_price_vat">
                 @endif
-                <label>Delivery Price </label>
+                <label>Delivery Price VAT </label>
 
             </div>
 
