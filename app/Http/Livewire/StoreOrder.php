@@ -624,25 +624,25 @@ class StoreOrder extends Component
             $this->individual_billing_last = $account->last_name;
             $this->individual_billing_phone = $account->phone;
             $this->individual_billing_email = $account->email;
-            $this->individual_billing_address1 = $account->orders->where('is_default', true)->last()->billing->address1;
-            $this->individual_billing_address2 = $account->orders->where('is_default', true)->last()->billing->address2;
-            $this->individual_billing_country = $account->orders->where('is_default', true)->last()->billing->country;
+            $this->individual_billing_address1 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address1;
+            $this->individual_billing_address2 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address2;
+            $this->individual_billing_country = optional(optional($account->addresses->where('is_default', true)->last())->billing)->country;
 
-            $this->individual_billing_city = $account->orders->where('is_default', true)->last()->billing->city;
-            $this->individual_billing_zipcode = $account->orders->where('is_default', true)->last()->billing->zipcode;
-            $this->individual_shipping_first = $account->orders->where('is_default', true)->last()->shipping->first_name;
-            $this->individual_shipping_last = $account->orders->where('is_default', true)->last()->shipping->last_name;
-            $this->individual_shipping_phone = $account->orders->where('is_default', true)->last()->shipping->phone;
-            $this->individual_shipping_email = $account->orders->where('is_default', true)->last()->shipping->email;
-            $this->individual_shipping_address1 = $account->orders->where('is_default', true)->last()->shipping->address1;
-            $this->individual_shipping_address2 = $account->orders->where('is_default', true)->last()->shipping->address2;
-            $this->individual_shipping_country = $account->orders->where('is_default', true)->last()->shipping->country;
+            $this->individual_billing_city = optional(optional($account->addresses->where('is_default', true)->last())->billing)->city;
+            $this->individual_billing_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->billing)->zipcode;
+            $this->individual_shipping_first = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->first_name;
+            $this->individual_shipping_last = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->last_name;
+            $this->individual_shipping_phone = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->phone;
+            $this->individual_shipping_email = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->email;
+            $this->individual_shipping_address1 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address1;
+            $this->individual_shipping_address2 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address2;
+            $this->individual_shipping_country = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->country;
 
 
-            $this->individual_shipping_city = $account->orders->where('is_default', true)->last()->shipping->city;
-            $this->individual_shipping_zipcode = $account->orders->where('is_default', true)->last()->shipping->zipcode;
-            $this->individual_shipping_county = $account->orders->where('is_default', true)->last()->shipping->county;
-            $this->individual_billing_county = $account->orders->where('is_default', true)->last()->billing->county;
+            $this->individual_shipping_city = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->city;
+            $this->individual_shipping_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->zipcode;
+            $this->individual_shipping_county = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->county;
+            $this->individual_billing_county = optional(optional($account->addresses->where('is_default', true)->last())->billing)->county;
           } else {
             $this->juridic = true;
             $this->individual = false;
@@ -656,22 +656,22 @@ class StoreOrder extends Component
             $this->juridic_billing_registration_number = $account->registration_number;
             $this->juridic_billing_bank = $account->bank_name;
             $this->juridic_billing_account = $account->account;
-            $this->juridic_billing_address1 = $account->orders->last()->billing->address1;
-            $this->juridic_billing_address2 = $account->orders->last()->billing->address2;
-            $this->juridic_billing_country = $account->orders->last()->billing->country;
-            $this->juridic_billing_city = $account->orders->last()->billing->city;
-            $this->juridic_billing_zipcode = $account->orders->last()->billing->zipcode;
-            $this->juridic_shipping_first = $account->orders->last()->shipping->first_name;
-            $this->juridic_shipping_last = $account->orders->last()->shipping->last_name;
-            $this->juridic_shipping_phone = $account->orders->last()->shipping->phone;
-            $this->juridic_shipping_email = $account->orders->last()->shipping->email;
-            $this->juridic_shipping_address1 = $account->orders->last()->shipping->address1;
-            $this->juridic_shipping_address2 = $account->orders->last()->shipping->address2;
-            $this->juridic_shipping_country = $account->orders->last()->shipping->country;
-            $this->juridic_shipping_city = $account->orders->last()->shipping->city;
-            $this->juridic_shipping_zipcode = $account->orders->last()->shipping->zipcode;
-            $this->juridic_shipping_county = $account->orders->last()->shipping->county;
-            $this->juridic_billing_county = $account->orders->last()->billing->county;
+            $this->juridic_billing_address1 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address1;
+            $this->juridic_billing_address2 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address2;
+            $this->juridic_billing_country = optional(optional($account->addresses->where('is_default', true)->last())->billing)->country;
+            $this->juridic_billing_city = optional(optional($account->addresses->where('is_default', true)->last())->billing)->city;
+            $this->juridic_billing_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->billing)->zipcode;
+            $this->juridic_shipping_first = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->first_name;
+            $this->juridic_shipping_last = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->last_name;
+            $this->juridic_shipping_phone = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->phone;
+            $this->juridic_shipping_email = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->email;
+            $this->juridic_shipping_address1 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address1;
+            $this->juridic_shipping_address2 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address2;
+            $this->juridic_shipping_country = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->country;
+            $this->juridic_shipping_city = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->city;
+            $this->juridic_shipping_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->zipcode;
+            $this->juridic_shipping_county = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->county;
+            $this->juridic_billing_county = optional(optional($account->addresses->where('is_default', true)->last())->billing)->county;
           }
         }
       }
