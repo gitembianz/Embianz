@@ -890,6 +890,7 @@ class StoreOrder extends Component
         'sum_amount' => $this->cart->sum_amount,
         'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value - $this->cart->promotion_value),
         'delivery_price' => app('global_delivery_price'),
+        'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
         'voucher_value' => $this->cart->voucher_value ?? 0,
         'promotion_value' => $this->cart->promotion_value ?? 0,
         'currency_id' => $this->cart->currency_id,
