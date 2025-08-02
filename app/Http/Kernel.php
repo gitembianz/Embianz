@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 'check.order' => \App\Http\Middleware\CheckOrderMiddleware::class,
         'categorycheck' => \App\Http\Middleware\CategoryCheck::class,
+        'site.off' => \App\Http\Middleware\SiteOff::class, // Add this line for the SiteOff middleware
     ];
 }

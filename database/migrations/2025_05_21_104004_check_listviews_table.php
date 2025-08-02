@@ -28,6 +28,16 @@ return new class extends Migration
           $table->string('name')->nullable();
         });
       }
+      if (!Schema::hasColumn('listviews', 'model')) {
+        Schema::table('listviews', function (Blueprint $table) {
+          $table->string('model')->nullable();
+        });
+      }
+      if (!Schema::hasColumn('listviews', 'logic')) {
+        Schema::table('listviews', function (Blueprint $table) {
+          $table->string('logic')->nullable();
+        });
+      }
       if (!Schema::hasColumn('listviews', 'columns')) {
         Schema::table('listviews', function (Blueprint $table) {
           $table->json('columns')->nullable();
@@ -36,6 +46,11 @@ return new class extends Migration
       if (!Schema::hasColumn('listviews', 'filters')) {
         Schema::table('listviews', function (Blueprint $table) {
           $table->json('filters')->nullable();
+        });
+      }
+      if (!Schema::hasColumn('listviews', 'sorts')) {
+        Schema::table('listviews', function (Blueprint $table) {
+          $table->json('sorts')->nullable();
         });
       }
       if (!Schema::hasColumn('listviews', 'logic')) {

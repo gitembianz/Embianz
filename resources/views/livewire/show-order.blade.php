@@ -21,7 +21,7 @@
     <aside>
         <div class="background background--center @if ($sameday) active @endif"></div>
         <div class="aside aside--confirm @if ($sameday) active @endif"
-            style="@if (!$needupdatetokens) min-height: 50% !important;@else min-height: 175px !important; @endif">
+            style="@if (!$needupdatetokens) min-height: 50% !important;@else min-height: 275px !important; @endif">
             <div class="tabs__content details__view active" style="max-height: 100%;">
                 @if (isset($samedaymessage))
                     <span class="details__long" style="color: red !important;">
@@ -32,7 +32,7 @@
                     style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
                     Sameday AWB
                 </span>
-                @if (!$needupdatetokens)
+                @if (!$needupdatetokens || ($services != null && $addresses != null && $persons != null))
                     <div class="input__tabs details__long">
                         <select wire:model.defer="service">
                             @foreach ($services as $service)
@@ -144,10 +144,17 @@
                         <span>Cancel</span>
                     </button>
                 @else
-                    <span style="display: block; margin-bottom: 10px; font-size: 1.2em; font-weight: bold;">
-                        Please update your tokens for generating sameday AWB
-                    </span>
-                    <button class="button button--danger button--long" wire:click.prevent="$set('sameday', false)">
+                    <div class="input__tabs details__long">
+                        <span style="display: block; margin-bottom: 10px; font-size: 1.2em; font-weight: bold;">
+                            Please update your tokens for generating sameday AWB
+                        </span>
+                    </div>
+                    <button style="width: 100%" class="button button--primary button--long"
+                        wire:click.prevent="get_sameday_token()">
+                        <span>Generate token</span>
+                    </button>
+                    <button style="width: 100%" class="button button--danger button--long"
+                        wire:click.prevent="$set('sameday', false)">
                         <span>Cancel</span>
                     </button>
                 @endif
@@ -286,7 +293,7 @@
             {{-- Dropdown Content --}}
             <div class="dropdown__content">
                 <div class="dropdown__container">
-                  <button class="button button--primary button--long" wire:click="instant_invoice()">
+                    <button class="button button--primary button--long" wire:click="instant_invoice()">
                         Instant invoice
                     </button>
                     <button class="button button--primary button--long" wire:click="generate_invoice_number()">
@@ -307,7 +314,7 @@
             {{-- Dropdown Content --}}
             <div class="dropdown__content">
                 <div class="dropdown__container">
-                  <button class="button button--primary button--long" wire:click="instant_storno()">
+                    <button class="button button--primary button--long" wire:click="instant_storno()">
                         Instant storno
                     </button>
                     <button class="button button--primary button--long" wire:click="generate_storno_number()">
@@ -420,21 +427,33 @@
             <span class="disabled">{{ $order->quantity_amount }}</span>
             <label>Quantity amount </label>
         </div>
-        {{-- Order Sum amount --}}
-        <div class="input__tabs">
-            <span class="disabled">{{ $order->sum_amount }}</span>
-            <label>Sum amount </label>
-        </div>
-        {{-- Order Sum amount --}}
-
         <div class="details__checkboxes">
+
+            {{-- Order Sum amount --}}
+            <div class="input__tabs">
+                <span class="disabled">{{ $order->sum_amount }}</span>
+                <label>Sum amount </label>
+            </div>
             <div class="input__tabs">
                 <span class="disabled">{{ $order->final_amount }}</span>
                 <label>Final amount </label>
             </div>
+        </div>
+        {{-- Order Sum amount --}}
+
+        <div class="details__checkboxes">
+
             <div class="input__tabs">
                 <span class="disabled">{{ $order->avg_cost }}</span>
                 <label>Average cost</label>
+            </div>
+            <div class="input__tabs">
+                @if ($edititem === null)
+                    <span class="disabled">{{ $order->promotion_value }}</span>
+                @else
+                    <input type="text" wire:model.defer="record.promotion_value">
+                @endif
+                <label for="category__name">Promotion Value</label>
             </div>
         </div>
         <div class="details__checkboxes">
@@ -449,16 +468,17 @@
 
             </div>
             {{-- Order Sum amount --}}
-
-
             <div class="input__tabs">
                 @if ($edititem === null)
-                    <span class="disabled">{{ $order->promotion_value }}</span>
+                    <span class="disabled">{{ $order->delivery_price_vat }}</span>
                 @else
-                    <input type="text" wire:model.defer="record.promotion_value">
+                    <input type="text" wire:model.defer="record.delivery_price_vat">
                 @endif
-                <label for="category__name">Promotion Value</label>
+                <label>Delivery Price VAT </label>
+
             </div>
+
+
         </div>
         {{-- Order Currency --}}
         <div class="input__tabs">

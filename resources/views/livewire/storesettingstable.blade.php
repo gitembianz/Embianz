@@ -1,4 +1,6 @@
-<section class="content">
+<section class="content" style="height: 100%; overflow: auto; padding-bottom: 1rem;">
+
+    {{-- Modal Logo --}}
     {{-- X-Components --}}
     <x-alert />
 
@@ -373,7 +375,7 @@
     </style>
 
     <h1 class="table--name">{{ __('Store Settings') }} ({{ $storesettings->total() }})</h1>
-    <nav class="nav--controls">
+    <nav class="nav--controls" style="margin-bottom: 10px">
         @if ($activelistview)
 
             <div class="dropdown dropdown--right">
@@ -529,7 +531,7 @@
         </button>
     @endif
     {{-- Table --}}
-    <div class="table" @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
+    <div  @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
         <table class="expandable-table">
             <thead>
                 <tr>

@@ -990,19 +990,23 @@ class ShowOrder extends Component
       }
     }
     // delivery sistem
+    $delivery_vat = (int) (
+      $this->order->delivery_price_vat
+      ?? (app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19)
+    );
     $htmlContent .= "
                 <tr>
                     <td>" . ($i + 1) . "</td>
                     <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "</td>
                     <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                    <td>19</td>
+                    <td>" . $delivery_vat . "</td>
                     <td>1</td>
-                    <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-                    <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-                    <td>" . number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 / 100)))), 2) . "</td>
+                    <td>" . number_format(($this->order->delivery_price / (1 + ($delivery_vat / 100))), 2) . "</td>
+                    <td>" . number_format(($this->order->delivery_price / (1 + ($delivery_vat / 100))), 2) . "</td>
+                    <td>" . number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + ($delivery_vat / 100)))), 2) . "</td>
                     <td>" . number_format($this->order->delivery_price, 2) . "</td>
                 </tr>";
-    $totalval += $this->order->delivery_price / (1 + (19 / 100));
+    $totalval += $this->order->delivery_price / (1 + ($delivery_vat / 100));
     // total row
     $htmlContent .= "
                 <tr>
@@ -1019,7 +1023,8 @@ class ShowOrder extends Component
         <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
     $pdf = PDF::loadHTML($htmlContent);
-    $pdf->save($filePath);
+    Storage::disk('public_upload')->put($filePath, $pdf->output());
+
 
     Invoice::create([
       'account_id' => $this->order->account_id,
@@ -1171,7 +1176,11 @@ class ShowOrder extends Component
       }
     }
     $deliveryPrice = $this->order->delivery_price;
-    $deliveryPriceWithoutVAT = $deliveryPrice / (1 + (19 / 100));
+    $delivery_vat = (int) (
+      $this->order->delivery_price_vat
+      ?? (app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19)
+    );
+    $deliveryPriceWithoutVAT = $deliveryPrice / (1 + ($delivery_vat / 100));
 
     if ($deliveryPrice > 0) {
       if ($type === 'invoice_xml') {
@@ -1187,7 +1196,7 @@ class ShowOrder extends Component
           'Cantitate' => '1.0000',
           'Pret' => number_format($deliveryPriceWithoutVAT, 4),
           'Valoare' => number_format($deliveryPriceWithoutVAT, 4),
-          'ProcTVA' => number_format(19, 2),
+          'ProcTVA' => number_format($delivery_vat, 2),
           'TVA' => number_format($this->order->delivery_price - $deliveryPriceWithoutVAT, 4),
         ];
       } else {
@@ -1202,7 +1211,7 @@ class ShowOrder extends Component
           'Cantitate' => '-' . '1.0000',
           'Pret' => number_format($deliveryPriceWithoutVAT, 4),
           'Valoare' => '-' . number_format($deliveryPriceWithoutVAT, 4),
-          'ProcTVA' => number_format(19, 2),
+          'ProcTVA' => number_format($delivery_vat, 2),
           'TVA' => '-' . number_format($this->order->delivery_price - $deliveryPriceWithoutVAT, 4),
         ];
       }
@@ -1534,21 +1543,27 @@ class ShowOrder extends Component
       }
     }
     // delivery sistem
+    $delivery_vat = (int) (
+      $this->order->delivery_price_vat
+      ?? (app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19)
+    );
+
+
     $htmlContent .= "
             <tr>
                 <td>" . ($i + 1) . "</td>
                 <td>" . (app()->has('label_invoice_th_delivery') ? app('label_invoice_th_delivery') : 'Transport') . "
                 </td>
                 <td>" . (app()->has('label_invoice_um_text') ? app('label_invoice_um_text') : 'buc.') . "</td>
-                <td>19</td>
+                <td>" . $delivery_vat . "</td>
                 <td>-1</td>
-                <td>" . number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-                <td>" . -number_format(($this->order->delivery_price / (1 + (19 / 100))), 2) . "</td>
-                <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + (19 /
+                <td>" . number_format(($this->order->delivery_price / (1 + ($delivery_vat / 100))), 2) . "</td>
+                <td>" . -number_format(($this->order->delivery_price / (1 + ($delivery_vat / 100))), 2) . "</td>
+                <td>" . -number_format(($this->order->delivery_price - ($this->order->delivery_price / (1 + ($delivery_vat /
       100)))), 2) . "</td>
                 <td>" . -number_format($this->order->delivery_price, 2) . "</td>
             </tr>";
-    $totalval += $this->order->delivery_price / (1 + (19 / 100));
+    $totalval += $this->order->delivery_price / (1 + ($delivery_vat / 100));
     // total row
     $htmlContent .= "
             <tr>
@@ -1577,7 +1592,7 @@ class ShowOrder extends Component
       </html>";
 
     $pdf = PDF::loadHTML($htmlContent);
-    $pdf->save($filePath);
+    Storage::disk('public_upload')->put($filePath, $pdf->output());
 
     Invoice::create([
       'account_id' => $this->order->account_id,
@@ -1660,7 +1675,8 @@ class ShowOrder extends Component
       'storno_date' => $this->order->storno_date,
       'promotion_value' => $this->order->promotion_value,
       'voucher_value' => $this->order->voucher_value,
-      'delivery_price' => $this->order->delivery_price
+      'delivery_price' => $this->order->delivery_price,
+      'delivery_price_vat' => $this->order->delivery_price_vat,
 
     ];
     $this->edititem = true;
@@ -1690,7 +1706,8 @@ class ShowOrder extends Component
         'comments',
         'promotion_value',
         'voucher_value',
-        'delivery_price'
+        'delivery_price',
+        'delivery_price_vat',
       ];
       foreach ($updatableFields as $field) {
         if (isset($new[$field])) {
