@@ -34,6 +34,8 @@
     @endif
     {{-- favicon end --}}
 
+    {{-- alpine --}}
+    <script src="/script/alpine.js" defer></script>
 
     <link rel="canonical" href="{{ $canonical }}">
 
