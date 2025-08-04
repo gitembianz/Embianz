@@ -46,8 +46,8 @@
                 @endforeach
 
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <input id="listview.name1" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name1">Listview name</label>
                 </div>
 
 
@@ -88,8 +88,8 @@
 
                 @if ($edit)
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="listview.name">
-                        <label>Listview name</label>
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
                     </div>
                     <div class="details__long">
 
@@ -101,8 +101,8 @@
                     <div class="details__long"
                         style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Columns</label>
-                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8" style="width: 100%;">
                                 @foreach ($availableFields as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -115,8 +115,8 @@
                         </div>
 
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Visible Fields</label>
-                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                            <label for="selectedVisible1" style="font-weight: bold; color: white;">Visible Fields</label>
+                            <select id="selectedVisible1" wire:model="selectedVisible" size="8" style="width: 100%;">
                                 @foreach ($listview['columns'] as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -287,7 +287,7 @@
             </button>
         @endif
 
-        <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
 
         {{-- IF CHECKED --}}
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
