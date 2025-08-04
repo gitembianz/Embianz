@@ -50,17 +50,17 @@
     @endif
     <meta property="og:locale" content="{{ env('APP_LOCALE') }}">
     <!-- Open Graph / Facebook -->
-    <meta property="og:url" content="{{ $canonical }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="{{ url('/' . $image) }}" />
-    <meta property="og:title" content="{{ $title }}" />
-    <meta property="og:description" content="{{ $description }}" />
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ url('/' . $image) }}">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
     <!-- Twitter -->
-    <meta property="twitter:url" content="{{ $canonical }}" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:image" content="{{ url('/' . $image) }}" />
-    <meta property="twitter:title" content="{{ $title }}" />
-    <meta property="twitter:description" content="{{ $description }}" />
+    <meta property="twitter:url" content="{{ $canonical }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="{{ url('/' . $image) }}">
+    <meta property="twitter:title" content="{{ $title }}">
+    <meta property="twitter:description" content="{{ $description }}">
 
 
 
