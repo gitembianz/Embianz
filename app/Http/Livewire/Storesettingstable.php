@@ -562,8 +562,8 @@ class Storesettingstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -1168,8 +1168,6 @@ class Storesettingstable extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
-
-
   }
 
   public function initializeSitemap()
@@ -1194,9 +1192,12 @@ class Storesettingstable extends Component
     $url->addChild('loc', url('/'));
     $url->addChild('lastmod', now()->toAtomString());
     $url->addChild('priority', '1.0');
-    $staticpages = Cache::rememberForever('static_pages', function () {
-      return Static_Page::all();
-    });
+    // search
+    $url = $xml->addChild('url');
+    $url->addChild('loc', url('/search'));
+    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('priority', '0.9');
+    $staticpages = collect(app('static_pages'))->values();
 
     // Static pages
     $pages = [];
@@ -1239,7 +1240,7 @@ class Storesettingstable extends Component
       ->get();
 
     foreach ($categories as $category) {
-      if (isset($defaultCategory) && $category->id == $defaultCategory->id) {
+      if (isset($defaultCategory) && $category->id === $defaultCategory->id) {
         continue;
       }
       $this->generateCategoryPages($xml, $category, false);
@@ -1297,13 +1298,22 @@ class Storesettingstable extends Component
 
     for ($page = 1; $page <= $totalPages; $page++) {
       $url = $xml->addChild('url');
+   if (app()->has('global_default_category') && app('global_default_category') != "" && $isDefaultCategory) {
+      $categoryUrl = route('products');
+    }else{
 
       $categoryUrl = route('products', [
         'categorySlug' => $category->seo_id ?? $category->id
       ]);
+    }
 
       if ($page > 1) {
-        $categoryUrl .= "?page=" . $page;
+
+        if ($page === 1) {
+          $categoryUrl .= $page;
+        } else {
+          $categoryUrl .= "?page=" . $page;
+        }
       }
 
       $url->addChild('loc', htmlspecialchars($categoryUrl));
