@@ -13,25 +13,27 @@
     @endif
     <meta name="description" content="{{ $description }}">
 
-    <link rel="alternate" hreflang="{{ app()->getLocale() }}" href="{{ route('home') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="\images\store\svg\apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="\images\store\svg\favicon-48x48.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="\images\store\svg\favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="\images\store\svg\favicon-16x16.png">
-    <link rel="icon" href="\images\store\svg\favicon.svg">
-    <link rel="manifest" href="\images\store\svg\site.webmanifest">
-    <link rel="mask-icon" href="\images\store\svg\safari-pinned-tab.svg" color="#333333">
-    <link rel="shortcut icon" href="\images\store\svg\favicon.ico">
+    <link rel="alternate" hreflang="{{ app()->getLocale() }}" href="{{ $canonical }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $canonical }}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ route('home') }}/images/store/svg/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ route('home') }}/images/store/svg/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ route('home') }}/images/store/svg/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ route('home') }}/images/store/svg/favicon-16x16.png">
+    <link rel="icon" href="{{ route('home') }}/images/store/svg/favicon.svg">
+    <link rel="manifest" href="{{ route('home') }}/images/store/svg/site.webmanifest">
+    <link rel="mask-icon" href="{{ route('home') }}/images/store/svg/safari-pinned-tab.svg" color="#333333">
+    <link rel="shortcut icon" href="{{ route('home') }}/images/store/svg/favicon.ico">
     <meta name="msapplication-TileColor" content="#fafafa">
-    <meta name="msapplication-config" content="\images\store\svg\browserconfig.xml">
+    <meta name="msapplication-config" content="{{ route('home') }}/images/store/svg/browserconfig.xml">
     <meta name="theme-color" content="#fafafa">
 
     {{-- dinamical image playload --}}
     @if ($preload != '')
-        <link rel="preload" href="{{ $preload }}" as="image">
+        <link rel="preload" href="{{ route('home') }}{{ $preload }}" as="image">
     @endif
     {{-- favicon end --}}
-    <script src="https://unpkg.com/alpinejs" defer></script>
+
 
     <link rel="canonical" href="{{ $canonical }}">
 
