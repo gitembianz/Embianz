@@ -388,8 +388,9 @@
                                     city: @entangle('individual_billing_city'),
                                     open: false,
 
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     counties() {
@@ -445,8 +446,9 @@
                                     city: @entangle('individual_billing_city'),
                                     open: false,
 
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     cities() {
@@ -643,8 +645,9 @@
                                     city: @entangle('individual_shipping_city'),
                                     open: false,
 
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     counties() {
@@ -707,8 +710,9 @@
                                     county: @entangle('individual_shipping_county'),
                                     city: @entangle('individual_shipping_city'),
                                     open: false,
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     cities() {
@@ -968,8 +972,9 @@
                                     country: @entangle('juridic_billing_country'),
                                     county: @entangle('juridic_billing_county'),
                                     open: false,
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
                                     counties() {
                                         const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
@@ -1023,8 +1028,9 @@
                                     county: @entangle('juridic_billing_county'),
                                     city: @entangle('juridic_billing_city'),
                                     open: false,
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     cities() {
@@ -1270,8 +1276,9 @@
                                     county: @entangle('juridic_shipping_county'),
                                     city: @entangle('juridic_shipping_city'),
                                     open: false,
-                                    init() {
-                                        this.countries = @js($countries);
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
                                     },
 
                                     cities() {
