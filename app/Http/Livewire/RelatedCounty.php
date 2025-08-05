@@ -261,6 +261,7 @@ class RelatedCounty extends Component
     $item->delete();
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
+    Cache::forget('active_countries');
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -279,6 +280,7 @@ class RelatedCounty extends Component
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
+    Cache::forget('active_countries');
 
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
