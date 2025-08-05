@@ -35,8 +35,8 @@
                 @endforeach
 
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <input id="listview.name" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name" >Listview name</label>
                 </div>
 
 
@@ -77,8 +77,8 @@
 
                 @if ($edit)
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="listview.name">
-                        <label>Listview name</label>
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
                     </div>
                     <div class="details__long">
 
@@ -90,8 +90,8 @@
                     <div class="details__long"
                         style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Columns</label>
-                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8" style="width: 100%;">
                                 @foreach ($availableFields as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -104,8 +104,8 @@
                         </div>
 
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Visible Fields</label>
-                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                            <label for="selectedVisible1" style="font-weight: bold; color: white;">Visible Fields</label>
+                            <select id="selectedVisible1" wire:model="selectedVisible" size="8" style="width: 100%;">
                                 @foreach ($listview['columns'] as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -324,7 +324,7 @@
             </button>
         @endif
         {{-- Search Input --}}
-        <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
             {{-- Dropdown Button --}}
             <button class="button button--primary button--centered button--long" tooltip="Actions with checked"
@@ -524,16 +524,16 @@
                                         @else
                                             {{ $product->$column }}
                                         @endif
-                                    @elseif ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock')
+                                    @elseif ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock' || $column === 'is_digital')
                                         @if ($product->$column)
                                             <div class="checkbox--secondary disabled">
-                                                <input type="checkbox" id="disabled1" disabled checked>
-                                                <label for="disabled1"></label>
+                                                <input type="checkbox" id="disabled{{ $column }}{{ $nr }}" disabled checked>
+                                                <label for="disabled{{ $column }}{{ $nr }}"></label>
                                             </div>
                                         @else
                                             <div class="checkbox--secondary disabled">
-                                                <input type="checkbox" id="disabled2" disabled>
-                                                <label for="disabled2"></label>
+                                                <input type="checkbox" id="disabled{{ $column }}{{ $nr }}second" disabled>
+                                                <label for="disabled{{ $column }}{{ $nr }}second"></label>
                                             </div>
                                         @endif
                                     @elseif($column === 'long_description' || $column === 'comments' || $column === 'short_description')
@@ -562,17 +562,17 @@
                                     @foreach ($selectedColumns as $index => $column)
                                         @if ($index >= 2)
                                             <p>
-                                                @if ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock')
+                                                @if ($column === 'active' || $column === 'preorder' || $column === 'is_new' || $column === 'low_stock' || $column === 'is_digital')
                                                     <bold>{{ $column }}:</bold>
                                                     @if ($product->$column)
                                                         <div class="checkbox--secondary disabled">
-                                                            <input type="checkbox" id="disabled3" disabled checked>
-                                                            <label for="disabled3"></label>
+                                                            <input type="checkbox" id="expand{{ $column }}{{ $nr }}" disabled checked>
+                                                            <label for="expand{{ $column }}{{ $nr }}"></label>
                                                         </div>
                                                     @else
                                                         <div class="checkbox--secondary disabled">
-                                                            <input type="checkbox" id="disabled4" disabled>
-                                                            <label for="disabled4"></label>
+                                                            <input type="checkbox" id="expand{{ $column }}{{ $nr }}second" disabled>
+                                                            <label for="expand{{ $column }}{{ $nr }}second"></label>
                                                         </div>
                                                     @endif
                                                 @else

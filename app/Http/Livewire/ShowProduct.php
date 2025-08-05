@@ -70,6 +70,7 @@ class ShowProduct extends Component
       'supplier_name' => $this->product->supplier_name,
       'low_stock_quantity' => $this->product->low_stock_quantity,
       'preorder' => $this->product->preorder == 1 ? true : false,
+      'is_digital' => $this->product->is_digital == 1 ? true : false,
 
 
     ];
@@ -145,6 +146,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('active', $product_new)) {
         $new->active = $product_new['active'];
+      }
+      if (array_key_exists('is_digital', $product_new)) {
+        $new->is_digital = $product_new['is_digital'];
       }
       if (array_key_exists('preorder', $product_new)) {
         $new->preorder = $product_new['preorder'];
