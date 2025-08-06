@@ -40,10 +40,7 @@
             <input type="text" name="product_name" placeholder=" " required value="{{ old('product_name') }}">
             <label>Name</label>
         </div>
-
-        {{-- Product Active && Displayed on Store --}}
         <div class="details__checkboxes">
-            {{-- Product Active --}}
             <div class="checkbox__details ">
                 <input type="checkbox" id="active" name="active" value="{{ old('active') }}" />
                 <label for="active">Active</label>
@@ -53,6 +50,16 @@
                 <input type="checkbox" id="is_new" name="is_new" value="{{ old('is_new') }}" />
                 <label for="is_new">Is new?</label>
             </div>
+            <div class="checkbox__details ">
+                <input type="checkbox" id="is_digital" name="is_digital" value="{{ old('is_digital') }}" />
+                <label for="is_digital">Is digital?</label>
+            </div>
+        </div>
+
+        {{-- Product Active && Displayed on Store --}}
+        <div class="details__checkboxes">
+            {{-- Product Active --}}
+
             <div class="checkbox__details ">
                 <input type="checkbox" id="low_stock" name="low_stock" value="{{ old('low_stock') }}" />
                 <label for="low_stock">Low Stock</label>
@@ -65,9 +72,10 @@
 
         <div class="input__tabs">
             <select name="brand" value="{{ old('brand') }}">
-              @foreach ($brands as $index => $brand)
-                <option @if ($index === 0) selected @endif value="{{ $brand->id }}">{{ $brand->name }}</option>
-              @endforeach
+                @foreach ($brands as $index => $brand)
+                    <option @if ($index === 0) selected @endif value="{{ $brand->id }}">
+                        {{ $brand->name }}</option>
+                @endforeach
             </select>
             <label>brand</label>
         </div>
@@ -87,20 +95,19 @@
             <label>Quantity</label>
         </div>
 
-           <div class="input__tabs">
+        <div class="input__tabs">
             <input type="number" name="low_stock_quantity" placeholder=" " value="{{ old('low_stock_quantity') }}">
             <label for="low_stock_quantity">Low Stock Quantity</label>
         </div>
 
-         {{-- Product Popularity --}}
+        {{-- Product Popularity --}}
         <div class="input__tabs">
             <input type="number" min="0" placeholder=" " name="popularity" required
                 value="{{ old('popularity') }}">
             <label>Popularity</label>
         </div>
-        <div class="details__checkboxes">
 
-            {{-- Product SKU --}}
+        {{-- Product SKU --}}
         <div class="input__tabs">
             <input type="text" name="sku" placeholder=" " required value="{{ old('sku') }}">
             <label>SKU</label>
@@ -111,9 +118,8 @@
             <input type="text" name="ean" placeholder=" " required value="{{ old('ean') }}">
             <label>EAN</label>
         </div>
-        </div>
 
-          {{-- Product Short Description --}}
+        {{-- Product Short Description --}}
         <div class="input__tabs">
             <input type="text" name="short_description" placeholder=" " value="{{ old('short_description') }}">
             <label>Short Description</label>
@@ -121,17 +127,19 @@
 
         <div class="details__checkboxes">
 
-        {{-- Product Start Date --}}
-        <div class="input__tabs">
-            <input type="date" id="start_date" placeholder=" " name="start_date" value="{{ old('start_date') }}">
-            <label>Start Date</label>
-        </div>
+            {{-- Product Start Date --}}
+            <div class="input__tabs">
+                <input type="date" id="start_date" placeholder=" " name="start_date"
+                    value="{{ old('start_date') }}">
+                <label>Start Date</label>
+            </div>
 
-        {{-- Product End Date --}}
-        <div class="input__tabs">
-            <input type="date" id="end_date" placeholder=" " name="end_date" value="{{ old('end_date') }}">
-            <label>End Date</label>
-        </div>
+            {{-- Product End Date --}}
+            <div class="input__tabs">
+                <input type="date" id="end_date" placeholder=" " name="end_date"
+                    value="{{ old('end_date') }}">
+                <label>End Date</label>
+            </div>
         </div>
 
         {{-- Product Meta Description --}}
@@ -140,7 +148,7 @@
             <label>Meta Description</label>
         </div>
 
-         {{-- Product Long Description --}}
+        {{-- Product Long Description --}}
         <div class="textarea__tabs details__long">
             <textarea name="comments" placeholder=" ">{{ old('comments') }}</textarea>
             <label>Comments</label>
