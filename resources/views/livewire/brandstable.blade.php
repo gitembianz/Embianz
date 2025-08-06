@@ -93,13 +93,13 @@
                                     {{ $i }}</td>
                                 <td>
                                     <div class="searchable">
-                                        <input placeholder="Brand name" type="text" class="input__searchable"
+                                        <input id="brand_name{{ $i }}" placeholder="Brand name" type="text" class="input__searchable"
                                             wire:model.defer="brand_name.{{ $i }}">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="searchable">
-                                        <input placeholder="Brand description.." type="text"class="input__searchable"
+                                        <input id="brand_description{{ $i }}" placeholder="Brand description.." type="text"class="input__searchable"
                                             wire:model.defer="brand_description.{{ $i }}">
                                     </div>
                                 </td>
@@ -135,7 +135,7 @@
         </form>
     </aside>
 
-       {{-- Modal add new listview --}}
+    {{-- Modal add new listview --}}
     <aside>
         <div class="background background--center @if ($addlistview) active @endif"></div>
         <div class="aside aside--confirm @if ($addlistview) active @endif"
@@ -152,8 +152,8 @@
                 @endforeach
 
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <input id="listview.name" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name">Listview name</label>
                 </div>
 
 
@@ -194,8 +194,8 @@
 
                 @if ($edit)
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="listview.name">
-                        <label>Listview name</label>
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
                     </div>
                     <div class="details__long">
 
@@ -207,8 +207,9 @@
                     <div class="details__long"
                         style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Columns</label>
-                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8"
+                                style="width: 100%;">
                                 @foreach ($availableFields as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -221,8 +222,10 @@
                         </div>
 
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Visible Fields</label>
-                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                            <label for="selectedVisible1" style="font-weight: bold; color: white;">Visible
+                                Fields</label>
+                            <select id="selectedVisible1" wire:model="selectedVisible" size="8"
+                                style="width: 100%;">
                                 @foreach ($listview['columns'] as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -327,7 +330,7 @@
         </div>
     </aside>
 
-        {{-- Import Data --}}
+    {{-- Import Data --}}
     <aside>
         <div class="background background--center @if ($importdata == true) active @endif"></div>
         <div class="aside aside--confirm @if ($importdata == true) active @endif">
@@ -356,7 +359,7 @@
     {{-- Navigation --}}
     <h1 class="table--name">{{ __('Brands') }} ({{ $brands->total() }})</h1>
     <nav class="nav--controls">
-      @if ($activelistview)
+        @if ($activelistview)
 
             <div class="dropdown dropdown--right">
                 {{-- Dropdown Button --}}
@@ -393,7 +396,7 @@
             </button>
         @endif
         {{-- Search Input --}}
-        <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
 
         {{-- IF CHECKED --}}
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>

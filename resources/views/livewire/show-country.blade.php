@@ -10,7 +10,7 @@
    <span>
     Are you sure to delete this record?
    </span>
-   <button class="button button--primary button--long" wire:click.prevent="deleteSingleRecord()">
+   <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
     <span>Delete</span>
    </button>
    <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">

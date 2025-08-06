@@ -382,11 +382,16 @@
                             <!-----------------------   county individual billing  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="individualBillingCountyParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('individual_billing_country'),
                                     county: @entangle('individual_billing_county'),
                                     city: @entangle('individual_billing_city'),
                                     open: false,
+
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     counties() {
                                         const selected = this.countries.find(c =>
@@ -408,9 +413,9 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
-                                    placeholder="County" class="input" autocomplete="off"
-                                    aria-label="County selection" id="individualBillingCounty">
+                                <input type="text" x-model="county" @focus="open = true"
+                                    placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
+                                    id="individualBillingCounty">
 
                                 <span></span>
                                 <label for="individualBillingCounty">
@@ -435,11 +440,16 @@
                             <!-----------------------   city individual billing   ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="individualBillingCityParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('individual_billing_country'),
                                     county: @entangle('individual_billing_county'),
                                     city: @entangle('individual_billing_city'),
                                     open: false,
+
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     cities() {
                                         const selectedCountry = this.countries.find(
@@ -464,8 +474,9 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
-                                    placeholder="City" class="input" autocomplete="off" aria-label="City selection" id="individualBillingCity">
+                                <input type="text" x-model="city" @focus="open = true"
+                                    placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
+                                    id="individualBillingCity">
 
                                 <span></span>
                                 <label for="individualBillingCity">
@@ -474,8 +485,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable"
-                                    style="display: none;">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
                                             <button type="button" class="item__searchable" @click="select(c.name)"
@@ -629,11 +639,16 @@
                             <!-----------------------   county individual shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active @error('individual_s_county') error @enderror"
                                 id="individualShippingCountyParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('individual_shipping_country'),
                                     county: @entangle('individual_shipping_county'),
                                     city: @entangle('individual_shipping_city'),
                                     open: false,
+
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     counties() {
                                         const selected = this.countries.find(c =>
@@ -657,9 +672,9 @@
                                     }
                                 }"
                                 @click.away="open = false" wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
+                                <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="off" id="individualShippingCounty"
+                                    class="input" autocomplete="disabled" id="individualShippingCounty"
                                     aria-label="Shipping County" required>
 
                                 <span>
@@ -673,8 +688,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable"
-                                    style="display: none;">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
                                             <button type="button" class="item__searchable" @click="select(c.name)"
@@ -691,11 +705,15 @@
                             <!-----------------------   city individual shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="individualShippingCityParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('individual_shipping_country'),
                                     county: @entangle('individual_shipping_county'),
                                     city: @entangle('individual_shipping_city'),
                                     open: false,
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     cities() {
                                         const selectedCountry = this.countries.find(c =>
@@ -721,9 +739,9 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
+                                <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="off" id="individualShippingCity"
+                                    class="input" autocomplete="disabled" id="individualShippingCity"
                                     aria-label="Shipping City" required>
 
                                 <span></span>
@@ -733,8 +751,7 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable"
-                                    style="display: none;">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filtered()" :key="c.name">
                                             <button type="button" class="item__searchable" @click="select(c.name)"
@@ -879,7 +896,7 @@
                             <div wire:ignore class="checkout__item checkout__item--required" id="registerCodeParent">
                                 <input type="text" wire:model.defer="juridic_billing_registration_code"
                                     placeholder="@if (app()->has('label_order_register_code')) {!! app('label_order_register_code') !!} @endif"
-                                    autocomplete="off" required id="registerCode">
+                                    autocomplete="disabled" required id="registerCode">
                                 <span></span>
                                 <label for="registerCode">
                                     @if (app()->has('label_order_register_code'))
@@ -906,7 +923,7 @@
                             <div wire:ignore class="checkout__item" id="bankNameParent">
                                 <input type="text" wire:model.defer="juridic_billing_bank"
                                     placeholder="@if (app()->has('label_order_bankname')) {!! app('label_order_bankname') !!} @endif"
-                                    autocomplete="off" id="bankName">
+                                    autocomplete="disabled" id="bankName">
                                 <span></span>
                                 <label for="bankName">
                                     @if (app()->has('label_order_bankname'))
@@ -951,11 +968,14 @@
                             <!-----------------------   county juridic billing  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active @error('juridic_b_county') error @enderror"
                                 id="juridicBillingCountyParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('juridic_billing_country'),
                                     county: @entangle('juridic_billing_county'),
                                     open: false,
-
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
                                     counties() {
                                         const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
                                         return selected?.counties || [];
@@ -973,7 +993,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="off" required id="juridicBillingCounty">
+                                    class="input" autocomplete="disabled" required id="juridicBillingCounty">
 
                                 <span>
                                     @error('juridic_b_county')
@@ -1003,11 +1023,15 @@
                             <!-----------------------   city juridic billing  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="juridicBillingCityParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('juridic_billing_country'),
                                     county: @entangle('juridic_billing_county'),
                                     city: @entangle('juridic_billing_city'),
                                     open: false,
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     cities() {
                                         const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
@@ -1028,7 +1052,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="off" required id="juridicBillingCity">
+                                    class="input" autocomplete="disabled" required id="juridicBillingCity">
 
                                 <span></span>
 
@@ -1247,11 +1271,15 @@
                             <!-----------------------   city juridic shipping  ----------------------------->
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="juridicShippingCityParent" x-data="{
-                                    countries: @js($countries),
+                                    countries: [],
                                     country: @entangle('juridic_shipping_country'),
                                     county: @entangle('juridic_shipping_county'),
                                     city: @entangle('juridic_shipping_city'),
                                     open: false,
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
 
                                     cities() {
                                         const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
@@ -1272,7 +1300,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="off" required id="juridicShippingCity" class="input">
+                                    autocomplete="disabled" required id="juridicShippingCity" class="input">
 
                                 <span></span>
 
