@@ -64,6 +64,7 @@ class ProductController extends Controller
       'preorder' => $request->has('preorder'),
       'low_stock' => $request->has('low_stock'),
       'is_new' => $request->has('is_new'),
+      'is_digital' => $request->has('is_digital'),
       'brand_id' => $request->brand,
       'type' => $request->type,
       'quantity' => $request->quantity,

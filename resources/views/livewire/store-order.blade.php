@@ -413,8 +413,8 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
-                                    placeholder="County" class="input" autocomplete="off" aria-label="County selection"
+                                <input type="text" x-model="county" @focus="open = true"
+                                    placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
                                     id="individualBillingCounty">
 
                                 <span></span>
@@ -474,8 +474,8 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
-                                    placeholder="City" class="input" autocomplete="off" aria-label="City selection"
+                                <input type="text" x-model="city" @focus="open = true"
+                                    placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
                                     id="individualBillingCity">
 
                                 <span></span>
@@ -672,9 +672,9 @@
                                     }
                                 }"
                                 @click.away="open = false" wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="county" @focus="open = true"
+                                <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="off" id="individualShippingCounty"
+                                    class="input" autocomplete="disabled" id="individualShippingCounty"
                                     aria-label="Shipping County" required>
 
                                 <span>
@@ -739,9 +739,9 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model.debounce.300ms="city" @focus="open = true"
+                                <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="off" id="individualShippingCity"
+                                    class="input" autocomplete="disabled" id="individualShippingCity"
                                     aria-label="Shipping City" required>
 
                                 <span></span>
@@ -896,7 +896,7 @@
                             <div wire:ignore class="checkout__item checkout__item--required" id="registerCodeParent">
                                 <input type="text" wire:model.defer="juridic_billing_registration_code"
                                     placeholder="@if (app()->has('label_order_register_code')) {!! app('label_order_register_code') !!} @endif"
-                                    autocomplete="off" required id="registerCode">
+                                    autocomplete="disabled" required id="registerCode">
                                 <span></span>
                                 <label for="registerCode">
                                     @if (app()->has('label_order_register_code'))
@@ -923,7 +923,7 @@
                             <div wire:ignore class="checkout__item" id="bankNameParent">
                                 <input type="text" wire:model.defer="juridic_billing_bank"
                                     placeholder="@if (app()->has('label_order_bankname')) {!! app('label_order_bankname') !!} @endif"
-                                    autocomplete="off" id="bankName">
+                                    autocomplete="disabled" id="bankName">
                                 <span></span>
                                 <label for="bankName">
                                     @if (app()->has('label_order_bankname'))
@@ -993,7 +993,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="off" required id="juridicBillingCounty">
+                                    class="input" autocomplete="disabled" required id="juridicBillingCounty">
 
                                 <span>
                                     @error('juridic_b_county')
@@ -1052,7 +1052,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="off" required id="juridicBillingCity">
+                                    class="input" autocomplete="disabled" required id="juridicBillingCity">
 
                                 <span></span>
 
@@ -1300,7 +1300,7 @@
                                 wire:ignore>
                                 <input type="text" x-model="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="off" required id="juridicShippingCity" class="input">
+                                    autocomplete="disabled" required id="juridicShippingCity" class="input">
 
                                 <span></span>
 
