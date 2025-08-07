@@ -700,14 +700,28 @@ class StoreOrder extends Component
     }
   }
 
-  public function updateFormSession()
+public function updateFormSession()
 {
     $formFields = collect(get_object_vars($this))->filter(function ($_, $key) {
         return str_contains($key, '_billing_') || str_contains($key, '_shipping_');
     });
 
+    $countryFields = [
+        'individual_billing_country',
+        'individual_shipping_country',
+        'juridic_billing_country',
+        'juridic_shipping_country',
+    ];
+
+    foreach ($countryFields as $field) {
+        if (!isset($formFields[$field]) && property_exists($this, $field)) {
+            $formFields[$field] = $this->{$field};
+        }
+    }
+
     session()->put('form_data', $formFields->toArray());
 }
+
 
 
   protected function findOrCreateAddress(array $data)
