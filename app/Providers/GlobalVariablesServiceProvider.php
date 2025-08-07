@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Status;
-use App\Models\Static_Page;
 use App\Models\Country;
 use App\Models\Payment;
 use App\Models\Product;
@@ -11,13 +10,16 @@ use App\Models\Category;
 use App\Models\PriceList;
 use App\Models\Promotion;
 use App\Models\TextLabel;
+use App\Models\Static_Page;
+use Illuminate\Support\Str;
 use App\Models\CustomScript;
 use App\Models\Product_Spec;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\ServiceProvider;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -162,8 +164,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   }
 
 
-
-
   private function loadActiveCountries()
   {
     if (
@@ -172,7 +172,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       Schema::hasTable('cities')
     ) {
       $activeCountries = Cache::rememberForever('active_countries', function () {
-        $data = Country::where('status', true)
+        $countries = Country::where('status', true)
           ->select(['id', 'name', 'iso_code'])
           ->with(['counties' => function ($query) {
             $query->where('status', true)
@@ -182,46 +182,58 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                   ->select(['id', 'county_id', 'name']);
               }]);
           }])
-          ->get()
-          ->map(function ($country) {
-            return [
-              'id' => $country->id,
-              'name' => $country->name,
-              'iso_code' => $country->iso_code,
-              'counties' => $country->counties->map(function ($county) {
-                return [
-                  'id' => $county->id,
-                  'country_id' => $county->country_id,
-                  'name' => $county->name,
-                  'iso_code' => $county->iso_code,
-                  'cities' => $county->cities->map(function ($city) {
-                    return [
-                      'id' => $city->id,
-                      'county_id' => $city->county_id,
-                      'name' => $city->name,
-                    ];
-                  })->toArray(),
-                ];
-              })->toArray(),
-            ];
-          })
-          ->toArray();
+          ->get();
 
-        $path = public_path('js/countries.json');
-        $directory = dirname($path);
+        $folder = 'js/countries';
 
-        if (!is_dir($directory)) {
-          mkdir($directory, 0755, true);
+        Storage::disk('public_upload')->deleteDirectory($folder);
+        Storage::disk('public_upload')->makeDirectory($folder);
+
+        $final = [];
+
+        foreach ($countries as $country) {
+          if ($country->counties->isEmpty()) {
+            continue;
+          }
+
+          $countryData = [
+            'id' => $country->id,
+            'name' => $country->name,
+            'iso_code' => $country->iso_code,
+            'counties' => $country->counties->map(function ($county) {
+              return [
+                'id' => $county->id,
+                'country_id' => $county->country_id,
+                'name' => $county->name,
+                'iso_code' => $county->iso_code,
+                'cities' => $county->cities->map(function ($city) {
+                  return [
+                    'id' => $city->id,
+                    'county_id' => $city->county_id,
+                    'name' => $city->name,
+                  ];
+                })->toArray(),
+              ];
+            })->toArray(),
+          ];
+
+          $filePath = $folder . '/' . $country->name . '.json';
+
+          Storage::disk('public_upload')->put(
+            $filePath,
+            json_encode($countryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+          );
+
+          $final[] = $countryData;
         }
 
-        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-        return $data;
+        return $final;
       });
 
       $this->app->instance('active_countries', $activeCountries);
     }
   }
+
 
 
   private function loadGlobalCustomScripts()

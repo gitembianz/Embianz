@@ -138,23 +138,23 @@ class StoreOrder extends Component
     'countdownExpired' => 'mount',
   ];
 
-  public function updated($propertyName)
-  {
-    $resetMap = [
-      'individual_billing_country' => 'individual_billing_county',
-      'individual_shipping_country' => 'individual_shipping_county',
-      'juridic_billing_country' => 'juridic_billing_county',
-      'juridic_shipping_country' => 'juridic_shipping_county',
-      'individual_billing_county' => 'individual_billing_city',
-      'individual_shipping_county' => 'individual_shipping_city',
-      'juridic_billing_county' => 'juridic_billing_city',
-      'juridic_shipping_county' => 'juridic_shipping_city',
-    ];
+  // public function updated($propertyName)
+  // {
+  //   $resetMap = [
+  //     'individual_billing_country' => 'individual_billing_county',
+  //     'individual_shipping_country' => 'individual_shipping_county',
+  //     'juridic_billing_country' => 'juridic_billing_county',
+  //     'juridic_shipping_country' => 'juridic_shipping_county',
+  //     'individual_billing_county' => 'individual_billing_city',
+  //     'individual_shipping_county' => 'individual_shipping_city',
+  //     'juridic_billing_county' => 'juridic_billing_city',
+  //     'juridic_shipping_county' => 'juridic_shipping_city',
+  //   ];
 
-    if (isset($resetMap[$propertyName])) {
-      $this->{$resetMap[$propertyName]} = null;
-    }
-  }
+  //   if (isset($resetMap[$propertyName])) {
+  //     $this->{$resetMap[$propertyName]} = null;
+  //   }
+  // }
 
 
 
@@ -268,27 +268,27 @@ class StoreOrder extends Component
   }
 
   // validate county if not been selected
-  public function validateCounty($county, $country, $fieldName)
-  {
-    $activeCountries = collect($this->countries);
-    $selectedCountry = $activeCountries->firstWhere('name', $country);
+  // public function validateCounty($county, $country, $fieldName)
+  // {
+  //   $activeCountries = collect($this->countries);
+  //   $selectedCountry = $activeCountries->firstWhere('name', $country);
 
-    if ($selectedCountry && !empty($selectedCountry['counties']) && count($selectedCountry['counties']) > 0) {
-      $inputCountyAscii = Str::lower(Str::ascii($county));
+  //   if ($selectedCountry && !empty($selectedCountry['counties']) && count($selectedCountry['counties']) > 0) {
+  //     $inputCountyAscii = Str::lower(Str::ascii($county));
 
-      $validCountiesAscii = collect($selectedCountry['counties'])->pluck('name')
-        ->map(fn($c) => Str::lower(Str::ascii($c)));
+  //     $validCountiesAscii = collect($selectedCountry['counties'])->pluck('name')
+  //       ->map(fn($c) => Str::lower(Str::ascii($c)));
 
-      if (!$validCountiesAscii->contains($inputCountyAscii)) {
-        $errorMessage = app()->has('label_form_county_invalid')
-          ? app('label_form_county_invalid')
-          : 'The selected county is not valid.';
-        throw ValidationException::withMessages([
-          $fieldName => $errorMessage,
-        ]);
-      }
-    }
-  }
+  //     if (!$validCountiesAscii->contains($inputCountyAscii)) {
+  //       $errorMessage = app()->has('label_form_county_invalid')
+  //         ? app('label_form_county_invalid')
+  //         : 'The selected county is not valid.';
+  //       throw ValidationException::withMessages([
+  //         $fieldName => $errorMessage,
+  //       ]);
+  //     }
+  //   }
+  // }
 
 
 
