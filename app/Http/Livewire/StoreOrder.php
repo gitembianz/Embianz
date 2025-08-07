@@ -582,10 +582,10 @@ class StoreOrder extends Component
 
     if ($this->country != 'n/a') {
 
-      $this->individual_billing_country = $this->country['name'];
-      $this->individual_shipping_country = $this->country['name'];
-      $this->juridic_billing_country = $this->country['name'];
-      $this->juridic_shipping_country = $this->country['name'];
+      $this->individual_billing_country = $this->country['name'] ?? app('global_default_country');
+      $this->individual_shipping_country = $this->country['name']?? app('global_default_country');
+      $this->juridic_billing_country = $this->country['name']?? app('global_default_country');
+      $this->juridic_shipping_country = $this->country['name']?? app('global_default_country');
     } else {
       $this->individual_billing_country = 'Romania';
       $this->individual_shipping_country = 'Romania';
