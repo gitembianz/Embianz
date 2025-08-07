@@ -439,26 +439,26 @@
     @if (app()->has('label_order_fullname'))
      {!! app('label_order_fullname') !!}
     @endif
-    {{ $order->account->addresses->where('type', 'shipping')->first()->last_name }}
-    {{ $order->account->addresses->where('type', 'shipping')->first()->first_name }}
+    {{ $order->shipping->last_name }}
+    {{ $order->shipping->first_name }}
    </span><br>
    <span class="total__message">
     @if (app()->has('label_order_phone'))
      {!! app('label_order_phone') !!}
     @endif:
-    {{ $order->account->addresses->where('type', 'shipping')->first()->phone }}
+    {{ $order->shipping->phone }}
    </span><br>
 
    <span class="total__message">
     @if (app()->has('label_order_address1'))
      {!! app('label_order_address1') !!}
     @endif:
-    {{ $order->account->addresses->where('type', 'shipping')->first()->address1 }}
-    {{ $order->account->addresses->where('type', 'shipping')->first()->address2 }}
-    ,{{ $order->account->addresses->where('type', 'shipping')->first()->city }}
-    ,{{ $order->account->addresses->where('type', 'shipping')->first()->county }}
-    ,{{ $order->account->addresses->where('type', 'shipping')->first()->country }}
-    ,{{ $order->account->addresses->where('type', 'shipping')->first()->zipcode }}
+    {{ $order->shipping->address1 }}
+    {{ $order->shipping->address2 }}
+    ,{{ $order->shipping->city }}
+    ,{{ $order->shipping->county }}
+    ,{{ $order->shipping->country }}
+    ,{{ $order->shipping->zipcode }}
 
 
    </span>
