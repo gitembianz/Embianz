@@ -715,7 +715,7 @@ public function updateFormSession()
 
     foreach ($countryFields as $field) {
         if (!isset($formFields[$field]) && property_exists($this, $field)) {
-            $formFields[$field] = $this->{$field};
+            $formFields[$field] = $this->{$field} ?? app('global_default_country');
         }
     }
 
