@@ -412,8 +412,8 @@
                                         this.open = false;
                                     }
                                 }" @click.away="open = false"
-                                wire:ignore.self>
-                                <input type="text" x-model="county" @focus="open = true"
+                                wire:ignore>
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
                                     id="individualBillingCounty">
 
@@ -473,8 +473,8 @@
                                         this.open = false;
                                     }
                                 }" @click.away="open = false"
-                                wire:ignore.self>
-                                <input type="text" x-model="city" @focus="open = true"
+                                wire:ignore>
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
                                     id="individualBillingCity">
 
@@ -497,6 +497,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
 
                             <!-----------------------   address1 individual billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -671,8 +674,8 @@
                                         // $wire.selectShippingCounty(name);
                                     }
                                 }"
-                                @click.away="open = false" wire:ignore.self>
-                                <input type="text" x-model="county" @focus="open = true"
+                                @click.away="open = false" wire:ignore>
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     class="input" autocomplete="disabled" id="individualShippingCounty"
                                     aria-label="Shipping County" required>
@@ -738,8 +741,8 @@
                                         // Optional: $wire.selectShippingCity(name);
                                     }
                                 }" @click.away="open = false"
-                                wire:ignore.self>
-                                <input type="text" x-model="city" @focus="open = true"
+                                wire:ignore>
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" autocomplete="disabled" id="individualShippingCity"
                                     aria-label="Shipping City" required>
@@ -991,7 +994,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="county" @focus="open = true"
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     class="input" autocomplete="disabled" required id="juridicBillingCounty">
 
@@ -1050,7 +1053,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="city" @focus="open = true"
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" autocomplete="disabled" required id="juridicBillingCity">
 
@@ -1239,7 +1242,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="county" @focus="open = true"
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     autocomplete="county" required id="juridicShippingCounty" class="input">
 
@@ -1298,7 +1301,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="city" @focus="open = true"
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     autocomplete="disabled" required id="juridicShippingCity" class="input">
 
