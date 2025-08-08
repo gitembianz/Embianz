@@ -1,6 +1,6 @@
 <div class="newsletter">
  <div class="newsletter__content">
-  <img title="thankyou" loading="eager" class="newsletter__img" src="\images\store\svg\thankyou.svg" alt="thank you">
+  <img title="thankyou" loading="eager" class="newsletter__img" src="/images/store/svg/thankyou.svg" alt="thank you">
   <div class="newsletter__text">
    <h3 class="newsletter__title">
     @if (app()->has('label_newsletter_title'))
