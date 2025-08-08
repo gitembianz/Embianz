@@ -74,10 +74,10 @@ class ShowOrder extends Component
       $this->recipe = [
         'name' => $this->order->account->name,
         'phoneNumber' => $this->order->account->phone,
-        'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
-        'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
-        'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
-        'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+        'countyString' => $this->order->shipping->county,
+        'cityString' => $this->order->shipping->city,
+        'address' => $this->order->shipping->address1,
+        'postalCode' => $this->order->shipping->zipcode,
         'email' => $this->order->account->email,
       ];
     }
@@ -112,10 +112,10 @@ class ShowOrder extends Component
       $this->recipe = [
         'name' => $this->order->account->name,
         'phoneNumber' => $this->order->account->phone,
-        'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
-        'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
-        'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
-        'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+        'countyString' => $this->order->shipping->county,
+        'cityString' => $this->order->shipping->city,
+        'address' => $this->order->shipping->address1,
+        'postalCode' => $this->order->shipping->zipcode,
         'companyName' => $this->order->account->type != 'individual' ? $this->order->account->company_name : null,
         'companyOnrcNumber' => $this->order->account->type != 'individual' ? $this->order->account->registration_number : null,
         'companyIban' => $this->order->account->type != 'individual' ? $this->order->account->account : null,
@@ -438,7 +438,7 @@ class ShowOrder extends Component
     $token = Store_Settings::where('parameter', 'sam_token')->value('value');
     $client = new \GuzzleHttp\Client();
 
-    $shippingAddress = $this->order->account->addresses->where('type', 'shipping')->first();
+    $shippingAddress = $this->order->shipping;
 
     $awbData = [
       'pickupPoint' => (int) $this->pickup_point,
