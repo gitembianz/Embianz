@@ -412,8 +412,13 @@
                                         this.open = false;
                                     }
                                 }" @click.away="open = false"
+<<<<<<< HEAD
                                 wire:ignore.self>
                                 <input type="text" x-model.debounce.1000ms="county" @focus="open = true"
+=======
+                                wire:ignore>
+                                <input type="text" x-model.defer="county" @focus="open = true"
+>>>>>>> 6fd52208f66a6df7b5a04d51d2439cfecd84ce68
                                     placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
                                     id="individualBillingCounty">
 
@@ -437,6 +442,7 @@
                                 </div>
                             </div>
 
+<<<<<<< HEAD
                            {{-- ---------------  City – individual billing --------------- --}}
 <div  class="checkout__item checkout__item--required searchable active"
       id="individualBillingCityParent"
@@ -539,6 +545,72 @@
         };
     }
 </script>
+=======
+                            <!-----------------------   city individual billing   ----------------------------->
+                            <div class="checkout__item checkout__item--required searchable active"
+                                id="individualBillingCityParent" x-data="{
+                                    countries: [],
+                                    country: @entangle('individual_billing_country'),
+                                    county: @entangle('individual_billing_county'),
+                                    city: @entangle('individual_billing_city'),
+                                    open: false,
+
+                                    async init() {
+                                        const res = await fetch('/js/countries.json');
+                                        this.countries = await res.json();
+                                    },
+
+                                    cities() {
+                                        const selectedCountry = this.countries.find(
+                                            c => c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                        );
+                                        const selectedCounty = selectedCountry?.counties?.find(
+                                            cc => cc.name.toLowerCase() === (this.county || '').toLowerCase()
+                                        );
+                                        return selectedCounty?.cities || [];
+                                    },
+
+                                    filtered() {
+                                        const searchTerm = (this.city || '').toLowerCase();
+                                        return this.cities().filter(c =>
+                                            c.name.toLowerCase().includes(searchTerm)
+                                        );
+                                    },
+
+                                    select(name) {
+                                        this.city = name;
+                                        this.open = false;
+                                    }
+                                }" @click.away="open = false"
+                                wire:ignore>
+                                <input type="text" x-model.defer="city" @focus="open = true"
+                                    placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
+                                    id="individualBillingCity">
+
+                                <span></span>
+                                <label for="individualBillingCity">
+                                    @if (app()->has('label_order_city'))
+                                        {!! app('label_order_city') !!}
+                                    @endif
+                                </label>
+
+                                <div x-show="open" class="content__searchable" style="display: none;">
+                                    <div class="list__searchable">
+                                        <template x-for="c in filtered()" :key="c.name">
+                                            <button type="button" class="item__searchable" @click="select(c.name)"
+                                                x-text="c.name"></button>
+                                        </template>
+                                        <template x-if="filtered().length === 0">
+                                            <button class="item__searchable">No record found</button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+>>>>>>> 6fd52208f66a6df7b5a04d51d2439cfecd84ce68
                             <!-----------------------   address1 individual billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
                                 id="individualBillingAddressParent">
@@ -712,8 +784,8 @@
                                         // $wire.selectShippingCounty(name);
                                     }
                                 }"
-                                @click.away="open = false" wire:ignore.self>
-                                <input type="text" x-model="county" @focus="open = true"
+                                @click.away="open = false" wire:ignore>
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     class="input" autocomplete="disabled" id="individualShippingCounty"
                                     aria-label="Shipping County" required>
@@ -779,8 +851,8 @@
                                         // Optional: $wire.selectShippingCity(name);
                                     }
                                 }" @click.away="open = false"
-                                wire:ignore.self>
-                                <input type="text" x-model="city" @focus="open = true"
+                                wire:ignore>
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" autocomplete="disabled" id="individualShippingCity"
                                     aria-label="Shipping City" required>
@@ -1032,7 +1104,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="county" @focus="open = true"
+                                <input type="text" x-model.defer="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     class="input" autocomplete="disabled" required id="juridicBillingCounty">
 
@@ -1091,7 +1163,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="city" @focus="open = true"
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" autocomplete="disabled" required id="juridicBillingCity">
 
@@ -1280,7 +1352,11 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
+<<<<<<< HEAD
                                 <input type="text" x-modelx-model.debounce.200ms="county" @focus="open = true"
+=======
+                                <input type="text" x-model.defer="county" @focus="open = true"
+>>>>>>> 6fd52208f66a6df7b5a04d51d2439cfecd84ce68
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     autocomplete="county" required id="juridicShippingCounty" class="input">
 
@@ -1339,7 +1415,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="city" @focus="open = true"
+                                <input type="text" x-model.defer="city" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     autocomplete="disabled" required id="juridicShippingCity" class="input">
 

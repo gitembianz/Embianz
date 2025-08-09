@@ -31,7 +31,17 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelatedadd) button--secondary active @endif"
    wire:click.prevent="@if ($showrelatedadd === false) $set('showrelatedadd', true) @else $set('showrelatedadd', false) @endif">
-   {{ __('Addresses ') }}({{ $account->addresses()->count() }})
+   {{ __('Addresses ') }}(
+    @if ($relatedby === 'account')
+     @if ($account->addresses()->count() === 0)
+      0
+     @else
+      {{ $account->addresses()->count() }}
+     @endif
+     @else
+      {{ $addresses->count() === 0 ? 0 : $addresses->count() }}
+    @endif
+    )
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>
