@@ -74,10 +74,10 @@ class ShowOrder extends Component
       $this->recipe = [
         'name' => $this->order->account->name,
         'phoneNumber' => $this->order->account->phone,
-        'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
-        'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
-        'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
-        'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+        'countyString' => $this->order->shipping->county,
+        'cityString' => $this->order->shipping->city,
+        'address' => $this->order->shipping->address1,
+        'postalCode' => $this->order->shipping->zipcode,
         'email' => $this->order->account->email,
       ];
     }
@@ -112,10 +112,10 @@ class ShowOrder extends Component
       $this->recipe = [
         'name' => $this->order->account->name,
         'phoneNumber' => $this->order->account->phone,
-        'countyString' => $this->order->account->addresses->where('type', 'shipping')->first()->county,
-        'cityString' => $this->order->account->addresses->where('type', 'shipping')->first()->city,
-        'address' => $this->order->account->addresses->where('type', 'shipping')->first()->address1,
-        'postalCode' => $this->order->account->addresses->where('type', 'shipping')->first()->zipcode,
+        'countyString' => $this->order->shipping->county,
+        'cityString' => $this->order->shipping->city,
+        'address' => $this->order->shipping->address1,
+        'postalCode' => $this->order->shipping->zipcode,
         'companyName' => $this->order->account->type != 'individual' ? $this->order->account->company_name : null,
         'companyOnrcNumber' => $this->order->account->type != 'individual' ? $this->order->account->registration_number : null,
         'companyIban' => $this->order->account->type != 'individual' ? $this->order->account->account : null,
@@ -438,7 +438,7 @@ class ShowOrder extends Component
     $token = Store_Settings::where('parameter', 'sam_token')->value('value');
     $client = new \GuzzleHttp\Client();
 
-    $shippingAddress = $this->order->account->addresses->where('type', 'shipping')->first();
+    $shippingAddress = $this->order->shipping;
 
     $awbData = [
       'pickupPoint' => (int) $this->pickup_point,
@@ -843,18 +843,18 @@ class ShowOrder extends Component
     }
     if ($this->order->account->type === 'individual') {
       $acc = $this->order->account->name;
-      $adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
-        $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
-        $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
+      $adress = $this->order->billing->address1 . ",<br> " .
+        $this->order->billing->city . ", " .
+        $this->order->billing->county . "<br>" .
+        $this->order->billing->country . ", " .
+        $this->order->billing->zipcode;
     } else {
       $acc = $this->order->account->company_name;
       $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
         "CIF:" . $this->order->account->registration_code . "<br>" .
-        $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->county;
+        $this->order->billing->address1 . ", " .
+        $this->order->billing->city . ", " .
+        $this->order->billing->county;
     }
 
 
@@ -1069,10 +1069,10 @@ class ShowOrder extends Component
         'ClientInformatiiSuplimentare' => '',
         'ClientCIF' => '',
         'ClientNrRegCom' => '',
-        'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
-        'ClientLocalitate' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->city),
-        'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
-        'ClientAdresa' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->address1),
+        'ClientJudet' => $this->order->billing->county_iso,
+        'ClientLocalitate' => Str::ascii($this->order->billing->city),
+        'ClientTara' => $this->order->billing->country_iso,
+        'ClientAdresa' => Str::ascii($this->order->billing->address1),
         'ClientTelefon' => $this->order->account->phone,
         'ClientEmail' => $this->order->account->email,
         'FacturaNumar' => $this->order->invoice_series . ' - ' . $serie,
@@ -1103,10 +1103,10 @@ class ShowOrder extends Component
         'ClientInformatiiSuplimentare' => '',
         'ClientCIF' => Str::ascii($this->order->account->registration_code),
         'ClientNrRegCom' => Str::ascii($this->order->account->registration_number),
-        'ClientJudet' => $this->order->account->addresses->where('type', 'billing')->first()->county_iso,
-        'ClientLocalitate' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->city),
-        'ClientTara' => $this->order->account->addresses->where('type', 'billing')->first()->country_iso,
-        'ClientAdresa' => Str::ascii($this->order->account->addresses->where('type', 'billing')->first()->address1),
+        'ClientJudet' => $this->order->billing->county_iso,
+        'ClientLocalitate' => Str::ascii($this->order->billing->city),
+        'ClientTara' => $this->order->billing->country_iso,
+        'ClientAdresa' => Str::ascii($this->order->billing->address1),
         'ClientTelefon' => $this->order->account->phone,
         'ClientEmail' => '',
         'ClientBanca' => '',
@@ -1392,18 +1392,18 @@ class ShowOrder extends Component
 
     if ($this->order->account->type === 'individual') {
       $acc = $this->order->account->name;
-      $adress = $this->order->account->addresses->where('type', 'billing')->first()->address1 . ",<br> " .
-        $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->county . "<br>" .
-        $this->order->account->addresses->where('type', 'billing')->first()->country . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->zipcode;
+      $adress = $this->order->billing->address1 . ",<br> " .
+        $this->order->billing->city . ", " .
+        $this->order->billing->county . "<br>" .
+        $this->order->billing->country . ", " .
+        $this->order->billing->zipcode;
     } else {
       $acc = $this->order->account->company_name;
       $adress = "Reg. Com:" . $this->order->account->registration_number . "<br>" .
         "CIF:" . $this->order->account->registration_code . "<br>" .
-        $this->order->account->addresses->where('type', 'billing')->first()->address1 . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->city . ", " .
-        $this->order->account->addresses->where('type', 'billing')->first()->county;
+        $this->order->billing->address1 . ", " .
+        $this->order->billing->city . ", " .
+        $this->order->billing->county;
     }
 
     // generate PDF

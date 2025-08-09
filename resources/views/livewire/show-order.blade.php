@@ -581,6 +581,8 @@
         @livewire('related-invoices', ['relatedby' => 'order', 'id' => $order->id])
         @livewire('order-similarity', ['order' => $order])
         @livewire('related-a-w-b', ['id' => $order->id])
+        @livewire('related-addresses', ['relatedby' => 'order', 'account' => null, 'order' => $order], key('first' . $order->id))
+
 
 
     </div>
