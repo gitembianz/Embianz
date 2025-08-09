@@ -17,7 +17,7 @@
             <!-------------------------Logo------------------------->
 
             <a class="logo" href="{{ url('/') }}">
-                <img title="{{ app('global_site_name') }} logo" loading="eager" src="\images\store\svg\logo-dark.svg"
+                <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
                     alt="Logo">
             </a>
             @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
@@ -101,7 +101,7 @@
                     </button>
                     <a class="logo__hidden" href="{{ url('/') }}">
                         <img title="{{ app('global_site_name') }} logo" loading="eager"
-                            src="\images\store\svg\logo-dark.svg" alt="Logo">
+                            src="/images/store/svg/logo-dark.svg" alt="Logo">
                     </a>
                 </div>
                 <div class="head__button__right">

@@ -413,7 +413,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore.self>
-                                <input type="text" x-model="county" @focus="open = true"
+                                <input type="text" x-model.debounce.1000ms="county" @focus="open = true"
                                     placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
                                     id="individualBillingCounty">
 
@@ -437,67 +437,108 @@
                                 </div>
                             </div>
 
-                            <!-----------------------   city individual billing   ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active"
-                                id="individualBillingCityParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('individual_billing_country'),
-                                    county: @entangle('individual_billing_county'),
-                                    city: @entangle('individual_billing_city'),
-                                    open: false,
+                           {{-- ---------------  City – individual billing --------------- --}}
+<div  class="checkout__item checkout__item--required searchable active"
+      id="individualBillingCityParent"
+      x-data="cityPicker()"
+      x-init="init()"
+      @click.away="open = false"
+      wire:ignore.self>
 
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
-                                    },
+    <input  type="text"
+            x-model.debounce.200ms="city"
+            @focus="open = true"
+            autocomplete="off"
+            placeholder="City"
+            class="input"
+            aria-label="City selection"
+            id="individualBillingCity">
 
-                                    cities() {
-                                        const selectedCountry = this.countries.find(
-                                            c => c.name.toLowerCase() === (this.country || '').toLowerCase()
-                                        );
-                                        const selectedCounty = selectedCountry?.counties?.find(
-                                            cc => cc.name.toLowerCase() === (this.county || '').toLowerCase()
-                                        );
-                                        return selectedCounty?.cities || [];
-                                    },
+    <span></span>
+    <label for="individualBillingCity">
+        @if (app()->has('label_order_city'))
+            {!! app('label_order_city') !!}
+        @endif
+    </label>
 
-                                    filtered() {
-                                        const searchTerm = (this.city || '').toLowerCase();
-                                        return this.cities().filter(c =>
-                                            c.name.toLowerCase().includes(searchTerm)
-                                        );
-                                    },
+    <div  x-show="open"
+          x-transition.opacity
+          x-cloak
+          class="content__searchable">
+        <div class="list__searchable">
+            <template x-for="c in filtered()" :key="c.name">
+                <button type="button"
+                        class="item__searchable"
+                        @click="select(c.name)"
+                        x-text="c.name"></button>
+            </template>
 
-                                    select(name) {
-                                        this.city = name;
-                                        this.open = false;
-                                    }
-                                }" @click.away="open = false"
-                                wire:ignore.self>
-                                <input type="text" x-model="city" @focus="open = true"
-                                    placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
-                                    id="individualBillingCity">
+            <template x-if="filtered().length === 0">
+                <button class="item__searchable" disabled>No record found</button>
+            </template>
+        </div>
+    </div>
+</div>
 
-                                <span></span>
-                                <label for="individualBillingCity">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif
-                                </label>
+<script>
+    /* --------------------------------------------------------
+       Alpine helper.  Nothing else on the page needs to change.
+       -------------------------------------------------------- */
+    function cityPicker () {
+        return {
+            /* Livewire bindings */
+            country : @entangle('individual_billing_country'),
+            county  : @entangle('individual_billing_county'),
+            city    : @entangle('individual_billing_city').defer,
 
-                                <div x-show="open" class="content__searchable" style="display: none;">
-                                    <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">No record found</button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
+            /* Local state */
+            countries : [],
+            open      : false,
 
+            /* ---------- lifecycle ---------- */
+            async init () {
+                /* load once */
+                const res      = await fetch('/js/countries.json');
+                this.countries = await res.json();
+
+                /* whenever country OR county changes, reset the city */
+                this.$watch('country', this.reset);
+                this.$watch('county',  this.reset);
+            },
+
+            /* ---------- helpers ---------- */
+            reset () {
+                this.city = '';
+                this.open = false;
+            },
+
+            cities () {
+                /* safe-guards so we never access undefined */
+                if (!this.countries.length) return [];
+
+                const ctry  = this.countries.find(
+                                c => c.name.toLowerCase() === (this.country || '').toLowerCase()
+                              );
+                const cnty  = ctry?.counties?.find(
+                                cc => cc.name.toLowerCase() === (this.county  || '').toLowerCase()
+                              );
+                return cnty?.cities || [];
+            },
+
+            filtered () {
+                const term = (this.city || '').toLowerCase();
+                return this.cities().filter(c =>
+                    c.name.toLowerCase().includes(term)
+                ).slice(0, 60);              // cap list to avoid huge DOM
+            },
+
+            select (name) {
+                this.city = name;
+                this.open = false;
+            }
+        };
+    }
+</script>
                             <!-----------------------   address1 individual billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
                                 id="individualBillingAddressParent">
@@ -1239,7 +1280,7 @@
                                     }
                                 }" @click.away="open = false"
                                 wire:ignore>
-                                <input type="text" x-model="county" @focus="open = true"
+                                <input type="text" x-modelx-model.debounce.200ms="county" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
                                     autocomplete="county" required id="juridicShippingCounty" class="input">
 
