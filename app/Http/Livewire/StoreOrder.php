@@ -19,8 +19,7 @@ use App\Mail\ConfirmationOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+
 
 class StoreOrder extends Component
 {
@@ -39,62 +38,37 @@ class StoreOrder extends Component
   public $modification = false;
   public $country;
   public array $countries = [];
-  public $Counties = [];
-  public $cities = [];
-
 
   // individual declaration
   public $individual = true;
-  public $individual_identic = true;
-  public $individual_billing_first;
-  public $individual_billing_last;
-  public $individual_billing_phone;
-  public $individual_billing_email;
-  public $individual_billing_address1;
-  public $individual_billing_address2;
-  public $individual_billing_country;
-  public $individual_billing_county;
-  public $individual_billing_city;
-  public $individual_billing_zipcode;
-  public $individual_shipping_first;
-  public $individual_shipping_last;
-  public $individual_shipping_phone;
-  public $individual_shipping_email;
-  public $individual_shipping_address1;
-  public $individual_shipping_address2;
-  public $individual_shipping_country;
-  public $individual_shipping_county;
-  public $individual_shipping_city;
-  public $individual_shipping_zipcode;
-
-  // Juridic declaration
+  public $is_identic = true;
   public $juridic = false;
-  public $juridic_identic = true;
-  public $juridic_billing_first;
-  public $juridic_billing_last;
-  public $juridic_billing_phone;
-  public $juridic_billing_email;
-  public $juridic_billing_company_name;
-  public $juridic_billing_registration_code;
-  public $juridic_billing_registration_number;
-  public $juridic_billing_bank;
-  public $juridic_billing_account;
-  public $juridic_billing_address1;
-  public $juridic_billing_address2;
-  public $juridic_billing_country;
-  public $juridic_billing_county;
-  public $juridic_billing_city;
-  public $juridic_billing_zipcode;
-  public $juridic_shipping_first;
-  public $juridic_shipping_last;
-  public $juridic_shipping_phone;
-  public $juridic_shipping_email;
-  public $juridic_shipping_address1;
-  public $juridic_shipping_address2;
-  public $juridic_shipping_country;
-  public $juridic_shipping_county;
-  public $juridic_shipping_city;
-  public $juridic_shipping_zipcode;
+
+  public $billing_first;
+  public $billing_last;
+  public $billing_phone;
+  public $billing_email;
+  public $billing_company_name;
+  public $billing_registration_code;
+  public $billing_registration_number;
+  public $billing_bank;
+  public $billing_account;
+  public $billing_address1;
+  public $billing_address2;
+  public $billing_country;
+  public $billing_county;
+  public $billing_city;
+  public $billing_zipcode;
+  public $shipping_first;
+  public $shipping_last;
+  public $shipping_phone;
+  public $shipping_email;
+  public $shipping_address1;
+  public $shipping_address2;
+  public $shipping_country;
+  public $shipping_county;
+  public $shipping_city;
+  public $shipping_zipcode;
 
   public $rtc = false;
   public $crd = false;
@@ -102,15 +76,14 @@ class StoreOrder extends Component
   public $validatequantity = true;
   public $payment;
 
-  public $icountylist = false;
-  public $iscountylist = false;
-  public $jcountylist = false;
-  public $jscountylist = false;
-
-  public $icitylist = false;
-  public $iscitylist = false;
-  public $jcitylist = false;
-  public $jscitylist = false;
+  protected $listeners = [
+    'nocard' => 'mount',
+    'cartUpdated' => 'mount',
+    'isdisabled' => 'checkIsDisabled',
+    'timmerexpired' => 'checkpromotions',
+    'saveFormToSession' => 'updateFormSession',
+    'countdownExpired' => 'mount',
+  ];
 
   public function render()
   {
@@ -129,35 +102,143 @@ class StoreOrder extends Component
     return view('livewire.store-order', $data);
   }
 
-  protected $listeners = [
-    'nocard' => 'mount',
-    'cartUpdated' => 'mount',
-    'isdisabled' => 'checkIsDisabled',
-    'timmerexpired' => 'checkpromotions',
-    'saveFormToSession' => 'updateFormSession',
-    'countdownExpired' => 'mount',
-  ];
+  public function mount()
+  {
 
-  // public function updated($propertyName)
-  // {
-  //   $resetMap = [
-  //     'individual_billing_country' => 'individual_billing_county',
-  //     'individual_shipping_country' => 'individual_shipping_county',
-  //     'juridic_billing_country' => 'juridic_billing_county',
-  //     'juridic_shipping_country' => 'juridic_shipping_county',
-  //     'individual_billing_county' => 'individual_billing_city',
-  //     'individual_shipping_county' => 'individual_shipping_city',
-  //     'juridic_billing_county' => 'juridic_billing_city',
-  //     'juridic_shipping_county' => 'juridic_shipping_city',
-  //   ];
+    $this->modification = false;
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+    if (app()->has("global_check_terms_order") && app('global_check_terms_order') === 'true') {
+      $this->terms = true;
+    }
+    $this->countries = app('active_countries');
 
-  //   if (isset($resetMap[$propertyName])) {
-  //     $this->{$resetMap[$propertyName]} = null;
-  //   }
-  // }
+    if (session()->has('paymentcancel')) {
+      $this->payment_cancel = true;
+      $this->step = 2;
+      $message = app('label_order_payment_cancel_text') ?? "";
+      $this->emit('alert__modal', ['message' => $message]);
+      session()->forget('paymentcancel');
+    }
 
 
+    if (session()->has('paymentsucces')) {
+      if ($this->cart->voucher && $this->cart->voucher->single_use) {
+        Voucher::where('id', $this->cart->voucher_id)->update([
+          'status_id' => app('global_voucher_closed')
+        ]);
+      }
+      $this->cart->update([
+        'status_id' => app('global_cart_closed')
+      ]);
+      $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
+      $order->status_id = app('global_order_processing');
+      $this->orderNumber = $order->order_number;
+      $order->save();
+      $this->new_order = $order;
+      foreach ($order->orders as $item) {
+        $item->product->quantity -= $item->quantity;
+        $item->product->save();
+      }
+      $this->step = 3;
+      session()->forget('paymentsucces');
+      try {
+        Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+      } catch (\Throwable $th) {
+        return;
+      }
+    }
 
+    if (session()->has('form_data')) {
+      $formData = session('form_data');
+      foreach ($formData as $key => $value) {
+        $this->{$key} = $value;
+      }
+    } else {
+      if (request()->cookie('accountId')) {
+        $this->is_account = request()->cookie('accountId');
+      }
+
+      if ($this->is_account != null) {
+        $account = Account::with('addresses')->find($this->is_account) ?? null;
+        if (!$account) {
+          unset($_COOKIE['accountId']);
+          $this->is_account = null;
+        } else {
+          cookie()->queue(cookie()->forget('accountId'));
+          $this->billing_first = $account->first_name;
+          $this->billing_last = $account->last_name;
+          $this->billing_phone = $account->phone;
+          $this->billing_email = $account->email;
+          $this->billing_address1 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address1;
+          $this->billing_address2 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address2;
+          $this->billing_country = optional(optional($account->addresses->where('is_default', true)->last())->billing)->country;
+          $this->billing_county = optional(optional($account->addresses->where('is_default', true)->last())->billing)->county;
+          $this->billing_city = optional(optional($account->addresses->where('is_default', true)->last())->billing)->city;
+          $this->billing_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->billing)->zipcode;
+
+          $this->shipping_first = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->first_name;
+          $this->shipping_last = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->last_name;
+          $this->shipping_phone = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->phone;
+          $this->shipping_email = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->email;
+          $this->shipping_address1 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address1;
+          $this->shipping_address2 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address2;
+          $this->shipping_country = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->country;
+          $this->shipping_county = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->county;
+          $this->shipping_city = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->city;
+          $this->shipping_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->zipcode;
+
+
+          if ($account->type == 'individual') {
+
+            $this->individual = true;
+            $this->juridic = false;
+          } else {
+
+            $this->juridic = true;
+            $this->individual = false;
+
+            $this->billing_company_name = $account->company_name;
+            $this->billing_registration_code = $account->registration_code;
+            $this->billing_registration_number = $account->registration_number;
+            $this->billing_bank = $account->bank_name;
+            $this->billing_account = $account->account;
+          }
+        }
+      } else {
+        $this->country = collect($this->countries)->firstWhere('name', app('global_default_country')) ?? 'n/a';
+        if ($this->country != 'n/a') {
+
+          $this->billing_country = $this->country['name'] ?? app('global_default_country');
+          $this->shipping_country = $this->country['name'] ?? app('global_default_country');
+        } else {
+          $this->billing_country = 'Romania';
+          $this->shipping_country = 'Romania';
+        }
+      }
+    }
+
+    $this->cash = app('global_cash');
+    $this->card = app('global_card_stripe');
+    $this->ordin = app('global_ordin');
+    if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
+
+      $this->payment = $this->card;
+      $this->payment['description'] = app('label_order_cart_stripe_title');
+      $this->crd = true;
+    } else {
+      $this->rtc = true;
+      $this->payment = $this->cash;
+      $this->payment['description'] = app('label_order_cash_title');
+    }
+
+
+    if ($this->step == 2) {
+      $this->cart->update([
+        'status_id' => app('global_cart_checkoutdetails')
+      ]);
+      $this->validatequantity = true;
+    }
+  }
 
   public function getPromotionsProperty()
   {
@@ -197,11 +278,11 @@ class StoreOrder extends Component
     }
   }
 
-
   public function checkIsDisabled()
   {
     $this->modification = true;
   }
+
   // get cart property with childs
   public function getHasCartWithItemsProperty()
   {
@@ -214,8 +295,6 @@ class StoreOrder extends Component
       ->has('cartItems')
       ->exists();
   }
-
-
 
   public function getCartProperty()
   {
@@ -250,83 +329,33 @@ class StoreOrder extends Component
       ->first() ?? null;
   }
 
-  public function showindividual()
-  {
-    $this->individual = true;
-    $this->juridic = false;
-  }
-  public function showjuridic()
-  {
-    $this->individual = false;
-    $this->juridic = true;
-  }
-
   public function previous()
   {
     $this->step--;
     $this->resetErrorBag();
   }
 
-  // validate county if not been selected
-  // public function validateCounty($county, $country, $fieldName)
-  // {
-  //   $activeCountries = collect($this->countries);
-  //   $selectedCountry = $activeCountries->firstWhere('name', $country);
-
-  //   if ($selectedCountry && !empty($selectedCountry['counties']) && count($selectedCountry['counties']) > 0) {
-  //     $inputCountyAscii = Str::lower(Str::ascii($county));
-
-  //     $validCountiesAscii = collect($selectedCountry['counties'])->pluck('name')
-  //       ->map(fn($c) => Str::lower(Str::ascii($c)));
-
-  //     if (!$validCountiesAscii->contains($inputCountyAscii)) {
-  //       $errorMessage = app()->has('label_form_county_invalid')
-  //         ? app('label_form_county_invalid')
-  //         : 'The selected county is not valid.';
-  //       throw ValidationException::withMessages([
-  //         $fieldName => $errorMessage,
-  //       ]);
-  //     }
-  //   }
-  // }
-
-
-
-
   public function next()
   {
-    if (!$this->cart->cartItems()->count() > 0 || !$this->cart) {
+    if (!$this->cart->cartItems() || !$this->cart) {
       $this->back = true;
-      $this->step++;
     } else {
       cookie()->queue(cookie()->forget('accountId'));
       $this->resetErrorBag();
       $this->validateData();
       $this->updateFormSession();
       $this->step++;
-      if ($this->individual && $this->individual_identic) {
-        $this->individual_shipping_first = $this->individual_billing_first;
-        $this->individual_shipping_last = $this->individual_billing_last;
-        $this->individual_shipping_phone = $this->individual_billing_phone;
-        $this->individual_shipping_email = $this->individual_billing_email;
-        $this->individual_shipping_address1 = $this->individual_billing_address1;
-        $this->individual_shipping_address2 = $this->individual_billing_address2;
-        $this->individual_shipping_country = $this->individual_billing_country;
-        $this->individual_shipping_county = $this->individual_billing_county;
-        $this->individual_shipping_city = $this->individual_billing_city;
-        $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
-      }
-      if ($this->juridic && $this->juridic_identic) {
-        $this->juridic_shipping_first = $this->juridic_billing_first;
-        $this->juridic_shipping_last = $this->juridic_billing_last;
-        $this->juridic_shipping_phone = $this->juridic_billing_phone;
-        $this->juridic_shipping_email = $this->juridic_billing_email;
-        $this->juridic_shipping_address1 = $this->juridic_billing_address1;
-        $this->juridic_shipping_address2 = $this->juridic_billing_address2;
-        $this->juridic_shipping_country = $this->juridic_billing_country;
-        $this->juridic_shipping_county = $this->juridic_billing_county;
-        $this->juridic_shipping_city = $this->juridic_billing_city;
-        $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+      if ($this->is_identic) {
+        $this->billing_first = $this->shipping_first;
+        $this->billing_last = $this->shipping_last;
+        $this->billing_phone = $this->shipping_phone;
+        $this->billing_email = $this->shipping_email;
+        $this->billing_address1 = $this->shipping_address1;
+        $this->billing_address2 = $this->shipping_address2;
+        $this->billing_country = $this->shipping_country;
+        $this->billing_county = $this->shipping_county;
+        $this->billing_city = $this->shipping_city;
+        $this->billing_zipcode = $this->shipping_zipcode;
       }
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
@@ -337,169 +366,40 @@ class StoreOrder extends Component
 
   public function validateData()
   {
+    $rules = [
+      'shipping_first'   => 'required|string|min:2|max:50',
+      'shipping_last'    => 'required|string|min:2|max:50',
+      'shipping_address1' => 'required|string|min:2|max:100',
+      'shipping_city'    => 'required|string|min:2|max:50',
+      'shipping_county'  => 'required|string|min:2|max:50',
+      'shipping_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
+      'shipping_email'   => 'required|email',
 
-    if ($this->individual) {
-      $rules = [
-        'individual_billing_first' => [
-          'required',
-          'min:2',
-          'max:100',
-        ],
-        'individual_billing_last' => [
-          'required',
-          'min:2',
-          'max:100',
+    ];
 
-        ],
-        'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-        'individual_billing_email' => 'required|email',
-        'individual_billing_address1' => [
-          'required',
-          'min:1',
-          'max:100',
-        ],
-        'individual_billing_city' =>
-        [
-          'required',
-          'min:1',
-          'max:40',
-        ],
+    if (!$this->is_identic) {
+      $billing = [
+        'billing_first'   => 'required|string|min:2|max:50',
+        'billing_last'    => 'required|string|min:2|max:50',
+        'billing_address1' => 'required|string|min:2|max:100',
+        'billing_city'    => 'required|string|min:2|max:50',
+        'billing_county'  => 'required|string|min:2|max:50',
+        'billing_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
+        'billing_email'   => 'required|email',
       ];
-
-      $this->validateCounty(
-        $this->individual_billing_county,
-        $this->individual_billing_country,
-        'individual_b_county'
-      );
-
-      if (!$this->individual_identic) {
-        $shippingRules = [
-          'individual_shipping_first' => [
-            'required',
-            'min:2',
-            'max:100',
-          ],
-          'individual_shipping_last' => [
-            'required',
-            'min:2',
-            'max:100',
-          ],
-          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-          'individual_shipping_email' => 'required|email',
-          'individual_shipping_address1' =>
-          [
-            'required',
-            'min:1',
-            'max:100',
-          ],
-          'individual_shipping_city' =>
-          [
-            'required',
-            'min:1',
-            'max:40',
-          ],
-        ];
-        $this->validateCounty(
-          $this->individual_shipping_county,
-          $this->individual_shipping_country,
-          'individual_s_county'
-        );
-
-        $this->validateCounty(
-          $this->individual_billing_county,
-          $this->individual_billing_country,
-          'individual_b_county'
-        );
-        $rules = array_merge($rules, $shippingRules);
-      }
-
-      $this->validate($rules);
+      $rules = array_merge($rules, $billing);
     }
+
     if ($this->juridic) {
-      $this->validateCounty(
-        $this->juridic_billing_county,
-        $this->juridic_billing_country,
-        'juridic_b_county'
-      );
-      $rules = [
-        'juridic_billing_first' => [
-          'required',
-          'min:2',
-          'max:100',
-        ],
-        'juridic_billing_last' => [
-          'required',
-          'min:2',
-          'max:100',
-        ],
-        'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-        'juridic_billing_email' => 'required|email',
-        'juridic_billing_company_name' => [
-          'required',
-          'min:1',
-          'max:100',
-        ],
-        'juridic_billing_registration_code' => [
-          'required',
-          'min:1',
-          'max:100',
-        ],
-        'juridic_billing_registration_number' => [
-          'required',
-          'min:1',
-          'max:100',
-        ],
-        'juridic_billing_address1' => [
-          'required',
-          'min:1',
-          'max:100',
-        ],
-        'juridic_billing_city' =>
-        [
-          'required',
-          'min:1',
-          'max:40',
-        ],
+      $juridicRules = [
+        'billing_company_name'     => 'required|string|min:2|max:100',
+        'billing_registration_code' => 'required|string|min:2|max:50',
+        'billing_registration_number' => 'required|string|min:1|max:50',
       ];
-      if (!$this->juridic_identic) {
-        $this->validateCounty(
-          $this->juridic_billing_county,
-          $this->juridic_billing_country,
-          'juridic_b_county'
-        );
-        $this->validateCounty(
-          $this->juridic_shipping_county,
-          $this->juridic_shipping_country,
-          'juridic_s_county'
-        );
-        $shippingRules = [
-          'juridic_shipping_first' => [
-            'required',
-            'min:2',
-            'max:100',
-          ],
-          'juridic_shipping_last' => [
-            'required',
-            'min:2',
-            'max:100',
-          ],
-          'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-          'juridic_shipping_email' => 'required|email',
-          'juridic_shipping_address1' => [
-            'required',
-            'min:1',
-            'max:100',
-          ],
-          'juridic_shipping_city' => [
-            'required',
-            'min:1',
-            'max:40',
-          ],
-        ];
-        $rules = array_merge($rules, $shippingRules);
-      }
-      $this->validate($rules);
+      $rules = array_merge($rules, $juridicRules);
     }
+
+    $this->validate($rules);
   }
 
   public function togglepayment($item)
@@ -527,215 +427,40 @@ class StoreOrder extends Component
     }
   }
 
-
-  public function mount()
+  public function updateFormSession()
   {
-
-    $this->modification = false;
-    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-    $activeCountries = app('active_countries');
-
-    $this->country = collect($activeCountries)->firstWhere('name', app('global_default_country')) ?? 'n/a';
-
-    $this->countries = $activeCountries;
-
-
-
-    if (app()->has("global_check_terms_order") && app('global_check_terms_order') === 'true') {
-      $this->terms = true;
-    }
-    if (session()->has('paymentcancel')) {
-      $this->payment_cancel = true;
-      $this->step = 2;
-      $message = app('label_order_payment_cancel_text') ?? "";
-      $this->emit('alert__modal', ['message' => $message]);
-      session()->forget('paymentcancel');
-    }
-
-
-    if (session()->has('paymentsucces')) {
-      if ($this->cart->voucher && $this->cart->voucher->single_use) {
-        Voucher::where('id', $this->cart->voucher_id)->update([
-          'status_id' => app('global_voucher_closed')
-        ]);
-      }
-      $this->cart->update([
-        'status_id' => app('global_cart_closed')
-      ]);
-      $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
-      $order->status_id = app('global_order_processing');
-      $this->orderNumber = $order->order_number;
-      $order->save();
-      $this->new_order = $order;
-      foreach ($order->orders as $item) {
-        $item->product->quantity -= $item->quantity;
-        $item->product->save();
-      }
-      $this->step = 3;
-      session()->forget('paymentsucces');
-      try {
-        Mail::to($order->account->email)->send(new ConfirmationOrder($order));
-      } catch (\Throwable $th) {
-        return;
-      }
-    }
-
-    if ($this->country != 'n/a') {
-
-      $this->individual_billing_country = $this->country['name'] ?? app('global_default_country');
-      $this->individual_shipping_country = $this->country['name']?? app('global_default_country');
-      $this->juridic_billing_country = $this->country['name']?? app('global_default_country');
-      $this->juridic_shipping_country = $this->country['name']?? app('global_default_country');
-    } else {
-      $this->individual_billing_country = 'Romania';
-      $this->individual_shipping_country = 'Romania';
-      $this->juridic_billing_country = 'Romania';
-      $this->juridic_shipping_country = 'Romania';
-    }
-
-
-
-    if (request()->cookie('accountId')) {
-      $this->is_account = request()->cookie('accountId');
-    }
-
-     if (session()->has('form_data')) {
-        $formData = session('form_data');
-
-        foreach ($formData as $key => $value) {
-            $this->{$key} = $value;
-        }
-
-    }else{
-
-      if ($this->is_account != null) {
-        $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
-        if (!$account) {
-          unset($_COOKIE['accountId']);
-          $this->is_account = null;
-        } else {
-          cookie()->queue(cookie()->forget('accountId'));
-
-          if ($account->type == 'individual') {
-            $this->individual = true;
-            $this->juridic = false;
-
-            $this->individual_billing_first = $account->first_name;
-            $this->individual_billing_last = $account->last_name;
-            $this->individual_billing_phone = $account->phone;
-            $this->individual_billing_email = $account->email;
-            $this->individual_billing_address1 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address1;
-            $this->individual_billing_address2 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address2;
-            $this->individual_billing_country = optional(optional($account->addresses->where('is_default', true)->last())->billing)->country;
-
-            $this->individual_billing_city = optional(optional($account->addresses->where('is_default', true)->last())->billing)->city;
-            $this->individual_billing_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->billing)->zipcode;
-            $this->individual_shipping_first = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->first_name;
-            $this->individual_shipping_last = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->last_name;
-            $this->individual_shipping_phone = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->phone;
-            $this->individual_shipping_email = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->email;
-            $this->individual_shipping_address1 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address1;
-            $this->individual_shipping_address2 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address2;
-            $this->individual_shipping_country = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->country;
-
-
-            $this->individual_shipping_city = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->city;
-            $this->individual_shipping_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->zipcode;
-            $this->individual_shipping_county = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->county;
-            $this->individual_billing_county = optional(optional($account->addresses->where('is_default', true)->last())->billing)->county;
-          } else {
-            $this->juridic = true;
-            $this->individual = false;
-
-            $this->juridic_billing_first = $account->first_name;
-            $this->juridic_billing_last = $account->last_name;
-            $this->juridic_billing_phone = $account->phone;
-            $this->juridic_billing_email = $account->email;
-            $this->juridic_billing_company_name = $account->company_name;
-            $this->juridic_billing_registration_code = $account->registration_code;
-            $this->juridic_billing_registration_number = $account->registration_number;
-            $this->juridic_billing_bank = $account->bank_name;
-            $this->juridic_billing_account = $account->account;
-            $this->juridic_billing_address1 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address1;
-            $this->juridic_billing_address2 = optional(optional($account->addresses->where('is_default', true)->last())->billing)->address2;
-            $this->juridic_billing_country = optional(optional($account->addresses->where('is_default', true)->last())->billing)->country;
-            $this->juridic_billing_city = optional(optional($account->addresses->where('is_default', true)->last())->billing)->city;
-            $this->juridic_billing_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->billing)->zipcode;
-            $this->juridic_shipping_first = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->first_name;
-            $this->juridic_shipping_last = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->last_name;
-            $this->juridic_shipping_phone = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->phone;
-            $this->juridic_shipping_email = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->email;
-            $this->juridic_shipping_address1 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address1;
-            $this->juridic_shipping_address2 = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->address2;
-            $this->juridic_shipping_country = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->country;
-            $this->juridic_shipping_city = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->city;
-            $this->juridic_shipping_zipcode = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->zipcode;
-            $this->juridic_shipping_county = optional(optional($account->addresses->where('is_default', true)->last())->shipping)->county;
-            $this->juridic_billing_county = optional(optional($account->addresses->where('is_default', true)->last())->billing)->county;
-          }
-        }
-      }
-    }
-
-    $this->cash = app('global_cash');
-    $this->card = app('global_card_stripe');
-    $this->ordin = app('global_ordin');
-    if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
-
-      $this->payment = $this->card;
-      $this->payment['description'] = app('label_order_cart_stripe_title');
-      $this->crd = true;
-    } else {
-      $this->rtc = true;
-      $this->payment = $this->cash;
-      $this->payment['description'] = app('label_order_cash_title');
-    }
-
-
-    if ($this->step == 2) {
-      $this->cart->update([
-        'status_id' => app('global_cart_checkoutdetails')
-      ]);
-      $this->validatequantity = true;
-    }
-  }
-
-public function updateFormSession()
-{
     $formFields = collect(get_object_vars($this))->filter(function ($_, $key) {
-        return str_contains($key, '_billing_') || str_contains($key, '_shipping_');
+      return str_contains($key, 'billing_') || str_contains($key, 'shipping_');
     });
 
     $countryFields = [
-        'individual_billing_country',
-        'individual_shipping_country',
-        'juridic_billing_country',
-        'juridic_shipping_country',
+      'billing_country',
+      'shipping_country',
+      'billing_country',
+      'shipping_country',
     ];
 
     foreach ($countryFields as $field) {
-        if (!isset($formFields[$field]) && property_exists($this, $field)) {
-            $formFields[$field] = $this->{$field} ?? app('global_default_country');
-        }
+      if (!isset($formFields[$field]) && property_exists($this, $field)) {
+        $formFields[$field] = $this->{$field} ?? app('global_default_country');
+      }
     }
 
     session()->put('form_data', $formFields->toArray());
-}
-
-
+  }
 
   protected function findOrCreateAddress(array $data)
   {
-      $query = Address::where('account_id', $data['account_id'])
-          ->where('type', $data['type']);
+    $query = Address::where('account_id', $data['account_id'])
+      ->where('type', $data['type']);
 
-      foreach ($data as $key => $value) {
-          if (!in_array($key, ['account_id', 'type'])) {
-              $query->where($key, $value);
-          }
+    foreach ($data as $key => $value) {
+      if (!in_array($key, ['account_id', 'type'])) {
+        $query->where($key, $value);
       }
+    }
 
-      return $query->first() ?? Address::create($data);
+    return $query->first() ?? Address::create($data);
   }
 
   public function confirm()
@@ -792,77 +517,76 @@ public function updateFormSession()
     }
 
     if ($this->validatequantity) {
+
       $accountData = [
-        'phone' => $this->individual ? $this->individual_billing_phone : $this->juridic_billing_phone,
-        'email' => $this->individual ? $this->individual_billing_email : $this->juridic_billing_email,
+        'phone' => $this->is_identic ? $this->shipping_phone : $this->billing_phone,
+        'email' => $this->is_identic ? $this->shipping_email : $this->billing_email,
+        'name' => $this->billing_first . " " . $this->billing_last,
+        'first_name' => $this->billing_first,
+        'last_name' => $this->billing_last,
       ];
 
       if ($this->individual) {
         $accountData = array_merge($accountData, [
-          'name' => $this->individual_billing_first . " " . $this->individual_billing_last,
           'type' => 'individual',
-          'first_name' => $this->individual_billing_first,
-          'last_name' => $this->individual_billing_last,
         ]);
       } else {
         $accountData = array_merge($accountData, [
-          'name' => $this->juridic_billing_first . " " . $this->juridic_billing_last . ", " . $this->juridic_billing_company_name,
           'type' => 'juridic',
-          'first_name' => $this->juridic_billing_first,
-          'last_name' => $this->juridic_billing_last,
-          'company_name' => $this->juridic_billing_company_name,
-          'registration_code' => $this->juridic_billing_registration_code,
-          'registration_number' => $this->juridic_billing_registration_number,
-          'bank_name' => $this->juridic_billing_bank,
-          'account' => $this->juridic_billing_account,
+          'company_name' => $this->billing_company_name,
+          'registration_code' => $this->billing_registration_code,
+          'registration_number' => $this->billing_registration_number,
+          'bank_name' => $this->billing_bank,
+          'account' => $this->billing_account,
         ]);
       }
 
       $account = Account::updateOrCreate(
         ['email' => $accountData['email']],
         $accountData
-    );
+      );
       cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
+
       Address::where('account_id', $account->id)
-                  ->where('is_default', true)
-                  ->update(['is_default' => false]);
+        ->where('is_default', true)
+        ->update(['is_default' => false]);
       $billingAddressData = [
         'account_id' => $account->id,
-        'first_name' => $this->individual ? $this->individual_billing_first : $this->juridic_billing_first,
-        'last_name' => $this->individual ? $this->individual_billing_last : $this->juridic_billing_last,
-        'phone' => $this->individual ? $this->individual_billing_phone : $this->juridic_billing_phone,
-        'email' => $this->individual ? $this->individual_billing_email : $this->juridic_billing_email,
-        'address1' => $this->individual ? $this->individual_billing_address1 : $this->juridic_billing_address1,
-        'address2' => $this->individual ? $this->individual_billing_address2 : $this->juridic_billing_address2,
+        'first_name' => $this->billing_first,
+        'last_name' => $this->billing_last,
+        'phone' => $this->billing_phone,
+        'email' => $this->billing_email,
+        'address1' => $this->billing_address1,
+        'address2' => $this->billing_address2,
         'type' => 'billing',
-        'country' => $this->individual ? $this->individual_billing_country : $this->juridic_billing_country,
-        'country_iso' => Country::where('name', $this->individual ? $this->individual_billing_country : $this->juridic_billing_country)->first()->iso_code,
-        'county' => $this->individual ? $this->individual_billing_county : $this->juridic_billing_county,
-        'county_iso' => County::where('name', $this->individual ? $this->individual_billing_county : $this->juridic_billing_county)->first()->iso_code ?? null,
-        'city' => $this->individual ? $this->individual_billing_city : $this->juridic_billing_city,
+        'country' => $this->billing_country,
+        'country_iso' => Country::where('name', $this->billing_country)->first()->iso_code,
+        'county' => $this->billing_county,
+        'county_iso' => County::where('name', $this->billing_county)->first()->iso_code ?? null,
+        'city' => $this->billing_city,
         'is_default' => true,
-        'zipcode' => $this->individual ? $this->individual_billing_zipcode : $this->juridic_billing_zipcode,
+        'zipcode' => $this->billing_zipcode,
       ];
 
       $billing = $this->findOrCreateAddress($billingAddressData);
 
-      if (!$this->individual_identic || !$this->juridic_identic) {
+      if (!$this->is_identic) {
         $shippingAddressData = [
           'account_id' => $account->id,
-          'first_name' => $this->individual ? $this->individual_shipping_first : $this->juridic_shipping_first,
-          'last_name' => $this->individual ? $this->individual_shipping_last : $this->juridic_shipping_last,
-          'phone' => $this->individual ? $this->individual_shipping_phone : $this->juridic_shipping_phone,
-          'email' => $this->individual ? $this->individual_shipping_email : $this->juridic_shipping_email,
-          'address1' => $this->individual ? $this->individual_shipping_address1 : $this->juridic_shipping_address1,
-          'address2' => $this->individual ? $this->individual_shipping_address2 : $this->juridic_shipping_address2,
+          'first_name' => $this->shipping_first,
+          'last_name' => $this->shipping_last,
+          'phone' => $this->shipping_phone,
+          'email' => $this->shipping_email,
+          'address1' => $this->shipping_address1,
+          'address2' => $this->shipping_address2,
           'type' => 'shipping',
-          'country' => $this->individual ? $this->individual_shipping_country : $this->juridic_shipping_country,
-          'country_iso' => Country::where('name', $this->individual ? $this->individual_shipping_country : $this->juridic_shipping_country)->first()->iso_code,
-          'county' => $this->individual ? $this->individual_shipping_county : $this->juridic_shipping_county,
-          'county_iso' => County::where('name', $this->individual ? $this->individual_shipping_county : $this->juridic_shipping_county)->first()->iso_code ?? null,
-          'city' => $this->individual ? $this->individual_shipping_city : $this->juridic_shipping_city,
+          'country' => $this->shipping_country,
+          'country_iso' => Country::where('name', $this->shipping_country)->first()->iso_code,
+          'county' => $this->shipping_county,
+          'county_iso' => County::where('name', $this->shipping_county)->first()->iso_code ?? null,
+          'city' => $this->shipping_city,
           'is_default' => true,
-          'zipcode' => $this->individual ? $this->individual_shipping_zipcode : $this->juridic_shipping_zipcode,
+          'zipcode' => $this->shipping_zipcode,
         ];
 
         $shipping = $this->findOrCreateAddress($shippingAddressData);

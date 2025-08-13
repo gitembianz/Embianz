@@ -234,6 +234,7 @@
     @push('scripts')
         <script></script>
     @endpush
+
     @if (!$this->hasCartWithItems)
         <!-------------------- Error Message ------------------->
         <section>
@@ -278,81 +279,121 @@
                             @endif
                         </h2>
                     </div>
-                    <div class="checkout__header">
-                        <div class="checkout__navigation">
-                            <button class="checkout__button @if ($individual) active @endif"
-                                wire:click="showindividual()">
-                                @if (app()->has('label_order_individual_tag'))
-                                    {!! app('label_order_individual_tag') !!}
-                                @endif
-                            </button>
-                            <button class="checkout__button @if ($juridic) active @endif"
-                                wire:click="showjuridic()">
-                                @if (app()->has('label_order_juridic_tag'))
-                                    {!! app('label_order_juridic_tag') !!}
-                                @endif
-                            </button>
-                        </div>
-                    </div>
-                    <!-------------- Individual -------------->
-                    <div class="checkout__container @if ($individual) active @endif">
-                        <div wire:ignore class="checkout__form active">
+
+                    {{-- alpine script --}}
+                    <script>
+                        document.addEventListener('alpine:init', () => {
+                            Alpine.store('checkout', {
+                                countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
+                                isIdentic: @js($is_identic),
+                                individual: @js($individual),
+                                juridic: @js($juridic),
+                                selectedCounty: @js($shipping_county),
+                                selectedCountyBilling: @js($billing_county),
+
+                                saveCache() {
+                                    localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
+                                },
+
+                                syncToLivewire() {
+                                    const hidden = document.getElementById('hidden_is_identic');
+                                    hidden.value = this.isIdentic ? 1 : 0;
+                                    hidden.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+                                    const individualInput = document.getElementById('hidden_individual');
+                                    individualInput.value = this.individual ? 1 : 0;
+                                    individualInput.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+
+                                    const juridicInput = document.getElementById('hidden_juridic');
+                                    juridicInput.value = this.juridic ? 1 : 0;
+                                    juridicInput.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+                                },
+                                setIndividual() {
+                                    this.individual = true;
+                                    this.juridic = false;
+                                    this.syncToLivewire();
+                                },
+
+                                setJuridic() {
+                                    this.juridic = true;
+                                    this.individual = false;
+                                    this.syncToLivewire();
+                                }
+                            });
+                        });
+                    </script>
+
+                    <style>
+                        [x-cloak] {
+                            display: none !important;
+                        }
+                    </style>
+
+
+                    <!-------------- Form -------------->
+                    <div class="checkout__container active">
+                        <div class="checkout__form active">
                             <div class="checkout__top">
                                 <span>1</span>
                                 <h3>
-                                    @if (app()->has('label_order_billing_info'))
-                                        {!! app('label_order_billing_info') !!}
+                                    @if (app()->has('label_order_shipping_info'))
+                                        {!! app('label_order_shipping_info') !!}
                                     @endif
                                 </h3>
                             </div>
-
-                            <!-----------------------   first individual billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required" id="individualBillingFirstNameParent">
-                                <input type="text" wire:model.defer="individual_billing_first"
+                            <!-----------------------   first name shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="ShippingFirstNameParent">
+                                <input type="text" wire:model.defer="shipping_first"
                                     placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif"
-                                    autocomplete="given-name" required id="individualBillingFirstName">
+                                    autocomplete="given-name" required id="ShippingFirstName">
                                 <span></span>
-                                <label for="individualBillingFirstName">
+                                <label for="ShippingFirstName">
                                     @if (app()->has('label_order_firstname'))
                                         {!! app('label_order_firstname') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   last individual billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required" id="individualBillingLastNameParent">
-                                <input type="text" wire:model.defer="individual_billing_last"
+                            <!-----------------------   last name shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="ShippingLastNameParent">
+                                <input type="text" wire:model.defer="shipping_last"
                                     placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif"
-                                    autocomplete="family-name" required id="individualBillingLastName">
+                                    autocomplete="family-name" required id="ShippingLastName">
                                 <span></span>
-                                <label for="individualBillingLastName">
+                                <label for="ShippingLastName">
                                     @if (app()->has('label_order_lastname'))
                                         {!! app('label_order_lastname') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   phone individual billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required" id="individualBillingPhoneParent">
-                                <input type="tel" wire:model.defer="individual_billing_phone"
+                            <!-----------------------   phone shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required" id="ShippingPhoneParent">
+                                <input type="tel" wire:model.defer="shipping_phone"
                                     placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif"
-                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required
-                                    id="individualBillingPhone">
+                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="ShippingPhone">
                                 <span></span>
-                                <label for="individualBillingPhone">
+                                <label for="ShippingPhone">
                                     @if (app()->has('label_order_phone'))
                                         {!! app('label_order_phone') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   email individual billing   ----------------------------->
-                            <div class="checkout__item checkout__item--required" id="individualBillingEmailParent">
-                                <input type="email" wire:model.defer="individual_billing_email"
+                            <!-----------------------   email shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required" id="ShippingEmailParent">
+                                <input type="email" wire:model.defer="shipping_email"
                                     placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif"
-                                    autocomplete="email" required id="individualBillingEmail">
+                                    autocomplete="email" required id="ShippingEmail">
                                 <span></span>
-                                <label for="individualBillingEmail">
+                                <label for="ShippingEmail">
                                     @if (app()->has('label_order_email'))
                                         {!! app('label_order_email') !!}
                                     @endif
@@ -364,61 +405,97 @@
                             <div class="checkout__top">
                                 <span>2</span>
                                 <h3>
-                                    @if (app()->has('label_order_billing_address'))
-                                        {!! app('label_order_billing_address') !!}
+                                    @if (app()->has('label_order_shipping_address'))
+                                        {!! app('label_order_shipping_address') !!}
                                     @endif
                                 </h3>
                             </div>
 
-                            <!-----------------------   country individual billing   ----------------------------->
+                            <!-----------------------   country shipping   ----------------------------->
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="individual_billing_country" class="select">
+                                <select wire:model="shipping_country" class="select">
                                     @foreach ($countries as $c)
                                         <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
                                     @endforeach
                                 </select>
                             @endif
 
-                            <!-----------------------   county individual billing  ----------------------------->
+                            <!-----------------------   county shipping  ----------------------------->
+
+                            <!-- Shipping County -->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="individualBillingCountyParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('individual_billing_country'),
-                                    county: @entangle('individual_billing_county'),
-                                    city: @entangle('individual_billing_city'),
+                                id="BillingCountyParent" x-data="{
+                                    country: @entangle('shipping_country'),
+                                    county: @entangle('shipping_county'),
                                     open: false,
+                                    countiesList: [],
+                                    countyInput: '',
 
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
+                                    async fetchCountiesForCountry(countryName) {
+                                        if (!countryName) {
+                                            this.countiesList = [];
+                                            return;
+                                        }
+
+                                        const storeCache = Alpine.store('checkout').countiesDataCache;
+
+                                        // Use cache if already loaded
+                                        if (storeCache[countryName]) {
+                                            this.countiesList = storeCache[countryName];
+                                            return;
+                                        }
+
+                                        try {
+                                            const res = await fetch(`/js/countries/${countryName}.json`);
+                                            if (!res.ok) throw new Error('Not found');
+                                            const data = await res.json();
+
+                                            // Save to store cache
+                                            storeCache[countryName] = data.counties || [];
+                                            Alpine.store('checkout').saveCache();
+
+                                            this.countiesList = storeCache[countryName];
+                                        } catch (e) {
+                                            this.countiesList = [];
+                                        }
                                     },
 
-                                    counties() {
-                                        const selected = this.countries.find(c =>
-                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
+                                    filteredCounties() {
+                                        if (!this.countyInput) return this.countiesList;
+                                        return this.countiesList.filter(c =>
+                                            c.name.toLowerCase().includes(this.countyInput.toLowerCase())
                                         );
-                                        return selected?.counties || [];
                                     },
 
-                                    filtered() {
-                                        const searchTerm = (this.county || '').toLowerCase();
-                                        return this.counties().filter(c =>
-                                            c.name.toLowerCase().includes(searchTerm)
-                                        );
-                                    },
-
-                                    select(name) {
-                                        this.county = name;
+                                    selectCounty(name) {
+                                        this.countyInput = name;
+                                        this.selectedCountry = this.country;
+                                        const hidden = document.getElementById('hiddenCountyInput');
+                                        hidden.value = name;
+                                        hidden.dispatchEvent(new Event('input')); // notify Livewire
                                         this.open = false;
+                                        // Set Alpine store for city component
+                                        $store.checkout.selectedCounty = name;
+                                        // Set city to null when county changes
+
+                                        // Also clear city input field if present
+                                        const cityInput = document.getElementById('ShippingCity');
+                                        if (cityInput) {
+                                            cityInput.value = '';
+                                            cityInput.dispatchEvent(new Event('input'));
+                                        }
                                     }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="county" @focus="open = true"
-                                    placeholder="County" class="input" autocomplete="disabled" aria-label="County selection"
-                                    id="individualBillingCounty">
+                                }" x-init="countyInput = county || '';
+                                fetchCountiesForCountry(country);"
+                                @click.away="open = false" wire:ignore>
+                                <input type="text" x-model.defer="countyInput" @focus="open = true"
+                                    placeholder="County" class="input" autocomplete="off" aria-label="County selection"
+                                    id="ShippingCounty">
+                                <input required type="hidden" id="hiddenCountyInput"
+                                    wire:model.defer="shipping_county" />
 
                                 <span></span>
-                                <label for="individualBillingCounty">
+                                <label for="ShippingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
                                     @endif
@@ -426,60 +503,69 @@
 
                                 <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
+                                        <template x-for="c in filteredCounties()" :key="c.name">
+                                            <button type="button" class="item__searchable"
+                                                @click="selectCounty(c.name)" x-text="c.name"></button>
                                         </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">No record found</button>
+                                        <template x-if="filteredCounties().length === 0">
+                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-----------------------   city individual billing   ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active"
-                                id="individualBillingCityParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('individual_billing_country'),
-                                    county: @entangle('individual_billing_county'),
-                                    city: @entangle('individual_billing_city'),
+                            <!-----------------------   city shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required searchable active"
+                                id="BillingCityParent" x-data="{
+                                    country: @entangle('shipping_country'),
+                                    county: @entangle('shipping_county'),
+                                    city: @entangle('shipping_city'),
                                     open: false,
+                                    citiesList: [],
+                                    cityInput: '',
 
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
+                                    async fetchCitiesForCounty(countyName) {
+                                        if (!countyName || !this.country) {
+                                            this.citiesList = [];
+                                            return;
+                                        }
+
+                                        const storeCache = Alpine.store('checkout').countiesDataCache;
+                                        const countryCounties = storeCache[this.country] || [];
+                                        const countyData = countryCounties.find(
+                                            c => c.name.toLowerCase() === countyName.toLowerCase()
+                                        );
+
+                                        this.citiesList = countyData?.cities || [];
                                     },
 
-                                    cities() {
-                                        const selectedCountry = this.countries.find(
-                                            c => c.name.toLowerCase() === (this.country || '').toLowerCase()
-                                        );
-                                        const selectedCounty = selectedCountry?.counties?.find(
-                                            cc => cc.name.toLowerCase() === (this.county || '').toLowerCase()
-                                        );
-                                        return selectedCounty?.cities || [];
-                                    },
-
-                                    filtered() {
-                                        const searchTerm = (this.city || '').toLowerCase();
-                                        return this.cities().filter(c =>
-                                            c.name.toLowerCase().includes(searchTerm)
+                                    filteredCities() {
+                                        if (!this.cityInput) return this.citiesList;
+                                        return this.citiesList.filter(c =>
+                                            c.name.toLowerCase().includes(this.cityInput.toLowerCase())
                                         );
                                     },
 
-                                    select(name) {
+                                    selectCity(name) {
+                                        this.cityInput = name;
                                         this.city = name;
+                                        const hidden = document.getElementById('hiddenCityInput');
+                                        hidden.value = name;
+                                        hidden.dispatchEvent(new Event('input'));
                                         this.open = false;
                                     }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="city" @focus="open = true"
-                                    placeholder="City" class="input" autocomplete="disabled" aria-label="City selection"
-                                    id="individualBillingCity">
+                                }" x-init="cityInput = city || '';
+                                fetchCitiesForCounty(Alpine.store('checkout').selectedCounty);
+                                $watch('$store.checkout.selectedCounty', value => fetchCitiesForCounty(value));"
+                                @click.away="open = false">
+                                <input type="text" x-model.defer="cityInput" @focus="open = true"
+                                    placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
+                                    class="input" aria-label="City selection" id="ShippingCity">
+
+                                <input type="hidden" id="hiddenCityInput" wire:model.defer="shipping_city" />
 
                                 <span></span>
-                                <label for="individualBillingCity">
+                                <label for="ShippingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif
@@ -487,12 +573,12 @@
 
                                 <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
+                                        <template x-for="c in filteredCities()" :key="c.name">
+                                            <button type="button" class="item__searchable"
+                                                @click="selectCity(c.name)" x-text="c.name"></button>
                                         </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">No record found</button>
+                                        <template x-if="filteredCities().length === 0">
+                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
@@ -501,28 +587,29 @@
 
 
 
-                            <!-----------------------   address1 individual billing  ----------------------------->
+
+                            <!-----------------------   address1 shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualBillingAddressParent">
-                                <input type="text" wire:model.defer="individual_billing_address1"
+                                id="ShippingAddressParent">
+                                <input type="text" wire:model.defer="shipping_address1"
                                     placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-                                    autocomplete="street-address" required id="individualBillingAddress">
+                                    autocomplete="street-address" required id="ShippingAddress">
                                 <span></span>
-                                <label for="individualBillingAddress">
+                                <label for="ShippingAddress">
                                     @if (app()->has('label_order_address1'))
                                         {!! app('label_order_address1') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   address2 individual billing  ----------------------------->
+                            <!-----------------------   address2 shipping  ----------------------------->
                             @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-                                <div wire:ignore class="checkout__item" id="individualBillingAddress2Parent">
-                                    <input type="text" wire:model.defer="individual_billing_address2"
+                                <div wire:ignore class="checkout__item" id="ShippingAddress2Parent">
+                                    <input type="text" wire:model.defer="shipping_address2"
                                         placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-                                        autocomplete="address-level2" id="individualBillingAddress2">
+                                        autocomplete="address-level2" id="ShippingAddress2">
                                     <span></span>
-                                    <label for="individualBillingAddress2">
+                                    <label for="ShippingAddress2">
                                         @if (app()->has('label_order_address2'))
                                             {!! app('label_order_address2') !!}
                                         @endif
@@ -530,361 +617,128 @@
                                 </div>
                             @endif
 
-                            <!-----------------------   zipcode individual billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item" id="individualBillingPostalParent">
-                                <input type="text" wire:model.defer="individual_billing_zipcode"
+                            <!-----------------------   zipcode shipping  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item" id="ShippingPostalParent">
+                                <input type="text" wire:model.defer="shipping_zipcode"
                                     placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-                                    autocomplete="postal-code" id="individualBillingPostal">
+                                    autocomplete="postal-code" id="ShippingPostal">
                                 <span></span>
-                                <label for="individualBillingPostal">
+                                <label for="ShippingPostal">
                                     @if (app()->has('label_order_zipcode'))
                                         {!! app('label_order_zipcode') !!}
                                     @endif
                                 </label>
                             </div>
+
                         </div>
 
-                        <label class="checkout__checkbox">
-                            <input type="checkbox" wire:model="individual_identic" id="individual_identic"
-                                name="individual_identic">
+
+                        <label class="checkout__checkbox" x-data>
+                            <input name="isIdentic" type="checkbox" x-model="$store.checkout.isIdentic"
+                                @change="$store.checkout.syncToLivewire()">
+
+                            <input type="hidden" id="hidden_is_identic" wire:model.defer="is_identic" />
+
                             <span>
                                 @if (app()->has('label_order_identic'))
                                     {!! app('label_order_identic') !!}
                                 @endif
                             </span>
                         </label>
-                        <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
+
+                        <div x-data x-show="!$store.checkout.isIdentic" x-cloak
+                            class="checkout__header checkout__checkbox">
+                            <div x-data class="checkout__navigation">
+                                <button type="button" class="checkout__button"
+                                    :class="{ 'active': $store.checkout.individual }"
+                                    @click="$store.checkout.setIndividual()">
+                                    @if (app()->has('label_order_individual_tag'))
+                                        {!! app('label_order_individual_tag') !!}
+                                    @endif
+                                </button>
+                                <button type="button" class="checkout__button"
+                                    :class="{ 'active': $store.checkout.juridic }"
+                                    @click="$store.checkout.setJuridic()">
+                                    @if (app()->has('label_order_juridic_tag'))
+                                        {!! app('label_order_juridic_tag') !!}
+                                    @endif
+                                </button>
+                                <input type="hidden" id="hidden_individual" wire:model.defer="individual" />
+                                <input type="hidden" id="hidden_juridic" wire:model.defer="juridic" />
+                            </div>
+                        </div>
+
+
+                        <div x-data :class="{ 'checkout__form active': !$store.checkout.isIdentic }"
+                            x-show="!$store.checkout.isIdentic" x-cloak>
                             <div class="checkout__top">
                                 <span>3</span>
                                 <h3>
-                                    @if (app()->has('label_order_shipping_info'))
-                                        {!! app('label_order_shipping_info') !!}
+                                    @if (app()->has('label_order_billing_info'))
+                                        {!! app('label_order_billing_info') !!}
                                     @endif
                                 </h3>
                             </div>
 
-                            <!-----------------------   first individual shipping  ----------------------------->
+                            <!-----------------------   first billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualShippingFirstNameParent">
-                                <input type="text" wire:model.defer="individual_shipping_first"
+                                id="BillingFirstNameParent">
+                                <input type="text" wire:model.defer="billing_first"
                                     placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif"
-                                    autocomplete="given-name" required id="individualShippingFirstName">
+                                    autocomplete="given-name" required id="BillingFirstName">
                                 <span></span>
-                                <label for="individualShippingFirstName">
+                                <label for="BillingFirstName">
                                     @if (app()->has('label_order_firstname'))
                                         {!! app('label_order_firstname') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   last individual shipping  ----------------------------->
+                            <!-----------------------   last billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualShippingLastNameParent">
-                                <input type="text" wire:model.defer="individual_shipping_last"
+                                id="BillingLastNameParent">
+                                <input type="text" wire:model.defer="billing_last"
                                     placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif"
-                                    autocomplete="family-name" required id="individualShippingLastName">
+                                    autocomplete="family-name" required id="BillingLastName">
                                 <span></span>
-                                <label for="individualShippingLastName">
+                                <label for="BillingLastName">
                                     @if (app()->has('label_order_lastname'))
                                         {!! app('label_order_lastname') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   phone individual shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualShippingPhoneParent">
-                                <input type="tel" wire:model.defer="individual_shipping_phone"
+                            <!-----------------------   phone billing  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required" id="BillingPhoneParent">
+                                <input type="tel" wire:model.defer="billing_phone"
                                     placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif"
                                     autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required
-                                    id="individualShippingPhone">
+                                    id="BillingPhone">
                                 <span></span>
-                                <label for="individualShippingPhone">
+                                <label for="BillingPhone">
                                     @if (app()->has('label_order_phone'))
                                         {!! app('label_order_phone') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   email individual shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualShippingEmailParent">
-                                <input type="email" wire:model="individual_shipping_email"
+                            <!-----------------------   email billing   ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item--required" id="BillingEmailParent">
+                                <input type="email" wire:model.defer="billing_email"
                                     placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif"
-                                    autocomplete="email" required id="individualShippingEmail">
+                                    autocomplete="email" required id="BillingEmail">
                                 <span></span>
-                                <label for="individualShippingEmail">
+                                <label for="BillingEmail">
                                     @if (app()->has('label_order_email'))
                                         {!! app('label_order_email') !!}
                                     @endif
                                 </label>
                             </div>
-                        </div>
-
-                        <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
-                            <div class="checkout__top">
-                                <span>4</span>
-                                <h3>
-                                    @if (app()->has('label_order_shipping_address'))
-                                        {!! app('label_order_shipping_address') !!}
-                                    @endif
-                                </h3>
-                            </div>
-                            <!-----------------------   country individual shipping  ----------------------------->
-                            @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="individual_shipping_country" class="select">
-                                    @foreach ($countries as $c)
-                                        <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-
-                            <!-----------------------   county individual shipping  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active @error('individual_s_county') error @enderror"
-                                id="individualShippingCountyParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('individual_shipping_country'),
-                                    county: @entangle('individual_shipping_county'),
-                                    city: @entangle('individual_shipping_city'),
-                                    open: false,
-
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
-                                    },
-
-                                    counties() {
-                                        const selected = this.countries.find(c =>
-                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
-                                        );
-                                        return selected?.counties || [];
-                                    },
-
-                                    filtered() {
-                                        const searchTerm = (this.county || '').toLowerCase();
-                                        return this.counties().filter(c =>
-                                            c.name.toLowerCase().includes(searchTerm)
-                                        );
-                                    },
-
-                                    select(name) {
-                                        this.county = name;
-                                        this.open = false;
-                                        // Optional: if you want to call Livewire method explicitly:
-                                        // $wire.selectShippingCounty(name);
-                                    }
-                                }"
-                                @click.away="open = false" wire:ignore>
-                                <input type="text" x-model.defer="county" @focus="open = true"
-                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="disabled" id="individualShippingCounty"
-                                    aria-label="Shipping County" required>
-
-                                <span>
-                                    @error('individual_s_county')
-                                        {{ $message }}
-                                    @enderror
-                                </span>
-                                <label for="individualShippingCounty">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif
-                                </label>
-
-                                <div x-show="open" class="content__searchable" style="display: none;">
-                                    <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">No record found</button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-----------------------   city individual shipping  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active"
-                                id="individualShippingCityParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('individual_shipping_country'),
-                                    county: @entangle('individual_shipping_county'),
-                                    city: @entangle('individual_shipping_city'),
-                                    open: false,
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
-                                    },
-
-                                    cities() {
-                                        const selectedCountry = this.countries.find(c =>
-                                            c.name.toLowerCase() === (this.country || '').toLowerCase()
-                                        );
-                                        const selectedCounty = selectedCountry?.counties?.find(cc =>
-                                            cc.name.toLowerCase() === (this.county || '').toLowerCase()
-                                        );
-                                        return selectedCounty?.cities || [];
-                                    },
-
-                                    filtered() {
-                                        const searchTerm = (this.city || '').toLowerCase();
-                                        return this.cities().filter(c =>
-                                            c.name.toLowerCase().includes(searchTerm)
-                                        );
-                                    },
-
-                                    select(name) {
-                                        this.city = name;
-                                        this.open = false;
-                                        // Optional: $wire.selectShippingCity(name);
-                                    }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="city" @focus="open = true"
-                                    placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="disabled" id="individualShippingCity"
-                                    aria-label="Shipping City" required>
-
-                                <span></span>
-                                <label for="individualShippingCity">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif
-                                </label>
-
-                                <div x-show="open" class="content__searchable" style="display: none;">
-                                    <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">No record found</button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-----------------------   address1 individual shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="individualShippingAddressParent">
-                                <input type="text" wire:model.defer="individual_shipping_address1"
-                                    placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-                                    autocomplete="street-address" required id="individualShippingAddress">
-                                <span></span>
-                                <label for="individualShippingAddress">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   address2 individual shipping  ----------------------------->
-                            @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-                                <div wire:ignore class="checkout__item" id="individualShippingAddress2Parent">
-                                    <input type="text" wire:model.defer="individual_shipping_address2"
-                                        placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-                                        autocomplete="address-level2" id="individualShippingAddress2">
-                                    <span></span>
-                                    <label for="individualShippingAddress2">
-                                        @if (app()->has('label_order_address2'))
-                                            {!! app('label_order_address2') !!}
-                                        @endif
-                                    </label>
-                                </div>
-                            @endif
-
-                            <!-----------------------   zipcode individual shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item"
-                                id="individualShippingPostalParent">
-                                <input type="text" wire:model.defer="individual_shipping_zipcode"
-                                    placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-                                    autocomplete="postal-code" id="individualShippingPostal">
-                                <span></span>
-                                <label for="individualShippingPostal">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <!-------------- End Individual -------------->
-                    <!-------------- Juridic -------------->
-                    <div class="checkout__container @if ($juridic) active @endif">
-                        <div class="checkout__form active">
-                            <div class="checkout__top">
-                                <span>1</span>
-                                <h3>
-                                    @if (app()->has('label_order_billing_info_juridic'))
-                                        {!! app('label_order_billing_info_juridic') !!}
-                                    @endif
-                                </h3>
-                            </div>
-
-                            <!-----------------------   first juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicBillingFirstNameParent">
-                                <input type="text" wire:model.defer="juridic_billing_first"
-                                    placeholder="@if (app()->has('label_order_firstname')) {!! app('label_order_firstname') !!} @endif"
-                                    autocomplete="given-name" required id="juridicBillingFirstName">
-                                <span></span>
-                                <label for="juridicBillingFirstName">
-                                    @if (app()->has('label_order_firstname'))
-                                        {!! app('label_order_firstname') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   last juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicBillingLastNameParent">
-                                <input type="text" wire:model.defer="juridic_billing_last"
-                                    placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif"
-                                    autocomplete="family-name" required id="juridicBillingLastName">
-                                <span></span>
-                                <label for="juridicBillingLastName">
-                                    @if (app()->has('label_order_lastname'))
-                                        {!! app('label_order_lastname') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   phone juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicBillingPhoneParent">
-                                <input type="tel" wire:model.defer="juridic_billing_phone"
-                                    placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif"
-                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required
-                                    id="juridicBillingPhone">
-                                <span></span>
-                                <label for="juridicBillingPhone">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   email juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicBillingEmailParent">
-                                <input type="email" wire:model.defer="juridic_billing_email"
-                                    placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif"
-                                    autocomplete="email" required id="juridicBillingEmail">
-                                <span></span>
-                                <label for="juridicBillingEmail">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   company name juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required" id="companyNameParent">
-                                <input type="text" wire:model.defer="juridic_billing_company_name"
+                            <!-------------- Juridic -------------->
+                            <!-----------------------   company name billing  ----------------------------->
+                            <div x-show="$store.checkout.juridic" x-cloak wire:ignore
+                                class="checkout__item checkout__item--required" id="companyNameParent">
+                                <input type="text" wire:model.defer="billing_company_name"
                                     placeholder="@if (app()->has('label_order_company_name')) {!! app('label_order_company_name') !!} @endif"
                                     autocomplete="organization" required id="companyName">
                                 <span></span>
@@ -895,9 +749,10 @@
                                 </label>
                             </div>
 
-                            <!-----------------------   registration_code juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required" id="registerCodeParent">
-                                <input type="text" wire:model.defer="juridic_billing_registration_code"
+                            <!-----------------------   registration_code billing  ----------------------------->
+                            <div x-show="$store.checkout.juridic" x-cloak wire:ignore
+                                class="checkout__item checkout__item--required" id="registerCodeParent">
+                                <input type="text" wire:model.defer="billing_registration_code"
                                     placeholder="@if (app()->has('label_order_register_code')) {!! app('label_order_register_code') !!} @endif"
                                     autocomplete="disabled" required id="registerCode">
                                 <span></span>
@@ -908,10 +763,10 @@
                                 </label>
                             </div>
 
-                            <!-----------------------   registration_number juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="registerNumberParent">
-                                <input type="text" wire:model.defer="juridic_billing_registration_number"
+                            <!-----------------------   registration_number billing  ----------------------------->
+                            <div x-show="$store.checkout.juridic" x-cloak wire:ignore
+                                class="checkout__item checkout__item--required" id="registerNumberParent">
+                                <input type="text" wire:model.defer="billing_registration_number"
                                     placeholder="@if (app()->has('label_order_register_number')) {!! app('label_order_register_number') !!} @endif"
                                     autocomplete="organization-number" required id="registerNumber">
                                 <span></span>
@@ -922,9 +777,10 @@
                                 </label>
                             </div>
 
-                            <!-----------------------   bank juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item" id="bankNameParent">
-                                <input type="text" wire:model.defer="juridic_billing_bank"
+                            <!-----------------------   bank billing  ----------------------------->
+                            <div x-show="$store.checkout.juridic" x-cloak wire:ignore class="checkout__item"
+                                id="bankNameParent">
+                                <input type="text" wire:model.defer="billing_bank"
                                     placeholder="@if (app()->has('label_order_bankname')) {!! app('label_order_bankname') !!} @endif"
                                     autocomplete="disabled" id="bankName">
                                 <span></span>
@@ -935,9 +791,10 @@
                                 </label>
                             </div>
 
-                            <!-----------------------   account juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item" id="IBANParent">
-                                <input type="text" wire:model.defer="juridic_billing_account"
+                            <!-----------------------   account billing  ----------------------------->
+                            <div x-show="$store.checkout.juridic" x-cloak wire:ignore class="checkout__item"
+                                id="IBANParent">
+                                <input type="text" wire:model.defer="billing_account"
                                     placeholder="@if (app()->has('label_order_iban')) {!! app('label_order_iban') !!} @endif"
                                     autocomplete="IBAN" id="IBAN">
                                 <span></span>
@@ -947,11 +804,13 @@
                                     @endif
                                 </label>
                             </div>
+                            <!-------------- End Juridic -------------->
                         </div>
 
-                        <div class="checkout__form active">
+                        <div x-data :class="{ 'checkout__form active': !$store.checkout.isIdentic }"
+                            x-show="!$store.checkout.isIdentic" x-cloak>
                             <div class="checkout__top">
-                                <span>2</span>
+                                <span>4</span>
                                 <h3>
                                     @if (app()->has('label_order_billing_address'))
                                         {!! app('label_order_billing_address') !!}
@@ -959,148 +818,214 @@
                                 </h3>
                             </div>
 
-                            <!-----------------------   country juridic billing  ----------------------------->
+                            <!-----------------------   country billing  ----------------------------->
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="juridic_billing_country" class="select">
+                                <select wire:model="billing_country" class="select">
                                     @foreach ($countries as $c)
                                         <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
                                     @endforeach
                                 </select>
                             @endif
 
-                            <!-----------------------   county juridic billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active @error('juridic_b_county') error @enderror"
-                                id="juridicBillingCountyParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('juridic_billing_country'),
-                                    county: @entangle('juridic_billing_county'),
+                            <!-----------------------   county billing  ----------------------------->
+
+
+                            <div class="checkout__item checkout__item--required searchable active"
+                                id="BillingCountyParent" x-data="{
+                                    country: @entangle('billing_country'),
+                                    county: @entangle('billing_county'),
                                     open: false,
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
+                                    countiesList: [],
+                                    billingcountyInput: '',
+
+                                    async fetchBillingCountiesForCountry(countryName) {
+                                        if (!countryName) {
+                                            this.countiesList = [];
+                                            return;
+                                        }
+
+                                        const storeCache = Alpine.store('checkout').countiesDataCache;
+
+                                        // Use cache if already loaded
+                                        if (storeCache[countryName]) {
+                                            this.countiesList = storeCache[countryName];
+                                            return;
+                                        }
+
+                                        try {
+                                            const res = await fetch(`/js/countries/${countryName}.json`);
+                                            if (!res.ok) throw new Error('Not found');
+                                            const data = await res.json();
+
+                                            // Save to store cache
+                                            storeCache[countryName] = data.counties || [];
+                                            Alpine.store('checkout').saveCache();
+
+                                            this.countiesList = storeCache[countryName];
+                                        } catch (e) {
+                                            this.countiesList = [];
+                                        }
                                     },
-                                    counties() {
-                                        const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
-                                        return selected?.counties || [];
-                                    },
-                                    filtered() {
-                                        return this.counties().filter(c =>
-                                            c.name.toLowerCase().includes((this.county || '').toLowerCase())
+
+                                    filteredBillingCounties() {
+                                        if (!this.billingcountyInput) return this.countiesList;
+                                        return this.countiesList.filter(c =>
+                                            c.name.toLowerCase().includes(this.billingcountyInput.toLowerCase())
                                         );
                                     },
-                                    select(name) {
-                                        this.county = name;
+
+                                    selectBillingCounty(name) {
+                                        this.billingcountyInput = name;
+                                        this.selectedCountyBilling = this.country;
+                                        const hidden = document.getElementById('hiddenCountyBillingInput');
+                                        hidden.value = name;
+                                        hidden.dispatchEvent(new Event('input')); // notify Livewire
                                         this.open = false;
+                                        // Set Alpine store for city component
+                                        $store.checkout.selectedCountyBilling = name;
+                                        // Set city to null when county changes
+
+                                        // Also clear city input field if present
+                                        const cityInput = document.getElementById('BillingCity');
+                                        if (cityInput) {
+                                            cityInput.value = '';
+                                            cityInput.dispatchEvent(new Event('input'));
+                                        }
                                     }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="county" @focus="open = true"
-                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    class="input" autocomplete="disabled" required id="juridicBillingCounty">
+                                }" x-init="billingcountyInput = county || '';
+                                fetchBillingCountiesForCountry(country);"
+                                @click.away="open = false" wire:ignore>
+                                <input type="text" x-model.defer="billingcountyInput" @focus="open = true"
+                                    placeholder="County" class="input" autocomplete="off"
+                                    aria-label="County selection" id="BillingCounty">
+                                <input required type="hidden" id="hiddenCountyBillingInput"
+                                    wire:model.defer="billing_county" />
 
-                                <span>
-                                    @error('juridic_b_county')
-                                        {{ $message }}
-                                    @enderror
-                                </span>
-
-                                <label for="juridicBillingCounty">
+                                <span></span>
+                                <label for="BillingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
+                                        <template x-for="c in filteredBillingCounties()" :key="c.name">
+                                            <button type="button" class="item__searchable"
+                                                @click="selectBillingCounty(c.name)" x-text="c.name"></button>
                                         </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
+                                        <template x-if="filteredBillingCounties().length === 0">
+                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-----------------------   city juridic billing  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active"
-                                id="juridicBillingCityParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('juridic_billing_country'),
-                                    county: @entangle('juridic_billing_county'),
-                                    city: @entangle('juridic_billing_city'),
+
+                            <!-----------------------   city billing  ----------------------------->
+                            {{-- <div wire:ignore class="checkout__item checkout__item--required" id="BillingCityParent">
+                                <input type="text" wire:model.defer="billing_city"
+                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
+                                    autocomplete="family-name" required id="BillingCity">
+                                <span></span>
+                                <label for="BillingCity">
+                                    @if (app()->has('label_order_county'))
+                                        {!! app('label_order_county') !!}
+                                    @endif
+                                </label>
+                            </div> --}}
+
+                            <div wire:ignore class="checkout__item checkout__item--required searchable active"
+                                id="BillingCityParent" x-data="{
+                                    country: @entangle('billing_country'),
+                                    county: @entangle('billing_county'),
+                                    city: @entangle('billing_city'),
                                     open: false,
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
+                                    citiesList: [],
+                                    cityInput: '',
+
+                                    async fetchBillingCitiesForCounty(countyName) {
+                                        if (!countyName || !this.country) {
+                                            this.citiesList = [];
+                                            return;
+                                        }
+
+                                        const storeCache = Alpine.store('checkout').countiesDataCache;
+                                        const countryCounties = storeCache[this.country] || [];
+                                        const countyData = countryCounties.find(
+                                            c => c.name.toLowerCase() === countyName.toLowerCase()
+                                        );
+
+                                        this.citiesList = countyData?.cities || [];
                                     },
 
-                                    cities() {
-                                        const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
-                                        const selectedCounty = selectedCountry?.counties?.find(cc => cc.name.toLowerCase() === (this.county || '').toLowerCase());
-                                        return selectedCounty?.cities || [];
+                                    filteredBillingCities() {
+                                        if (!this.cityInput) return this.citiesList;
+                                        return this.citiesList.filter(c =>
+                                            c.name.toLowerCase().includes(this.cityInput.toLowerCase())
+                                        );
                                     },
 
-                                    filtered() {
-                                        const searchTerm = (this.city || '').toLowerCase();
-                                        return this.cities().filter(c => c.name.toLowerCase().includes(searchTerm));
-                                    },
-
-                                    select(name) {
+                                    selectBillingCity(name) {
+                                        this.cityInput = name;
                                         this.city = name;
+                                        const hidden = document.getElementById('hiddenBillingCityInput');
+                                        hidden.value = name;
+                                        hidden.dispatchEvent(new Event('input'));
                                         this.open = false;
                                     }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="city" @focus="open = true"
+                                }" x-init="cityInput = city || '';
+                                fetchBillingCitiesForCounty(Alpine.store('checkout').selectedCountyBilling);
+                                $watch('$store.checkout.selectedCountyBilling', value => fetchBillingCitiesForCounty(value));"
+                                @click.away="open = false">
+                                <input type="text" x-model.defer="cityInput" @focus="open = true"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    class="input" autocomplete="disabled" required id="juridicBillingCity">
+                                    class="input" aria-label="City selection" id="BillingCity">
+
+                                <input type="hidden" id="hiddenBillingCityInput" wire:model.defer="shipping_city" />
 
                                 <span></span>
-
-                                <label for="juridicBillingCity">
+                                <label for="ShippingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable">
+                                <div x-show="open" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
+                                        <template x-for="c in filteredBillingCities()" :key="c.name">
+                                            <button type="button" class="item__searchable"
+                                                @click="selectBillingCity(c.name)" x-text="c.name"></button>
                                         </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
+                                        <template x-if="filteredBillingCities().length === 0">
+                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
                             </div>
 
-
-                            <!-----------------------   address1 juridic billing  ----------------------------->
+                            <!-----------------------   address1 billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicBillingAddressParent">
-                                <input type="text" wire:model.defer="juridic_billing_address1"
+                                id="BillingAddressParent">
+                                <input type="text" wire:model.defer="billing_address1"
                                     placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-                                    autocomplete="street-address" required id="juridicBillingAddress">
+                                    autocomplete="street-address" required id="BillingAddress">
                                 <span></span>
-                                <label for="juridicBillingAddress">
+                                <label for="BillingAddress">
                                     @if (app()->has('label_order_address1'))
                                         {!! app('label_order_address1') !!}
                                     @endif
                                 </label>
                             </div>
 
-                            <!-----------------------   address2 juridic billing  ----------------------------->
+                            <!-----------------------   address2 billing  ----------------------------->
                             @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-                                <div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
-                                    <input type="text" wire:model.defer="juridic_billing_address2"
+                                <div wire:ignore class="checkout__item" id="BillingAddress2Parent">
+                                    <input type="text" wire:model.defer="billing_address2"
                                         placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-                                        autocomplete="address-level2" id="juridicBillingAddress2">
+                                        autocomplete="address-level2" id="BillingAddress2">
                                     <span></span>
-                                    <label for="juridicBillingAddress2">
+                                    <label for="BillingAddress2">
                                         @if (app()->has('label_order_address2'))
                                             {!! app('label_order_address2') !!}
                                         @endif
@@ -1108,260 +1033,13 @@
                                 </div>
                             @endif
 
-                            <!-----------------------   zipcode juridic billing  ----------------------------->
-                            <div wire:ignore class="checkout__item" id="juridicBillingPostalParent">
-                                <input type="text" wire:model.defer="juridic_billing_zipcode"
+                            <!-----------------------   zipcode billing  ----------------------------->
+                            <div wire:ignore class="checkout__item checkout__item" id="BillingPostalParent">
+                                <input type="text" wire:model.defer="billing_zipcode"
                                     placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-                                    autocomplete="postal-code" id="juridicBillingPostal">
+                                    autocomplete="postal-code" id="BillingPostal">
                                 <span></span>
-                                <label for="juridicBillingPostal">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-----------------------   Juridic IDentic  ----------------------------->
-                        <label class="checkout__checkbox">
-                            <input type="checkbox" wire:model="juridic_identic" id="juridic_identic"
-                                name="juridic_identic">
-                            <span>
-                                @if (app()->has('label_order_identic'))
-                                    {!! app('label_order_identic') !!}
-                                @endif
-                            </span>
-                        </label>
-                        <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
-                            <div class="checkout__top">
-                                <span>3</span>
-                                <h3>
-                                    @if (app()->has('label_order_shipping_info'))
-                                        {!! app('label_order_shipping_info') !!}
-                                    @endif
-                                </h3>
-                            </div>
-
-                            <!-----------------------   first juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicShippingFirstNameParent">
-                                <input type="text" wire:model.defer="juridic_shipping_first" placeholder="Prenume"
-                                    autocomplete="given-name" required id="juridicShippingFirstName">
-                                <span></span>
-                                <label for="juridicShippingFirstName">
-                                    @if (app()->has('label_order_firstname'))
-                                        {!! app('label_order_firstname') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   last juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicShippingLastNameParent">
-                                <input type="text" wire:model.defer="juridic_shipping_last"
-                                    placeholder="@if (app()->has('label_order_lastname')) {!! app('label_order_lastname') !!} @endif"
-                                    autocomplete="family-name" required id="juridicShippingLastName">
-                                <span></span>
-                                <label for="juridicShippingLastName">
-                                    @if (app()->has('label_order_lastname'))
-                                        {!! app('label_order_lastname') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   phone juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicShippingPhoneParent">
-                                <input type="tel" wire:model.defer="juridic_shipping_phone"
-                                    placeholder="@if (app()->has('label_order_phone')) {!! app('label_order_phone') !!} @endif"
-                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required
-                                    id="juridicShippingPhone">
-                                <span></span>
-                                <label for="juridicShippingPhone">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   email juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicShippingEmailParent">
-                                <input type="email" wire:model.defer="juridic_shipping_email"
-                                    placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif"
-                                    autocomplete="email" required id="juridicShippingEmail">
-                                <span></span>
-                                <label for="juridicShippingEmail">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
-                            <div class="checkout__top">
-                                <span>4</span>
-                                <h3>
-                                    @if (app()->has('label_order_shipping_address'))
-                                        {!! app('label_order_shipping_address') !!}
-                                    @endif
-                                </h3>
-                            </div>
-
-                            <!-----------------------   country juridic shipping  ----------------------------->
-                            @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="juridic_shipping_country" class="select">
-                                    @foreach ($countries as $c)
-                                        <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-
-                            <!-----------------------   county juridic shipping  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active @error('juridic_s_county') error @enderror"
-                                id="juridicShippingCountyParent" x-data="{
-                                    countries: @js($countries),
-                                    country: @entangle('juridic_shipping_country'),
-                                    county: @entangle('juridic_shipping_county'),
-                                    open: false,
-
-                                    counties() {
-                                        const selected = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
-                                        return selected?.counties || [];
-                                    },
-
-                                    filtered() {
-                                        const search = (this.county || '').toLowerCase();
-                                        return this.counties().filter(c => c.name.toLowerCase().includes(search));
-                                    },
-
-                                    select(name) {
-                                        this.county = name;
-                                        this.open = false;
-                                    }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="county" @focus="open = true"
-                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="county" required id="juridicShippingCounty" class="input">
-
-                                <span>
-                                    @error('juridic_s_county')
-                                        {{ $message }}
-                                    @enderror
-                                </span>
-
-                                <label for="juridicShippingCounty">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif
-                                </label>
-
-                                <div x-show="open" class="content__searchable">
-                                    <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-----------------------   city juridic shipping  ----------------------------->
-                            <div class="checkout__item checkout__item--required searchable active"
-                                id="juridicShippingCityParent" x-data="{
-                                    countries: [],
-                                    country: @entangle('juridic_shipping_country'),
-                                    county: @entangle('juridic_shipping_county'),
-                                    city: @entangle('juridic_shipping_city'),
-                                    open: false,
-                                    async init() {
-                                        const res = await fetch('/js/countries.json');
-                                        this.countries = await res.json();
-                                    },
-
-                                    cities() {
-                                        const selectedCountry = this.countries.find(c => c.name.toLowerCase() === (this.country || '').toLowerCase());
-                                        const selectedCounty = selectedCountry?.counties?.find(cc => cc.name.toLowerCase() === (this.county || '').toLowerCase());
-                                        return selectedCounty?.cities || [];
-                                    },
-
-                                    filtered() {
-                                        const searchTerm = (this.city || '').toLowerCase();
-                                        return this.cities().filter(c => c.name.toLowerCase().includes(searchTerm));
-                                    },
-
-                                    select(name) {
-                                        this.city = name;
-                                        this.open = false;
-                                    }
-                                }" @click.away="open = false"
-                                wire:ignore>
-                                <input type="text" x-model.defer="city" @focus="open = true"
-                                    placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
-                                    autocomplete="disabled" required id="juridicShippingCity" class="input">
-
-                                <span></span>
-
-                                <label for="juridicShippingCity">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif
-                                </label>
-
-                                <div x-show="open" class="content__searchable">
-                                    <div class="list__searchable">
-                                        <template x-for="c in filtered()" :key="c.name">
-                                            <button type="button" class="item__searchable" @click="select(c.name)"
-                                                x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filtered().length === 0">
-                                            <button class="item__searchable">{{ __('No record found') }}</button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-----------------------   address1 juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item--required"
-                                id="juridicShippingAddressParent">
-                                <input type="text" wire:model.defer="juridic_shipping_address1"
-                                    placeholder="@if (app()->has('label_order_address1')) {!! app('label_order_address1') !!} @endif"
-                                    autocomplete="street-address" required id="juridicShippingAddress">
-                                <span></span>
-                                <label for="juridicShippingAddress">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif
-                                </label>
-                            </div>
-
-                            <!-----------------------   address2 juridic shipping  ----------------------------->
-                            @if (app()->has('global_order_display_address2') && app('global_order_display_address2') === 'true')
-                                <div wire:ignore class="checkout__item" id="juridicShippingAddress2Parent">
-                                    <input type="text" wire:model.defer="juridic_shipping_address2"
-                                        placeholder="@if (app()->has('label_order_address2')) {!! app('label_order_address2') !!} @endif"
-                                        autocomplete="address-level2" id="juridicShippingAddress2">
-                                    <span></span>
-                                    <label for="juridicShippingAddress2">
-                                        @if (app()->has('label_order_address2'))
-                                            {!! app('label_order_address2') !!}
-                                        @endif
-                                    </label>
-                                </div>
-                            @endif
-
-                            <!-----------------------   zipcode juridic shipping  ----------------------------->
-                            <div wire:ignore class="checkout__item checkout__item" id="juridicShippingPostalParent">
-                                <input type="text" wire:model.defer="juridic_shipping_zipcode"
-                                    placeholder="@if (app()->has('label_order_zipcode')) {!! app('label_order_zipcode') !!} @endif"
-                                    autocomplete="postal-code" id="juridicShippingPostal">
-                                <span></span>
-                                <label for="juridicShippingPostal">
+                                <label for="BillingPostal">
                                     @if (app()->has('label_order_zipcode'))
                                         {!! app('label_order_zipcode') !!}
                                     @endif
@@ -1369,9 +1047,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-------------- End Juridic -------------->
 
-                    <!-------------- Payment -------------->
                     <div class="section__header">
                         <h2 class="section__title">
                             @if (app()->has('label_order_payment_method'))
@@ -1379,7 +1055,6 @@
                             @endif
                         </h2>
                     </div>
-
                     <!-------------- cash -------------->
                     @if ($cash['active'] != 0)
                         <div class="payment">
@@ -1432,7 +1107,7 @@
                     <!-------------- ordin -------------->
                     @if ($ordin['active'] != 0)
                         @if ($juridic)
-                            <div class="payment">
+                            <div x-data x-show="!$store.checkout.juridic" x-cloak class="payment">
                                 <label class="payment__wrapper" for="invoice" wire:click="togglepayment('invoice')">
                                     <input class="payment__checkbox" type="checkbox" wire:model.defer="invoice"
                                         id="invoice">
@@ -1452,78 +1127,8 @@
                             </div>
                         @endif
                     @endif
-                    <!-------------- End Payment -------------->
 
-
-                    <!------------------------- Scrpt for Checkout --------------------------->
                     <script src="/script/store/order.js"></script>
-                    {{-- <div class="dlv" style="display: none">
-      <span class="dlv_currency">
-       @if (app()->has('global_currency_primary_name'))
-        {!! app('global_currency_primary_name') !!}
-       @endif
-      </span>
-      <span class="dlv_value">{{ $cart->final_amount }}</span>
-      <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
-      @foreach ($cart->cartItems as $cartItem)
-       <div class="dlv_item">
-        <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
-        <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
-        <span class="dlv_item-price">{{ $cartItem->price }}</span>
-        <span class="dlv_item-quantity">{{ $cartItem->quantity }}</span>
-       </div>
-      @endforeach
-     </div>
-
-     <script>
-      function begin_checkout() {
-       var dlv = document.querySelector('.dlv');
-       if (!dlv) {
-        console.error('Elementul cu clasa .dlv nu a fost găsit.');
-        return;
-       }
-       var currency = dlv.querySelector('.dlv_currency').innerText.trim();
-       var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-       var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-       var items = [];
-       var dlv_items = dlv.querySelectorAll('.dlv_item');
-       dlv_items.forEach(dlv_item => {
-        var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-        var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-        var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-        var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
-        var item = {
-         item_id: item_id,
-         item_name: item_name,
-         price: item_price,
-         quantity: item_quantity
-        };
-        items.push(item);
-       });
-       var dlvData = {
-        currency: currency,
-        value: value,
-        coupon: coupon,
-        items: items
-       };
-       return dlvData;
-      };
-      var dlvData = begin_checkout();
-      dataLayer.push({
-       ecommerce: null
-      });
-      dataLayer.push({
-       event: "begin_checkout",
-       ecommerce: {
-        currency: dlvData.currency,
-        value: dlvData.value,
-        coupon: dlvData.coupon,
-        items: dlvData.items
-       }
-      });
-     </script> --}}
-                    <!-------------- End Script -------------->
-
                 @endif
                 <!------------------------------------------------------>
                 @if ($step == 2)
@@ -1536,269 +1141,156 @@
                         </h2>
                     </div>
                     <div class="total__container">
-                        <!-------------- Individual information -------------->
-                        @if ($individual)
-                            <div class="look__form">
-                                <h3>
-                                    @if (app()->has('label_order_billing_check'))
-                                        {!! app('label_order_billing_check') !!}
-                                    @endif
-                                </h3>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_fullname'))
-                                        {!! app('label_order_fullname') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_first }}</strong>
-                                    <strong>{{ $individual_billing_last }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_phone }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_email }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_address1 }}</strong>
-                                    <strong>{{ $individual_billing_address2 }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_country'))
-                                        {!! app('label_order_country') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_country }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_county }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_city }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif:
-                                    <strong>{{ $individual_billing_zipcode }}</strong>
-                                </span>
+                        <!-------------- information -------------->
+                        <div class="look__form">
+                            <h3>
+                                @if (app()->has('label_order_billing_check'))
+                                    {!! app('label_order_billing_check') !!}
+                                @endif
+                            </h3>
+                            <span class="total__message">
+                                @if (app()->has('label_order_fullname'))
+                                    {!! app('label_order_fullname') !!}
+                                @endif:
+                                <strong>{{ $billing_first }}</strong>
+                                <strong>{{ $billing_last }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_phone'))
+                                    {!! app('label_order_phone') !!}
+                                @endif:
+                                <strong>{{ $billing_phone }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_email'))
+                                    {!! app('label_order_email') !!}
+                                @endif:
+                                <strong>{{ $billing_email }}</strong>
+                            </span>
+                            @if ($juridic)
 
-                                <h3>
-                                    @if (app()->has('label_order_delivery_check'))
-                                        {!! app('label_order_delivery_check') !!}
-                                    @endif
-                                </h3>
-
-                                <span class="total__message">
-                                    @if (app()->has('label_order_fullname'))
-                                        {!! app('label_order_fullname') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_first }}</strong>
-                                    <strong>{{ $individual_shipping_last }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_phone }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_email }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_address1 }}</strong>
-                                    <strong>{{ $individual_shipping_address2 }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_country'))
-                                        {!! app('label_order_country') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_country }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_county }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_city }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif:
-                                    <strong>{{ $individual_shipping_zipcode }}</strong>
-                                </span>
-                            </div>
-                        @else
-                            <div class="look__form">
-                                <!------------- Juridic Information --------------->
-                                <h3>
-                                    @if (app()->has('label_order_billing_check'))
-                                        {!! app('label_order_billing_check') !!}
-                                    @endif
-                                </h3>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_fullname'))
-                                        {!! app('label_order_fullname') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_first }}</strong>
-                                    <strong>{{ $juridic_billing_last }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_phone }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_email }}</strong>
-                                </span>
                                 <span class="total__message">
                                     @if (app()->has('label_order_company_name'))
                                         {!! app('label_order_company_name') !!}
                                     @endif:
-                                    <strong>{{ $juridic_billing_company_name }}</strong>
+                                    <strong>{{ $billing_company_name }}</strong>
                                 </span>
                                 <span class="total__message">
                                     @if (app()->has('label_order_register_code'))
                                         {!! app('label_order_register_code') !!}
                                     @endif:
-                                    <strong>{{ $juridic_billing_registration_code }}</strong>
+                                    <strong>{{ $billing_registration_code }}</strong>
                                 </span>
                                 <span class="total__message">
                                     @if (app()->has('label_order_register_number'))
                                         {!! app('label_order_register_number') !!}
                                     @endif:
-                                    <strong>{{ $juridic_billing_registration_number }}</strong>
+                                    <strong>{{ $billing_registration_number }}</strong>
                                 </span>
                                 <span class="total__message">
                                     @if (app()->has('label_order_bankname'))
                                         {!! app('label_order_bankname') !!}
                                     @endif:
-                                    <strong>{{ $juridic_billing_bank }}</strong>
+                                    <strong>{{ $billing_bank }}</strong>
                                 </span>
                                 <span class="total__message">
                                     @if (app()->has('label_order_iban'))
                                         {!! app('label_order_iban') !!}
                                     @endif:
-                                    <strong>{{ $juridic_billing_account }}</strong>
+                                    <strong>{{ $billing_account }}</strong>
                                 </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_address1 }}</strong>
-                                    <strong>{{ $juridic_billing_address2 }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_country'))
-                                        {!! app('label_order_country') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_country }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_county }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_city }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_billing_zipcode }}</strong>
-                                </span>
+                            @endif
 
-                                <h3>
-                                    @if (app()->has('label_order_delivery_check'))
-                                        {!! app('label_order_delivery_check') !!}
-                                    @endif
-                                </h3>
+                            <span class="total__message">
+                                @if (app()->has('label_order_address1'))
+                                    {!! app('label_order_address1') !!}
+                                @endif:
+                                <strong>{{ $billing_address1 }}</strong>
+                                <strong>{{ $billing_address2 }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_country'))
+                                    {!! app('label_order_country') !!}
+                                @endif:
+                                <strong>{{ $billing_country }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $billing_county }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_city'))
+                                    {!! app('label_order_city') !!}
+                                @endif:
+                                <strong>{{ $billing_city }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_zipcode'))
+                                    {!! app('label_order_zipcode') !!}
+                                @endif:
+                                <strong>{{ $billing_zipcode }}</strong>
+                            </span>
 
-                                <span class="total__message">
-                                    @if (app()->has('label_order_fullname'))
-                                        {!! app('label_order_fullname') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_first }}</strong>
-                                    <strong>{{ $juridic_shipping_last }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_phone'))
-                                        {!! app('label_order_phone') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_phone }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_email'))
-                                        {!! app('label_order_email') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_email }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_address1'))
-                                        {!! app('label_order_address1') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_address1 }}</strong>
-                                    <strong>{{ $juridic_shipping_address2 }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_country'))
-                                        {!! app('label_order_country') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_country }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_county }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_city'))
-                                        {!! app('label_order_city') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_city }}</strong>
-                                </span>
-                                <span class="total__message">
-                                    @if (app()->has('label_order_zipcode'))
-                                        {!! app('label_order_zipcode') !!}
-                                    @endif:
-                                    <strong>{{ $juridic_shipping_zipcode }}</strong>
-                                </span>
-                            </div>
-                        @endif
+                            <h3>
+                                @if (app()->has('label_order_delivery_check'))
+                                    {!! app('label_order_delivery_check') !!}
+                                @endif
+                            </h3>
+
+                            <span class="total__message">
+                                @if (app()->has('label_order_fullname'))
+                                    {!! app('label_order_fullname') !!}
+                                @endif:
+                                <strong>{{ $shipping_first }}</strong>
+                                <strong>{{ $shipping_last }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_phone'))
+                                    {!! app('label_order_phone') !!}
+                                @endif:
+                                <strong>{{ $shipping_phone }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_email'))
+                                    {!! app('label_order_email') !!}
+                                @endif:
+                                <strong>{{ $shipping_email }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_address1'))
+                                    {!! app('label_order_address1') !!}
+                                @endif:
+                                <strong>{{ $shipping_address1 }}</strong>
+                                <strong>{{ $shipping_address2 }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_country'))
+                                    {!! app('label_order_country') !!}
+                                @endif:
+                                <strong>{{ $shipping_country }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $shipping_county }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_city'))
+                                    {!! app('label_order_city') !!}
+                                @endif:
+                                <strong>{{ $shipping_city }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_zipcode'))
+                                    {!! app('label_order_zipcode') !!}
+                                @endif:
+                                <strong>{{ $shipping_zipcode }}</strong>
+                            </span>
+                        </div>
+
                         <!---------------------------------------------------->
                         <div class="total__info">
                             @if ($cart->cartItems)
@@ -2407,7 +1899,6 @@
             <span class="dlv_value">{{ $new_order->final_amount }}</span>
             <span class="dlv_coupon">{{ optional($new_order->voucher)->code }}</span>
             <span class="dlv_transaction">{{ $new_order->order_number }}</span>
-            {{-- <span class="dlv_tax">{{  }}</span> --}}
             <span class="dlv_shipping">
                 @if ($new_order->delivery_price == 0)
                     Gratuit
@@ -2544,9 +2035,6 @@
 
             pushPurchaseEvent();
         </script>
-
-
-
     @endif
     <!------------------- Controls ------------------->
     <div class="checkout__header" style="flex-direction: row !important">
@@ -2582,8 +2070,17 @@
                 </button>
             @endif
         @elseif ($step == 1 && $this->hasCartWithItems)
-            <button class="checkout__link checkout__button--confirm"
-                @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif
+            <button class="checkout__button checkout__button--confirm" x-data
+                @click.prevent="
+        $store.checkout.syncToLivewire();
+        if ($store.checkout.isIdentic) {
+            validateShipping();
+        } else if ($store.checkout.individual) {
+            validateAllData();
+        } else {
+            validateJuridic();
+        }
+    "
                 wire:click.prevent="next()" aria-label="go to next step" style="margin: 0 auto;">
                 @if (app()->has('label_order_next_step'))
                     {!! app('label_order_next_step') !!}
@@ -2593,6 +2090,10 @@
                     <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
             </button>
+
+
+
+
         @endif
     </div>
 </div>
