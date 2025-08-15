@@ -476,14 +476,6 @@
                                         this.open = false;
                                         // Set Alpine store for city component
                                         $store.checkout.selectedCounty = name;
-                                        // Set city to null when county changes
-
-                                        // Also clear city input field if present
-                                        const cityInput = document.getElementById('ShippingCity');
-                                        if (cityInput) {
-                                            cityInput.value = '';
-                                            cityInput.dispatchEvent(new Event('input'));
-                                        }
                                     }
                                 }" x-init="countyInput = county || '';
                                 fetchCountiesForCountry(country);"
@@ -881,16 +873,7 @@
                                         hidden.value = name;
                                         hidden.dispatchEvent(new Event('input')); // notify Livewire
                                         this.open = false;
-                                        // Set Alpine store for city component
                                         $store.checkout.selectedCountyBilling = name;
-                                        // Set city to null when county changes
-
-                                        // Also clear city input field if present
-                                        const cityInput = document.getElementById('BillingCity');
-                                        if (cityInput) {
-                                            cityInput.value = '';
-                                            cityInput.dispatchEvent(new Event('input'));
-                                        }
                                     }
                                 }" x-init="billingcountyInput = county || '';
                                 fetchBillingCountiesForCountry(country);"
