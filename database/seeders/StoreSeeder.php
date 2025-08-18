@@ -93,6 +93,7 @@ Capital Social: 200 RON', 'description' => 'Invoide serias', 'createdby' => 'adm
             ['parameter' => 'import_chunkSize', 'value' => '500', 'description' => 'Import chunk size', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'site_off', 'value' => 'false', 'description' => 'Site off - true/false', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'delivery_price_vat', 'value' => '19', 'description' => 'Delivery price vat', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'ckeditor_license', 'value' => 'pref', 'description' => 'ckeditor_license', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
 
