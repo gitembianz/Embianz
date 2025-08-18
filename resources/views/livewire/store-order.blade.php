@@ -281,52 +281,113 @@
                     </div>
 
                     {{-- alpine script --}}
-                    <script>
-                        document.addEventListener('alpine:init', () => {
-                            Alpine.store('checkout', {
-                                countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
-                                isIdentic: @js($is_identic),
-                                individual: @js($individual),
-                                juridic: @js($juridic),
-                                selectedCounty: @js($shipping_county),
-                                selectedCountyBilling: @js($billing_county),
+    <script>
+                                document.addEventListener('alpine:init', () => {
+                                    Alpine.store('checkout', {
+                                        countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
+                                        isIdentic: @js($is_identic),
+                                        individual: @js($individual),
+                                        juridic: @js($juridic),
+                                        selectedCounty: @js($shipping_county),
+                                        selectedCountyBilling: @js($billing_county),
+                                        ShippingCountiesList: [],
+                                        BillingCountiesList: [],
 
-                                saveCache() {
-                                    localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
-                                },
+                                        country: @js($shipping_country),
+                                        billingcountry: @js($billing_country),
 
-                                syncToLivewire() {
-                                    const hidden = document.getElementById('hidden_is_identic');
-                                    hidden.value = this.isIdentic ? 1 : 0;
-                                    hidden.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
-                                    const individualInput = document.getElementById('hidden_individual');
-                                    individualInput.value = this.individual ? 1 : 0;
-                                    individualInput.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
 
-                                    const juridicInput = document.getElementById('hidden_juridic');
-                                    juridicInput.value = this.juridic ? 1 : 0;
-                                    juridicInput.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
-                                },
-                                setIndividual() {
-                                    this.individual = true;
-                                    this.juridic = false;
-                                    this.syncToLivewire();
-                                },
+                                        saveCache() {
+                                            localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
+                                        },
 
-                                setJuridic() {
-                                    this.juridic = true;
-                                    this.individual = false;
-                                    this.syncToLivewire();
-                                }
-                            });
-                        });
-                    </script>
+                                        async fetchShippingCountiesForCountry(countryName) {
+                                            if (!countryName) {
+                                                this.ShippingCountiesList = [];
+                                                return;
+                                            }
+
+                                            const country = countryName.replace(/\s+/g, '_');
+
+                                            if (this.countiesDataCache[country]) {
+                                                this.ShippingCountiesList = this.countiesDataCache[country];
+                                                return;
+                                            }
+
+                                            try {
+                                                const res = await fetch(`/js/countries/${country}.json`);
+                                                if (!res.ok) throw new Error('Not found');
+                                                const data = await res.json();
+
+                                                this.countiesDataCache[country] = data.counties || [];
+                                                this.saveCache();
+
+                                                this.ShippingCountiesList = this.countiesDataCache[country];
+                                            } catch (e) {
+                                                this.ShippingCountiesList = [];
+                                            }
+                                        },
+                                         async fetchBillingCountiesForCountry(countryName) {
+                                            if (!countryName) {
+                                                this.BillingCountiesList = [];
+                                                return;
+                                            }
+
+                                            const country = countryName.replace(/\s+/g, '_');
+
+                                            if (this.countiesDataCache[country]) {
+                                                this.BillingCountiesList = this.countiesDataCache[country];
+                                                return;
+                                            }
+
+                                            try {
+                                                const res = await fetch(`/js/countries/${country}.json`);
+                                                if (!res.ok) throw new Error('Not found');
+                                                const data = await res.json();
+
+                                                this.countiesDataCache[country] = data.counties || [];
+                                                this.saveCache();
+
+                                                this.BillingCountiesList = this.countiesDataCache[country];
+                                            } catch (e) {
+                                                this.BillingCountiesList = [];
+                                            }
+                                        },
+
+                                        syncToLivewire() {
+                                            const hidden = document.getElementById('hidden_is_identic');
+                                            hidden.value = this.isIdentic ? 1 : 0;
+                                            hidden.dispatchEvent(new Event('input', {
+                                                bubbles: true
+                                            }));
+
+                                            const individualInput = document.getElementById('hidden_individual');
+                                            individualInput.value = this.individual ? 1 : 0;
+                                            individualInput.dispatchEvent(new Event('input', {
+                                                bubbles: true
+                                            }));
+
+                                            const juridicInput = document.getElementById('hidden_juridic');
+                                            juridicInput.value = this.juridic ? 1 : 0;
+                                            juridicInput.dispatchEvent(new Event('input', {
+                                                bubbles: true
+                                            }));
+                                        },
+
+                                        setIndividual() {
+                                            this.individual = true;
+                                            this.juridic = false;
+                                            this.syncToLivewire();
+                                        },
+
+                                        setJuridic() {
+                                            this.juridic = true;
+                                            this.individual = false;
+                                            this.syncToLivewire();
+                                        }
+                                    });
+                                });
+                            </script>
 
                     <style>
                         [x-cloak] {
@@ -411,82 +472,67 @@
                                 </h3>
                             </div>
 
-                            <!-----------------------   country shipping   ----------------------------->
+
+
+                            {{-- COUNTRY SELECT --}}
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="shipping_country" class="select">
+                                <select x-model="$store.checkout.country" x-init="$watch('$store.checkout.country', value => {
+                                    // reset county + city in Alpine
+                                    // Also clear city input field if present
+                                        const cityInput = document.getElementById('ShippingCity');
+                                        if (cityInput) {
+                                            cityInput.value = '';
+                                            cityInput.dispatchEvent(new Event('input'));
+                                        }
+                                            const countyInput = document.getElementById('ShippingCounty');
+                                        if (countyInput) {
+                                            countyInput.value = '';
+                                            countyInput.dispatchEvent(new Event('input'));
+                                        }
+
+
+                                    // fetch new counties
+                                    $store.checkout.fetchShippingCountiesForCountry(value)
+                                })"
+                                    wire:model.defer="shipping_country" class="select">
                                     @foreach ($countries as $c)
                                         <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
                                     @endforeach
                                 </select>
                             @endif
 
-                            <!-----------------------   county shipping  ----------------------------->
 
-                            <!-- Shipping County -->
+
+                            {{-- SHIPPING COUNTY --}}
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="ShippingCountyParent" x-data="{
-                                    country: @entangle('shipping_country'),
                                     county: @entangle('shipping_county'),
                                     open: false,
-                                    countiesList: [],
                                     countyInput: '',
 
-                                    async fetchCountiesForCountry(countryName) {
-                                        if (!countryName) {
-                                            this.countiesList = [];
-                                            return;
-                                        }
-
-                                        const storeCache = Alpine.store('checkout').countiesDataCache;
-
-                                        // Use cache if already loaded
-                                        if (storeCache[countryName]) {
-                                            this.countiesList = storeCache[countryName];
-                                            return;
-                                        }
-
-                                        try {
-                                            const res = await fetch(`/js/countries/${countryName}.json`);
-                                            if (!res.ok) throw new Error('Not found');
-                                            const data = await res.json();
-
-                                            // Save to store cache
-                                            storeCache[countryName] = data.counties || [];
-                                            Alpine.store('checkout').saveCache();
-
-                                            this.countiesList = storeCache[countryName];
-                                        } catch (e) {
-                                            this.countiesList = [];
-                                        }
-                                    },
-
                                     filteredCounties() {
-                                        if (!this.countyInput) return this.countiesList;
-                                        return this.countiesList.filter(c =>
+                                        if (!this.countyInput) return $store.checkout.ShippingCountiesList;
+                                        return $store.checkout.ShippingCountiesList.filter(c =>
                                             c.name.toLowerCase().includes(this.countyInput.toLowerCase())
                                         );
                                     },
 
                                     selectCounty(name) {
                                         this.countyInput = name;
-                                        this.selectedCountry = this.country;
                                         const hidden = document.getElementById('hiddenCountyInput');
                                         hidden.value = name;
-                                        hidden.dispatchEvent(new Event('input')); // notify Livewire
+                                        hidden.dispatchEvent(new Event('input'));
                                         this.open = false;
-                                        // Set Alpine store for city component
                                         $store.checkout.selectedCounty = name;
                                     }
                                 }" x-init="countyInput = county || '';
-                                fetchCountiesForCountry(country);"
+                                $store.checkout.fetchShippingCountiesForCountry($store.checkout.country)"
                                 @click.away="open = false" wire:ignore>
-                                <input type="text" x-model.defer="countyInput" @focus="open = true"
-                                    placeholder="County" class="input" autocomplete="off" aria-label="County selection"
-                                    id="ShippingCounty">
+                                <input type="text" x-model="countyInput" @focus="open = true" placeholder="County"
+                                    class="input" autocomplete="off" aria-label="County selection" id="ShippingCounty">
                                 <input required type="hidden" id="hiddenCountyInput"
                                     wire:model.defer="shipping_county" />
 
-                                <span></span>
                                 <label for="ShippingCounty">
                                     @if (app()->has('label_order_county'))
                                         {!! app('label_order_county') !!}
@@ -497,7 +543,8 @@
                                     <div class="list__searchable">
                                         <template x-for="c in filteredCounties()" :key="c.name">
                                             <button type="button" class="item__searchable"
-                                                @click="selectCounty(c.name)" x-text="c.name"></button>
+                                                @click="selectCounty(c.name)" x-text="c.name">
+                                            </button>
                                         </template>
                                         <template x-if="filteredCounties().length === 0">
                                             <button class="item__searchable" disabled>No record found</button>
@@ -506,24 +553,24 @@
                                 </div>
                             </div>
 
+
                             <!-----------------------   city shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
                                 id="ShippingCityParent" x-data="{
-                                    country: @entangle('shipping_country'),
-                                    county: @entangle('shipping_county'),
                                     city: @entangle('shipping_city'),
                                     open: false,
                                     citiesList: [],
                                     cityInput: '',
 
                                     async fetchCitiesForCounty(countyName) {
-                                        if (!countyName || !this.country) {
+                                        if (!countyName || !$store.checkout.country) {
                                             this.citiesList = [];
                                             return;
                                         }
 
                                         const storeCache = Alpine.store('checkout').countiesDataCache;
-                                        const countryCounties = storeCache[this.country] || [];
+                                        const country = $store.checkout.country.replace(/\s+/g, '_');
+                                        const countryCounties = storeCache[country] || [];
                                         const countyData = countryCounties.find(
                                             c => c.name.toLowerCase() === countyName.toLowerCase()
                                         );
@@ -807,8 +854,27 @@
                             </div>
 
                             <!-----------------------   country billing  ----------------------------->
+
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select wire:model="billing_country" class="select">
+                                <select x-model="$store.checkout.billingcountry" x-init="$watch('$store.checkout.billingcountry', value => {
+                                    // reset county + city in Alpine
+                                    // Also clear city input field if present
+                                        const cityInput = document.getElementById('BillingCity');
+                                        if (cityInput) {
+                                            cityInput.value = '';
+                                            cityInput.dispatchEvent(new Event('input'));
+                                        }
+                                            const countyInput = document.getElementById('BillingCounty');
+                                        if (countyInput) {
+                                            countyInput.value = '';
+                                            countyInput.dispatchEvent(new Event('input'));
+                                        }
+
+
+                                    // fetch new counties
+                                    $store.checkout.fetchBillingCountiesForCountry(value)
+                                })"
+                                    wire:model.defer="billing_country" class="select">
                                     @foreach ($countries as $c)
                                         <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
                                     @endforeach
@@ -820,51 +886,21 @@
 
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="BillingCountyParent" x-data="{
-                                    country: @entangle('billing_country'),
                                     county: @entangle('billing_county'),
                                     open: false,
-                                    countiesList: [],
                                     billingcountyInput: '',
 
-                                    async fetchBillingCountiesForCountry(countryName) {
-                                        if (!countryName) {
-                                            this.countiesList = [];
-                                            return;
-                                        }
 
-                                        const storeCache = Alpine.store('checkout').countiesDataCache;
-
-                                        // Use cache if already loaded
-                                        if (storeCache[countryName]) {
-                                            this.countiesList = storeCache[countryName];
-                                            return;
-                                        }
-
-                                        try {
-                                            const res = await fetch(`/js/countries/${countryName}.json`);
-                                            if (!res.ok) throw new Error('Not found');
-                                            const data = await res.json();
-
-                                            // Save to store cache
-                                            storeCache[countryName] = data.counties || [];
-                                            Alpine.store('checkout').saveCache();
-
-                                            this.countiesList = storeCache[countryName];
-                                        } catch (e) {
-                                            this.countiesList = [];
-                                        }
-                                    },
 
                                     filteredBillingCounties() {
-                                        if (!this.billingcountyInput) return this.countiesList;
-                                        return this.countiesList.filter(c =>
+                                        if (!this.billingcountyInput) return $store.checkout.BillingCountiesList;
+                                        return $store.checkout.BillingCountiesList.filter(c =>
                                             c.name.toLowerCase().includes(this.billingcountyInput.toLowerCase())
                                         );
                                     },
 
                                     selectBillingCounty(name) {
                                         this.billingcountyInput = name;
-                                        this.selectedCountyBilling = this.country;
                                         const hidden = document.getElementById('hiddenCountyBillingInput');
                                         hidden.value = name;
                                         hidden.dispatchEvent(new Event('input')); // notify Livewire
@@ -872,7 +908,7 @@
                                         $store.checkout.selectedCountyBilling = name;
                                     }
                                 }" x-init="billingcountyInput = county || '';
-                                fetchBillingCountiesForCountry(country);"
+                                $store.checkout.fetchBillingCountiesForCountry($store.checkout.billingcountry);"
                                 @click.away="open = false" wire:ignore>
                                 <input type="text" x-model.defer="billingcountyInput" @focus="open = true"
                                     placeholder="County" class="input" autocomplete="off"
@@ -904,21 +940,20 @@
                             <!-----------------------   city billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
                                 id="BillingCityParent" x-data="{
-                                    country: @entangle('billing_country'),
-                                    county: @entangle('billing_county'),
                                     city: @entangle('billing_city'),
                                     open: false,
                                     citiesList: [],
                                     cityInput: '',
 
                                     async fetchBillingCitiesForCounty(countyName) {
-                                        if (!countyName || !this.country) {
+                                        if (!countyName || !$store.checkout.billingcountry) {
                                             this.citiesList = [];
                                             return;
                                         }
 
                                         const storeCache = Alpine.store('checkout').countiesDataCache;
-                                        const countryCounties = storeCache[this.country] || [];
+                                        const country = $store.checkout.billingcountry.replace(/\s+/g, '_');
+                                        const countryCounties = storeCache[country] || [];
                                         const countyData = countryCounties.find(
                                             c => c.name.toLowerCase() === countyName.toLowerCase()
                                         );
@@ -952,7 +987,7 @@
                                 <input type="hidden" id="hiddenBillingCityInput" wire:model.defer="shipping_city" />
 
                                 <span></span>
-                                <label for="ShippingCity">
+                                <label for="BillingCity">
                                     @if (app()->has('label_order_city'))
                                         {!! app('label_order_city') !!}
                                     @endif

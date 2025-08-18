@@ -217,7 +217,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             })->toArray(),
           ];
 
-          $filePath = $folder . '/' . $country->name . '.json';
+          $fileName = str_replace(' ', '_', $country->name) . '.json';
+          $filePath = $folder . '/' . $fileName;
 
           Storage::disk('public_upload')->put(
             $filePath,
