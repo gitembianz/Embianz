@@ -178,7 +178,9 @@
                     <a class="logo" href="{{ url('/') }}">
                         <img title="{{ app('global_site_name') }} logo" loading="eager"
 
+
                             src="/images/store/svg/logo-light.svg" alt="logo">
+
 
                     </a>
                     <div class="social__list">
