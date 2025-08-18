@@ -424,7 +424,7 @@
 
                             <!-- Shipping County -->
                             <div class="checkout__item checkout__item--required searchable active"
-                                id="BillingCountyParent" x-data="{
+                                id="ShippingCountyParent" x-data="{
                                     country: @entangle('shipping_country'),
                                     county: @entangle('shipping_county'),
                                     open: false,
@@ -508,7 +508,7 @@
 
                             <!-----------------------   city shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
-                                id="BillingCityParent" x-data="{
+                                id="ShippingCityParent" x-data="{
                                     country: @entangle('shipping_country'),
                                     county: @entangle('shipping_county'),
                                     city: @entangle('shipping_city'),
@@ -575,10 +575,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
 
                             <!-----------------------   address1 shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -906,18 +902,6 @@
 
 
                             <!-----------------------   city billing  ----------------------------->
-                            {{-- <div wire:ignore class="checkout__item checkout__item--required" id="BillingCityParent">
-                                <input type="text" wire:model.defer="billing_city"
-                                    placeholder="@if (app()->has('label_order_county')) {!! app('label_order_county') !!} @endif"
-                                    autocomplete="family-name" required id="BillingCity">
-                                <span></span>
-                                <label for="BillingCity">
-                                    @if (app()->has('label_order_county'))
-                                        {!! app('label_order_county') !!}
-                                    @endif
-                                </label>
-                            </div> --}}
-
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
                                 id="BillingCityParent" x-data="{
                                     country: @entangle('billing_country'),
