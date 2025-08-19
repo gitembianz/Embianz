@@ -12,6 +12,12 @@ use App\Models\Listview;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
+use App\Jobs\DynamicCsvImportJob;
+use App\Models\AllJob;
+
 
 class Articlestable extends Component
 {
@@ -739,6 +745,174 @@ class Articlestable extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+  }
+
+   // export-import data
+  public function exportData()
+  {
+    $selectedColumns = $this->listview['columns'] ?? [];
+
+    if (empty($selectedColumns)) {
+      session()->flash('notification', ['message' => 'No columns selected for export.', 'type' => 'error']);
+      return;
+    }
+
+    $filename = $this->tableName . '.csv';
+    $checked = $this->checked;
+
+    return Response::streamDownload(function () use ($selectedColumns, $checked) {
+      $handle = fopen('php://output', 'w');
+
+      fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+      fputcsv($handle, $selectedColumns);
+
+      if (empty($checked)) {
+        fclose($handle);
+        return;
+      }
+
+      $realColumns = array_filter($selectedColumns, function ($col) {
+        static $dbColumns = null;
+        $dbColumns = $dbColumns ?? Schema::getColumnListing($this->tableName);
+        return in_array($col, $dbColumns);
+      });
+
+      $query = $this->getArticlesQueryProperty();
+
+      $query->select($realColumns)->whereIn('id', $checked);
+
+      $query->chunk(1000, function ($items) use ($handle, $selectedColumns) {
+        foreach ($items as $item) {
+          $row = [];
+
+          foreach ($selectedColumns as $column) {
+            $value = data_get($item, $column, '');
+
+            if ($value instanceof Carbon) {
+              $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+            } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
+              try {
+                $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+              } catch (\Exception $e) {
+              }
+            }
+
+            $row[] = is_scalar($value) ? $value : json_encode($value);
+          }
+
+          fputcsv($handle, $row);
+        }
+      });
+
+      fclose($handle);
+    }, $filename, [
+      'Content-Type' => 'text/csv; charset=UTF-8',
+      'Content-Disposition' => "attachment; filename=\"$filename\"",
+    ]);
+  }
+      public function updatingcsvimportdata($value)
+  {
+    ini_set('max_execution_time', 0);
+    ini_set('memory_limit', '1024M');
+
+    if (!$value->isValid() || $value->getClientOriginalExtension() !== 'csv') {
+      session()->flash('notification', [
+        'message' => 'Invalid CSV file.',
+        'type' => 'error',
+        'title' => 'Upload Failed'
+      ]);
+      return;
+    }
+
+    $filenameBase = 'import_' . $this->tableName . '_' . uniqid();
+    $chunkSize = app()->bound('global_import_chunkSize')
+      ? app('global_import_chunkSize')
+      : 500;
+
+    $chunkDir = storage_path('app/import_chunks/' . $filenameBase);
+
+    if (!file_exists($chunkDir)) {
+      mkdir($chunkDir, 0755, true);
+    }
+
+    $csv = fopen($value->getRealPath(), 'r');
+    $header = fgetcsv($csv);
+    $skip = ['created_at', 'updated_at'];
+    $keepIndexes = array_filter(array_keys($header), fn($i) => !in_array($header[$i], $skip));
+    $filteredHeader = array_intersect_key($header, array_flip($keepIndexes));
+
+    $chunk = [];
+    $chunkIndex = 0;
+    $rowCount = 0;
+
+    while ($row = fgetcsv($csv)) {
+      $filteredRow = array_intersect_key($row, array_flip($keepIndexes));
+      $chunk[] = $filteredRow;
+      $rowCount++;
+
+      if ($rowCount % $chunkSize === 0) {
+        $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
+        $this->writeChunk($chunkFile, $filteredHeader, $chunk);
+        $chunkIndex++;
+        $chunk = [];
+      }
+    }
+
+    if (!empty($chunk)) {
+      $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
+      $this->writeChunk($chunkFile, $filteredHeader, $chunk);
+    }
+
+    fclose($csv);
+
+    $job = CsvImportJob::create([
+      'queue' => 'default',
+      'name' => 'CSV Import for ' . $this->tableName,
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'meta' => [
+        'table_name' => $this->tableName,
+        'chunk_count' => $chunkIndex + 1,
+        'base_path' => 'import_chunks/' . $filenameBase,
+      ]
+    ]);
+
+    $allJob = AllJob::create([
+      'name' => 'DynamicCsvImportJob',
+      'type' => 'csv_import',
+      'status' => 'pending',
+      'payload' => [
+        'table_name' => $this->tableName,
+        'csv_import_job_id' => $job->id,
+      ],
+      'related_table' => $this->tableName,
+    ]);
+
+    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase, $allJob) {
+      for ($i = 0; $i <= $chunkIndex; $i++) {
+        $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
+        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id, $allJob->id);
+      }
+    });
+
+    $this->importdata = false;
+
+    session()->flash('notification', [
+      'message' => 'Large CSV import started in background with multiple jobs.',
+      'type' => 'success',
+      'title' => 'Import Queued'
+    ]);
+  }
+
+  protected function writeChunk(string $path, array $header, array $rows): void
+  {
+    $handle = fopen($path, 'w');
+    fputcsv($handle, $header);
+    foreach ($rows as $row) {
+      fputcsv($handle, $row);
+    }
+    fclose($handle);
   }
 
 }

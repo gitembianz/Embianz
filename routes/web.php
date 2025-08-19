@@ -43,6 +43,9 @@
 
       route::view('/articles', 'admin.articles')->name('articles');
       route::view('/add_article', 'admin.add_article')->name('newarticle');
+      route::post('/store_article', [AdminController::class, 'store_article'])->name('store_article');
+      route::get('/show_article/{id}/', [AdminController::class, 'show_article'])->name('show_article');
+
 
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
