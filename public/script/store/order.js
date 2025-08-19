@@ -108,7 +108,6 @@ function applyValidations(parentId, validations, triggerImmediately) {
 }
 
 function validateShipping() {
-
   applyValidations("ShippingAddressParent", addressValidations, true);
   applyValidations("ShippingCityParent", cityValidations, true);
   applyValidations("ShippingCountyParent", countyValidations, true);
@@ -116,8 +115,6 @@ function validateShipping() {
   applyValidations("ShippingEmailParent", emailValidation, true);
   applyValidations("ShippingLastNameParent", lastNameValidation, true);
   applyValidations("ShippingFirstNameParent", firstNameValidation, true);
-
-
 }
 
 function validateAllData() {
