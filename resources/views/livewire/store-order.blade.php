@@ -476,7 +476,7 @@
 
                             {{-- COUNTRY SELECT --}}
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select x-model="$store.checkout.country" x-init="$watch('$store.checkout.country', value => {
+                                <select name="selectcountry" x-model="$store.checkout.country" x-init="$watch('$store.checkout.country', value => {
                                     // reset county + city in Alpine
                                     // Also clear city input field if present
                                     const cityInput = document.getElementById('ShippingCity');
@@ -856,7 +856,7 @@
                             <!-----------------------   country billing  ----------------------------->
 
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select x-model="$store.checkout.billingcountry" x-init="$watch('$store.checkout.billingcountry', value => {
+                                <select name="selectcountry" x-model="$store.checkout.billingcountry" x-init="$watch('$store.checkout.billingcountry', value => {
                                     // reset county + city in Alpine
                                     // Also clear city input field if present
                                     const cityInput = document.getElementById('BillingCity');
