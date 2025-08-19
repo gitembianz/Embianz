@@ -2073,15 +2073,15 @@
             @endif
         @elseif ($step == 1 && $this->hasCartWithItems)
             <button class="checkout__button checkout__button--confirm" x-data
-                @click.prevent=" validateShipping();
+                @click.prevent="
         $store.checkout.syncToLivewire();
-        {{-- if ($store.checkout.isIdentic) {
+        if ($store.checkout.isIdentic) {
             validateShipping();
         } else if ($store.checkout.individual) {
             validateAllData();
         } else {
             validateJuridic();
-        } --}}
+        }
     "
                 wire:click.prevent="next()" aria-label="go to next step" style="margin: 0 auto;">
                 @if (app()->has('label_order_next_step'))
