@@ -2,29 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
-use App\Models\Brand;
-use App\Models\AllJob;
+use App\Models\Article;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Validation\Rule;
 use App\Models\Listview;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
-use App\Jobs\DynamicCsvImportJob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class Brandstable extends Component
+class Articlestable extends Component
 {
-    use WithFileUploads;
-   // importdata
   public $importdata = false;
   public $csvimportdata;
   use WithPagination;
@@ -38,16 +28,10 @@ class Brandstable extends Component
   public $idbeingremoved = null;
   public $selectedColumns = [];
   public $columns;
-  public $row = null;
   public $single = false;
   public $multiple = false;
-  public $addbrand = false;
-  public $rowadd;
-  public $rind2 = null;
-  public $brand_description = [];
-  public $brand_name = [];
-
-    // listview variables
+  public $row = null;
+  // listview variables
   public $relation = false;
   public $editlistview = false;
   public $tableName;
@@ -76,13 +60,12 @@ class Brandstable extends Component
     'value' => null,
   ];
 
-
   public function render()
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.brandstable', [
-      'brands' => $this->brands,
+    return view('livewire.articlestable', [
+      'articles' => $this->articles,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
@@ -91,7 +74,6 @@ class Brandstable extends Component
   }
   public function mount($tableName)
   {
-    $this->rowadd = 0;
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
@@ -175,13 +157,13 @@ class Brandstable extends Component
     $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
-  public function getBrandsProperty()
+   public function getArticlesProperty()
   {
-    return $this->brandsQuery->paginate($this->loadAmount);
+    return $this->articlesQuery->paginate($this->loadAmount);
   }
-  public function getBrandsQueryProperty()
+  public function getArticlesQueryProperty()
   {
-    $query = Brand::search($this->search);
+    $query = Article::search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
@@ -540,8 +522,8 @@ class Brandstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -657,8 +639,7 @@ class Brandstable extends Component
     $this->orderBy = $columnName;
     $this->save_listview(true);
   }
-
-  // default function to get the brands
+  // defalut functions
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -676,7 +657,7 @@ class Brandstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->brands->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->articles->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -688,7 +669,7 @@ class Brandstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->brandsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->articlesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
@@ -714,9 +695,9 @@ class Brandstable extends Component
   }
   public function deleteRecords()
   {
-    $items = Brand::whereKey($this->checked)->get();
+    $items = Article::whereKey($this->checked)->get();
     foreach ($items as $item) {
-      $del = Brand::findOrFail($item->id);
+      $del = Article::findOrFail($item->id);
       $medias = $del->media()->get();
       foreach ($medias as $media) {
         $media->delete();
@@ -739,7 +720,7 @@ class Brandstable extends Component
   }
   public function deleteSingleRecord()
   {
-    $item = Brand::findOrFail($this->idbeingremoved);
+    $item = Article::findOrFail($this->idbeingremoved);
     $medias = $item->media()->get();
     foreach ($medias as $media) {
       $media->delete();
@@ -759,211 +740,5 @@ class Brandstable extends Component
       'title' => 'Success'
     ]);
   }
-  public function plus()
-  {
-    $this->rowadd++;
-    $this->brand_name[$this->rowadd] = null;
-    $this->brand_description[$this->rowadd] = null;
-  }
-  public function clear($i)
-  {
-    array_splice($this->brand_name, $i, 1);
-    array_splice($this->brand_description, $i, 1);
-    $this->rowadd--;
-
-    if ($this->rowadd < 0) {
-      $this->addbrand = false;
-      $this->rowadd = 0;
-      $this->brand_name = [];
-      $this->brand_description = [];
-    }
-  }
-  public function save_brands()
-  {
-    for ($i = 0; $i <= $this->rowadd; $i++) {
-      $this->resetErrorBag();
-      $this->validate([
-        'brand_name.*' => 'required',
-        'brand_description.*' => 'required'
-      ]);
-      Brand::create([
-        'name' => $this->brand_name[$i],
-        'description' => $this->brand_description[$i]
-      ]);
-    }
-    session()->flash('notification', [
-      'message' => 'Brands added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  // export-import data
-  public function exportData()
-  {
-    $selectedColumns = $this->listview['columns'] ?? [];
-
-    if (empty($selectedColumns)) {
-      session()->flash('notification', ['message' => 'No columns selected for export.', 'type' => 'error']);
-      return;
-    }
-
-    $filename = $this->tableName . '.csv';
-    $checked = $this->checked;
-
-    return Response::streamDownload(function () use ($selectedColumns, $checked) {
-      $handle = fopen('php://output', 'w');
-
-      fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-
-      fputcsv($handle, $selectedColumns);
-
-      if (empty($checked)) {
-        fclose($handle);
-        return;
-      }
-
-      $realColumns = array_filter($selectedColumns, function ($col) {
-        static $dbColumns = null;
-        $dbColumns = $dbColumns ?? Schema::getColumnListing($this->tableName);
-        return in_array($col, $dbColumns);
-      });
-
-      $query = $this->getBrandsQueryProperty();
-
-      $query->select($realColumns)->whereIn('id', $checked);
-
-      $query->chunk(1000, function ($items) use ($handle, $selectedColumns) {
-        foreach ($items as $item) {
-          $row = [];
-
-          foreach ($selectedColumns as $column) {
-            $value = data_get($item, $column, '');
-
-            if ($value instanceof Carbon) {
-              $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
-            } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
-              try {
-                $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
-              } catch (\Exception $e) {
-              }
-            }
-
-            $row[] = is_scalar($value) ? $value : json_encode($value);
-          }
-
-          fputcsv($handle, $row);
-        }
-      });
-
-      fclose($handle);
-    }, $filename, [
-      'Content-Type' => 'text/csv; charset=UTF-8',
-      'Content-Disposition' => "attachment; filename=\"$filename\"",
-    ]);
-  }
-      public function updatingcsvimportdata($value)
-  {
-    ini_set('max_execution_time', 0);
-    ini_set('memory_limit', '1024M');
-
-    if (!$value->isValid() || $value->getClientOriginalExtension() !== 'csv') {
-      session()->flash('notification', [
-        'message' => 'Invalid CSV file.',
-        'type' => 'error',
-        'title' => 'Upload Failed'
-      ]);
-      return;
-    }
-
-    $filenameBase = 'import_' . $this->tableName . '_' . uniqid();
-    $chunkSize = app()->bound('global_import_chunkSize')
-      ? app('global_import_chunkSize')
-      : 500;
-
-    $chunkDir = storage_path('app/import_chunks/' . $filenameBase);
-
-    if (!file_exists($chunkDir)) {
-      mkdir($chunkDir, 0755, true);
-    }
-
-    $csv = fopen($value->getRealPath(), 'r');
-    $header = fgetcsv($csv);
-    $skip = ['created_at', 'updated_at'];
-    $keepIndexes = array_filter(array_keys($header), fn($i) => !in_array($header[$i], $skip));
-    $filteredHeader = array_intersect_key($header, array_flip($keepIndexes));
-
-    $chunk = [];
-    $chunkIndex = 0;
-    $rowCount = 0;
-
-    while ($row = fgetcsv($csv)) {
-      $filteredRow = array_intersect_key($row, array_flip($keepIndexes));
-      $chunk[] = $filteredRow;
-      $rowCount++;
-
-      if ($rowCount % $chunkSize === 0) {
-        $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
-        $this->writeChunk($chunkFile, $filteredHeader, $chunk);
-        $chunkIndex++;
-        $chunk = [];
-      }
-    }
-
-    if (!empty($chunk)) {
-      $chunkFile = "$chunkDir/chunk_$chunkIndex.csv";
-      $this->writeChunk($chunkFile, $filteredHeader, $chunk);
-    }
-
-    fclose($csv);
-
-    $job = CsvImportJob::create([
-      'queue' => 'default',
-      'name' => 'CSV Import for ' . $this->tableName,
-      'type' => 'csv_import',
-      'status' => 'pending',
-      'meta' => [
-        'table_name' => $this->tableName,
-        'chunk_count' => $chunkIndex + 1,
-        'base_path' => 'import_chunks/' . $filenameBase,
-      ]
-    ]);
-
-    $allJob = AllJob::create([
-      'name' => 'DynamicCsvImportJob',
-      'type' => 'csv_import',
-      'status' => 'pending',
-      'payload' => [
-        'table_name' => $this->tableName,
-        'csv_import_job_id' => $job->id,
-      ],
-      'related_table' => $this->tableName,
-    ]);
-
-    DB::afterCommit(function () use ($job, $chunkIndex, $filenameBase, $allJob) {
-      for ($i = 0; $i <= $chunkIndex; $i++) {
-        $chunkPath = "import_chunks/{$filenameBase}/chunk_{$i}.csv";
-        DynamicCsvImportJob::dispatch($this->tableName, $chunkPath, $job->id, $allJob->id);
-      }
-    });
-
-    $this->importdata = false;
-
-    session()->flash('notification', [
-      'message' => 'Large CSV import started in background with multiple jobs.',
-      'type' => 'success',
-      'title' => 'Import Queued'
-    ]);
-  }
-
-  protected function writeChunk(string $path, array $header, array $rows): void
-  {
-    $handle = fopen($path, 'w');
-    fputcsv($handle, $header);
-    foreach ($rows as $row) {
-      fputcsv($handle, $row);
-    }
-    fclose($handle);
-  }
-
 
 }

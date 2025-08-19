@@ -51,6 +51,19 @@
                 </svg>
                 <span>Products</span>
             </a>
+            <a class="button button--fill button--flexed button--primary @if ($active == 'article') button--active @endif"
+                href="{{ route('articles') }}">
+                <svg>
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M15 8H17M15 12H17M17 16H7M7 8V12H11V8H7ZM5 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20Z"
+                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </g>
+                </svg>
+                <span>Articles</span>
+            </a>
             {{-- Promotions --}}
             <a class="button button--fill button--flexed button--primary @if ($active == 'promotion') button--active @endif"
                 href="{{ route('all_promotions') }}">
@@ -358,6 +371,19 @@
                 <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
             </svg>
             <span>Products</span>
+        </a>
+        <a class="button button--long button--flexed button--primary @if ($active == 'article') button--secondary @endif"
+            href="{{ route('articles') }}">
+            <svg>
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M15 8H17M15 12H17M17 16H7M7 8V12H11V8H7ZM5 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20Z"
+                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </g>
+                </svg>
+            <span>Articles</span>
         </a>
         {{-- promotions desktop --}}
         <a class="button button--long button--flexed button--primary @if ($active == 'promotion') button--secondary @endif"

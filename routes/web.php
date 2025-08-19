@@ -41,6 +41,9 @@
       route::post('/add_category', [CategoryController::class, 'add_category'])->name('add_category');
       route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
 
+      route::view('/articles', 'admin.articles')->name('articles');
+      route::view('/add_article', 'admin.add_article')->name('newarticle');
+
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
       Route::get('/add_product', [ProductController::class, 'create'])->name('add_product');
