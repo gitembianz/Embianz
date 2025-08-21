@@ -197,6 +197,7 @@
 
     {{-- Tabs Body (Related) --}}
     <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-        {{-- @livewire('related-media-article', ['article' => $category]) --}}
+        @livewire('related-article-category', ['category' => $category])
+
     </div>
 </section>

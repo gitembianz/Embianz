@@ -2,15 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\Article;
+use App\Models\ArticleCategory;
+use App\Models\ArticleCategoryLink;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Products_categories;
 
-class RelatedProductCategory extends Component
+class RelatedArticleCategory extends Component
 {
-
   use WithPagination;
   public $showTable = false;
 
@@ -24,7 +23,7 @@ class RelatedProductCategory extends Component
   public $selectAll = false;
   public $showrelateitems = false;
   public $idbeingremoved = null;
-  public $columns = ['Id', 'Category Name', 'Product Name', 'Product Description', 'Product type', 'Product is active?', 'Created At', 'Updated At'];
+  public $columns = ['Id', 'Category Name', 'Article Name', 'Article Description', 'Article is active?', 'Created At', 'Updated At'];
   public $selectedColumns = [];
   public $category;
 
@@ -42,6 +41,27 @@ class RelatedProductCategory extends Component
   public $rind2 = null;
   public $rind = null;
 
+public function render()
+  {
+    $relatedarticles = $this->relatedarticles
+      ->where(function ($query) {
+        $query->whereHas('article', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+        });
+      })->paginate($this->loadAmount);
+
+    return view('livewire.related-article-category', [
+      'relatedarticles' => $relatedarticles,
+      'articles' => $this->articles,
+    ]);
+  }
+  public function mount(ArticleCategory $category)
+  {
+    $this->category = $category;
+    $this->selectedColumns = $this->columns;
+  }
+
+  // expand row methods
   public function expandRow2($index)
   {
     if ($this->rind2  === null) {
@@ -63,15 +83,7 @@ class RelatedProductCategory extends Component
     }
   }
 
-  public function confirmItemRemoval($id)
-  {
-    $this->idbeingremoved = $id;
-    $this->single = true;
-  }
-  public function confirmItemsRemoval()
-  {
-    $this->multiple = true;
-  }
+
   public function cancel_delete()
   {
     $this->multiple = false;
@@ -84,7 +96,7 @@ class RelatedProductCategory extends Component
     $this->linksingle = false;
   }
 
-  // function for add products
+    // function for add products
   public function addrelated()
   {
     $this->showrelateitems = true;
@@ -109,15 +121,12 @@ class RelatedProductCategory extends Component
   }
   public function showColumnadd($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumnsadd);
   }
   public function updatedSelectPageadd($value)
   {
     if ($value) {
-      $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checkedadd = $this->articles->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checkedadd = [];
     }
@@ -137,12 +146,12 @@ class RelatedProductCategory extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->articles->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getProddsProperty()
+  public function getArticlesProperty()
   {
-    $ids = $this->relatedproducts->pluck('product_id')->toArray();
-    $unrelated = Product::whereNotIn('id', $ids);
+    $ids = $this->relatedarticles->pluck('article_id')->toArray();
+    $unrelated = Article::whereNotIn('id', $ids);
     if (!empty($this->searchadd)) {
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
@@ -153,7 +162,7 @@ class RelatedProductCategory extends Component
   public function linkSingleRecord()
   {
     $id = $this->idbeinglink;
-    $product = new  Products_categories();
+    $product = new  ArticleCategoryLink();
     $product->product_id = $id;
     $product->category_id = $this->category->id;
     $product->save();
@@ -168,9 +177,9 @@ class RelatedProductCategory extends Component
   }
   public function linkRecords()
   {
-    $products = Product::whereKey($this->checkedadd)->get();
+    $products = Article::whereKey($this->checkedadd)->get();
     foreach ($products as $product) {
-      $prodadd = new Products_categories();
+      $prodadd = new ArticleCategoryLink();
       $prodadd->product_id = $product->id;
       $prodadd->category_id = $this->category->id;
       $prodadd->save();
@@ -187,18 +196,15 @@ class RelatedProductCategory extends Component
   }
 
 
-  //function for related products
+    //function for related articles
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedarticles->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -229,24 +235,32 @@ class RelatedProductCategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->RelatedProducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedarticles->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getRelatedProductsQueryProperty()
+  public function getRelatedarticlesQueryProperty()
   {
-    return $this->relatedPoductsQuery->get();
+    return $this->relatedarticlesQuery->get();
   }
-  public function getRelatedProductsProperty()
+  public function getRelatedarticlesProperty()
   {
-    return Products_categories::where('category_id', $this->category->id)
+    return ArticleCategoryLink::where('category_id', $this->category->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-
-
-  public function deleteSingleRecord()
+  // deleted functions
+  public function confirmItemRemoval($id)
+  {
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+   public function deleteSingleRecord()
   {
     $id = $this->idbeingremoved;
-    $product = Products_categories::findOrFail($id);
-    $product->delete();
+    $article = ArticleCategoryLink::findOrFail($id);
+    $article->delete();
     $this->checked = array_diff($this->checked, [$id]);
     $this->single = false;
 
@@ -258,11 +272,11 @@ class RelatedProductCategory extends Component
   }
   public function deleteRecords()
   {
-    $products = Products_categories::whereKey($this->checked)->get();
-    foreach ($products as $product) {
-      $id = $product->id;
-      $producttodel = Products_categories::find($id);
-      $producttodel->delete();
+    $articles = ArticleCategoryLink::whereKey($this->checked)->get();
+    foreach ($articles as $article) {
+      $id = $article->id;
+      $articletodel = ArticleCategoryLink::find($id);
+      $articletodel->delete();
     }
 
     $this->checked = [];
@@ -274,27 +288,5 @@ class RelatedProductCategory extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
-  }
-
-  public function render()
-  {
-    $relatedproducts = $this->RelatedProducts
-      ->where(function ($query) {
-        $query->whereHas('product', function ($subQuery) {
-          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('type', 'LIKE', '%' . $this->search . '%');
-        });
-      })->paginate($this->loadAmount);
-
-    return view('livewire.related-product-category', [
-      'relatedproducts' => $relatedproducts,
-      'prodds' => $this->prodds,
-    ]);
-  }
-  public function mount(Category $category)
-  {
-    $this->category = $category;
-    $this->selectedColumns = $this->columns;
   }
 }
