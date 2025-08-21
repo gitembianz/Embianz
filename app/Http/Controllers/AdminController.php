@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewUser;
+use App\Models\Article;
+use App\Models\ArticleCategory;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -79,7 +82,101 @@ class AdminController extends Controller
     }
   }
 
+  private function generateUniqueSeoId($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      Article::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
+  }
 
+  private function generateUniqueSeoIdcategory($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      ArticleCategory::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
+  }
+
+  public function store_article(Request $request)
+  {
+    $rules = [
+      'end_date' => 'required|date|after_or_equal:today|after_or_equal:start_date',
+      'seo_id' => 'unique:articles,seo_id',
+    ];
+
+    $this->validate($request, $rules);
+    if ($request->seo_id != null) {
+      $seo_id = $this->generateUniqueSeoId($request->seo_id);
+    } else {
+      $seo_id = $this->generateUniqueSeoId($request->name);
+    }
+    $item = Article::create([
+      'name' => $request->name,
+      'active' => $request->has('active'),
+      'short_description' => $request->short_description,
+      'long_description' => $request->long_description,
+      'meta_description' => $request->meta_description,
+      'start_date' => $request->start_date,
+      'end_date' => $request->end_date,
+      'seo_title' => $request->seo_title,
+      'seo_id' => $seo_id,
+      'created_by' => Auth::user()->name,
+      'last_modified_by' => Auth::user()->name,
+    ]);
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here <a href="' . route("show_article", ["id" => $item->id]) . '">' . $item->name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
+  }
+
+  public function add_articlecategory(Request $request)
+  {
+    $rules = [
+      'end_date' => 'required|date|after_or_equal:today|after_or_equal:start_date',
+      'seo_id' => 'unique:article_categories,seo_id',
+    ];
+
+    $this->validate($request, $rules);
+    if ($request->seo_id != null) {
+      $seo_id = $this->generateUniqueSeoIdcategory($request->seo_id);
+    } else {
+      $seo_id = $this->generateUniqueSeoIdcategory($request->name);
+    }
+    $item = ArticleCategory::create([
+      'name' => $request->name,
+      'active' => $request->has('active'),
+      'short_description' => $request->short_description,
+      'start_date' => $request->start_date,
+      'end_date' => $request->end_date,
+      'seo_title' => $request->seo_title,
+      'seo_id' => $seo_id,
+      'created_by' => Auth::user()->name,
+      'last_modified_by' => Auth::user()->name,
+    ]);
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here <a href="' . route("show_articlecategory", ["id" => $item->id]) . '">' . $item->name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
+  }
 
 
   public function store_page(Request $request)
@@ -309,6 +406,16 @@ class AdminController extends Controller
   {
     $data = Cart::find($id);
     return view('admin.show_cart', compact('data'));
+  }
+  public function show_article($id)
+  {
+    $data = Article::find($id);
+    return view('admin.show_article', compact('data'));
+  }
+    public function show_articlecategory($id)
+  {
+    $data = ArticleCategory::find($id);
+    return view('admin.show_articlecategory', compact('data'));
   }
   public function show_page($id)
   {
