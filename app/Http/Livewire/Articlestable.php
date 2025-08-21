@@ -17,13 +17,16 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\DynamicCsvImportJob;
 use App\Models\AllJob;
+use Livewire\WithFileUploads;
 
 
 class Articlestable extends Component
+
 {
+  use WithPagination;
+  use WithFileUploads;
   public $importdata = false;
   public $csvimportdata;
-  use WithPagination;
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -163,7 +166,7 @@ class Articlestable extends Component
     $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
-   public function getArticlesProperty()
+  public function getArticlesProperty()
   {
     return $this->articlesQuery->paginate($this->loadAmount);
   }
@@ -747,7 +750,7 @@ class Articlestable extends Component
     ]);
   }
 
-   // export-import data
+  // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -811,7 +814,7 @@ class Articlestable extends Component
       'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
-      public function updatingcsvimportdata($value)
+  public function updatingcsvimportdata($value)
   {
     ini_set('max_execution_time', 0);
     ini_set('memory_limit', '1024M');
@@ -914,5 +917,4 @@ class Articlestable extends Component
     }
     fclose($handle);
   }
-
 }

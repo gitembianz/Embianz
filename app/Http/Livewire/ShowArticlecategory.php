@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Article;
+use App\Models\ArticleCategory;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
 
-class ShowArticle extends Component
+class ShowArticlecategory extends Component
 {
   public $itemId;
   public $edititem = null;
@@ -15,13 +15,13 @@ class ShowArticle extends Component
   public $record;
   public function render()
   {
-    return view('livewire.show-article', [
-      'article' => $this->article
+    return view('livewire.show-articlecategory', [
+      'category' => $this->category
     ]);
   }
-  public function mount($articleId)
+    public function mount($articlecategoryId)
   {
-    $this->itemId = $articleId;
+    $this->itemId = $articlecategoryId;
   }
   public function confirmRemoval()
   {
@@ -31,22 +31,20 @@ class ShowArticle extends Component
   {
     $this->delete = false;
   }
-  public function getArticleProperty()
+  public function getCategoryProperty()
   {
-    return Article::find($this->itemId);
+    return ArticleCategory::find($this->itemId);
   }
   public function edit()
   {
     $this->record = [
-      'name' => $this->article->name,
-      'active' => $this->article->active == 1 ? true : false,
-      'short_description' => $this->article->short_description,
-      'long_description' => $this->article->long_description,
-      'meta_description' => $this->article->meta_description,
-      'start_date' => $this->article->start_date,
-      'end_date' => $this->article->end_date,
-      'seo_id' => $this->article->seo_id,
-      'seo_title' => $this->article->seo_title,
+      'name' => $this->category->name,
+      'active' => $this->category->active == 1 ? true : false,
+      'short_description' => $this->category->short_description,
+      'start_date' => $this->category->start_date,
+      'end_date' => $this->category->end_date,
+      'seo_id' => $this->category->seo_id,
+      'seo_title' => $this->category->seo_title,
     ];
     $this->edititem = true;
   }
@@ -61,7 +59,7 @@ class ShowArticle extends Component
     $baseSeoId = $seoId;
     $counter = 1;
     while (
-      Article::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+      ArticleCategory::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
     ) {
       $seoId = $baseSeoId . '-' . $counter;
       $counter++;
@@ -75,12 +73,12 @@ class ShowArticle extends Component
       return;
     }
 
-    $fields = ['name', 'active', 'short_description', 'long_description', 'meta_description', 'start_date', 'end_date', 'seo_id', 'seo_title'];
+    $fields = ['name', 'active', 'short_description', 'start_date', 'end_date', 'seo_id', 'seo_title'];
 
     foreach ($fields as $field) {
       if (array_key_exists($field, $rec)) {
         if (!empty($rec[$field])) {
-          $this->article->$field = $rec[$field];
+          $this->category->$field = $rec[$field];
         }
       }
     }
@@ -88,13 +86,13 @@ class ShowArticle extends Component
     if (!empty($rec['seo_id'])) {
       $seo_id = $this->generateUniqueSeoId($rec['seo_id']);
     } else {
-      $seo_id = $this->generateUniqueSeoId($rec['name'] ?? $this->article->name);
+      $seo_id = $this->generateUniqueSeoId($rec['name'] ?? $this->category->name);
     }
 
-    $this->article->seo_id = str_replace(' ', '-', $seo_id);
+    $this->category->seo_id = str_replace(' ', '-', $seo_id);
 
-    $this->article->last_modified_by = auth()->user()->name;
-    $this->article->save();
+    $this->category->last_modified_by = auth()->user()->name;
+    $this->category->save();
 
     $this->emit('itemSaved');
     $this->record = [];
@@ -108,11 +106,11 @@ class ShowArticle extends Component
   }
   public function deleteRecord()
   {
-    $this->article->delete();
+    $this->category->delete();
 
 
     $this->delete = false;
-    return redirect()->route('articles')->with('notification', [
+    return redirect()->route('articlecategory')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'

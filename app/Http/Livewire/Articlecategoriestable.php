@@ -3,31 +3,27 @@
 namespace App\Http\Livewire;
 
 use Carbon\Carbon;
-use App\Models\AllJob;
-use App\Models\CsvImportJob;
 use Livewire\Component;
-use App\Models\Category;
-use App\Models\Listview;
-use App\Models\Subcategory;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
-use App\Jobs\DynamicCsvImportJob;
+use App\Models\ArticleCategory;
 use Illuminate\Support\Facades\DB;
-use App\Models\Products_categories;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use App\Models\ArticleCategoryLink;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Listview;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Validation\Rule;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use App\Models\AllJob;
+use App\Models\CsvImportJob;
+use App\Jobs\DynamicCsvImportJob;
 
 
-class Categoriestable extends Component
+class Articlecategoriestable extends Component
 {
   use WithPagination;
   use WithFileUploads;
-
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -79,7 +75,7 @@ class Categoriestable extends Component
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.categoriestable', [
+    return view('livewire.articlecategoriestable', [
       'categories' => $this->categories,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
@@ -87,6 +83,7 @@ class Categoriestable extends Component
 
     ]);
   }
+
   public function mount($tableName)
   {
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
@@ -179,7 +176,7 @@ class Categoriestable extends Component
 
   public function getCategoriesQueryProperty()
   {
-    $query = Category::search($this->search);
+    $query = ArticleCategory::search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
@@ -538,8 +535,8 @@ class Categoriestable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -699,32 +696,15 @@ class Categoriestable extends Component
 
   public function deleteRecords()
   {
-    $categories = Category::whereKey($this->checked)->get();
+    $categories = ArticleCategory::whereKey($this->checked)->get();
     foreach ($categories as $category) {
-      $id = $category->id;
-      $cattodel = Category::find($id);
-      $productcat = Products_categories::where('category_id', $id)->get();
-      if ($productcat != NULL) {
-        foreach ($productcat as $pro) {
-          $pro->delete();
+      $articles = ArticleCategoryLink::where('category_id', $category->id)->get();
+      if ($articles != NULL) {
+        foreach ($articles as $article) {
+          $article->delete();
         }
       }
-      $subcategories = Subcategory::where('parent_id', $id)->orwhere('category_id', $id)->get();
-      if ($subcategories != NULL) {
-        foreach ($subcategories as $sub) {
-          $sub->delete();
-        }
-      }
-      $medias = $cattodel->media()->get();
-      foreach ($medias as $media) {
-        $media->delete();
-      }
-      $productType = class_basename(get_class($cattodel));
-      $filespath = 'media/' . $productType . '/' . $cattodel->id;
-      if (File::exists($filespath)) {
-        File::deleteDirectory($filespath);
-      }
-      $cattodel->delete();
+      $category->delete();
     }
     $this->checked = [];
     $this->selectPage = false;
@@ -736,32 +716,16 @@ class Categoriestable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function deleteSingleRecord()
   {
     $id = $this->idbeingremoved;
-    $category = Category::findOrFail($id);
-    $productcats = Products_categories::where('category_id', $id)->get();
-
-    if ($productcats != NULL) {
-      foreach ($productcats as $productcat) {
-
-        $productcat->delete();
+    $category = ArticleCategory::findOrFail($id);
+    $articles = ArticleCategoryLink::where('category_id', $category->id)->get();
+    if ($articles != NULL) {
+      foreach ($articles as $article) {
+        $article->delete();
       }
-    }
-    $subcategories = Subcategory::where('parent_id', $id)->get();
-    if ($subcategories != NULL) {
-      foreach ($subcategories as $sub) {
-        $sub->delete();
-      }
-    }
-    $productType = class_basename(get_class($category));
-    $filespath = 'media/' . $productType . '/' . $category->id;
-    if (File::exists($filespath)) {
-      File::deleteDirectory($filespath);
-    }
-    $medias = $category->media()->get();
-    foreach ($medias as $media) {
-      $media->delete();
     }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
@@ -787,6 +751,7 @@ class Categoriestable extends Component
     $this->multiple = false;
     $this->single = false;
   }
+
   // export-import data
   public function exportData()
   {
