@@ -445,7 +445,7 @@
                                     data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
                                     @if ($column === 'name')
                                         <a
-                                            href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
+                                            href="{{ route('show_articlecategory', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
                                     @elseif (
                                         $column === 'active')
                                         @if ($category->$column)
@@ -489,7 +489,7 @@
                                                 <p>
                                                     <bold>{{ $column }}:</bold>
                                                     <a
-                                                        href="{{ route('show_category', ['id' => $category->id]) }}">{{ $category->name }}</a>
+                                                        href="{{ route('show_articlecategory', ['id' => $category->id]) }}">{{ $category->name }}</a>
                                                 </p>
                                             @elseif (
                                                 $column === 'active')
