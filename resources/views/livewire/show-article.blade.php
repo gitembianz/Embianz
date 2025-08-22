@@ -158,7 +158,8 @@
             @if ($edititem === null)
                 <span class="disabled">{{ $article->end_date }}</span>
             @else
-                <input type="date" placeholder=" " name="article__name" wire:model.defer="record.end_date" required>
+                <input type="date" placeholder=" " name="article__name" wire:model.defer="record.end_date"
+                    required>
             @endif
             <label for="article__name">End Date</label>
         </div>
@@ -214,8 +215,8 @@
 
     {{-- Tabs Body (Related) --}}
     <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-        {{-- @livewire('related-media-article', ['article' => $article]) --}}
-  @livewire('related-category-article', ['article' => $article])
+        @livewire('related-media-article', ['article' => $article])
+        @livewire('related-category-article', ['article' => $article])
 
     </div>
 </section>
