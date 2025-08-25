@@ -435,7 +435,7 @@
                         </svg>
                         <span>XML for invoice</span>
                     </button>
-                    <button class="button button--primary button--fill button--flexed" wire:click="MLstorno">
+                    <button class="button button--primary button--fill button--flexed" wire:click="xmlstorno">
                         <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M14 3v4a1 1 0 0 0 1 1h4" />
