@@ -4,11 +4,11 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use App\Models\AllJob;
+use App\Models\CsvImportJob;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Listview;
 use App\Models\Subcategory;
-use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
@@ -655,6 +655,7 @@ class Categoriestable extends Component
     $this->orderBy = $columnName;
     $this->save_listview(true);
   }
+
   // default functions
   public function expandRow($index)
   {
@@ -695,6 +696,7 @@ class Categoriestable extends Component
   {
     return in_array($id, $this->checked);
   }
+
   public function deleteRecords()
   {
     $categories = Category::whereKey($this->checked)->get();
@@ -770,6 +772,7 @@ class Categoriestable extends Component
       'title' => 'Success'
     ]);
   }
+
   public function confirmItemRemoval($id)
   {
     $this->idbeingremoved = $id;

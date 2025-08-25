@@ -93,6 +93,7 @@ class RelatedMediaProduct extends Component
     $this->i = null;
     $this->j = null;
   }
+
   public function editMedia($index, $id)
   {
     $this->editedMediaIndex = $index;
@@ -109,6 +110,7 @@ class RelatedMediaProduct extends Component
     $this->editedMediaIndex = null;
     $this->filess = [];
   }
+
   public function saveMedia($mediaIndex, $id)
   {
     $media_new = $this->filess[$mediaIndex] ?? NULL;
@@ -178,6 +180,7 @@ class RelatedMediaProduct extends Component
     $this->file_link[$this->row] = null;
     $this->file_resize[$this->row] = false;
   }
+
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -399,6 +402,7 @@ class RelatedMediaProduct extends Component
     $this->chose = false;
     $this->mount($this->product);
   }
+
   public function save()
   {
     //local media saved
@@ -586,6 +590,7 @@ class RelatedMediaProduct extends Component
       $this->initiate = true;
     }
   }
+
   public function removemedia($index)
   {
     // Use unset to remove the item at the specified index

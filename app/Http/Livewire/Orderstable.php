@@ -578,8 +578,8 @@ class Orderstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -772,13 +772,13 @@ class Orderstable extends Component
         'ClientInformatiiSuplimentare' => '',
         'ClientCIF' => '',
         'ClientNrRegCom' => '',
-        'ClientJudet' => $order->account->addresses->where('type', 'billing')->first()->county_iso,
+        'ClientJudet' => $order->billing->county_iso,
         'ClientLocalitate' => Str::ascii(
-          $order->account->addresses->where('type', 'billing')->first()->city
+          $order->billing->city
         ),
-        'ClientTara' => $order->account->addresses->where('type', 'billing')->first()->country_iso,
+        'ClientTara' => $order->billing->country_iso,
         'ClientAdresa' => Str::ascii(
-          $order->account->addresses->where('type', 'billing')->first()->address1
+          $order->billing->address1
         ),
         'ClientTelefon' => $order->account->phone,
         'ClientEmail' => $order->account->email,

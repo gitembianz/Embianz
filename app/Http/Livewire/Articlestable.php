@@ -2,32 +2,31 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
-use App\Models\Brand;
-use App\Models\AllJob;
+use App\Models\Article;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Validation\Rule;
 use App\Models\Listview;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
-use App\Jobs\DynamicCsvImportJob;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
-
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\DB;
+use App\Jobs\DynamicCsvImportJob;
+use App\Models\AllJob;
+use Livewire\WithFileUploads;
 
-class Brandstable extends Component
+
+class Articlestable extends Component
+
 {
-    use WithFileUploads;
-   // importdata
+  use WithPagination;
+  use WithFileUploads;
   public $importdata = false;
   public $csvimportdata;
-  use WithPagination;
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -38,16 +37,10 @@ class Brandstable extends Component
   public $idbeingremoved = null;
   public $selectedColumns = [];
   public $columns;
-  public $row = null;
   public $single = false;
   public $multiple = false;
-  public $addbrand = false;
-  public $rowadd;
-  public $rind2 = null;
-  public $brand_description = [];
-  public $brand_name = [];
-
-    // listview variables
+  public $row = null;
+  // listview variables
   public $relation = false;
   public $editlistview = false;
   public $tableName;
@@ -76,13 +69,12 @@ class Brandstable extends Component
     'value' => null,
   ];
 
-
   public function render()
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.brandstable', [
-      'brands' => $this->brands,
+    return view('livewire.articlestable', [
+      'articles' => $this->articles,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
@@ -91,7 +83,6 @@ class Brandstable extends Component
   }
   public function mount($tableName)
   {
-    $this->rowadd = 0;
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
@@ -175,13 +166,13 @@ class Brandstable extends Component
     $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
-  public function getBrandsProperty()
+  public function getArticlesProperty()
   {
-    return $this->brandsQuery->paginate($this->loadAmount);
+    return $this->articlesQuery->paginate($this->loadAmount);
   }
-  public function getBrandsQueryProperty()
+  public function getArticlesQueryProperty()
   {
-    $query = Brand::search($this->search);
+    $query = Article::search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
@@ -540,8 +531,8 @@ class Brandstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -657,8 +648,7 @@ class Brandstable extends Component
     $this->orderBy = $columnName;
     $this->save_listview(true);
   }
-
-  // default function to get the brands
+  // defalut functions
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -676,7 +666,7 @@ class Brandstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->brands->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->articles->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -688,7 +678,7 @@ class Brandstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->brandsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->articlesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
@@ -714,9 +704,9 @@ class Brandstable extends Component
   }
   public function deleteRecords()
   {
-    $items = Brand::whereKey($this->checked)->get();
+    $items = Article::whereKey($this->checked)->get();
     foreach ($items as $item) {
-      $del = Brand::findOrFail($item->id);
+      $del = Article::findOrFail($item->id);
       $medias = $del->media()->get();
       foreach ($medias as $media) {
         $media->delete();
@@ -739,7 +729,7 @@ class Brandstable extends Component
   }
   public function deleteSingleRecord()
   {
-    $item = Brand::findOrFail($this->idbeingremoved);
+    $item = Article::findOrFail($this->idbeingremoved);
     $medias = $item->media()->get();
     foreach ($medias as $media) {
       $media->delete();
@@ -759,44 +749,7 @@ class Brandstable extends Component
       'title' => 'Success'
     ]);
   }
-  public function plus()
-  {
-    $this->rowadd++;
-    $this->brand_name[$this->rowadd] = null;
-    $this->brand_description[$this->rowadd] = null;
-  }
-  public function clear($i)
-  {
-    array_splice($this->brand_name, $i, 1);
-    array_splice($this->brand_description, $i, 1);
-    $this->rowadd--;
 
-    if ($this->rowadd < 0) {
-      $this->addbrand = false;
-      $this->rowadd = 0;
-      $this->brand_name = [];
-      $this->brand_description = [];
-    }
-  }
-  public function save_brands()
-  {
-    for ($i = 0; $i <= $this->rowadd; $i++) {
-      $this->resetErrorBag();
-      $this->validate([
-        'brand_name.*' => 'required',
-        'brand_description.*' => 'required'
-      ]);
-      Brand::create([
-        'name' => $this->brand_name[$i],
-        'description' => $this->brand_description[$i]
-      ]);
-    }
-    session()->flash('notification', [
-      'message' => 'Brands added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
   // export-import data
   public function exportData()
   {
@@ -828,7 +781,7 @@ class Brandstable extends Component
         return in_array($col, $dbColumns);
       });
 
-      $query = $this->getBrandsQueryProperty();
+      $query = $this->getArticlesQueryProperty();
 
       $query->select($realColumns)->whereIn('id', $checked);
 
@@ -861,7 +814,7 @@ class Brandstable extends Component
       'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
-      public function updatingcsvimportdata($value)
+  public function updatingcsvimportdata($value)
   {
     ini_set('max_execution_time', 0);
     ini_set('memory_limit', '1024M');
@@ -964,6 +917,4 @@ class Brandstable extends Component
     }
     fclose($handle);
   }
-
-
 }

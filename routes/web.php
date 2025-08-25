@@ -41,6 +41,17 @@
       route::post('/add_category', [CategoryController::class, 'add_category'])->name('add_category');
       route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
 
+      route::view('/articlecategory', 'admin.articlecategory')->name('articlecategory');
+      route::view('/new_articlecategory', 'admin.add_articlecategory')->name('newarticlecategory');
+      route::post('/add_articlecategory', [AdminController::class, 'add_articlecategory'])->name('store_articlecategory');
+      route::get('/show_articlecategory/{id}/', [AdminController::class, 'show_articlecategory'])->name('show_articlecategory');
+
+      route::view('/articles', 'admin.articles')->name('articles');
+      route::view('/add_article', 'admin.add_article')->name('newarticle');
+      route::post('/store_article', [AdminController::class, 'store_article'])->name('store_article');
+      route::get('/show_article/{id}/', [AdminController::class, 'show_article'])->name('show_article');
+
+
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
       Route::get('/add_product', [ProductController::class, 'create'])->name('add_product');

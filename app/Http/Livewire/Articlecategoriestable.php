@@ -3,31 +3,27 @@
 namespace App\Http\Livewire;
 
 use Carbon\Carbon;
-use App\Models\Brand;
-use App\Models\AllJob;
 use Livewire\Component;
-use App\Models\Listview;
-use App\Models\CsvImportJob;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
-use App\Jobs\DynamicCsvImportJob;
+use App\Models\ArticleCategory;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Artisan;
-
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use App\Models\ArticleCategoryLink;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Listview;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Validation\Rule;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use App\Models\AllJob;
+use App\Models\CsvImportJob;
+use App\Jobs\DynamicCsvImportJob;
 
-class Brandstable extends Component
+
+class Articlecategoriestable extends Component
 {
-    use WithFileUploads;
-   // importdata
-  public $importdata = false;
-  public $csvimportdata;
   use WithPagination;
+  use WithFileUploads;
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -41,13 +37,8 @@ class Brandstable extends Component
   public $row = null;
   public $single = false;
   public $multiple = false;
-  public $addbrand = false;
-  public $rowadd;
-  public $rind2 = null;
-  public $brand_description = [];
-  public $brand_name = [];
 
-    // listview variables
+  // listview variables
   public $relation = false;
   public $editlistview = false;
   public $tableName;
@@ -75,23 +66,26 @@ class Brandstable extends Component
     'operator' => null,
     'value' => null,
   ];
+  // importdata
+  public $importdata = false;
+  public $csvimportdata;
 
 
   public function render()
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.brandstable', [
-      'brands' => $this->brands,
+    return view('livewire.articlecategoriestable', [
+      'categories' => $this->categories,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
 
     ]);
   }
+
   public function mount($tableName)
   {
-    $this->rowadd = 0;
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
@@ -175,13 +169,14 @@ class Brandstable extends Component
     $this->orderAsc = ($this->listview['sort']['direction'] ?? 'asc') === 'asc' ? '1' : '0';
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
-  public function getBrandsProperty()
+  public function getCategoriesProperty()
   {
-    return $this->brandsQuery->paginate($this->loadAmount);
+    return $this->categoriesQuery->paginate($this->loadAmount);
   }
-  public function getBrandsQueryProperty()
+
+  public function getCategoriesQueryProperty()
   {
-    $query = Brand::search($this->search);
+    $query = ArticleCategory::search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
@@ -540,8 +535,8 @@ class Brandstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -658,11 +653,7 @@ class Brandstable extends Component
     $this->save_listview(true);
   }
 
-  // default function to get the brands
-  public function updatedChecked()
-  {
-    $this->selectPage = false;
-  }
+  // default functions
   public function expandRow($index)
   {
     if ($this->row  === null) {
@@ -676,10 +667,14 @@ class Brandstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->brands->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->categories->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
+  }
+  public function updatedChecked()
+  {
+    $this->selectPage = false;
   }
   public function swapSortDirection()
   {
@@ -688,12 +683,60 @@ class Brandstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->brandsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->categoriesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
+  public function isChecked($id)
+  {
+    return in_array($id, $this->checked);
+  }
+
+  public function deleteRecords()
+  {
+    $categories = ArticleCategory::whereKey($this->checked)->get();
+    foreach ($categories as $category) {
+      $articles = ArticleCategoryLink::where('category_id', $category->id)->get();
+      if ($articles != NULL) {
+        foreach ($articles as $article) {
+          $article->delete();
+        }
+      }
+      $category->delete();
+    }
+    $this->checked = [];
+    $this->selectPage = false;
+    $this->multiple = false;
+
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+  public function deleteSingleRecord()
+  {
+    $id = $this->idbeingremoved;
+    $category = ArticleCategory::findOrFail($id);
+    $articles = ArticleCategoryLink::where('category_id', $category->id)->get();
+    if ($articles != NULL) {
+      foreach ($articles as $article) {
+        $article->delete();
+      }
+    }
+    $category->delete();
+    $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
   public function confirmItemRemoval($id)
   {
     $this->idbeingremoved = $id;
@@ -708,95 +751,7 @@ class Brandstable extends Component
     $this->multiple = false;
     $this->single = false;
   }
-  public function isChecked($id)
-  {
-    return in_array($id, $this->checked);
-  }
-  public function deleteRecords()
-  {
-    $items = Brand::whereKey($this->checked)->get();
-    foreach ($items as $item) {
-      $del = Brand::findOrFail($item->id);
-      $medias = $del->media()->get();
-      foreach ($medias as $media) {
-        $media->delete();
-      }
-      $productType = class_basename(get_class($item));
-      $filespath = 'media/' . $productType . '/' . $item->id;
-      if (File::exists($filespath)) {
-        File::deleteDirectory($filespath);
-      }
-      $del->delete();
-    }
-    $this->checked = [];
-    $this->selectPage = false;
-    $this->multiple = false;
-    session()->flash('notification', [
-      'message' => 'Records deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function deleteSingleRecord()
-  {
-    $item = Brand::findOrFail($this->idbeingremoved);
-    $medias = $item->media()->get();
-    foreach ($medias as $media) {
-      $media->delete();
-    }
-    $productType = class_basename(get_class($item));
-    $filespath = 'media/' . $productType . '/' . $item->id;
-    if (File::exists($filespath)) {
-      File::deleteDirectory($filespath);
-    }
-    $item->delete();
-    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
-    $this->single = false;
 
-    session()->flash('notification', [
-      'message' => 'Record deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function plus()
-  {
-    $this->rowadd++;
-    $this->brand_name[$this->rowadd] = null;
-    $this->brand_description[$this->rowadd] = null;
-  }
-  public function clear($i)
-  {
-    array_splice($this->brand_name, $i, 1);
-    array_splice($this->brand_description, $i, 1);
-    $this->rowadd--;
-
-    if ($this->rowadd < 0) {
-      $this->addbrand = false;
-      $this->rowadd = 0;
-      $this->brand_name = [];
-      $this->brand_description = [];
-    }
-  }
-  public function save_brands()
-  {
-    for ($i = 0; $i <= $this->rowadd; $i++) {
-      $this->resetErrorBag();
-      $this->validate([
-        'brand_name.*' => 'required',
-        'brand_description.*' => 'required'
-      ]);
-      Brand::create([
-        'name' => $this->brand_name[$i],
-        'description' => $this->brand_description[$i]
-      ]);
-    }
-    session()->flash('notification', [
-      'message' => 'Brands added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
   // export-import data
   public function exportData()
   {
@@ -828,7 +783,7 @@ class Brandstable extends Component
         return in_array($col, $dbColumns);
       });
 
-      $query = $this->getBrandsQueryProperty();
+      $query = $this->getCategoriesQueryProperty();
 
       $query->select($realColumns)->whereIn('id', $checked);
 
@@ -861,7 +816,7 @@ class Brandstable extends Component
       'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
-      public function updatingcsvimportdata($value)
+  public function updatingcsvimportdata($value)
   {
     ini_set('max_execution_time', 0);
     ini_set('memory_limit', '1024M');
@@ -927,7 +882,6 @@ class Brandstable extends Component
         'base_path' => 'import_chunks/' . $filenameBase,
       ]
     ]);
-
     $allJob = AllJob::create([
       'name' => 'DynamicCsvImportJob',
       'type' => 'csv_import',
@@ -964,6 +918,4 @@ class Brandstable extends Component
     }
     fclose($handle);
   }
-
-
 }

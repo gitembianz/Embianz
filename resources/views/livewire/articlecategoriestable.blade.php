@@ -1,3 +1,4 @@
+
 <section class="content">
     {{-- X-Components --}}
     <x-alert />
@@ -29,82 +30,6 @@
         </div>
     </aside>
 
-    {{-- xml invoice --}}
-    <aside>
-        <div class="background background--center @if ($xmlinvoicesmodal || $xmlstornomodal) active @endif"></div>
-        <div class="aside aside--confirm @if ($xmlinvoicesmodal || $xmlstornomodal) active @endif"
-            style="min-width: 400px;min-height:250px">
-            <span>
-                @if ($xmlinvoicesmodal)
-                    Select the invoice start and end date
-                @else
-                    Select the storno start and end date
-                @endif
-            </span>
-            <form method="POST" wire:submit.prevent="handleSubmission">
-                @csrf
-                <div class="input__tabs">
-                    <input type="date" id="start_date" wire:model.defer="start_date" name="start_date">
-                    <label>Start Date</label>
-                </div>
-
-                {{-- End Date --}}
-                <div class="input__tabs">
-                    <input type="date" id="end_date" wire:model.defer="end_date" name="end_date">
-                    <label>End Date</label>
-                </div>
-
-                {{-- Buttons for Submit --}}
-                <div class="button-group" style="margin-top: 10px">
-                    @if ($xmlinvoicesmodal)
-                        <button type="button" class="button button--primary button--long"
-                            wire:click="generate_xml_invoice">
-                            <span>Generate XML Invoice</span>
-                        </button>
-                    @else
-                        <button type="button" class="button button--primary button--long"
-                            wire:click="generate_xml_storno">
-                            <span>Generate XML Storno</span>
-                        </button>
-                    @endif
-                    {{-- Cancel Button --}}
-                    <button type="button" class="button button--danger button--long" wire:click="cancel_xml">
-                        <span>Cancel</span>
-                    </button>
-                </div>
-
-            </form>
-        </div>
-    </aside>
-
-    {{-- Filter modal --}}
-    <aside>
-        <div class="background background--center @if ($filteractive) active @endif"></div>
-        <div class="aside aside--confirm @if ($filteractive) active @endif"
-            style="min-width: 400px;min-height:250px">
-            <span>
-                Select the dates
-            </span>
-            <div class="input__tabs">
-                <input type="date" id="start_date" wire:model.defer="start_date_filter" name="start_date">
-                <label>Start Date</label>
-            </div>
-
-            {{-- Product End Date --}}
-            <div class="input__tabs">
-                <input type="date" id="end_date" wire:model.defer="end_date_filter" name="end_date">
-                <label>End Date</label>
-            </div>
-
-            <button class="button button--primary button--long" wire:click="filter_order()">
-                <span>Filter</span>
-            </button>
-            <button class="button button--danger button--long" wire:click="cancel_filter()">
-                <span>Cancel</span>
-            </button>
-        </div>
-    </aside>
-
     {{-- Modal add new listview --}}
     <aside>
         <div class="background background--center @if ($addlistview) active @endif"></div>
@@ -122,8 +47,8 @@
                 @endforeach
 
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <input id="listview.name" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name">Listview name</label>
                 </div>
 
 
@@ -164,8 +89,8 @@
 
                 @if ($edit)
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="listview.name">
-                        <label>Listview name</label>
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
                     </div>
                     <div class="details__long">
 
@@ -177,8 +102,8 @@
                     <div class="details__long"
                         style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Columns</label>
-                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8" style="width: 100%;">
                                 @foreach ($availableFields as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -191,8 +116,8 @@
                         </div>
 
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Visible Fields</label>
-                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                            <label for="selectedVisible2" style="font-weight: bold; color: white;">Visible Fields</label>
+                            <select id="selectedVisible2" wire:model="selectedVisible" size="8" style="width: 100%;">
                                 @foreach ($listview['columns'] as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -297,7 +222,7 @@
         </div>
     </aside>
 
-    {{-- Import Data --}}
+   {{-- Import Data --}}
     <aside>
         <div class="background background--center @if ($importdata == true) active @endif"></div>
         <div class="aside aside--confirm @if ($importdata == true) active @endif">
@@ -324,10 +249,7 @@
     </aside>
 
     {{-- Navigation --}}
-    <h1 class="table--name">{{ __('Orders') }} ({{ $orders->total() }})</h1>
-
-    <div style="padding-top:5px; font-size:14px; color:#bcfcde;"><input type="checkbox" style="cursor:pointer;"
-            wire:model="status31Only"> Show Processing Only</div>
+    <h1 class="table--name">{{ __('Article Categories') }} ({{ $categories->total() }})</h1>
     <nav class="nav--controls">
         @if ($activelistview)
 
@@ -366,11 +288,8 @@
             </button>
         @endif
         {{-- Search Input --}}
-        <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         {{-- Refresh Button --}}
-
-
-
         {{-- IF CHECKED --}}
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
             {{-- Dropdown Button --}}
@@ -423,55 +342,16 @@
                         </svg>
                         <span>Add listview</span>
                     </button>
-                    <button class="button button--primary button--fill button--flexed" wire:click="xmlinvoices">
+                    {{-- Add New Button --}}
+                    <a class="button button--primary button--fill button--flexed" href="{{ route('newarticlecategory') }}">
                         <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
-                            <path d="M4 15l4 6" />
-                            <path d="M4 21l4 -6" />
-                            <path d="M19 15v6h3" />
-                            <path d="M11 21v-6l2.5 3l2.5 -3v6" />
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <line x1="9" y1="15" x2="15" y2="15"></line>
                         </svg>
-                        <span>XML for invoice</span>
-                    </button>
-                    <button class="button button--primary button--fill button--flexed" wire:click="xmlstorno">
-                        <svg>
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
-                            <path d="M4 15l4 6" />
-                            <path d="M4 21l4 -6" />
-                            <path d="M19 15v6h3" />
-                            <path d="M11 21v-6l2.5 3l2.5 -3v6" />
-                        </svg>
-                        <span>XML for storno</span>
-                    </button>
-                    <a class="button button--primary button--fill button--flexed" href="{{ route('getavgvalues') }}">
-                        <svg>
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                        </svg>
-
-                        <span>Check orders cost</span>
+                        <span>Add Article Category</span>
                     </a>
-                    <a class="button button--primary button--fill button--flexed" href="{{ route('checkorders') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-info">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                        <span>Check order values</span>
-                    </a>
-                    <button class="button button--primary button--fill button--flexed"
-                        wire:click="$set('filteractive', true)">
-                        <svg>
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                        </svg>
-                        <span>Filters</span>
-                    </button>
                     <button class="button button--primary button--fill button--flexed" wire:click="exportData">
                         <svg>
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -514,20 +394,15 @@
                 <tr>
                     <th style="border-right: none; border-left: none;">
                         <div class="checkbox--primary">
-                            <input type="checkbox" id="selectPage5" wire:model="selectPage" />
-                            <label for="selectPage5"></label>
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
                         </div>
                     </th>
                     @foreach ($selectedColumns as $index => $column)
-                        @if ($column === 'shipping_id' || $column === 'billing_id')
-                            @php
-                                continue;
-                            @endphp
-                        @endif
-                        <th @if ($index > 2) class="hidden" @endif>
+                        <th @if ($index >= 2) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
                                 class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-                                {{ str_replace('_id', '', $column) }}
+                                {{ $column }}
                                 <svg>
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
@@ -547,7 +422,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($orders->isEmpty())
+                @if ($categories->isEmpty())
                     <tr>
                         <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
                     </tr>
@@ -555,85 +430,46 @@
                     @php
                         $i = 0;
                     @endphp
-                    @foreach ($orders as $nr => $order)
-                        @if ($order->status_id === app('global_order_processing'))
-                            @php
-                                $class = 'process';
-                                $productDetails = [];
-                            @endphp
-
-                            @foreach ($order->orders as $orderItem)
-                                @php
-                                    $product = $orderItem->product;
-                                    $interimQuantity = $product->quantity + $product->interim_quantity;
-
-                                    // Check if interimQuantity is less than the order quantity
-                                    if ($interimQuantity < $orderItem->quantity) {
-                                        $class = 'notprocess';
-                                        $productDetails[] =
-                                            $orderItem->quantity - $interimQuantity . " x {$product->name} <br>";
-                                    }
-                                @endphp
-                            @endforeach
-                        @else
-                            @php
-                                $class = '';
-                            @endphp
-                        @endif
+                    @foreach ($categories as $nr => $category)
                         <tr @if ($loop->last) id="last_record" @endif
-                            @if ($class === 'notprocess') data-tooltip="{{ implode('<br>', $productDetails) }}" @endif
-                            class="expandable-row {{ $class }} @if ($this->isChecked($order->id)) active @endif">
+                            class="expandable-row @if ($this->isChecked($category->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
-                                    <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}"
+                                    <input type="checkbox" value="{{ $category->id }}" id="{{ $category->id }}"
                                         wire:model="checked">
-                                    <label for="{{ $order->id }}"></label>
+                                    <label for="{{ $category->id }}"></label>
                                 </div>
                             </td>
                             @foreach ($selectedColumns as $index => $column)
-                                @if ($column === 'shipping_id' || $column === 'billing_id')
-                                    @php
-                                        continue;
-                                    @endphp
-                                @endif
-                                <td @if ($index > 2) class="hidden" @endif
+                                <td @if ($index >= 2) class="hidden" @endif
                                     data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
                                     @if ($column === 'name')
                                         <a
-                                            href="{{ route('show_order', ['id' => $order->id]) }}">{{ $order->name }}</a>
-                                    @elseif ($column === 'account_id')
-                                        @if ($order->account_id)
-                                            <a
-                                                href="{{ route('show_account', ['id' => $order->account_id]) }}">{{ $order->account->name }}</a>
+                                            href="{{ route('show_articlecategory', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
+                                    @elseif (
+                                        $column === 'active')
+                                        @if ($category->$column)
+                                            <div class="checkbox--secondary disabled">
+                                                <input type="checkbox" id="disabled2" disabled checked>
+                                                <label id="disabled2"></label>
+                                            </div>
+                                        @else
+                                            <div class="checkbox--secondary disabled">
+                                                <input type="checkbox" id="disabled1" disabled>
+                                                <label for="disabled2"></label>
+                                            </div>
                                         @endif
-                                    @elseif($column === 'session_id')
-                                        <a
-                                            href="{{ route('show_session', ['id' => $order->session_id]) }}">{{ $order->$column }}</a>
-                                    @elseif ($column === 'cart_id')
-                                        @if ($order->cart_id)
-                                            <a
-                                                href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>
-                                        @endif
-                                    @elseif ($column === 'currency_id')
-                                        {{ $order->currency->name }}
-                                    @elseif ($column === 'status_id')
-                                        {{ $order->status->name }}
-                                    @elseif ($column === 'payment_id')
-                                        {{ $order->payment->name }}
-                                    @elseif($column === 'comments')
+                                    @elseif ($column === 'long_description' || $column === 'short_description' || $column === 'long_description_bottom')
                                         <span class="show-less">
-                                            {!! $order->$column !!}
+                                            {!! $category->$column !!}
                                         </span>
-                                    @elseif ($column === 'voucher_id')
-                                        @if ($order->voucher_id)
-                                            {{ $order->voucher->code }}
-                                        @endif
                                     @else
-                                        {{ $order->$column }}
+                                        {{ $category->$column }}
                                     @endif
+                                </td>
                             @endforeach
                             <td style="border-right: none">
-                                <button wire:click.prevent="confirmItemRemoval({{ $order->id }})"
+                                <button wire:click.prevent="confirmItemRemoval({{ $category->id }})"
                                     class="button button--secondary button--sm">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
@@ -645,52 +481,45 @@
                             </td>
                         </tr>
                         <tr class="details-row  @if ($row === $i) active @endif">
-                            <td colspan="17">
+                            <td colspan="18">
                                 <div class="details">
                                     @foreach ($selectedColumns as $index => $column)
-                                        @if ($index > 2)
-                                            @if ($column === 'account_id')
-                                                @if ($order->account_id)
+                                        @if ($index >= 2)
+                                            @if ($column === 'name')
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    <a
+                                                        href="{{ route('show_articlecategory', ['id' => $category->id]) }}">{{ $category->name }}</a>
+                                                </p>
+                                            @elseif (
+                                                $column === 'active')
+                                                @if ($category->$column)
                                                     <p>
-                                                        <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                        <a
-                                                            href="{{ route('show_account', ['id' => $order->account_id]) }}">{{ $order->account->name }}</a>
+                                                        <bold>{{ $column }}:</bold>
+                                                    <div class="checkbox--secondary disabled">
+                                                        <input type="checkbox" id="disabled3" disabled checked>
+                                                        <label id="disabled3"></label>
+                                                    </div>
                                                     </p>
-                                                @endif
-                                            @elseif ($column === 'cart_id')
-                                                @if ($order->cart_id)
+                                                @else
                                                     <p>
-                                                        <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                        <a
-                                                            href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'currency_id')
-                                                <p>
-                                                    <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                    {{ $order->currency->name }}
-                                                </p>
-                                            @elseif ($column === 'status_id')
-                                                <p>
-                                                    <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                    {{ $order->status->name }}
-                                                </p>
-                                            @elseif ($column === 'payment_id')
-                                                <p>
-                                                    <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                    {{ $order->payment->name }}
-                                                </p>
-                                            @elseif ($column === 'voucher_id')
-                                                @if ($order->voucher_id)
-                                                    <p>
-                                                        <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                        {{ $order->voucher->code }}
+                                                        <bold>{{ $column }}:</bold>
+                                                    <div class="checkbox--secondary disabled">
+                                                        <input type="checkbox" id="disabled4" disabled>
+                                                        <label id="disabled4"></label>
+                                                    </div>
                                                     </p>
                                                 @endif
                                             @else
                                                 <p>
-                                                    <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                    {{ $order->$column }}
+                                                    <bold>{{ $column }}:</bold>
+                                                    @if ($column === 'long_description' || $column === 'short_description' || $column === 'long_description_bottom')
+                                                        <span class="show-less">
+                                                            {!! $category->$column !!}
+                                                        </span>
+                                                    @else
+                                                        {{ $category->$column }}
+                                                    @endif
                                                 </p>
                                             @endif
                                         @endif
@@ -707,48 +536,9 @@
         </table>
 
         <x-admin-lazyload />
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'row-tooltip';
-                document.body.appendChild(tooltip);
-
-                function attachTooltipListeners() {
-                    document.querySelectorAll('.expandable-row.notprocess').forEach(row => {
-                        row.addEventListener('mouseenter', function() {
-                            tooltip.innerHTML = row.getAttribute('data-tooltip');
-                            tooltip.style.display = 'flex';
-                            tooltip.style.position = 'fixed';
-                            tooltip.style.color = 'white';
-                            tooltip.style.backgroundColor = '#333';
-                            tooltip.style.border = '1px solid #fff';
-                            tooltip.style.borderRadius = '6px';
-                            tooltip.style.padding = '8px 12px';
-                            tooltip.style.fontSize = '11px';
-                            tooltip.style.maxWidth = '400px';
-                            tooltip.style.wordWrap = 'break-word';
-                        });
-
-                        row.addEventListener('mousemove', function(event) {
-                            tooltip.style.left = `${event.pageX + 15}px`;
-                            tooltip.style.top = `${event.pageY + 15}px`;
-                        });
-
-                        row.addEventListener('mouseleave', function() {
-                            tooltip.style.display = 'none';
-                        });
-                    });
-                }
-
-                attachTooltipListeners();
-
-                window.addEventListener('livewire:load', attachTooltipListeners);
-                window.addEventListener('livewire:update', attachTooltipListeners);
-            });
-        </script>
 
         {{-- Load More Manual --}}
-        @if ($loadAmount <= count($orders))
+        @if ($loadAmount <= count($categories))
             <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
                 Load more
             </button>
