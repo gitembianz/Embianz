@@ -326,7 +326,7 @@
    <label for="product__name">Meta Description</label>
   </div>
 
-  {{-- Product Long Description --}}
+  {{-- Comments --}}
   <div class="textarea__tabs details__long">
    @if ($editproduct === null)
     <span class="disabled">{{ $product->comments }}</span>
@@ -336,15 +336,169 @@
    <label for="product__name">Comments</label>
   </div>
 
-  {{-- Product Long Description --}}
-  <div class="textarea__tabs details__long">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->long_description }}</span>
-   @else
-    <textarea type="text" placeholder=" " name="product__name" wire:model.defer="prod.long_description" required></textarea>
-   @endif
-   <label for="product__name">Long Description</label>
-  </div>
+ {{-- Product Long Description --}}
+<div class="textarea__tabs details__long">
+  @if ($editproduct === null)
+    <div class="disabled">{!! $product->long_description !!}</div>
+  @else
+    {{-- Editor host (ignored by Livewire) --}}
+    <div id="ck-host" wire:ignore></div>
+
+    {{-- Hidden field for Livewire + form submit (never visible) --}}
+    <input
+      type="hidden"
+      id="long_description_input"
+      name="long_description"
+      wire:model.defer="prod.long_description"
+    />
+
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css">
+    <style>
+      .ck-content { font: 400 16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:#111; min-height:280px; }
+      .ck-content * { box-sizing:border-box; }
+      /* wrap toolbar so all buttons remain visible on narrow containers */
+      .ck-toolbar .ck-toolbar__items { flex-wrap: wrap; }
+    </style>
+
+    <script>
+    (function () {
+      function mountCkEditor() {
+        const host = document.getElementById('ck-host');
+        const hiddenInput = document.getElementById('long_description_input');
+        if (!host || !hiddenInput || document.getElementById('ckframe')) return;
+
+        const initialHtml = @json(old('long_description', $product->long_description ?? '<p></p>'));
+
+        const srcdoc = `
+<!doctype html><html><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css">
+  <style>
+    html,body{margin:0;height:100%}
+    .ck-content{min-height:280px;line-height:1.6}
+    .ck-editor{max-width:100%}
+    .ck-toolbar .ck-toolbar__items{flex-wrap:wrap}
+  </style>
+</head><body>
+  <div id="editor">${initialHtml}</div>
+  <script src="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.umd.js"><\/script>
+  <script>
+  (function(){
+    var CK = window.CKEDITOR;
+    CK.ClassicEditor.create(document.querySelector('#editor'), {
+      licenseKey: '{{ app('global_ckeditor_license') }}',
+
+      plugins: [
+        // essentials & UX
+        CK.Essentials, CK.Paragraph, CK.Autoformat, CK.PasteFromOffice, CK.RemoveFormat,
+        CK.FindAndReplace, CK.SelectAll, CK.Clipboard, CK.Undo,
+        // text formatting
+        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Subscript, CK.Superscript,
+        CK.Code, CK.Highlight, CK.Font, CK.Alignment,
+        // structure
+        CK.Heading, CK.BlockQuote, CK.HorizontalLine, CK.PageBreak,
+        // lists
+        CK.List, CK.ListProperties, CK.TodoList, CK.Indent, CK.IndentBlock,
+        // links & media
+        CK.Link, CK.AutoLink, CK.MediaEmbed,
+        // images (no upload adapter here; add later if needed)
+        CK.Image, CK.ImageCaption, CK.ImageStyle, CK.ImageToolbar, CK.LinkImage,
+        // tables
+        CK.Table, CK.TableToolbar, CK.TableProperties, CK.TableCellProperties,
+        // HTML source view
+        CK.SourceEditing
+      ],
+      toolbar: [
+        'sourceEditing','|',
+        'undo','redo','findAndReplace','selectAll','|',
+        'heading','|',
+        'bold','italic','underline','strikethrough','subscript','superscript','code','removeFormat','|',
+        'highlight','link','blockQuote','codeBlock','horizontalLine','pageBreak','|',
+        'bulletedList','numberedList','todoList','outdent','indent','|',
+        'alignment','|',
+        'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
+        'insertTable','mediaEmbed'
+      ],
+      list: { properties: { styles:true, startIndex:true, reversed:true } },
+      image: { toolbar: ['imageTextAlternative','|','imageStyle:inline','imageStyle:block','imageStyle:side','|','linkImage'] },
+      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] }
+    }).then(function(editor){
+      window.editor = editor;
+
+      // auto-resize + send live data up to parent
+      function pingHeight(){
+        var h = document.documentElement.scrollHeight || document.body.scrollHeight || 320;
+        parent.postMessage({ type:'ck-height', h:h }, '*');
+      }
+      pingHeight();
+      editor.model.document.on('change:data', function(){
+        pingHeight();
+        parent.postMessage({ type:'ck-data', html: editor.getData() }, '*');
+      });
+      window.addEventListener('resize', pingHeight);
+      setTimeout(pingHeight, 50);
+    }).catch(console.error);
+  })();
+  <\/script>
+</body></html>`;
+
+        // mount iframe
+        const iframe = document.createElement('iframe');
+        iframe.id = 'ckframe';
+        iframe.srcdoc = srcdoc;
+        iframe.style.width = '100%';
+        iframe.style.minHeight = '320px';
+        iframe.style.border = '1px solid #ddd';
+        iframe.style.borderRadius = '8px';
+        iframe.style.background = '#fff';
+        host.appendChild(iframe);
+
+        // messages from iframe (height + data)
+        window.addEventListener('message', function (e) {
+          if (e.source !== iframe.contentWindow || !e.data) return;
+          if (e.data.type === 'ck-height') {
+            iframe.style.height = Math.max(320, e.data.h) + 'px';
+          } else if (e.data.type === 'ck-data') {
+            hiddenInput.value = e.data.html;
+            hiddenInput.dispatchEvent(new Event('input', { bubbles: true })); // Livewire sees it
+          }
+        });
+
+        // ensure latest HTML just before submit
+        const form = hiddenInput.closest('form');
+        if (form) {
+          form.addEventListener('submit', function () {
+            const ed = iframe.contentWindow && iframe.contentWindow.editor;
+            if (ed) {
+              hiddenInput.value = ed.getData();
+              hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+          });
+        }
+      }
+
+      // mount now (when edit mode renders)
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', mountCkEditor, { once: true });
+      } else {
+        mountCkEditor();
+      }
+
+      // and re-mount after any Livewire DOM update that shows this block
+      document.addEventListener('livewire:load', function () {
+        if (!window.Livewire || !Livewire.hook) return;
+        Livewire.hook('message.processed', function () {
+          const host = document.getElementById('ck-host');
+          const frameExists = document.getElementById('ckframe');
+          if (host && !frameExists) mountCkEditor();
+        });
+      });
+    })();
+    </script>
+  @endif
+
+  <label style="top:-25px; transform:none; color:#bbfcde;">Long Description</label>
+</div>
 
   {{-- Product Seo Title --}}
   <div class="input__tabs">
