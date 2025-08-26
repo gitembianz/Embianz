@@ -85,6 +85,16 @@
                                 </li>
                             @endif
                         @endforeach
+                        @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
+                            <li>
+                                <a class="navbar__link"
+                                    href="{{ route('blog') }}">
+                                    @if (app()->has('label_blog_page'))
+                                        {!! app('label_blog_page') !!}
+                                    @endif
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
             @endif
