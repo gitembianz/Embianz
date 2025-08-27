@@ -190,29 +190,57 @@
     var CK = window.CKEDITOR;
     CK.ClassicEditor.create(document.querySelector('#editor'), {
       licenseKey: '{{ app('global_ckeditor_license') }}',
-      plugins: [
+     plugins: [
+        // essentials & UX
         CK.Essentials, CK.Paragraph, CK.Autoformat, CK.PasteFromOffice, CK.RemoveFormat,
-        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Font, CK.Alignment,
-        CK.Heading, CK.List, CK.ListProperties, CK.Indent, CK.IndentBlock,
-        CK.BlockQuote, CK.HorizontalLine, CK.CodeBlock,
-        CK.Link,
-        CK.Table, CK.TableToolbar,
-        CK.SourceEditing
+        CK.FindAndReplace, CK.SelectAll, CK.Clipboard, CK.Undo,
+        // text formatting
+        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Subscript, CK.Superscript,
+        CK.Code, CK.Highlight, CK.Font, CK.Alignment,
+        // structure
+        CK.Heading, CK.BlockQuote, CK.HorizontalLine, CK.PageBreak,
+        // lists
+        CK.List, CK.ListProperties, CK.TodoList, CK.Indent, CK.IndentBlock,
+        // links & media
+        CK.Link, CK.AutoLink, CK.MediaEmbed,
+        // images
+        CK.Image, CK.ImageCaption, CK.ImageStyle, CK.ImageToolbar, CK.LinkImage,
+        // tables
+        CK.Table, CK.TableToolbar, CK.TableProperties, CK.TableCellProperties,
+        // source view + general HTML support
+        CK.SourceEditing,
+        CK.GeneralHtmlSupport
       ],
+
       toolbar: [
         'sourceEditing','|',
-        'undo','redo','|',
+        'undo','redo','findAndReplace','selectAll','|',
         'heading','|',
-        'bold','italic','underline','strikethrough','removeFormat','|',
-        'link','blockQuote','codeBlock','horizontalLine','|',
-        'bulletedList','numberedList','outdent','indent','|',
+        'bold','italic','underline','strikethrough','subscript','superscript','code','removeFormat','|',
+        'highlight','link','blockQuote','codeBlock','horizontalLine','pageBreak','|',
+        'bulletedList','numberedList','todoList','outdent','indent','|',
         'alignment','|',
         'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
-        'insertTable'
+        'insertTable','mediaEmbed'
       ],
+
       list: { properties: { styles:true, startIndex:true, reversed:true } },
-      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells'] }
-    }).then(function(editor){
+      image: { toolbar: ['imageTextAlternative','|','imageStyle:inline','imageStyle:block','imageStyle:side','|','linkImage'] },
+      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] },
+
+      // 🔓 Allow ALL HTML tags/attrs/classes/styles in Source view
+      htmlSupport: {
+        allow: [
+          {
+            name: /.*/,        // any tag: div, section, iframe, video, etc.
+            attributes: true,  // any attributes (including data-*)
+            classes: true,     // any classes
+            styles: true       // any inline styles
+          }
+        ]
+      }
+    })
+    .then(function(editor){
       // Expose to parent
       window.editor = editor;
 
@@ -325,29 +353,57 @@
     var CK = window.CKEDITOR;
     CK.ClassicEditor.create(document.querySelector('#editor'), {
       licenseKey: '{{ app('global_ckeditor_license') }}',
-      plugins: [
+    plugins: [
+        // essentials & UX
         CK.Essentials, CK.Paragraph, CK.Autoformat, CK.PasteFromOffice, CK.RemoveFormat,
-        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Font, CK.Alignment,
-        CK.Heading, CK.List, CK.ListProperties, CK.Indent, CK.IndentBlock,
-        CK.BlockQuote, CK.HorizontalLine, CK.CodeBlock,
-        CK.Link,
-        CK.Table, CK.TableToolbar,
-        CK.SourceEditing
+        CK.FindAndReplace, CK.SelectAll, CK.Clipboard, CK.Undo,
+        // text formatting
+        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Subscript, CK.Superscript,
+        CK.Code, CK.Highlight, CK.Font, CK.Alignment,
+        // structure
+        CK.Heading, CK.BlockQuote, CK.HorizontalLine, CK.PageBreak,
+        // lists
+        CK.List, CK.ListProperties, CK.TodoList, CK.Indent, CK.IndentBlock,
+        // links & media
+        CK.Link, CK.AutoLink, CK.MediaEmbed,
+        // images
+        CK.Image, CK.ImageCaption, CK.ImageStyle, CK.ImageToolbar, CK.LinkImage,
+        // tables
+        CK.Table, CK.TableToolbar, CK.TableProperties, CK.TableCellProperties,
+        // source view + general HTML support
+        CK.SourceEditing,
+        CK.GeneralHtmlSupport
       ],
+
       toolbar: [
         'sourceEditing','|',
-        'undo','redo','|',
+        'undo','redo','findAndReplace','selectAll','|',
         'heading','|',
-        'bold','italic','underline','strikethrough','removeFormat','|',
-        'link','blockQuote','codeBlock','horizontalLine','|',
-        'bulletedList','numberedList','outdent','indent','|',
+        'bold','italic','underline','strikethrough','subscript','superscript','code','removeFormat','|',
+        'highlight','link','blockQuote','codeBlock','horizontalLine','pageBreak','|',
+        'bulletedList','numberedList','todoList','outdent','indent','|',
         'alignment','|',
         'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
-        'insertTable'
+        'insertTable','mediaEmbed'
       ],
+
       list: { properties: { styles:true, startIndex:true, reversed:true } },
-      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells'] }
-    }).then(function(editor){
+      image: { toolbar: ['imageTextAlternative','|','imageStyle:inline','imageStyle:block','imageStyle:side','|','linkImage'] },
+      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] },
+
+      // 🔓 Allow ALL HTML tags/attrs/classes/styles in Source view
+      htmlSupport: {
+        allow: [
+          {
+            name: /.*/,        // any tag: div, section, iframe, video, etc.
+            attributes: true,  // any attributes (including data-*)
+            classes: true,     // any classes
+            styles: true       // any inline styles
+          }
+        ]
+      }
+    })
+    .then(function(editor){
       // Expose to parent
       window.editor = editor;
 

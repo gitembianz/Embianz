@@ -385,6 +385,7 @@
   <script>
   (function(){
     var CK = window.CKEDITOR;
+
     CK.ClassicEditor.create(document.querySelector('#editor'), {
       licenseKey: '{{ app('global_ckeditor_license') }}',
 
@@ -401,13 +402,15 @@
         CK.List, CK.ListProperties, CK.TodoList, CK.Indent, CK.IndentBlock,
         // links & media
         CK.Link, CK.AutoLink, CK.MediaEmbed,
-        // images (no upload adapter here; add later if needed)
+        // images
         CK.Image, CK.ImageCaption, CK.ImageStyle, CK.ImageToolbar, CK.LinkImage,
         // tables
         CK.Table, CK.TableToolbar, CK.TableProperties, CK.TableCellProperties,
-        // HTML source view
-        CK.SourceEditing
+        // source view + general HTML support
+        CK.SourceEditing,
+        CK.GeneralHtmlSupport
       ],
+
       toolbar: [
         'sourceEditing','|',
         'undo','redo','findAndReplace','selectAll','|',
@@ -419,10 +422,24 @@
         'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
         'insertTable','mediaEmbed'
       ],
+
       list: { properties: { styles:true, startIndex:true, reversed:true } },
       image: { toolbar: ['imageTextAlternative','|','imageStyle:inline','imageStyle:block','imageStyle:side','|','linkImage'] },
-      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] }
-    }).then(function(editor){
+      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] },
+
+      // 🔓 Allow ALL HTML tags/attrs/classes/styles in Source view
+      htmlSupport: {
+        allow: [
+          {
+            name: /.*/,        // any tag: div, section, iframe, video, etc.
+            attributes: true,  // any attributes (including data-*)
+            classes: true,     // any classes
+            styles: true       // any inline styles
+          }
+        ]
+      }
+    })
+    .then(function(editor){
       window.editor = editor;
 
       // auto-resize + send live data up to parent
@@ -437,7 +454,8 @@
       });
       window.addEventListener('resize', pingHeight);
       setTimeout(pingHeight, 50);
-    }).catch(console.error);
+    })
+    .catch(console.error);
   })();
   <\/script>
 </body></html>`;
