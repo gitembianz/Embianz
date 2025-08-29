@@ -12,7 +12,6 @@
                     <span id="countdown" style="font-size: 30px; text-decoration:none!important"></span>
                 </div>
             @endif
-
             <div class="cookie__description">
                 <span>
                     @if (app()->has('label_cookie_description'))
