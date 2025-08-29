@@ -1,241 +1,556 @@
-<div>
- {{-- sesssion html --}}
- <x-alert />
- <x-loading />
+<section class="content">
+    {{-- X-Components --}}
+    <x-alert />
 
- {{-- delete single record --}}
- <div class="modal" id="confirmationmodal">
-  <div class="modal-content">
-   <h1 class="modal-content-title">
-    {{ __('Are you sure to delete this record?') }}
-   </h1>
-   <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm">
-   <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
-   <span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
-    <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-   </span>
-  </div>
- </div>
- {{-- delete myltiple records --}}
- <div class="modal" id="confirmationmodalmultiple">
-  <div class="modal-content">
-   <h1 class="modal-content-title">
-    {{ __('Are you sure to delete those records?') }}
-   </h1>
-   <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
-   <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-
-   <span class="modal-content-btn delete"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-    <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-   </span>
-  </div>
- </div>
- {{-- Header of the table --}}
- <div class="panel__header">
-  <h1 class="panel__header--title">
-   {{ __('Categories') }}
-  </h1>
-  <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
-  <div class="panel__header--bundle">
-   <div class="dropdown">
-    <button class="dropdown-button"
-     wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif">Columns
-     <svg>
-      <polyline points="6 9 12 15 18 9"></polyline>
-     </svg>
-    </button>
-    @if ($col)
-
-     <div class="dropdown-list" style="display: flex;">
-      @foreach ($columns as $column)
-       <div class="dropdown-item">
-        <input type="checkbox" wire:ignore wire:model="selectedColumns" value="{{ $column }}"
-         {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-        <label>{{ $column }}</label>
-       </div>
-      @endforeach
-     </div>
-    @endif
-   </div>
-   <div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
-    <button
-     wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
-     class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-     Checked({{ count($checked) }})</button>
-    @if ($checked)
-     @if ($all)
-      <div class="dropdown-list" style="display: flex;">
-       <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
-        Delete
-       </button>
-      </div>
-     @endif
-    @endif
-   </div>
-   <a class="panel__header--button" wire:click="$refresh">
-    <svg>
-     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-     <g id="SVGRepo_iconCarrier">
-      <path
-       d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
-       stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-     </g>
-    </svg>
-   </a>
-   <a class="panel__header--button" href="{{ route('newcategory') }}">
-    <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
-   </a>
-  </div>
-  @if ($selectPage && $selectAll)
-   <div class="panel__header--checked">
-    <p>
-     You selected <strong>{{ count($checked) }}</strong> items.
-    </p>
-   </div>
-  @elseif($selectPage)
-   <div class="panel__header--checked" wire:click="selectAll">
-    <p>
-     You selected {{ count($checked) }} items, select all?
-    </p>
-   </div>
-  @endif
- </div>
- {{-- Table --}}
- <div style="overflow-x: auto">
-  <table class="table">
-   <thead>
-    <tr>
-     <th><input type="checkbox" wire:model="selectPage"></th>
-     @foreach ($selectedColumns as $column)
-      @if ($this->showColumn($column))
-       <th wire:click="sortBy('{{ $column }}')">
-        <button class="table__header--btn"
-         @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
-                @else data-symbol="down" @endif>
-         {{ $column }}
-         <svg>
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <polyline points="19 12 12 19 5 12"></polyline>
-         </svg>
-        </button>
-       </th>
-      @endif
-     @endforeach
-     <th></th>
-    </tr>
-   </thead>
-   <tbody>
-    @if ($categories->isEmpty())
-     <tr>
-      <td class="table__empty" colspan="{{ count($selectedColumns) }}">No record found.</td>
-     </tr>
-    @else
-     @foreach ($categories as $category)
-      <tr @if ($loop->last) id="last_record" @endif
-       class="@if ($this->isChecked($category->id)) table__row--selected @endif">
-       <td data-title="Check">
-        <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
-       </td>
-       @foreach ($selectedColumns as $column)
-        @if ($column === 'name')
-         <td data-title="Name"><a
-           href="{{ route('show_category', ['id' => $category->id]) }}">{{ $category->name }}</a></td>
-        @elseif($column === 'created_at' || $column === 'updated_at')
-         <td data-title="{{ $column }}">
-          <div class="table__time">
-           <svg>
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-           </svg>
-           {{ $category->$column }}
-          </div>
-         </td>
-        @elseif($column === 'start_date' || $column === 'end_date')
-         <td data-title="{{ $column }}">
-          <div class="table__time">
-           <svg>
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6">
-            </line>
-            <line x1="8" y1="2" x2="8" y2="6">
-            </line>
-            <line x1="3" y1="10" x2="21" y2="10">
-            </line>
-           </svg>
-           {{ $category->$column }}
-          </div>
-         </td>
-        @elseif($column === 'createdby' || $column === 'lastmodifiedby')
-         <td data-title="{{ $column }}">
-          <div class="table__time">
-           <svg>
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-           </svg>
-           {{ $category->$column }}
-          </div>
-         </td>
-        @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent')
-         <td data-title="{{ $column }}">
-          @if ($category->$column)
-           true
-          @else
-           false
-          @endif
-         </td>
-        @else
-         <td data-title="{{ $column }}">{{ $category->$column }}</td>
-        @endif
-       @endforeach
-       <td data-title="Action">
-        <div class="table__buttons">
-         <button class="delete" wire:click.prevent="confirmItemRemoval({{ $category->id }})">
-          <svg>
-           <polyline points="3 6 5 6 21 6"></polyline>
-           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-           </path>
-          </svg>
-         </button>
+    {{-- Delete Record OR Records --}}
+    <aside>
+        <div class="background background--center @if ($single || $multiple) active @endif"></div>
+        <div class="aside aside--confirm @if ($single || $multiple) active @endif">
+            <span>
+                @if ($single)
+                    Are you sure to delete this record?
+                @else
+                    Are you sure to delete those records?
+                @endif
+            </span>
+            @if ($single)
+                <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+                    <span>Delete</span>
+                </button>
+            @else
+                <button class="button button--primary button--long" wire:click="deleteRecords()">
+                    <span>Delete</span>
+                </button>
+            @endif
+            <button class="button button--danger button--long" wire:click="cancel_delete()">
+                <span>Cancel</span>
+            </button>
         </div>
-       </td>
-      </tr>
-     @endforeach
+    </aside>
+
+    {{-- Modal add new listview --}}
+    <aside>
+        <div class="background background--center @if ($addlistview) active @endif"></div>
+        <div class="aside aside--confirm @if ($addlistview) active @endif"
+            style="min-height: 225px !important;">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    New Listview
+                </span>
+                @foreach ($errors->all() as $error)
+                    <span class="details__long"
+                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+                @endforeach
+
+                <div class="input__tabs details__long">
+                    <input id="listview.name" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name">Listview name</label>
+                </div>
+
+
+                <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+                    <span>Save</span>
+                </button>
+                <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                    wire:click.prevent="$set('addlistview', false)">
+                    <span>Cancel</span>
+                </button>
+
+            </div>
+        </div>
+    </aside>
+
+    {{-- Modal edit listview --}}
+    <aside>
+        <div class="background background--center @if ($editlistview) active @endif"></div>
+        <div class="aside aside--confirm @if ($editlistview) active @endif" style="min-height: 450px;">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+                @foreach ($errors->all() as $error)
+                    <span class="details__long"
+                        style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
+                @endforeach
+
+
+                <button
+                    class="button @if ($edit) button--secondary @else button--primary @endif button--long"
+                    wire:click.prevent="toggle('edit')">
+                    <span>Edit listview</span>
+                </button>
+                <button
+                    class="button @if ($filter) button--secondary @else button--primary @endif button--long"
+                    style="margin-bottom: 10px !important" wire:click.prevent="toggle('filter')">
+                    <span>Add filter</span>
+                </button>
+
+
+                @if ($edit)
+                    <div class="input__tabs details__long">
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
+                    </div>
+                    <div class="details__long">
+
+                        <button style="max-width: none!important; width:100%!important"
+                            class="button button--danger button--long" wire:click.prevent="delete_listview()">
+                            <span>Delete listview</span>
+                        </button>
+                    </div>
+                    <div class="details__long"
+                        style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
+                        <div style="flex: 1;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8" style="width: 100%;">
+                                @foreach ($availableFields as $field)
+                                    <option value="{{ $field }}">{{ $field }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                            <button type="button" wire:click="moveToVisible" class="button">→</button>
+                            <button type="button" wire:click="moveToAvailable" class="button">←</button>
+                        </div>
+
+                        <div style="flex: 1;">
+                            <label for="selectedVisible2" style="font-weight: bold; color: white;">Visible Fields</label>
+                            <select id="selectedVisible2" wire:model="selectedVisible" size="8" style="width: 100%;">
+                                @foreach ($listview['columns'] as $field)
+                                    <option value="{{ $field }}">{{ $field }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+                            <button type="button" wire:click="moveVisibleFieldUp" class="button">↑</button>
+                            <button type="button" wire:click="moveVisibleFieldDown" class="button">↓</button>
+                        </div>
+                    </div>
+                    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                        <span>Save</span>
+                    </button>
+                    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                        wire:click.prevent="$set('editlistview', false)">
+                        <span>Cancel</span>
+                    </button>
+                @else
+                    <div class="input__tabs details__long">
+                        <select wire:model.defer="addfilter.column">
+                            <option value="">Select a column</option>
+                            @foreach ($columns as $field)
+                                <option value="{{ $field }}">{{ $field }}</option>
+                            @endforeach
+                        </select>
+                        <label> Column</label>
+                    </div>
+                    <div class="input__tabs details__long">
+                        <select wire:model.defer="addfilter.operator">
+                            <option value="">Select a operator</option>
+                            <option value="=">equal</option>
+                            <option value="like">contains</option>
+                            <option value=">">greater than</option>
+                            <option value="<">less than</option>
+                        </select>
+                        <label> Operator</label>
+                    </div>
+                    <div class="input__tabs details__long">
+                        <input type="text" wire:model.defer="addfilter.value">
+                        <label>Value</label>
+                    </div>
+                    <div class="details__long" style="margin-bottom: 5px;">
+
+                        <button style="max-width: none!important; width:100%!important"
+                            class="button button--secondary button--long" wire:click.prevent="save_filter()">
+                            <span>Add filter</span>
+                        </button>
+                    </div>
+                    @if (!empty($listview['filters']))
+                        <label class="details__long"
+                            style="font-weight: bold; text-align:center; color: white; padding-top:10px">Listview
+                            filters</label>
+
+                        @foreach ($listview['filters'] as $index => $filter)
+                            <div class="details__long"
+                                style="display: flex; align-items: center; justify-content: space-between; background-color: #f3f3f3; padding: 10px; border-radius: 6px; margin-bottom: 8px;">
+                                <div>{{ $index }}.
+                                    <strong>{{ $filter['column'] }}</strong>
+                                    {{ $filter['label'] ?? $filter['operator'] }}
+                                    <em>{{ $filter['value'] }}</em>
+                                </div>
+
+                                <button wire:click.prevent="removeFilter({{ $index }})"
+                                    style="border: none; background: none; color: red; font-weight: bold;">✕</button>
+                            </div>
+                        @endforeach
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--danger button--long" wire:click.prevent="clearAllFilters()">
+                                <span>Remove all filters</span>
+                            </button>
+                        </div>
+                        <div class="details__long" style="margin-bottom: 5px;">
+
+                            <button style="max-width: none!important; width:100%!important"
+                                class="button button--primary button--long"
+                                wire:click.prevent="$set('filterlogic', true)">
+                                <span>Edit filters logic</span>
+                            </button>
+                        </div>
+                        @if ($filterlogic)
+                            <div class="textarea__tabs details__long" style="margin-bottom: 5px">
+                                <textarea wire:model="listview.logic" name="textarea" id="textarea10" cols="30" rows="3"></textarea>
+                                <label>Filter logic (AND & OR)</label>
+                            </div>
+                        @endif
+                    @endif
+                    <button class="button button--primary button--long" wire:click.prevent="save_listview()">
+                        <span>Save and close</span>
+                    </button>
+                    <button class="button button--danger button--long" style="margin-bottom: 10px !important"
+                        wire:click.prevent="$set('editlistview', false)">
+                        <span>Cancel</span>
+                    </button>
+
+                @endif
+
+
+            </div>
+        </div>
+        </div>
+    </aside>
+
+   {{-- Import Data --}}
+    <aside>
+        <div class="background background--center @if ($importdata == true) active @endif"></div>
+        <div class="aside aside--confirm @if ($importdata == true) active @endif">
+            <div class="tabs__content details__view active" style="max-height: 100%;">
+
+                <span class="details__long"
+                    style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
+                    Select CSV file
+                </span>
+                <input style="display: none;" id="CSVImport" wire:model="csvimportdata" type="file"
+                    accept="csv/*">
+                <label class="button button--primary button--long" type="button" for="CSVImport">
+                    <span>
+                        Select
+                    </span>
+                </label>
+                <button class="button button--danger button--long" wire:click.prevent="$set('importdata', false)">
+                    <span>
+                        Cancel
+                    </span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    {{-- Navigation --}}
+    <h1 class="table--name">{{ __('Categories') }} ({{ $categories->total() }})</h1>
+    <nav class="nav--controls">
+        @if ($activelistview)
+
+            <div class="dropdown dropdown--right">
+                {{-- Dropdown Button --}}
+
+                <button class="button button--primary button--centered button--long" tooltip="Active listview"
+                    tooltip-top>
+                    <span>{{ $activelistview->name }}</span>
+                </button>
+                {{-- Dropdown Content --}}
+                <div class="dropdown__content custom-dropdown-content"
+                    style="gap: 5px; display: grid; left: 0; right: 0; max-height: 200px; overflow-y: auto;">
+
+                    @foreach ($listviews as $listview)
+                        <button class="button button--primary button--long"
+                            wire:click="setActiveListview({{ $listview->id }})">
+                            {{ $listview->name }}
+                        </button>
+                    @endforeach
+                    @if (count($listviews) < 1)
+                        <span class="details__long"
+                            style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">No
+                            others listviews found</span>
+                    @endif
+
+
+                </div>
+            </div>
+            <button class="button button--primary button--centered" tooltip="Edit listview" tooltip-top
+                wire:click="$set('editlistview', true)">
+                <svg>
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                    </path>
+                </svg>
+            </button>
+        @endif
+        {{-- Search Input --}}
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+        {{-- Refresh Button --}}
+        {{-- IF CHECKED --}}
+        <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
+            {{-- Dropdown Button --}}
+            <button class="button button--primary button--centered button--long" tooltip="Actions with checked"
+                tooltip-top>
+                <span>With Checked({{ count($checked) }})</span>
+            </button>
+            {{-- Dropdown Content --}}
+            <div class="dropdown__content">
+                <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+                    Delete
+                </button>
+            </div>
+        </div>
+
+
+        {{-- Optional Dropdown --}}
+        <div class="dropdown dropdown--right">
+            {{-- Dropdown Button --}}
+            <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
+                <svg>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                    <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                    <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                </svg>
+            </button>
+            {{-- Dropdown Content --}}
+            <div class="dropdown__content">
+                <div class="dropdown__container">
+                    <button class="button button--primary button--fill button--flexed" wire:click="$refresh">
+                        <svg>
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
+                            <path d="M18.37 7.16l0 .01" />
+                            <path d="M13 19.94l0 .01" />
+                            <path d="M16.84 18.37l0 .01" />
+                            <path d="M19.37 15.1l0 .01" />
+                            <path d="M19.94 11l0 .01" />
+                        </svg>
+                        <span>Refresh table</span>
+                    </button>
+                    <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('addlistview', true)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-clipboard">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        <span>Add listview</span>
+                    </button>
+                    {{-- Add New Button --}}
+                    <a class="button button--primary button--fill button--flexed" href="{{ route('newcategory') }}">
+                        <svg>
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="12" y1="18" x2="12" y2="12"></line>
+                            <line x1="9" y1="15" x2="15" y2="15"></line>
+                        </svg>
+                        <span>Add Category</span>
+                    </a>
+                    <button class="button button--primary button--fill button--flexed" wire:click="exportData">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export data</span>
+                    </button>
+                    <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('importdata', true)">
+                        <svg>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <span>Import data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+        <button class="button button--fill button--primary" style="margin-top: 10px;">
+            You selected {{ count($checked) }} items.
+        </button>
+    @elseif($selectPage)
+        <button class="button button--fill button--secondary" style="margin-top: 10px;" wire:click="selectAll">
+            You selected {{ count($checked) }} items, select all?
+        </button>
     @endif
-   </tbody>
-  </table>
-  <script>
-   document.addEventListener('livewire:load', function() {
-    let observer = new IntersectionObserver((entries) => {
-     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-       @this.call('loadMore');
-      }
-     });
-    });
 
-    observer.observe(document.getElementById('last_record'));
-   });
-  </script>
 
-  @if ($loadAmount <= count($categories))
-   <div class="table__load-more" wire:click="loadMore">
-    Load more
-   </div>
-  @endif
- </div>
-</div>
+    {{-- Table --}}
+    <div class="table" @if ($selectPage || $selectAll) style="height: calc(100% - 150px);" @endif>
+        <table class="expandable-table">
+            <thead>
+                <tr>
+                    <th style="border-right: none; border-left: none;">
+                        <div class="checkbox--primary">
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
+                        </div>
+                    </th>
+                    @foreach ($selectedColumns as $index => $column)
+                        <th @if ($index >= 2) class="hidden" @endif>
+                            <button wire:click="sortBy('{{ $column }}')"
+                                class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                                {{ $column }}
+                                <svg>
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </th>
+                    @endforeach
+                    <th style="border-left: none; border-right: none;">
+                        <button class="button button--secondary button--sm" style="opacity: 0">
+                            <svg>
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($categories->isEmpty())
+                    <tr>
+                        <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
+                    </tr>
+                @else
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach ($categories as $nr => $category)
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="expandable-row @if ($this->isChecked($category->id)) active @endif">
+                            <td style="border-left: none" data-title="Check">
+                                <div class="checkbox--primary">
+                                    <input type="checkbox" value="{{ $category->id }}" id="{{ $category->id }}"
+                                        wire:model="checked">
+                                    <label for="{{ $category->id }}"></label>
+                                </div>
+                            </td>
+                            @foreach ($selectedColumns as $index => $column)
+                                <td @if ($index >= 2) class="hidden" @endif
+                                    data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
+                                    @if ($column === 'name')
+                                        <a
+                                            href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
+                                    @elseif (
+                                        $column === 'active' ||
+                                            $column === 'display_variant_price' ||
+                                            $column === 'store_tab' ||
+                                            $column === 'has_parent' ||
+                                            $column === 'preload_image' ||
+                                            $column === 'one_product_page_category')
+                                        @if ($category->$column)
+                                            <div class="checkbox--secondary disabled">
+                                                <input type="checkbox" id="disabled2" disabled checked>
+                                                <label id="disabled2"></label>
+                                            </div>
+                                        @else
+                                            <div class="checkbox--secondary disabled">
+                                                <input type="checkbox" id="disabled1" disabled>
+                                                <label for="disabled2"></label>
+                                            </div>
+                                        @endif
+                                    @elseif ($column === 'long_description' || $column === 'short_description' || $column === 'long_description_bottom')
+                                        <span class="show-less">
+                                            {!! $category->$column !!}
+                                        </span>
+                                    @else
+                                        {{ $category->$column }}
+                                    @endif
+                                </td>
+                            @endforeach
+                            <td style="border-right: none">
+                                <button wire:click.prevent="confirmItemRemoval({{ $category->id }})"
+                                    class="button button--secondary button--sm">
+                                    <svg>
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="details-row  @if ($row === $i) active @endif">
+                            <td colspan="18">
+                                <div class="details">
+                                    @foreach ($selectedColumns as $index => $column)
+                                        @if ($index >= 2)
+                                            @if ($column === 'name')
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    <a
+                                                        href="{{ route('show_category', ['id' => $category->id]) }}">{{ $category->name }}</a>
+                                                </p>
+                                            @elseif (
+                                                $column === 'active' ||
+                                                    $column === 'display_variant_price' ||
+                                                    $column === 'store_tab' ||
+                                                    $column === 'has_parent' ||
+                                                    $column === 'preload_image' ||
+                                                    $column === 'one_product_page_category')
+                                                @if ($category->$column)
+                                                    <p>
+                                                        <bold>{{ $column }}:</bold>
+                                                    <div class="checkbox--secondary disabled">
+                                                        <input type="checkbox" id="disabled3" disabled checked>
+                                                        <label id="disabled3"></label>
+                                                    </div>
+                                                    </p>
+                                                @else
+                                                    <p>
+                                                        <bold>{{ $column }}:</bold>
+                                                    <div class="checkbox--secondary disabled">
+                                                        <input type="checkbox" id="disabled4" disabled>
+                                                        <label id="disabled4"></label>
+                                                    </div>
+                                                    </p>
+                                                @endif
+                                            @else
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    @if ($column === 'long_description' || $column === 'short_description' || $column === 'long_description_bottom')
+                                                        <span class="show-less">
+                                                            {!! $category->$column !!}
+                                                        </span>
+                                                    @else
+                                                        {{ $category->$column }}
+                                                    @endif
+                                                </p>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </td>
+                        </tr>
+                        @php
+                            $i++;
+                        @endphp
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+
+        <x-admin-lazyload />
+
+        {{-- Load More Manual --}}
+        @if ($loadAmount <= count($categories))
+            <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
+                Load more
+            </button>
+        @endif
+    </div>
+</section>

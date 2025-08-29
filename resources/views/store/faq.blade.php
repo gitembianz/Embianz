@@ -1,5 +1,5 @@
-<x-store-head :canonical="'faq'" :title="' FAQ | '" :description="'Întrebări și răspunsuri'"/>
-<x-store-header />
+<x-store-head :canonical="'faq'" :title="' FAQ'" :description="'Întrebări și răspunsuri'"/>
+@livewire('store-header')
 <main>
 	<script rel="preload" src="script/store/faq.js" as="script"></script>
 
@@ -376,6 +376,6 @@
 	</section>
 	<!----------------------End Accordions---------------------->
 	<!---------------------------------------------------------->
-	<script src="/script/store/faq.js" async defer></script>
+	<script src="/script/store/faq.js" defer></script>
 </main>
 <x-store-footer />

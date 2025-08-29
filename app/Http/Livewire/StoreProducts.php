@@ -2,12 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Specs;
 use App\Models\Product;
-use App\Models\Product_Spec;
-
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Livewire\WithPagination;
 
 class StoreProducts extends Component
@@ -16,18 +14,14 @@ class StoreProducts extends Component
 
   public $loadAmount;
   public $search = "";
-  public $quantity;
   public $session_id;
-  public $specification;
   public $orderBy = 'best_selling';
   public $category;
-  public $category_details;
-  public $specfilter = false;
-  public $showspecfilter = false;
-  public $selectedSpecValues = [];
+  public $queryfilters = [];
   public $selectedKeys = [];
-  public $selectedSpecNames = [];
-  public $productCount;
+  public $selectedvariantsKeys = [];
+  public $selectedfilters = [];
+  public $wishlistItems;
 
   public function render()
   {
@@ -37,39 +31,35 @@ class StoreProducts extends Component
     ]);
   }
 
-  private function getSessionId()
+  public function isInWishlist($productId)
   {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
-    }
+    return in_array($productId, $this->wishlistItems);
   }
 
   public function mount($category = null)
   {
-
-    $this->session_id = $this->getSessionId();
-    $this->quantity = app('global_low_stock');
-    $this->specification = Specs::get();
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
+
+    if (isset($filteredValues['loadAmount'])) {
+      $this->loadAmount = $filteredValues['loadAmount'];
+    } else {
+      $this->loadAmount = app('global_limit_load');
+    }
+
     if (isset($filteredValues['category_id']) && $this->category != null && $filteredValues['category_id'] == $this->category->id) {
-      if (isset($filteredValues['selectedSpecValues'])) {
-        $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
+      if (isset($filteredValues['queryfilters'])) {
+        $this->queryfilters = $filteredValues['queryfilters'];
         $this->applyFilter();
-      }
-      if (isset($filteredValues['loadAmount'])) {
-        $this->loadAmount = $filteredValues['loadAmount'];
       }
     } else {
       session()->forget('filtered_values');
@@ -77,144 +67,64 @@ class StoreProducts extends Component
     }
   }
 
-
-  // start filter-spec function
-  public function getFilterValuesProperty()
+  public function loadMore()
   {
-    $query = Product_Spec::select('value', 'spec_id')
-      ->groupBy('spec_id', 'value')
-      ->with(['spec' => function ($query) {
-        $query->select('id', 'name', 'sequence');
-      }]);
-    $query->whereHas(
-      'spec',
-      function ($query) {
-        $query->where('mark_as_filter', true);
-      }
-    );
-    $query->whereHas(
-      'product',
-      function ($query) {
-        $query->where('active', true);
-      }
-    );
-
+    $this->loadAmount += app('global_limit_load');
     if ($this->category != null) {
-      $query->whereHas('product.product_categories', function ($query) {
-        $query->where('category_id', $this->category->id);
-      });
+      session()->put('filtered_values', [
+        'category_id' => $this->category->id,
+        'loadAmount' =>  $this->loadAmount
+      ]);
+    } else {
+      session()->put('filtered_values', [
+        'loadAmount' =>  $this->loadAmount
+      ]);
     }
-
-    return $query->get();
   }
 
-
-  // aply filter sistem
-  public function resetFilter()
-  {
-    $this->selectedSpecValues = [];
-    $this->selectedSpecNames = [];
-    $this->selectedKeys = [];
-    $this->specfilter = false;
-    session()->forget('filtered_values');
-  }
-  public function applyFilter()
-  {
-    $this->selectedSpecNames = [];
-
-    $filteredValues = array_map(function ($values) {
-      return array_filter($values, function ($value) {
-        return $value === true;
-      });
-    }, $this->selectedSpecValues);
-    $allKeys = array_keys(array_merge(...array_values($filteredValues)));
-
-    $this->selectedKeys = $allKeys;
-    foreach ($this->specification as $spec) {
-      foreach ($this->selectedKeys as $key) {
-        foreach ($spec->product_spec as $value) {
-          $key = str_replace('_', '.', $key);
-
-          if ($value->value == $key) {
-            $this->selectedSpecNames[$key] = $spec->name;
-          }
-        }
-      }
-    }
-
-    if (isset($this->selectedKeys)) {
-      $this->specfilter = true;
-    }
-    session()->put('filtered_values', [
-      'category_id' => $this->category->id,
-      'selectedSpecValues' => $this->selectedSpecValues
-    ]);
-  }
-  public function removeSpec($key)
-  {
-    $key = str_replace('.', '_', $key);
-
-    foreach ($this->selectedSpecValues as &$subarray) {
-      if (isset($subarray[$key])) {
-        unset($subarray[$key]);
-        if (empty($subarray)) {
-          unset($subarray);
-        }
-        break;
-      }
-    }
-    $key = str_replace('_', '.', $key);
-    unset($this->selectedSpecNames[$key]);
-    $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
-    session()->put('filtered_values', [
-      'category_id' => $this->category->id,
-      'selectedSpecValues' => $this->selectedSpecValues
-    ]);
-    $this->selectedKeys = $allKeys;
-  }
-  public function clearall()
-  {
-    $this->selectedSpecValues = [];
-    $this->selectedSpecNames = [];
-    $this->selectedKeys = [];
-    $this->specfilter = false;
-    session()->forget('filtered_values');
-  }
-
-  // products function
+  // products function only for query, not from cache
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)
+    $query = Product::search($this->search)
       ->where('active', true)
-      ->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
       ->with([
-        'product_prices',
-        'product_prices.pricelist.currency',
+        'variants' => function ($query) {
+          $query->with(['product' => function ($query) {
+            $query->with(['media' => function ($query) {
+              $query->select('path', 'name')->where('type', 'main');
+            }]);
+          }]);
+        },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
+        },
+        'product_categories' => function ($query) {
+          $query->select('product_id', 'category_id', 'primary_category')
+            ->where('primary_category', true);
+          $query->with(['category' => function ($query) {
+            $query->select('id', 'short_description', 'seo_id');
+          }]);
+        },
+        'product_prices' => function ($query) {
+          $query->select('product_id', 'value', 'discount', 'value_no_discount');
+        },
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
         },
-        'wishlists' => function ($query) {
-          $query->select('id', 'product_id')->where('session_id', $this->session_id);
-        },
       ]);
+
     if ($this->category != null) {
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
-    }
-    if ($this->specfilter && !empty($this->selectedSpecValues)) {
-      foreach ($this->selectedSpecValues as $values) {
-        $query->Where(function ($specSubQuery) use ($values) {
-          foreach ($values as $value => $isSelected) {
-            if ($isSelected) {
-              $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
-                $key = str_replace('_', '.', $value);
-                $query->where('value', $key);
-              });
-            }
-          }
-        });
+      if ($this->category->accepted_items == 'default') {
+        $query->where('type', '!=', 'parent');
+      } else {
+        if (empty($this->selectedKeys)) {
+          $query->where('type', '!=', 'variant');
+        }
       }
     }
     switch ($this->orderBy) {
@@ -242,29 +152,175 @@ class StoreProducts extends Component
       case 'price_as':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) asc");
         break;
-
       case 'price_ds':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    $products = $query->paginate($this->loadAmount);
+    if (!empty($this->selectedKeys)) {
+      $query->whereIn('id', $this->selectedKeys);
+    }
 
-
-    return $products;
+    return $query->orderBy('popularity', 'DESC')
+      ->orderBy('innerid', 'ASC')->paginate($this->loadAmount);
   }
 
-  public function loadMore()
+  // filters fro cache
+  public function getFilterValuesProperty()
   {
-    $this->loadAmount += app('global_limit_load');
+    $query = app('cached_specifications');
+
     if ($this->category != null) {
+      $query = collect($query)->map(function ($spec) {
+        $filteredValues = collect($spec['values'])->map(function ($value) {
+          $filteredProducts = collect($value['products'])->filter(function ($product) {
+            return in_array($this->category->id, $product['categories']);
+          });
+
+          $productData = $filteredProducts->map(function ($product) {
+            if ($this->category->accepted_items === 'parents') {
+              if ($product['parent_id'] != "" && $product['type'] != 'standard') {
+                return [
+                  'product_id' => $product['product_id'],
+                  'parent_id' => $product['parent_id'],
+                ];
+              } elseif ($product['type'] != 'variant') {
+                return [
+                  'product_id' => $product['product_id'],
+                ];
+              }
+            } else {
+              return [
+                'product_id' => $product['product_id'],
+              ];
+            }
+            return null;
+          })->filter();
+
+          if ($productData->isNotEmpty()) {
+            return [
+              'product_data' => $productData->toArray(),
+            ];
+          }
+          return null;
+        })->filter();
+
+        if ($filteredValues->isNotEmpty()) {
+          return [
+            'spec' => $spec['spec'],
+            'sequence' => $spec['sequence'],
+            'values' => $filteredValues->filter()->toArray(),
+          ];
+        }
+        return null;
+      })->filter();
+    }
+
+    return $query;
+  }
+
+  public function applyFilter()
+  {
+    $this->selectedKeys = [];
+    $this->selectedfilters = [];
+    $productIdsPerSpec = [];
+    $specVariantIds = [];
+    $totalspecs = 0;
+
+    if (!empty($this->queryfilters)) {
+      foreach ($this->queryfilters as $specName => $values) {
+        $specProductIds = [];
+
+        foreach ($values as $value => $isfilterselected) {
+          if (array_values($isfilterselected)[0]) {
+            $fullString = array_keys($isfilterselected)[0];
+            $productIdsWithTypes = explode(',', $fullString);
+
+            foreach ($productIdsWithTypes as $item) {
+              $parts = explode('|', $item);
+              if (isset($parts[1])) {
+                $specVariantIds[$parts[1]][] = (string)$parts[0];
+              } else {
+                $specProductIds[] = (string)$parts[0];
+              }
+            }
+
+            $sanitizedValue = str_replace(',', '.', $value);
+            $this->selectedfilters[$sanitizedValue] = $specName;
+          }
+        }
+
+        if (!empty($specProductIds)) {
+          $productIdsPerSpec[] = array_unique($specProductIds);
+        }
+
+        $totalspecs++;
+      }
+
+      $ids = [];
+
+      // Handle variant filtering
+      if (!empty($specVariantIds)) {
+        foreach ($specVariantIds as $parentId => $variants) {
+          $variantCount = array_count_values($variants);
+          $maxCount = max($variantCount);
+
+          $mostFrequentVariant = array_search($maxCount, $variantCount);
+          $ids[] = [(string)$mostFrequentVariant];
+        }
+      }
+
+      if (!empty($productIdsPerSpec)) {
+        $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
+
+        if (!empty($filteredSpecs)) {
+          $ids[] = array_intersect(...$filteredSpecs);
+        }
+      }
+
+
+
+      $mergedIds = array_merge(...$ids);
+      $this->selectedKeys = !empty($mergedIds) ? $mergedIds : $this->products->pluck('id')->toArray();
+
       session()->put('filtered_values', [
         'category_id' => $this->category->id,
-        'loadAmount' =>  $this->loadAmount
+        'queryfilters' => $this->queryfilters
       ]);
+
+      $this->emit('filtersApplied', count($this->selectedKeys));
+    }
+
+    return $this->products->whereIn('id', $this->selectedKeys);
+  }
+
+
+
+
+  public function clearall()
+  {
+    $this->queryfilters = [];
+    session()->forget('filtered_values');
+    $this->applyFilter();
+  }
+
+  public function removeSpec($key, $specname)
+  {
+    $sanitizedkey = str_replace('.', ',', $key);
+
+    unset($this->queryfilters[$specname][$sanitizedkey]);
+    if (empty($this->queryfilters[$specname])) {
+      unset($this->queryfilters[$specname]);
+    }
+    if (empty($this->queryfilters)) {
+      unset($this->queryfilters);
+      session()->forget('filtered_values');
     } else {
       session()->put('filtered_values', [
-        'loadAmount' =>  $this->loadAmount
+        'category_id' => $this->category->id,
+        'queryfilters' => $this->queryfilters
       ]);
     }
+    unset($this->selectedfilters[$sanitizedkey]);
+    $this->applyFilter();
   }
 }

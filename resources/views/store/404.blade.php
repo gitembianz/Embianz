@@ -1,5 +1,5 @@
-<x-store-head :canonical='"404 | "' :title='"Page not Found | "' :description="'Error, page not found  | '"/>
-<x-store-header />
+<x-store-head :canonical='"404 | "' :title='"Page not Found"' :description="'Error, page not found  | '"/>
+@livewire('store-header')
 <main>
 
   <div class="container redirect">
@@ -9,7 +9,7 @@
 		<h3>
 			Veți fi redirecționat la pagina principală în 5 secunde...
 		</h3>
-    <a href="{{ url("/") }}">Întoarcete la pagina principală</a>
+    <a href="{{ url("/") }}">Întoarce-te la pagina principală</a>
   </div>
   <script>
 		setTimeout(function() {

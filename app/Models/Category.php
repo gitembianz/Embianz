@@ -18,9 +18,9 @@ class Category extends Model
   }
   public function subcategory()
   {
-    return $this->hasMany(Subcategory::class, 'parrent_id');
+    return $this->hasMany(Subcategory::class, 'parent_id');
   }
-  public function parrent()
+  public function parent()
   {
     return $this->hasMany(Subcategory::class, 'category_id');
   }
@@ -37,18 +37,18 @@ class Category extends Model
 
     while ($currentCategory) {
       $breadcrumbs->prepend([
-        'name' => $currentCategory->name,
+        'name' => $currentCategory->short_description ?? strip_tags($currentCategory->name),
         'slug' => $currentCategory->seo_id ?? $currentCategory->id,
       ]);
 
-      if ($currentCategory->parrent->isNotEmpty()) {
-        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+      if ($currentCategory->parent->isNotEmpty()) {
+        $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parrentCategory) {
+        if (!$parentCategory) {
           break;
         }
 
-        $currentCategory = $parrentCategory;
+        $currentCategory = $parentCategory;
       } else {
         break;
       }
@@ -59,9 +59,10 @@ class Category extends Model
 
   protected $fillable = [
     'name',
-    'parrent',
+    'parent',
     'active',
     'long_description',
+    'long_description_bottom',
     'meta_description',
     'short_description',
     'sequence',
@@ -71,24 +72,40 @@ class Category extends Model
     'createdby',
     'lastmodifiedby',
     'seo_title',
-    'seo_id'
+    'seo_id',
+    'preload_image',
+    'display_variant_price'
   ];
 
   public static function search($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('sequence', 'like', '%' . $search . '%')
-      ->orWhere('short_description', 'like', '%' . $search . '%');
-  }
-  public static function search_by_name($search)
-  {
-    return empty($search) ? static::query()
       : static::query()
       ->where(function ($query) use ($search) {
-        $query->where('name', 'like', '%' . $search . '%')
-          ->orWhere('short_description', 'like', '%' . $search . '%');
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $soundexValue = soundex($term);
+
+          $query->where(function ($subQuery) use ($term, $soundexValue) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('sequence', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+              ->orWhereRaw("
+                            EXISTS (
+                                SELECT 1
+                                FROM (
+                                    SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+                                    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8
+                                    UNION ALL SELECT 9 UNION ALL SELECT 10
+                                ) AS numbers,
+                               categories AS p
+                                WHERE p.id = categories.id
+                                AND SOUNDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(p.name, ' ', numbers.n), ' ', -1)) = ?
+                            )", [$soundexValue]);
+          });
+        }
       });
   }
 }

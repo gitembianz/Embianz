@@ -1,0 +1,248 @@
+//-------------------- General Settings (don`t edit) -------------------
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  touch-action: manipulation !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: $background;
+  margin: 0;
+  overflow-x: hidden;
+  scrollbar-width: auto;
+  scrollbar-color: $lightBlack $background;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $lightBlack;
+    border-radius: 23px;
+    border: 2px solid $background;
+  }
+
+  &::-moz-scrollbar-button:decrement,
+  &::-moz-scrollbar-button:increment,
+  &::-webkit-scrollbar-button:decrement,
+  &::-webkit-scrollbar-button:increment {
+    width: 0px !important;
+  }
+}
+
+svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: $text;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  user-select: none;
+}
+
+button,
+a,
+label,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+button{
+  font-family: "Montserrat", sans-serif;
+}
+
+.favorite__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  border: none;
+
+  & > svg {
+    fill: $lightGray;
+  }
+
+  &.active {
+    & > svg {
+      fill: $darkRed;
+    }
+  }
+}
+
+.item__button--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.item__text--disabled {
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  margin-left: 10px;
+  color: $darkRed;
+  text-align: center;
+  width: 100%;
+}
+
+.item__product--disabled {
+  background: lightgray;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.9;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px;
+  gap: 5px;
+  z-index: 10;
+
+  & > span {
+    color: $lightBlack;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+}
+
+.item__product--error {
+  color: $darkRed !important;
+  font-weight: $lightWeight !important;
+  font-size: $spanSize !important;
+  text-transform: unset !important;
+}
+.item__product--link {
+  color: $lightBlack !important;
+  font-size: $spanSize !important;
+  font-weight: $lightWeight !important;
+  text-decoration: underline !important;
+  text-transform: unset !important;
+}
+
+label {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+}
+
+main {
+  //padding-bottom: 30px;
+  min-height: 80vh;
+}
+
+//----------------------------------------------------------------------
+//------------------ Containers Settings (don`t edit) ------------------
+.container {
+  transition: all 0.3s ease-in-out;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@include container(sm);
+@include container(md);
+@include container(lg);
+@include container(xl);
+@include container(xxl);
+
+//----------------------------------------------------------------------
+//<------------------------- Checkbox Styles ------------------------->
+input[type="checkbox"] {
+  appearance: none;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid $text;
+  border-radius: 7px;
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+
+  &:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    background-image: url("/images/store/check.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    aspect-ratio: 1/1;
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+  }
+
+  &:checked {
+    background-color: $text;
+    border-color: $text;
+    transition: all 0.2s ease-in-out;
+
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+.logo {
+  height: 100%; 
+  display: block;
+  user-select: none;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: none;
+  }
+
+  & > img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    aspect-ratio: 2/1;
+    user-select: none;
+  }
+}
+
+.logo__hidden {
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: flex;
+    margin: 0 auto;
+  }
+
+  & > img {
+    width: 100%;
+    height: 50px;
+    user-select: none;
+    object-fit: contain;
+  }
+}
+
+//<----------------------- End Checkbox Styles ----------------------->

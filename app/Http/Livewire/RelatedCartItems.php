@@ -21,12 +21,25 @@ class RelatedCartItems extends Component
     public $selectAll = false;
     public $showrelatedprod = false;
     public $cartId;
-    public $col = false;
-    public $all = false;
-    public $itemidbeingremoved = null;
-    public $columns = ['Id', 'Price', 'Quantity'];
+    public $idbeingremoved = null;
+    public $columns = ['Id', 'Price', 'Quantity', 'VAT'];
     public $selectedColumns = [];
     public $cart;
+    public $row = null;
+    public $single = false;
+    public $multiple = false;
+
+
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
 
     public function render()
     {
@@ -59,7 +72,7 @@ class RelatedCartItems extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->cartproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->cartproducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -90,7 +103,7 @@ class RelatedCartItems extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->cartproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->cartproductsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function load()
     {
@@ -105,19 +118,16 @@ class RelatedCartItems extends Component
         return Cart_Item::where('cart_id', $this->cartId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
-    public function confirmItemRemoval($id)
-    {
-        $this->itemidbeingremoved = $id;
-        $this->dispatchBrowserEvent('show-delete-item');
-    }
+
     public function deleteSingleRecord()
     {
-        $id = $this->itemidbeingremoved;
+        $id = $this->idbeingremoved;
         $item = Cart_Item::findOrFail($id);
         $this->cart->quantity_amount -= $item->quantity;
         $this->cart->save();
         $item->delete();
         $this->checked = array_diff($this->checked, [$id]);
+        $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -138,6 +148,7 @@ class RelatedCartItems extends Component
 
         $this->checked = [];
         $this->selectPage = false;
+        $this->multiple = false;
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',
@@ -145,8 +156,18 @@ class RelatedCartItems extends Component
         ]);
         $this->emit('cartUpdated');
     }
+    public function confirmItemRemoval($id)
+    {
+        $this->idbeingremoved = $id;
+        $this->single = true;
+    }
     public function confirmItemsRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple');
+        $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
 }

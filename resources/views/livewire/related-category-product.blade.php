@@ -1,477 +1,677 @@
-<div>
-	<x-alert />
-	<x-loading />
-	<div class="accordion">
-		<div class="accordion__btn-flex">
-			<button class="accordion__btn" wire:click.prevent="@if ($showrelatedcat === false) $set('showrelatedcat', true) @else $set('showrelatedcat', false) @endif">
-				{{ __("Categories ") }}({{ $product->product_categories->count() }})
-			</button>
-			<button class="accordion__upload" wire:click="toggleTable">
-				<svg>
-					<line x1="12" y1="5" x2="12" y2="19"></line>
-					<line x1="5" y1="12" x2="19" y2="12"></line>
-				</svg>
-			</button>
-		</div>
+<div class="accordion @if ($showrelateitems) active @endif">
 
-		@if ($showrelatedcat)
-			<div class="accordion__content">
-				{{-- html for adding products --}}
-				@if ($showTable != false)
-					<div class="modal" id="modalelements" style="display: block">
-						<div class="modal-content modal--tabel">
-							<div class="modal" id="confirmationmodallink">
-								<div class="modal-content">
-									<h1 class="modal-content-title">
-										{{ __("Are you sure to relate this record?") }}
-									</h1>
-									<input wire:click.prevent="linkSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm" id="confirmLoad">
-									<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodallink').style.display='none'" value="Cancel">
+ <x-alert />
 
-									<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodallink').style.display='none'">
-										<svg>
-											<line x1="18" y1="6" x2="6" y2="18">
-											</line>
-											<line x1="6" y1="6" x2="18" y2="18">
-											</line>
-										</svg>
-									</span>
-								</div>
-							</div>
-							<div class="modal" id="confirmationmodallinkmultiple">
-								<div class="modal-content">
-									<h1 class="modal-content-title">
-										{{ __("Are you sure to link those records?") }}
-									</h1>
-									<input wire:click.prevent="linkRecords()" class="modal-content-btn submit" type="button" value="Confirm" id="confirmLoad">
-									<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'" value="Cancel">
+ {{-- Delete Record|s --}}
+ <aside>
+  <div class="background background--center @if ($single || $multiple) active @endif"></div>
+  <div class="aside aside--confirm @if ($single || $multiple) active @endif">
+   <span>
+    @if ($single)
+     Are you sure to delete this record?
+    @else
+     Are you sure to delete those records?
+    @endif
+   </span>
+   @if ($single)
+    <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+     <span>Delete</span>
+    </button>
+   @else
+    <button class="button button--primary button--long" wire:click="deleteRecords()">
+     <span>Delete</span>
+    </button>
+   @endif
+   <button class="button button--danger button--long" wire:click="cancel_delete()">
+    <span>Cancel</span>
+   </button>
+  </div>
+ </aside>
 
-									<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
-										<svg>
-											<line x1="18" y1="6" x2="6" y2="18">
-											</line>
-											<line x1="6" y1="6" x2="18" y2="18">
-											</line>
-										</svg>
-									</span>
-								</div>
-							</div>
-							{{-- Header of the table --}}
-							<div class="panel__header">
-								<h1 class="panel__header--title">
-									{{ __("Add related category") }}
-								</h1>
-								<input class="panel__header--input" type="text" wire:model="searchadd" placeholder="Search...">
-								<div class="panel__header--bundle">
-									<div class="dropdown">
-										<button wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif" class="dropdown-button">
-											Columns
-										</button>
-										@if ($coladd)
-											<div class="dropdown-list" style="display: flex;">
-												@foreach ($columnsadd as $column)
-													<div class="dropdown-item">
-														<input type="checkbox" wire:model="selectedColumnsadd" value="{{ $column }}" {{ in_array($column, $selectedColumnsadd) ? "checked" : "" }}>
-														<label>
-															{{ $column }}
-														</label>
-													</div>
-												@endforeach
-											</div>
-										@endif
-									</div>
-									<button @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif class="panel__header--button panel__header--checked" wire:click.prevent="confirmItemsLinkmultiple()" @if ($checkedadd) style="display: flex" @endif> Add
-										{{ count($checkedadd) }} records
-									</button>
-								</div>
+ {{-- add Related Items --}}
+ <aside>
+  <div class="background background--center @if ($showTable) active @endif"></div>
+  <div class="aside aside--table @if ($showTable) active @endif">
+   {{-- Navigation --}}
+   <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Add related categories') }}
+    </h1>
+    <button class="button button--primary button--centered" wire:click.prevent="saveitems()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
+    <button class="button button--danger button--centered" wire:click="closemodal" tooltip="Close Modal" tooltip-left>
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+     </svg>
+    </button>
+   </nav>
 
-								@if ($selectPageadd && $selectAlladd)
-									<div class="panel__header--checked">
-										<p>
-											You selected <strong>{{ count($checkedadd) }}</strong> items.
-										</p>
-									</div>
-								@elseif($selectPageadd)
-									<div class="panel__header--checked" wire:click="selectAlladd">
-										<p>
-											You selected {{ count($checkedadd) }} items, select all?
-										</p>
-									</div>
-								@endif
-							</div>
-							{{-- Table --}}
-							<div style="overflow-y: auto; position: relative; background: white;">
-								<table class="table table-top">
-									<thead>
-										<tr>
-											<th>
-												<input type="checkbox" wire:model="selectPageadd">
-											</th>
-											@if ($this->showColumnadd("Id"))
-												<th wire:click="sortByadd('id')">
-													<button class="table__header--btn" @if ($orderByadd === "id" && $orderAscadd === "1") data-symbol="up"
-                                                      @else data-symbol="down" @endif>
-														ID
-														<svg>
-															<line x1="12" y1="5" x2="12" y2="19"></line>
-															<polyline points="19 12 12 19 5 12"></polyline>
-														</svg>
-													</button>
-												</th>
-											@endif
+   {{-- Tabel --}}
+   <div class="table" style="height: calc(100% - 60px);">
+    <table class="expandable-table">
+     <thead>
+      <tr>
+       <th>
+        <div style="display: flex; align-items: center; justify-content: center;">
 
-											@if ($this->showColumnadd("Name"))
-												<th wire:click="sortByadd('name')">
-													<button class="table__header--btn" @if ($orderByadd === "name" && $orderAscadd === "1") data-symbol="up"
-                                                      @else data-symbol="down" @endif>
-														Name
-														<svg>
-															<line x1="12" y1="5" x2="12" y2="19"></line>
-															<polyline points="19 12 12 19 5 12"></polyline>
-														</svg>
-													</button>
-												</th>
-											@endif
+         <button class="table--btn">
+          Product
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
+       </th>
+       <th>
+        <button class="table--btn">
+         Category
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Select a category
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Is primary category?
+        </button>
+       </th>
+       <th>
+        <div style="display: flex;">
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      @php
+       $k = 0;
+      @endphp
+      @foreach ($productsAndValues as $index => $productsAndValue)
+       <tr class="expandable-row">
+        <td style="width: auto !important;" wire:click="expandRow2({{ $index }})">
+         <div style="display: flex; align-items: center; justify-content: center;">
+          {{ $product->name }}
+          <button class="button button--secondary button--sm" style="opacity: 0">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        </td>
+        <td wire:click="expandRow2({{ $index }})">
+         {{ $productsAndValue['itemselected'] }}
+        </td>
+        <td class="hidden">
+         @if ($productsAndValue['allow'])
+          <div class="searchable active">
+           {{-- Dropdown Header --}}
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+           {{-- Dropdown Content --}}
+           <div class="content__searchable">
+            <div class="list__searchable">
+             @if (count($cats) >= 1)
+              @foreach ($cats as $category)
+               <button class="item__searchable"
+                wire:click.prevent="selectitem({{ $index }}, {{ $category->id }}, '{{ $category->name }}')">
+                {{ $category->name }}
+               </button>
+              @endforeach
+             @else
+              <button class="item__searchable">{{ __('No record found') }}</button>
+             @endif
+            </div>
+           </div>
+          </div>
+         @else
+          <div class="searchable">
+           {{-- Dropdown Show Selected || Select now --}}
+           <button class="input__searchable">
+            @if ($productsAndValue['itemselected'])
+             {{ $productsAndValue['itemselected'] }}
+            @else
+             {{ __('Select a category') }}
+            @endif
+           </button>
+           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+          </div>
+         @endif
+         <input type="hidden" wire:model.defer="productsAndValues.{{ $index }}.product.name">
+        </td>
 
-											@if ($this->showColumnadd("Short Description"))
-												<th wire:click="sortByadd('short_description')">
-													<button class="table__header--btn" @if ($orderByadd === "short_description" && $orderAscadd === "1") data-symbol="up"
-                                                      @else data-symbol="down" @endif>
-														Description
-														<svg>
-															<line x1="12" y1="5" x2="12" y2="19"></line>
-															<polyline points="19 12 12 19 5 12"></polyline>
-														</svg>
-													</button>
-												</th>
-											@endif
+        <td class="hidden" data-title="Check">
+         <div class="checkbox--primary">
+          <input type="checkbox" id="{{ $index }}pri"
+           wire:model.defer="productsAndValues.{{ $index }}.product.primary">
+          <label for="{{ $index }}pri"></label>
+         </div>
+        </td>
 
-											@if ($this->showColumnadd("Created At"))
-												<th wire:click="sortByadd('created_at')">
-													<button class="table__header--btn" @if ($orderByadd === "created_at" && $orderAscadd === "1") data-symbol="up"
-                                                      @else data-symbol="down" @endif>
-														Created at
-														<svg>
-															<line x1="12" y1="5" x2="12" y2="19"></line>
-															<polyline points="19 12 12 19 5 12"></polyline>
-														</svg>
-													</button>
-												</th>
-											@endif
-											<th>
-											</th>
-										</tr>
-									</thead>
-								</table>
-								<table class="table" style="margin-top: 2rem">
-									<tbody>
-										@if ($cats->count() > 0)
-											@foreach ($cats as $cat)
-												<tr @if ($loop->last) id="last_record" @endif class="@if ($this->isCheckedadd($cat->id)) table__row--selected @endif">
-													<td data-title="Check">
-														<input type="checkbox" value="{{ $cat->id }}" wire:model="checkedadd">
-													</td>
-													@if ($this->showColumnadd("Id"))
-														<td data-title="ID">
-															{{ $cat->id }}
-														</td>
-													@endif
-													@if ($this->showColumnadd("Name"))
-														<td data-title="Name">
-															<a href="{{ route("show_category", ['id'=> $cat->id ])}}">
-																{{ $cat->name }}
-															</a>
-														</td>
-													@endif
-													@if ($this->showColumnadd("Short Description"))
-														<td class="table__description" data-title="Description">
-															{{ $cat->short_description }}
-														</td>
-													@endif
-													@if ($this->showColumnadd("Created At"))
-														<td data-title="Created At">
-															<div class="table__time">
-																<svg>
-																	<circle cx="12" cy="12" r="10">
-																	</circle>
-																	<polyline points="12 6 12 12 16 14"></polyline>
-																</svg>
-																{{ $cat->created_at }}
-															</div>
-														</td>
-													@endif
-													<td data-title="Action">
-														<div class="table__buttons">
-															<button class="edit" wire:click.prevent="confirmItemlink({{ $cat->id }})">
-																<svg>
-																	<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-																	</path>
-																	<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-																	</path>
-																</svg>
-															</button>
-														</div>
-													</td>
-												</tr>
-											@endforeach
-										@else
-											<tr>
-												<td class="table__empty" colspan="{{ count($columns) + 3 }}">No
-													record
-													found.
-												</td>
-											</tr>
-										@endif
-									</tbody>
-								</table>
-							</div>
-							<span class="top-up-modal delete" wire:click="cancel">
-								<svg>
-									<line x1="18" y1="6" x2="6" y2="18">
-									</line>
-									<line x1="6" y1="6" x2="18" y2="18">
-									</line>
-								</svg>
-							</span>
-							<a href="#top" class="top-up-modal" id="topUp">
-								<svg>
-									<polyline points="18 15 12 9 6 15"></polyline>
-								</svg>
-							</a>
-						</div>
-						<x-lazy />
-					</div>
-				@endif
-				{{-- end html for adding products --}}
-				@if ($product->product_categories()->count() > 0)
-					{{-- delete single record --}}
-					<div class="modal" id="confirmationmodalsingle">
-						<div class="modal-content">
-							<h1 class="modal-content-title">
-								{{ __("Are you sure to delete this record?") }}
-							</h1>
-							<input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm" id="confirmLoad">
-							<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodalsingle').style.display='none'" value="Cancel">
+        <td>
+         <div style="display: flex;">
+          @if ($index == $row - 1)
+           <button class="button button--secondary button--sm" wire:click="plus">
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19">
+             </line>
+             <line x1="5" y1="12" x2="19" y2="12">
+             </line>
+            </svg>
+           </button>
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+          @if ($index != $row - 1)
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+         </div>
+        </td>
+       </tr>
+       <tr class="details-row  @if ($rind2 === $k) active @endif">
+        <td colspan="3">
+         <div class="details">
+          <p>
+           <bold>Related Product Name</bold>
+           @if ($productsAndValue['allow'])
+            <div class="searchable active">
+             {{-- Dropdown Header --}}
+             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+             <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
+             {{-- Dropdown Content --}}
+             <div class="content__searchable">
+              <div class="list__searchable">
+               @if (count($cats) >= 1)
+                @foreach ($cats as $category)
+                 <button class="item__searchable"
+                  wire:click.prevent="selectitem({{ $index }}, {{ $category->id }}, '{{ $category->name }}')">
+                  {{ $category->name }}
+                 </button>
+                @endforeach
+               @else
+                <button class="item__searchable">{{ __('No record found') }}</button>
+               @endif
+              </div>
+             </div>
+            </div>
+           @else
+            <div class="searchable">
+             {{-- Dropdown Show Selected || Select now --}}
+             <button class="input__searchable">
+              @if ($productsAndValue['itemselected'])
+               {{ $productsAndValue['itemselected'] }}
+              @else
+               {{ __('Select a category') }}
+              @endif
+             </button>
+             <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
+            </div>
+           @endif
+           <input type="hidden" wire:model.defer="productsAndValues.{{ $index }}.product.name">
+          </p>
 
-							<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodalsingle').style.display='none'">
-								<svg>
-									<line x1="18" y1="6" x2="6" y2="18">
-									</line>
-									<line x1="6" y1="6" x2="18" y2="18">
-									</line>
-								</svg>
-							</span>
-						</div>
-					</div>
-					{{-- delete myltiple records --}}
-					<div class="modal" id="confirmationmodalmultiple">
-						<div class="modal-content">
-							<h1 class="modal-content-title">
-								{{ __("Are you sure to delete those records?") }}
-							</h1>
-							<input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm" id="confirmLoad">
-							<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
+          <p>
+           <bold>Sequence</bold>
+          <div class="checkbox--primary">
+           <input type="checkbox" id="{{ $k }}pri"
+            wire:model.defer="productsAndValues.{{ $index }}.product.primary">
+           <label for="{{ $k }}pri"></label>
+          </div>
+          </p>
+         </div>
+        </td>
+       </tr>
+       @php
+        $k++;
+       @endphp
+      @endforeach
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </aside>
 
-							<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+ {{-- Related Items --}}
+ <div class="accordion__header">
+  <button
+   class="button button--flexed button--fill button--primary @if ($showrelateitems) button--secondary active @endif"
+   wire:click.prevent="@if ($showrelateitems === false) $set('showrelateitems', true) @else $set('showrelateitems', false) @endif">
+   {{ __('Categories ') }}({{ $relatedcats->total() }})
+   <svg>
+    <polyline points="6 9 12 15 18 9"></polyline>
+   </svg>
+  </button>
+  <button class="button button--secondary" wire:click.prevent="addrelated()">
+   <svg>
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+   </svg>
+  </button>
+ </div>
+ <div class="accordion__body">
+  {{-- Navigation --}}
+  <nav class="nav--controls">
+   {{-- Search Input --}}
+   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+   {{-- IF CHECKED --}}
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
+    {{-- Dropdown Button --}}
+    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
+     <span>With Checked({{ count($checked) }})</span>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+       Delete
+      </button>
+     </div>
+    </div>
+   </div>
+   {{-- Visible Dropdown --}}
+   <div class="dropdown dropdown--right" wire:ignore>
+    {{-- Dropdown Button --}}
+    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+     </svg>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      @foreach ($columns as $column)
+       <label class="switch switch--primary inline">
+        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
+         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
+        <span>{{ $column }}</span>
+       </label>
+      @endforeach
+     </div>
+    </div>
+   </div>
+  </nav>
+  {{-- Select All? --}}
+  @if ($selectPage && $selectAll)
+   <button class="button button--fill button--primary">
+    You selected {{ count($checked) }} items.
+   </button>
+  @elseif($selectPage)
+   <button class="button button--fill button--secondary" wire:click="selectAll">
+    You selected {{ count($checked) }} items, select all?
+   </button>
+  @endif
+  {{-- Table --}}
+  <table class="expandable-table">
+   <thead>
+    <tr>
+     <th style="border-right: none; border-left: none;">
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage11" wire:model="selectPage" />
+       <label for="selectPage11"></label>
+      </div>
+     </th>
+     @if ($this->showColumn('Id'))
+      <th>
+       <button class="table--btn">
+        ID
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Product Name'))
+      <th>
+       <button class="table--btn">
+        Product Name
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Category Name'))
+      <th>
+       <button class="table--btn">
+        Category Name
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Category Description'))
+      <th class="hidden">
+       <button class="table--btn">
+        Category Description
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Category displayed elements'))
+      <th class="hidden">
+       <button class="table--btn">
+        Category displayed elements
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Category is active?'))
+      <th class="hidden">
+       <button class="table--btn">
+        Category is active?
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Is primary category?'))
+      <th class="hidden">
+       <button class="table--btn">
+        Is primary category?
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Created At'))
+      <th class="hidden">
+       <button class="table--btn">
+        Created At
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Updated At'))
+      <th class="hidden">
+       <button class="table--btn">
+        Updated At
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     <th>
+      <button class="button button--secondary button--sm" style="opacity: 0">
+       <svg>
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+       </svg>
+      </button>
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    @php
+     $i = 0;
+    @endphp
+    @if ($relatedcats->isEmpty())
+     <tr>
+      <td class="table--empty" colspan="{{ count($columns) + 2 }}">No record found.</td>
+     </tr>
+    @else
+     @foreach ($relatedcats as $index => $related)
+      <tr class="expandable-row @if ($this->isChecked($related->id)) active @endif">
+       <td style="border-left: none" data-title="Check">
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $related->id }}" id="{{ $related->id }}" wire:model="checked">
+         <label for="{{ $related->id }}"></label>
+        </div>
+       </td>
 
-								<svg>
-									<line x1="18" y1="6" x2="6" y2="18">
-									</line>
-									<line x1="6" y1="6" x2="18" y2="18">
-									</line>
-								</svg>
-							</span>
-						</div>
-					</div>
-					{{-- Header of the table --}}
-					<div class="panel__header">
-						<input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search..." style="grid-column: 1/4">
-						<div class="panel__header--bundle">
-							<div class="dropdown">
-								<button wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif" class="dropdown-button">
-									Columns
-								</button>
-								@if ($col)
+       @if ($this->showColumn('Id'))
+        <td wire:click="expandRow({{ $index }})">{{ $related->category->id }}</td>
+       @endif
+       @if ($this->showColumn('Category Name'))
+        <td data-title="Name" wire:click="expandRow({{ $index }})">
+         <a href="{{ route('show_category', ['id' => $related->category->id]) }}">
+          {{ strip_tags($related->category->name) }}</a>
+        </td>
+       @endif
+       @if ($this->showColumn('Category Description'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $related->category->short_description }}
+        </td>
+       @endif
+       @if ($this->showColumn('Category displayed elements'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $related->category->accepted_items }}
+        </td>
+       @endif
+       @if ($this->showColumn('Category is active?'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($related->category->active)
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" id="disabled5" disabled checked>
+           <label for="disabled5"></label>
+          </div>
+         @else
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" id="disabled6" disabled>
+           <label for="disabled6"></label>
+          </div>
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Is primary category?'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          @if ($related->primary_category)
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled9" disabled checked>
+            <label id="disabled9"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled10" disabled>
+            <label id="disabled10"></label>
+           </div>
+          @endif
+         @else
+          <input type="checkbox" id="primary" wire:model="var.{{ $index }}.primary">
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Created At'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $related->category->created_at }}
+        </td>
+       @endif
+       @if ($this->showColumn('Updated At'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $related->category->updated_at }}
+        </td>
+       @endif
+       <td>
+        @if ($editindex !== $index)
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $index }}, {{ $related->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $related->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        @else
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }},{{ $related->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+           </svg>
+          </button>
+         </div>
+        @endif
+       </td>
+      </tr>
+      <tr class="details-row  @if ($rind === $i) active @endif">
+       <td colspan="{{ count($columns) + 2 }}">
+        <div class="details">
 
-									<div class="dropdown-list" style="display: flex;">
-										@foreach ($columns as $column)
-											<div class="dropdown-item">
-												<input type="checkbox" wire:model="selectedColumns" value="{{ $column }}" {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
-												<label>{{ $column }}</label>
-											</div>
-										@endforeach
-									</div>
-								@endif
-							</div>
-							<div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
-								<button wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif" class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-									Checked({{ count($checked) }})
-								</button>
-								@if ($checked && $all)
-									<div class="dropdown-list" style="display: flex;">
-										<button class="dropdown-item delete" type="button" wire:click="confirmItemsRemovalmultiple()">
-											Delete
-										</button>
-									</div>
-								@endif
-							</div>
-						</div>
-						@if ($selectPage && $selectAll)
-							<div class="panel__header--checked">
-								<p>
-									You selected <strong>{{ count($checked) }}</strong> items.
-								</p>
-							</div>
-						@elseif($selectPage)
-							<div class="panel__header--checked" wire:click="selectAll">
-								<p>
-									You selected {{ count($checked) }} items, select all?
-								</p>
-							</div>
-						@endif
-					</div>
-					{{-- Table --}}
-					<table class="table">
-						<thead>
-							<tr>
-								<th>
-									<input type="checkbox" wire:model="selectPage">
-								</th>
-								@if ($this->showColumn("Id"))
-									<th wire:click="sortBy('id')">
-										<button class="table__header--btn" @if ($orderBy === "id" && $orderAsc === "1") data-symbol="up"
-                                              @else data-symbol="down" @endif>
-											ID
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
+         @if ($this->showColumn('Category Description'))
+          <p>
+           <bold>Category Description</bold>
+           {{ $related->category->short_description }}
+          </p>
+         @endif
+         @if ($this->showColumn('Category displayed elements'))
+          <p>
+           <bold>Category displayed elements</bold>
+           {{ $related->category->accepted_items }}
+          </p>
+         @endif
+         @if ($this->showColumn('Category is active?'))
+          <p>
+           <bold>Category is active?</bold>
+           @if ($related->category->active)
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled7" disabled checked>
+             <label for="disabled7"></label>
+            </div>
+           @else
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled8" disabled>
+             <label for="disabled8"></label>
+            </div>
+           @endif
+          </p>
+         @endif
+         @if ($this->showColumn('Is primary category?'))
+          <p>
+           <bold>Is primary category?</bold>
+           @if ($related->primary_category)
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled7" disabled checked>
+             <label for="disabled7"></label>
+            </div>
+           @else
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled8" disabled>
+             <label for="disabled8"></label>
+            </div>
+           @endif
+          </p>
+         @endif
+         @if ($this->showColumn('Created At'))
+          <p>
+           <bold>Created At</bold>
+           {{ $related->category->created_at }}
+          </p>
+         @endif
+         @if ($this->showColumn('Updated At'))
+          <p>
+           <bold>Updated At</bold>
+           {{ $related->category->updated_at }}
+          </p>
+         @endif
+        </div>
+       </td>
+      </tr>
+      @php
+       $i++;
+      @endphp
+     @endforeach
+    @endif
+   </tbody>
+  </table>
+  {{-- Load More --}}
+  @if ($loadAmount < $relatedcats->total())
+   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
+    Load more
+   </button>
+  @endif
+ </div>
 
-								@if ($this->showColumn("Name"))
-									<th wire:click="sortBy('name')">
-										<button class="table__header--btn" @if ($orderBy === "name" && $orderAsc === "1") data-symbol="up"
-                                                  @else data-symbol="down" @endif>
-											Name
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-
-								@if ($this->showColumn("Short Description"))
-									<th wire:click="sortBy('short_description')">
-										<button class="table__header--btn" @if ($orderBy === "short_description" && $orderAsc === "1") data-symbol="up"
-                                              @else data-symbol="down" @endif>
-											Description
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-
-								@if ($this->showColumn("Created At"))
-									<th wire:click="sortBy('created_at')">
-										<button class="table__header--btn" @if ($orderBy === "created_at" && $orderAsc === "1") data-symbol="up"
-                                              @else data-symbol="down" @endif>
-											Created at
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								<th>
-								</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							@if ($relatedcats->isEmpty())
-								<tr>
-									<td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-										found.
-									</td>
-								</tr>
-							@else
-								@foreach ($relatedcats as $index => $categori)
-									@if ($index >= $perPage)
-										<?php
-										break;
-										?>
-									@endif
-									<tr @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($categori->id)) table__row--selected @endif">
-										<td data-title="Check">
-											<input type="checkbox" value="{{ $categori->id }}" wire:model="checked">
-										</td>
-
-										@if ($this->showColumn("Id"))
-											<td data-title="ID">
-												{{ $categori->category->id }}
-											</td>
-										@endif
-
-										@if ($this->showColumn("Name"))
-											<td data-title="Name">
-												<a href="{{ route("show_category", ['id'=> $categori->category->id ])}}">{{ $categori->category->name }}</a>
-											</td>
-										@endif
-
-										@if ($this->showColumn("Short Description"))
-											<td class="table__description" data-title="Description">
-												{{ $categori->category->short_description }}
-											</td>
-										@endif
-
-										@if ($this->showColumn("Created At"))
-											<td data-title="Created At">
-												<div class="table__time">
-													<svg>
-														<circle cx="12" cy="12" r="10">
-														</circle>
-														<polyline points="12 6 12 12 16 14"></polyline>
-													</svg>
-													{{ $categori->category->created_at }}
-												</div>
-											</td>
-										@endif
-
-										<td data-title="Action">
-											<div class="table__buttons">
-												<button class="delete" wire:click.prevent="ItemRemoval({{ $categori->id }})">
-													<svg>
-														<polyline points="3 6 5 6 21 6"></polyline>
-														<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-														</path>
-													</svg>
-												</button>
-											</div>
-										</td>
-									</tr>
-								@endforeach
-							@endif
-						</tbody>
-					</table>
-					@if ($perPage <= count($relatedcats))
-						<div class="table__load-more" wire:click="load">
-							Load more
-						</div>
-					@endif
-				@else
-					<p class="mt-2">No records related</p>
-				@endif
-			</div>
-		@endif
-	</div>
 </div>

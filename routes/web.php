@@ -1,7 +1,6 @@
  <?php
 
   use App\Http\Controllers\AdminController;
-  use App\Http\Controllers\CartController;
   use Illuminate\Support\Facades\Route;
   use Illuminate\Support\Facades\Artisan;
   use App\Http\Controllers\HomeController;
@@ -10,11 +9,11 @@
   use App\Http\Controllers\PriceListController;
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
-  use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+  use App\Models\Static_Page;
+  use Illuminate\Support\Facades\Schema;
 
   /*
 |--------------------------------------------------------------------------
@@ -42,19 +41,48 @@
       route::post('/add_category', [CategoryController::class, 'add_category'])->name('add_category');
       route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
 
+      route::view('/articlecategory', 'admin.articlecategory')->name('articlecategory');
+      route::view('/new_articlecategory', 'admin.add_articlecategory')->name('newarticlecategory');
+      route::post('/add_articlecategory', [AdminController::class, 'add_articlecategory'])->name('store_articlecategory');
+      route::get('/show_articlecategory/{id}/', [AdminController::class, 'show_articlecategory'])->name('show_articlecategory');
+
+      route::view('/articles', 'admin.articles')->name('articles');
+      route::view('/add_article', 'admin.add_article')->name('newarticle');
+      route::post('/store_article', [AdminController::class, 'store_article'])->name('store_article');
+      route::get('/show_article/{id}/', [AdminController::class, 'show_article'])->name('show_article');
+
+
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');
-      route::view('/add_product', 'admin.add_products')->name('add_product');
+      Route::get('/add_product', [ProductController::class, 'create'])->name('add_product');
+
       route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
+      route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');
 
-      //todolist routes
-      route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
-      route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');
+      // all_promotions
+      route::view('/promotions', 'admin.promotions')->name('all_promotions');
+      route::view('/new_promotion', 'admin.add_promotion')->name('newpromotion');
+      route::post('/store_promotion', [AdminController::class, 'store_promotion'])->name('store_promotion');
+
+      route::view('/jobs', 'admin.jobs')->name('jobs');
+
+
+      // brands routes
+      route::view('/brands', 'admin.brands')->name('all_brands');
+      route::view('/add_brand', 'admin.add_brand')->name('add_brand');
+      route::get('/show_brand/{id}/', [AdminController::class, 'show_brand'])->name('show_brand');
+
+      route::get('/show_session/{id}/', [AdminController::class, 'show_session'])->name('show_session');
+
+      route::view('/users', 'admin.users')->name('users');
+      route::view('/add_user', 'admin.add_user')->name('add_user');
+      route::post('/new_user', [AdminController::class, 'store_user'])->name('new_user');
+      route::get('/show_user/{id}/', [AdminController::class, 'show_user'])->name('show_user');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
-      route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
+      route::get('/show_cart/{id}/', [AdminController::class, 'show_cart'])->name('show_cart');
 
       //specs route
       route::view('/specs', 'admin.specs')->name('specs');
@@ -83,6 +111,11 @@
 
       route::view('/payments', 'admin.payment')->name('payments');
       route::view('/currencies', 'admin.currency')->name('currencies');
+      route::view('/new_currency', 'admin.add_currency')->name('newcurrency');
+      route::post('/add_currency', [AdminController::class, 'store_currency'])->name('add_currency');
+
+      route::view('/exchanges', 'admin.exchanges')->name('exchanges');
+
       route::view('/sessions', 'admin.session')->name('sessions');
       route::view('/wishlists', 'admin.wishlists')->name('wishlists');
 
@@ -93,10 +126,32 @@
       route::post('/add_voucher', [AdminController::class, 'store_voucher'])->name('add_voucher');
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
-      route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
+
+      route::view('/labels', 'admin.labels')->name('labels');
+      route::view('/variants', 'admin.variants')->name('variants');
+      route::view('/newvariant', 'admin.add_variant')->name('newvariant');
+      route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+      route::get('/parent', [AdminController::class, 'corectparent'])->name('parent');
+
+
+      route::view('/countries', 'admin.countries')->name('countries');
+      route::get('/show_country/{id}/', [AdminController::class, 'show_country'])->name('show_country');
+      route::get('/show_county/{id}/', [AdminController::class, 'show_county'])->name('show_county');
+
+      route::view('/suppliers', 'admin.suppliers')->name('suppliers');
+      route::get('/add_supplier', [AdminController::class, 'add_supplier'])->name('add_supplier');
+      route::post('/new_supplier', [AdminController::class, 'store_supplier'])->name('new_supplier');
+      route::get('/show_supplier/{id}/', [AdminController::class, 'show_supplier'])->name('show_supplier');
+
+      route::view('/pages', 'admin.pages')->name('pages');
+      route::view('/add_page', 'admin.add_page')->name('add_page');
+      route::post('/store_page', [AdminController::class, 'store_page'])->name('store_page');
+      route::get('/show_page/{id}/', [AdminController::class, 'show_page'])->name('show_page');
+
+
 
       //specific routes
-      route::get('/cleareverything', function () {
+      Route::get('/cleareverything', function () {
         Artisan::call('cache:clear');
         Artisan::call('clear-compiled');
         Artisan::call('view:clear');
@@ -106,8 +161,13 @@
         Artisan::call('queue:clear');
         Artisan::call('optimize:clear');
         Artisan::call('migrate');
+
+        // Remove cached config files
+        exec('rm -rf bootstrap/cache/*.php');
+
         echo "App is optimized and updated";
       });
+
 
       route::get('/friendlyurl', function () {
         Artisan::call('update:seo_ids');
@@ -118,12 +178,17 @@
         Artisan::call('db:seed');
         echo 'Database seeded';
       });
+      route::get('/seedreviews', [AdminController::class, 'seedreviews']);
+      route::get('/updatereviews', [AdminController::class, 'updatereviews']);
+
+      route::get('/checkorders', [AdminController::class, 'checkorders'])->name('checkorders');
+      route::get('/updatecosts', [AdminController::class, 'updatecosts']);
+      route::get('/getavgvalues', [AdminController::class, 'getavgvalues'])->name('getavgvalues');
+
+
 
       route::get('/clear-cache', function () {
-        Cache::forget('global_variables');
-        Cache::forget('global_statuses');
-        Cache::forget('global_payments');
-        Cache::forget('global_scripts');
+        Artisan::call('cache:clear');
         echo 'Cache cleared for global variables';
       });
     });
@@ -132,31 +197,48 @@
   // Storefront
 
   //simple page routes
+  Route::middleware(['site.off'])->group(function () {
+    route::get('/', [HomeController::class, 'home'])->name('home');
+    route::view('/cart', 'store.cart')->name('cart');
+    route::view('/wishlist', 'store.wislist')->name('wislist');
+    route::view('/order', 'store.order')->name('order');
+    route::view('/faq', 'store.faq')->name('faq');
+    route::view('/cookie', 'store.cookie')->name('cookie');
+    route::view('/privacy', 'store.privacy')->name('privacy');
+    route::view('/contact', 'store.contact')->name('contact');
+    route::view('/about', 'store.about')->name('about');
+    route::view('/confirm', 'store.confirm')->name('confirm');
+    route::view('/terms', 'store.terms')->name('terms');
+    route::view('/redirect', 'store.redirect')->name('redirect');
+    Route::view('/404', 'store.404')->name('404');
 
-  route::view('/', 'store.home')->name('home')->middleware('cache-control');
-  route::view('/cart', 'store.cart')->name('cart');
-  route::view('/wishlist', 'store.wislist')->name('wislist');
-  route::view('/order', 'store.order')->name('order');
-  route::view('/faq', 'store.faq')->name('faq');
-  route::view('/cookie', 'store.cookie')->name('cookie');
-  route::view('/privacy', 'store.privacy')->name('privacy');
-  route::view('/contact', 'store.contact')->name('contact');
-  route::view('/about', 'store.about')->name('about');
-  route::view('/confirm', 'store.confirm')->name('confirm');
-  route::view('/terms', 'store.terms')->name('terms');
-  route::view('/redirect', 'store.redirect')->name('redirect');
-  Route::view('/404', 'store.404')->name('404');
+    $pages = Cache::get('static_pages');
 
-  //Functionality page routes
-  route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
-  Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
-    ->name('products')
-    ->middleware('categorycheck');
-  route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
-  //payments routes
-  Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
-  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+    if ($pages) {
 
+      foreach ($pages as $page) {
+        Route::get($page->route, function () use ($page) {
+          return view('store.page', ['page' => $page]);
+        })->name($page->route);
+      }
+    }
+
+    //Functionality page routes
+    route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
+    Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
+      ->name('products')
+      ->middleware('categorycheck');
+    route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
+    route::get('/blog/{categorySlug?}', [StoreController::class, 'blog'])->name('blog');
+route::get('/article/{article}', [StoreController::class, 'article'])->name('article');
+    //payments routes
+    Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
+    Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+  });
+
+  Route::get('/maintenance', function () {
+    return view('store.maintenance');
+  })->name('maintenance.page');
 
   //Custom login routes
   Route::get('/login', function () {
@@ -165,16 +247,17 @@
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
 
-  //Comments routes
-  // Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
-  //   ->name('my_order')
-  //   ->middleware('check.order');
 
-   // route::get('/update', function () {
-    //   Artisan::call('migrate:fresh --seed');
-    //   Cache::forget('global_variables');
-    //   Cache::forget('global_statuses');
-    //   Cache::forget('global_payments');
-    //   Cache::forget('global_scripts');
-    //   echo "New fresh app";
-    // });
+  //Speed test
+  Route::get('/test1', function () {
+    return response('', 200);
+});
+
+// Speed test with minimal Blade rendering
+Route::get('/test2', function () {
+    return view('speedtest');
+});
+
+Route::get('/sapi', function () {
+    return php_sapi_name();
+});

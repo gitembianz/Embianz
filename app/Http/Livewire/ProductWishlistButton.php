@@ -16,20 +16,12 @@ class ProductWishlistButton extends Component
     public function mount($productId, $is_in_wishlist, $class)
     {
         $this->productId  = $productId;
-        $this->is_in_wishlist = $is_in_wishlist;
-        $this->session_id = $this->getSessionId();
-        $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
-    }
+        $this->class  = $class;
 
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
-        }
+        $this->is_in_wishlist = $is_in_wishlist;
+        $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
+        $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
     }
 
     public function refreshComponent()

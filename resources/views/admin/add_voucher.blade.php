@@ -1,101 +1,105 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 <x-alert />
-{{-- End Section session message --}}
 <x-dashboardsidebar :active="__('voucher')" />
-{{-- Page content start --}}
+<form class="content" method="POST" enctype="multipart/form-data" action="{{ route('add_voucher') }}">
+ @csrf
 
-<section class="content">
- <form action="{{ route('add_voucher') }}" method="POST">
+
+ {{-- Navigation --}}
+ <nav class="nav--controls">
+  <h1 class="table--name">New voucher</h1>
+  {{-- Refresh Button --}}
+  <a class="button button--primary button--centered" tooltip="Back to Products" tooltip-top
+   href="{{ route('vouchers') }}">
+   <svg>
+    <polyline points="15 18 9 12 15 6"></polyline>
+   </svg>
+  </a>
+  <button class="button button--primary button--centered" tooltip="Save product" tooltip-left type="submit">
+   <svg>
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+    <path d="M9 15l2 2l4 -4" />
+   </svg>
+  </button>
+  <button class="button button--primary button--centered" tooltip="Reset product" tooltip-left type="reset">
+   <svg>
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+    <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+   </svg>
+  </button>
+ </nav>
+
+
+ {{-- Tabs Body (Details) --}}
+ <section style="height: calc(100% - 107.5px);" class="tabs__content details__view active">
   @csrf
-  {{-- Item Header --}}
-  <div class="item__header">
-   <h1 class="item__header-title" id="title">{{ __('Add new voucher') }}</h1>
-   <div class="item__header-buttons">
-    <button class="item__header-btn" type="submit" data-tooltip-right="Add Voucher">
-     <svg>
-      <line x1="12" y1="5" x2="12" y2="19"></line>
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-     </svg>
-    </button>
-    <a class="item__header-btn" href="{{ route('vouchers') }}" data-tooltip-center="Back to all vouchers">
-     <svg>
-      <polyline points="11 17 6 12 11 7"></polyline>
-      <polyline points="18 17 13 12 18 7"></polyline>
-     </svg>
-    </a>
-    <button class="item__header-btn" id="resetform" type="reset" data-tooltip-right="Clear Form">
-     <svg>
-      <polyline points="1 4 1 10 7 10"></polyline>
-      <polyline points="23 20 23 14 17 14"></polyline>
-      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-     </svg>
-    </button>
+
+  {{-- Product Name --}}
+  <div class="input__tabs">
+   <input type="text" name="name" placeholder=" " required value="{{ old('name') }}">
+   <label>Name</label>
+  </div>
+
+  {{-- Product Code --}}
+  <div class="input__tabs">
+   <input type="text" name="code" placeholder=" " required value="{{ old('code') }}">
+   <label>Code</label>
+  </div>
+
+  {{-- Product Percent --}}
+  <div class="input__tabs">
+   <input type="number" name="percent" placeholder=" " value="{{ old('percent') }}">
+   <label>Percent %</label>
+  </div>
+
+  {{-- Product Value --}}
+  <div class="input__tabs">
+   <input type="number" name="value" placeholder=" " value="{{ old('value') }}">
+   <label>Value</label>
+  </div>
+
+
+  {{-- Product Start Date --}}
+  <div class="input__tabs">
+   <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+   <label>Start Date</label>
+  </div>
+
+  {{-- Product End Date --}}
+  <div class="input__tabs">
+   <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
+   <label>End Date</label>
+  </div>
+
+  {{-- Product Single Use --}}
+  <div class="details__checkboxes">
+   {{-- Product Active --}}
+   <div class="checkbox__details ">
+    <input type="checkbox" id="single_use" name="single_use" value="{{ old('single_use') ? 'checked' : '' }}" />
+    <label for="single_use">Single Use</label>
    </div>
   </div>
 
-  {{-- Item Form --}}
-  <div class="item__form">
-   <div class="item__form-input">
-    <input type="text" name="name" value="{{ old('name') }}" required>
-    <label>Name</label>
-   </div>
+  {{-- Save Button --}}
+  <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
 
-   <div class="item__form-input">
-    <input type="text" name="code" value="{{ old('code') }}" required>
-    <label>Code</label>
-   </div>
+  @error('percent')
+   <span class="error @error('end_date') active @enderror">{{ $message }}</span>
+  @enderror
+  @error('value')
+   <span class="error @error('sku') active @enderror">{{ $message }}</span>
+  @enderror
+  @error('start_date')
+   <span class="error @error('sku') active @enderror">{{ $message }}</span>
+  @enderror
+  @error('end_date')
+   <span class="error @error('sku') active @enderror">{{ $message }}</span>
+  @enderror
 
-   <div class="item__form-input">
-    <input type="number" name="percent" value="{{ old('percent') }}">
-    <label>Percent %</label>
-    @error('percent')
-     <span style="position: absolute;
-    top: 2.5rem;
-    color: red;">{{ $message }}</span>
-    @enderror
-   </div>
-   <div class="item__form-input">
-    <input type="number" name="value" value="{{ old('value') }}">
-    <label>Value</label>
-    @error('value')
-     <span style="position: absolute;
-    top: 2.5rem;
-    color: red;">{{ $message }}</span>
-    @enderror
-   </div>
-
-   <div class="item__form-input">
-    <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
-    <label>Start Date</label>
-
-    @error('start_date')
-     <span style="position: absolute;
-    top: 2.5rem;
-    color: red;">{{ $message }}</span>
-    @enderror
-   </div>
-
-   <div class="item__form-input">
-    <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
-    <label>End Date</label>
-
-    @error('end_date')
-     <span style="position: absolute;
-    top: 2.5rem;
-    color: red;">{{ $message }}</span>
-    @enderror
-   </div>
-   <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-    <input type="checkbox" name="single_use" {{ old('single_use') ? 'checked' : '' }}>
-    <span>Single Use</span>
-   </div>
-
-   <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
-  </div>
- </form>
-</section>
-{{-- page content end --}}
-<x-dashboardright />
-<x-dashboardscript />
+ </section>
+</form>
 <x-dashboardfooter />

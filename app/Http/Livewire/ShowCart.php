@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Cart_Item;
 use App\Models\Status;
 use Livewire\Component;
@@ -11,6 +12,7 @@ class ShowCart extends Component
 {
     public $cartId;
     public $record = [];
+    public $delete = false;
     public $edititem = null;
     public $statuses;
     public function render()
@@ -66,7 +68,12 @@ class ShowCart extends Component
     }
     public function confirmItemRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal');
+
+        $this->delete = true;
+    }
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
     }
     public function deleteRecord()
     {
@@ -78,7 +85,15 @@ class ShowCart extends Component
                 $cartitem->delete();
             }
         }
+        $orders = Order::where('cart_id', $this->cartId)->get();
+    if ($orders != NULL) {
+      foreach ($orders as $order) {
+        $order->cart_id = null;
+        $order->save();
+      }
+    }
         $item->delete();
+        $this->delete = false;
         return redirect()->route('carts')->with('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',

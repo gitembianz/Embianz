@@ -1,0 +1,534 @@
+//<---------------------------- Menu-Leftbar Styles ---------------------------->
+.menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: left;
+  transition: all 0.4s ease-in-out;
+  z-index: 500;
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+    clip-path: circle(10% at 0% 50%);
+  }
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(140% at 0% 50%);
+    }
+
+    & > .menu__content {
+      transform: translateX(0%);
+    }
+  }
+
+}
+
+#menuOpen {
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: flex;
+  }
+}
+
+.menu__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 15px;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease-in-out;
+  padding: 15px;
+  background-color: $background;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 100%;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    width: 30%;
+  }
+}
+
+.menu__close {
+  width: 100%;
+  height: 40px;
+  border: 1px solid $lightBlack;
+  text-decoration: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  font-size: $textSize;
+  font-weight: 400;
+  flex: 1;
+  gap: 15px;
+  background: $lightBlack;
+  color: $background;
+  padding: 10px;
+
+  &:hover {
+    background: $background;
+    color: $lightBlack;
+
+    & > svg {
+      stroke: $lightBlack;
+    }
+  }
+
+  & > svg {
+    stroke: $background;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+.menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+.menu__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+ // height: 2000px;
+  //padding-bottom: 500px;
+  flex: 1;
+  scrollbar-color: $lightBlack transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $lightBlack;
+    border-radius: 10px;
+    border-left: $background;
+  }
+   li{
+    width: 100%;
+  }
+}
+
+.menu__link {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  gap: 10px;
+  border-radius: 7px;
+  transition: all 0.3s ease-in-out;
+  background: $primary;
+  border-radius: 7px;
+  padding: 0 7px;
+
+  & > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    background: $primary;
+    mix-blend-mode: multiply;
+  }
+
+  & > h4 {
+    color: $lightBlack;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    text-transform: capitalize;
+  }
+}
+
+.menufooter{
+  padding-top:15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.menufooter__item a{ 
+font-weight: 400;
+font-size: 0.8rem;
+}
+
+//<-------------------------- End Menu-Leftbar Styles -------------------------->
+//<---------------------------- Menu-Dropdown Styles ---------------------------->
+.dropmenu {
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 0;
+  transition: all 0.3s ease-in-out;
+
+  &.active {
+    grid-template-rows: auto auto;
+
+    & > .dropmenu__list {
+      opacity: 1;
+      visibility: visible;
+      transform: scaleY(1);
+      grid-template-rows: auto auto;
+
+      & > .dropmenu__link {
+        transform: scaleY(1);
+      }
+    }
+  }
+}
+
+.dropmenu__button {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $primary;
+  color: $background;
+  text-decoration: none;
+  border-radius: 7px;
+  z-index: 5;
+}
+
+.dropmenu__button--link {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  text-decoration: none;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 7px 0 0 7px;
+  background-color: $primary;
+  transition: all 0.3s ease-in-out;
+
+  & > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    background: $primary;
+    border-radius: 7px;
+    margin-left: 5px;
+    mix-blend-mode: multiply;
+  }
+
+  & > h4 {
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    text-transform: capitalize;
+  }
+}
+
+.dropmenu__open {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 7px 7px 0;
+  border: none;
+  background: $primary;
+
+  & > svg {
+    stroke: $lightBlack;
+  }
+}
+
+.dropmenu__list {
+  z-index: 500;
+  transform: scaleY(0);
+  transform-origin: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  gap: 10px;
+  padding: 15px 0 0;
+  grid-template-rows: 0 auto;
+  overflow: hidden;
+  border-radius: 0 0 5px 5px;
+  margin-top: -5px;
+  z-index: 3;
+}
+
+.dropmenu__link {
+  width: 100%;
+  height: 40px;
+  text-decoration: none;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 7px;
+  background-color: $primary;
+  transform: scaleY(0);
+  transform-origin: top;
+  padding: 0 7px;
+  transition: all 0.3s ease-in-out;
+
+  & > img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    mix-blend-mode: multiply;
+  }
+
+  & > h4 {
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    text-transform: capitalize;
+  }
+
+  $transition-delay: 0.15s;
+  $transition-increment: 0.1s;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      transition: all
+        0.3s
+        ease-in-out
+        ($transition-delay + $i * $transition-increment);
+    }
+  }
+}
+
+//<-------------------------- End Menu-Dropdown Styles -------------------------->
+//<-------------------------- Sub-Menu-Dropdown Styles -------------------------->
+.submenu {
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 0;
+  transition: all 0.3s ease-in-out;
+
+  &.active {
+    grid-template-rows: auto auto;
+
+    & > .submenu__list {
+      opacity: 1;
+      visibility: visible;
+      transform: scaleY(1);
+      grid-template-rows: auto auto;
+
+      & > .submenu__link {
+        transform: scaleY(1);
+      }
+    }
+  }
+}
+
+.submenu__button {
+  width: calc(100% - 45px);
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $primary;
+  color: $background;
+  text-decoration: none;
+  border-radius: 7px;
+  z-index: 5;
+  margin-left: auto;
+  position: relative;
+
+  &::after {
+    content: "";
+    width: calc(45px / 2);
+    height: 400%;
+    background: transparent;
+    position: absolute;
+    left: calc(-45px / 2);
+    border-bottom: 2px solid $darkGray;
+    border-left: 2px solid $darkGray;
+    border-radius: 0px 0px 0px 10px;
+    transform: translateY(-50%);
+  }
+}
+
+.submenu__button--link {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  text-decoration: none;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 7px 0 0 7px;
+  background-color: $primary;
+  transition: all 0.3s ease-in-out;
+  padding: 5px;
+
+  & > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    background: $primary;
+    border-radius: 7px;
+    mix-blend-mode: multiply;
+  }
+
+  & > h4 {
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
+    text-transform: capitalize;
+  }
+}
+
+.submenu__open {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 7px 7px 0;
+  border: none;
+  background: $primary;
+
+  & > svg {
+    stroke: $lightBlack;
+  }
+}
+
+.submenu__list {
+  z-index: 500;
+  transform: scaleY(0);
+  transform-origin: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  gap: 10px;
+  padding: 15px 0 0;
+  grid-template-rows: 0 auto;
+  overflow: hidden;
+  border-radius: 0 0 5px 5px;
+  margin-top: -5px;
+  z-index: 3;
+}
+
+.submenu__link {
+  width: calc(100% - (45px * 2));
+  min-height: 50px;
+  text-decoration: none;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 7px;
+  background-color: $primary;
+  transform: scaleY(0);
+  transform-origin: top;
+  padding: 0 7px;
+  margin-left: auto;
+  transition: all 0.3s ease-in-out;
+
+  &::after {
+    content: "";
+    width: calc(45px / 2);
+    height: 400%;
+    background: transparent;
+    position: absolute;
+    left: calc(-45px / 2);
+    border-bottom: 2px solid $darkGray;
+    border-left: 2px solid $darkGray;
+    border-radius: 0px 0px 0px 10px;
+    transform: translateY(-50%);
+  }
+
+  & > img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 7px;
+    mix-blend-mode: multiply;
+  }
+
+  & > h4 {
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    text-transform: capitalize;
+  }
+
+  $transition-delay: 0.15s;
+  $transition-increment: 0.1s;
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      transition: all
+        0.3s
+        ease-in-out
+        ($transition-delay + $i * $transition-increment);
+    }
+  }
+}
+
+//<------------------------ End Sub-Menu-Dropdown Styles ------------------------>

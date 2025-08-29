@@ -1,0 +1,51 @@
+// Standart Palette
+
+// Background Colors
+$background: #ffffff;
+$primary: #fafafa;
+$secondary: #efefef;
+$ctalight: #0f0f0f;
+$ctadark: #0f0f0f;
+
+// Accent Colors
+$accentBackground: #333333;
+$accentText: #fafafa;
+
+// Text Colors
+$lightBlack: #333333;
+$darkBlack: #0f0f0f;
+$lightGray: #c8c8c8;
+$darkGray: #5B5B5B;
+
+// Red Palettes
+$darkRed: #d94d55;
+$lightPink: #fae9ea;
+
+// Modal & shadow
+$modal: rgba(#333, 0.75);
+$boxShadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+// Texts Size
+$spanSize: 12px;
+$textSize: 14px;
+$inputSize: 16px;
+$lightWeight: 500;
+$boldWeight: 600;
+$lineHeight: 150%;
+
+a {
+  font-size: $textSize;
+  font-weight: $boldWeight;
+  color: $lightBlack;
+  line-height: 150%;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+// .button__long {
+// }
+// .button__short {
+// }
+// .button__circle {
+// }

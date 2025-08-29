@@ -1,251 +1,154 @@
-// Formulele validarilor
+'use strict';
+
+function getLabel(key) {
+  return (typeof window.labels !== "undefined" && typeof window.labels[key] !== "undefined") ? window.labels[key] : "";
+}
+
 const firstNameValidation = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează numele",
-  },
-  {
-    validation: (value) => value.length >= 2,
-    message: "Numele trebuie să aibă cel puțin 2 caractere",
-  },
-  {
-    validation: (value) => value.length <= 20,
-    message: "Numărul de caractere introduse pentru nume este prea mare.",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Numele nu poate conține spații consecutive.",
-  },
-  {
-    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s-]*$/.test(value),
-    message: "Numele poate conține doar litere și spații",
-  },
+  { validation: value => value.trim() !== "", message: getLabel("name_require") },
+  { validation: value => value.length >= 2, message: getLabel("name_min") },
+  { validation: value => value.length <= 100, message: getLabel("name_max") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("name_space") },
+  { validation: value => /^[a-zA-Z\u0103\u00e2\u00ee\u0219\u021b\u0102\u00c2\u00ce\u0218\u021a\s-]*$/.test(value), message: getLabel("name_special") }
 ];
+
 const lastNameValidation = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează prenumele",
-  },
-  {
-    validation: (value) => value.length >= 2,
-    message: "Prenumele trebuie să aibă cel puțin 2 caractere",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Prenumele nu poate conține spații consecutive.",
-  },
-  {
-    validation: (value) => value.length <= 20,
-    message: "Numărul de caractere introduse pentru prenume este prea mare.",
-  },
-  {
-    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s-]*$/.test(value),
-    message: "Prenumele poate conține doar litere și spații",
-  },
+  { validation: value => value.trim() !== "", message: getLabel("lastname_require") },
+  { validation: value => value.length >= 2, message: getLabel("lastname_min") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("lastname_space") },
+  { validation: value => value.length <= 100, message: getLabel("lastname_max") },
+  { validation: value => /^[a-zA-Z\u0103\u00e2\u00ee\u0219\u021b\u0102\u00c2\u00ce\u0218\u021a\s-]*$/.test(value), message: getLabel("lastname_special") }
 ];
+
 const emailValidation = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează adresa de email",
-  },
-  {
-    validation: (value) =>
-    /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$/.test(value),
-    message: "Te rog introdu o adresă de email validă.",
-  },
-  {
-    validation: (value) => !/\s{2,}/.test(value),
-    message: "Adresa de e-mail nu poate conține spații consecutive.",
-  },
-  {
-    validation: (value) => value.length >= 6,
-    message:
-      "Adresa de email este prea scurtă. Te rog introdu o adresă de email mai lungă.",
-  },
-  {
-    validation: (value) => value.length <= 255,
-    message:
-      "Adresa de email este prea lungă. Te rugăm introdu o adresă de email mai scurtă.",
-  },
+  { validation: value => value.trim() !== "", message: getLabel("email_require") },
+  { validation: value => /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$/.test(value), message: getLabel("email_valid") },
+  { validation: value => !/\s{2,}/.test(value), message: getLabel("email_space") },
+  { validation: value => value.length >= 3, message: getLabel("email_min") },
+  { validation: value => value.length <= 100, message: getLabel("email_max") }
 ];
+
 const phoneValidation = [
+  { validation: value => value.trim() !== "", message: getLabel("phone_require") },
+  { validation: value => /^[\d\-().+\s]+$/.test(value), message: getLabel("phone_special") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("phone_space") },
   {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează numărul de telefon",
-  },
-  {
-    validation: (value) => /^[\d\-().+\s]+$/.test(value),
-    message:
-      "Numărul de telefon poate conține doar cifre, spații și caracterele +, -, (, și ).",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Numărul de telefon nu poate conține spații consecutive.",
-  },
-  {
-    validation: (value) =>
-      value.replace(/[\s+\-.()]/g, "").length >= 5 &&
-      value.replace(/[\s+\-.()]/g, "").length <= 15,
-    message:
-      "Lungimea numărului de telefon trebuie să fie între 5 și 15 caractere.",
-  },
-];
-const addressValidations = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează adresa",
-  },
-  {
-    validation: (value) => value.length >= 1,
-    message: "Adresa este prea scurtă. Te rog introdu o adresă mai lungă.",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Adresa nu poate conține spații consecutive.",
-  },
-  {
-    validation: (value) => value.length <= 100,
-    message: "Adresa este prea lungă. Te rog introdu o adresă mai scurtă.",
-  },
-];
-const companyName = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează numele companiei",
-  },
-  {
-    validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
-    message: "Numele companiei poate conține doar litere și cifre",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Numele companiei nu poate conține spații consecutive.",
-  },
-];
-const registerCode = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează codul de înregistrare",
-  },
-  {
-    validation: (value) => /^[a-zA-Z0-9]*$/.test(value),
-    message: "Codul de înregistrare poate conține doar litere și cifre",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Codul de înregistrare nu poate conține spații consecutive.",
-  },
-];
-const registerNumber = [
-  {
-    validation: (value) => value.trim() !== "",
-    message: "Te rugăm completează numărul de înregistrare",
-  },
-  {
-    validation: (value) => /^[A-Za-z0-9/]*$/.test(value),
-    message: "Numărul de înregistrare poate conține doar litere, cifre și caracterul '/'",
-  },
-  {
-    validation: (value) => !/\s{3,}/.test(value),
-    message: "Numărul de înregistrare nu poate conține spații consecutive.",
+    validation: value => {
+      const cleaned = value.replace(/[\s+\-.()]/g, "");
+      return cleaned.length >= 5 && cleaned.length <= 15;
+    }, message: getLabel("phone_dimension")
   }
 ];
 
-function applyValidations(elementId, validations, autoValidate) {
-  const element = document.getElementById(elementId);
-  const input = element.querySelector("input");
-  const span = element.querySelector("span");
-  // const button = document.getElementById(buttonId);
+const addressValidations = [
+  { validation: value => value.trim() !== "", message: getLabel("address_require") },
+  { validation: value => value.length >= 2, message: getLabel("address_min") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("address_space") },
+  { validation: value => value.length <= 100, message: getLabel("address_max") }
+];
 
-  // Funcție care va fi apelată la apăsarea butonului
+const cityValidations = [
+  { validation: value => value.trim() !== "", message: getLabel("city_require") },
+  { validation: value => value.length >= 2, message: getLabel("city_min") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("city_space") },
+  { validation: value => value.length <= 40, message: getLabel("city_max") }
+];
+
+const countyValidations = [
+  { validation: value => value.trim() !== "", message: getLabel("county_require") },
+  { validation: value => value.length >= 2, message: getLabel("county_min") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("county_space") },
+  { validation: value => value.length <= 40, message: getLabel("county_max") }
+];
+
+const companyName = [
+  { validation: value => value.trim() !== "", message: getLabel("company_require") },
+  { validation: value => /^[a-zA-Z0-9/., _'\-`]*$/.test(value), message: getLabel("company_special") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("company_space") }
+];
+
+const registerCode = [
+  { validation: value => value.trim() !== "", message: getLabel("code_require") },
+  { validation: value => /^[a-zA-Z0-9]*$/.test(value), message: getLabel("code_special") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("code_space") }
+];
+
+const registerNumber = [
+  { validation: value => value.trim() !== "", message: getLabel("number_require") },
+  { validation: value => /^[A-Za-z0-9/]*$/.test(value), message: getLabel("number_special") },
+  { validation: value => !/\s{3,}/.test(value), message: getLabel("number_space") }
+];
+
+function applyValidations(parentId, validations, triggerImmediately) {
+  const parentElement = document.getElementById(parentId);
+  const inputElement = parentElement.querySelector("input");
+  const errorElement = parentElement.querySelector("span");
+
   function validate() {
-    let errorMessage = ""; // Inițializăm mesajul de eroare ca fiind gol
-
+    let errorMessage = "";
     for (const validation of validations) {
-      if (!validation.validation(input.value)) {
-        errorMessage = validation.message; // Salvează primul mesaj de eroare nevalid
-        break; // Ieși din bucla de validare la primul mesaj de eroare nevalid găsit
+      if (!validation.validation(inputElement.value)) {
+        errorMessage = validation.message;
+        break;
       }
     }
-
-    // Actualizarea textului spanului cu mesajul de eroare sau cu un mesaj gol dacă totul este valid
     if (errorMessage) {
-      element.classList.add("error"); // Adaugă clasa de eroare dacă există un mesaj de eroare
-      input.focus();
+      parentElement.classList.add("error");
+      inputElement.focus();
     } else {
-      element.classList.remove("error"); // Elimină clasa de eroare dacă nu există un mesaj de eroare
+      parentElement.classList.remove("error");
     }
-    span.textContent = errorMessage;
+    errorElement.textContent = errorMessage;
   }
 
-  // Adăugăm ascultătorul de eveniment pentru click pe buton
-  input.addEventListener("input", validate);
-
-  if (autoValidate) {
+  inputElement.addEventListener("input", validate);
+  if (triggerImmediately) {
     validate();
   }
 }
 
-function validateIndividual() {
-  applyValidations("individualShippingPostalParent", addressValidations, true);
-  applyValidations("individualShippingCityParent", addressValidations, true);
-  applyValidations("individualShippingCountyParent", addressValidations, true);
-  applyValidations("individualShippingAddressParent", addressValidations, true);
-  applyValidations("individualShippingPhoneParent", phoneValidation, true);
-  applyValidations("individualShippingEmailParent", emailValidation, true);
-  applyValidations("individualShippingLastNameParent", lastNameValidation, true);
-  applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
+function validateShipping() {
+  applyValidations("ShippingAddressParent", addressValidations, true);
+  applyValidations("ShippingCityParent", cityValidations, true);
+  applyValidations("ShippingCountyParent", countyValidations, true);
+  applyValidations("ShippingPhoneParent", phoneValidation, true);
+  applyValidations("ShippingEmailParent", emailValidation, true);
+  applyValidations("ShippingLastNameParent", lastNameValidation, true);
+  applyValidations("ShippingFirstNameParent", firstNameValidation, true);
 }
 
-function validateIndividualIdentic() {
-  applyValidations("individualBillingPostalParent", addressValidations, true);
-  applyValidations("individualBillingCityParent", addressValidations, true);
-  applyValidations("individualBillingCountyParent", addressValidations, true);
-  applyValidations("individualBillingAddressParent", addressValidations, true);
-  applyValidations("individualBillingPhoneParent", phoneValidation, true);
-  applyValidations("individualBillingEmailParent", emailValidation, true);
-  applyValidations("individualBillingLastNameParent", lastNameValidation, true);
-  applyValidations("individualBillingFirstNameParent", firstNameValidation, true);
-  applyValidations("individualShippingPostalParent", addressValidations, true);
-  applyValidations("individualShippingCityParent", addressValidations, true);
-  applyValidations("individualShippingCountyParent", addressValidations, true);
-  applyValidations("individualShippingAddressParent", addressValidations, true);
-  applyValidations("individualShippingPhoneParent", phoneValidation, true);
-  applyValidations("individualShippingEmailParent", emailValidation, true);
-  applyValidations("individualShippingLastNameParent", lastNameValidation, true);
-  applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
+function validateAllData() {
+  applyValidations("BillingAddressParent", addressValidations, true);
+  applyValidations("BillingCityParent", cityValidations, true);
+  applyValidations("BillingCountyParent", countyValidations, true);
+  applyValidations("BillingPhoneParent", phoneValidation, true);
+  applyValidations("BillingEmailParent", emailValidation, true);
+  applyValidations("BillingLastNameParent", lastNameValidation, true);
+  applyValidations("BillingFirstNameParent", firstNameValidation, true);
+
+  validateShipping();
 }
+
 function validateJuridic() {
   applyValidations("registerCodeParent", registerCode, true);
   applyValidations("registerNumberParent", registerNumber, true);
   applyValidations("companyNameParent", companyName, true);
-  applyValidations("juridicShippingPostalParent", addressValidations, true);
-  applyValidations("juridicShippingCityParent", addressValidations, true);
-  applyValidations("juridicShippingCountyParent", addressValidations, true);
-  applyValidations("juridicShippingAddressParent", addressValidations, true);
-  applyValidations("juridicShippingPhoneParent", phoneValidation, true);
-  applyValidations("juridicShippingEmailParent", emailValidation, true);
-  applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
-  applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
+  validateAllData();
 }
-function validateJuridicIdentic() {
-  applyValidations("juridicBillingPostalParent", addressValidations, true);
-  applyValidations("juridicBillingCityParent", addressValidations, true);
-  applyValidations("juridicBillingCountyParent", addressValidations, true);
-  applyValidations("juridicBillingAddressParent", addressValidations, true);
-  applyValidations("juridicBillingPhoneParent", phoneValidation, true);
-  applyValidations("juridicBillingEmailParent", emailValidation, true);
-  applyValidations("juridicBillingLastNameParent", lastNameValidation, true);
-  applyValidations("juridicBillingFirstNameParent", firstNameValidation, true);
-  applyValidations("registerCodeParent", registerCode, true);
-  applyValidations("registerNumberParent", registerNumber, true);
-  applyValidations("companyNameParent", companyName, true);
-  applyValidations("juridicShippingPostalParent", addressValidations, true);
-  applyValidations("juridicShippingCityParent", addressValidations, true);
-  applyValidations("juridicShippingCountyParent", addressValidations, true);
-  applyValidations("juridicShippingAddressParent", addressValidations, true);
-  applyValidations("juridicShippingPhoneParent", phoneValidation, true);
-  applyValidations("juridicShippingEmailParent", emailValidation, true);
-  applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
-  applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
-}
+
+
+window.addEventListener("update-validation", (event) => {
+  const { parentId, newValidation } = event.detail;
+  console.log("Update validation for: ", parentId, newValidation);
+
+  let validationArray = window[parentId + "_validations"] || [];
+
+  validationArray.push({
+    validation: new Function("value", `return ${newValidation.validation}`),
+    message: newValidation.message,
+  });
+
+  window[parentId + "_validations"] = validationArray;
+
+  applyValidations(parentId, validationArray, true);
+});

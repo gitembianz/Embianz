@@ -9,6 +9,7 @@ class Kernel extends ConsoleKernel
 {
   protected $commands = [
     \App\Console\Commands\UpdateSeoIdsCommand::class,
+    \App\Console\Commands\EnsureListviewsTable::class,
     // Other commands...
   ];
   /**
@@ -19,8 +20,8 @@ class Kernel extends ConsoleKernel
    */
   protected function schedule(Schedule $schedule)
   {
-    $schedule->command('wishlist:clean')->daily();
-    $schedule->command('cart:clean')->daily();
+    // $schedule->command('wishlist:clean')->daily();
+    // $schedule->command('cart:clean')->daily();
   }
 
   /**

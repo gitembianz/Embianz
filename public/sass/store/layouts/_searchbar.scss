@@ -1,0 +1,263 @@
+//<---------------------------- Searchbar Styles ---------------------------->
+.search {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100dvh;
+  opacity: 0;
+  transform: translate3d(0, -100%, 0);
+  transform-origin: top;
+  transition: all 0.4s ease-in-out;
+  z-index: 500;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    clip-path: circle(10% at 50% 0%);
+    transition: all 0.4s ease-in-out;
+  }
+
+  &.active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(150% at 50% 0%);
+    }
+  }
+}
+
+.search__close--hidden {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.search__container {
+  gap: 15px;
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  z-index: 10;
+  position: relative;
+  transition: all 0.5s ease-in-out;
+}
+
+.search__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.search__input {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  justify-content: center;
+
+  & > svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%) scale(0.8);
+    stroke: $lightBlack;
+  }
+
+  & > input {
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    flex: 1;
+    padding: 0 40px 0 10px;
+    outline: none;
+    background: $background;
+    color: $lightBlack;
+  }
+}
+
+.search__button{
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%) scale(0.8);
+  & > svg {
+    stroke: $lightBlack;
+  }
+}
+
+.search__close {
+  width: 40px;
+  height: 40px;
+  border: 1px solid $background;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  background: $lightBlack;
+
+  & > svg {
+    stroke: $background;
+  }
+  &:hover{
+    background-color: $background;
+    & > svg {
+      stroke: $lightBlack;
+    }
+  }
+}
+
+.search__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: $background transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $background;
+    border-radius: 10px;
+    border-left: 2px solid transparent;
+  }
+
+  & > span {
+    color: $background;
+  }
+}
+
+.search__item {
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 7px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  background: $background;
+
+  &:hover {
+    background: $secondary;
+  }
+}
+
+.search__link {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-decoration: none;
+  gap: 10px;
+  height: 100%;
+
+  & > img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 2.5px;
+    background-color: $background;
+    mix-blend-mode: multiply;
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+      width: 55px;
+      height: 55px;
+    }
+  }
+}
+
+.search__link--text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  height: 55px;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.search__link--top {
+  & > p,
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: $lightBlack;
+  }
+}
+
+.search__link--bottom {
+  & > h4,
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: $lightBlack;
+    display: -webkit-box;            /* Display as flexbox */
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;          /* Limit the number of lines to 2 */
+    -webkit-box-orient: vertical;    /* Specify the box orientation */
+    //overflow: hidden;                /* Hide overflowed text */
+    text-overflow: ellipsis;  
+  }
+}
+
+.search__link--top,
+.search__link--bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  overflow:hidden;
+ // height: 100%;
+}
+
+//<-------------------------- End Searchbar Styles -------------------------->

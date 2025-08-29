@@ -20,6 +20,14 @@ class Currency extends Model
   {
     return $this->belongsTo(Order::class, 'currency_id');
   }
+  public function base_currencies()
+  {
+    return $this->hasMany(Exchange::class, 'base_currency_id');
+  }
+  public function quote_currencies()
+  {
+    return $this->hasMany(Exchange::class, 'quote_currency_id');
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()

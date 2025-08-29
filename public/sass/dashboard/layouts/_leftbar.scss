@@ -1,6 +1,7 @@
 .leftbar{
   width: 100%;
   max-width: calc($width + ($padding * 2));
+  min-width: calc($width + ($padding * 2));
   height: auto;
   display: inline-flex;
   flex-direction: column;
@@ -13,34 +14,36 @@
   background: $primary;
   overflow-y: auto;
   overflow-x: hidden;
-  transition: $transition-fast;
+  // transition: $transition-fast;
   margin-bottom: $margin;
   box-shadow: $shadow-lite;
 
   &.active{
     max-width: $max-width;
+    min-width: $max-width;
 
     & > .button{
       width: 100%;
-
-      &>span{
-        transform: scale(1);
-      }
    }
   }
 
   &> .button{
     position: relative;
     overflow: hidden;
-    transition: $transition-fast;
+    // transition: $transition-fast;
+    transition: none;
     gap: 0;
     width: $width;
     padding: 5px;
 
     &> span{
       position: absolute;
-      right: 5px;
-      transform: scale(0);
+      word-break: break-word;
+      white-space: nowrap;
+      left: 0;
+      margin-left: $width;
+      top: 50%;
+      transform: translateY(-50%);
       transition: $transition-fast;
     }
   }

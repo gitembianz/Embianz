@@ -4,28 +4,32 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Products_categories;
 use App\Models\Subcategory;
+use Illuminate\Support\Str;
+use App\Models\Related_Products;
+use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+  use Illuminate\Support\Facades\Artisan;
 
 
 class ShowCategory extends Component
 {
   public $categoryId;
   public $editcategory = null;
+  public $delete = false;
   public $cat;
 
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
   }
-  public function confirmItemRemoval($id)
-  {
-    $this->categoryId = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
+  // public function confirmItemRemoval($id)
+  // {
+  //   $this->categoryId = $id;
+  //   $this->dispatchBrowserEvent('show-delete-modal');
+  // }
   public function getCategoryProperty()
   {
     return $this->categoryQuery;
@@ -46,9 +50,16 @@ class ShowCategory extends Component
       'short_description' => $this->category->short_description,
       'meta_description' => $this->category->meta_description,
       'long_description' => $this->category->long_description,
+      'long_description_bottom' => $this->category->long_description_bottom,
       'seo_title' => $this->category->seo_title,
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
+      'acc_items' => $this->category->accepted_items,
+      'preload' => $this->category->preload_image,
+      'varprice' => $this->category->display_variant_price,
+      'oneproduct' => $this->category->one_product_page_category == 1 ? true : false,
+
+
     ];
     $this->editcategory = true;
   }
@@ -88,11 +99,20 @@ class ShowCategory extends Component
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
       }
+      if (array_key_exists('acc_items', $category_new)) {
+        $new->accepted_items = $category_new['acc_items'];
+      }
       if (array_key_exists('slider_sequence', $category_new)) {
         $new->slider_sequence = $category_new['slider_sequence'];
       }
       if (array_key_exists('active', $category_new)) {
         $new->active = $category_new['active'];
+      }
+      if (array_key_exists('preload', $category_new)) {
+        $new->preload_image = $category_new['preload'];
+      }
+      if (array_key_exists('varprice', $category_new)) {
+        $new->display_variant_price = $category_new['varprice'];
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
@@ -112,8 +132,21 @@ class ShowCategory extends Component
       if (array_key_exists('long_description', $category_new)) {
         $new->long_description = $category_new['long_description'];
       }
+      if (array_key_exists('long_description_bottom', $category_new)) {
+        $new->long_description_bottom = $category_new['long_description_bottom'];
+      }
       if (array_key_exists('seo_title', $category_new)) {
         $new->seo_title = $category_new['seo_title'];
+      }
+      if (array_key_exists('oneproduct', $category_new)) {
+        $new->one_product_page_category = $category_new['oneproduct'] == true ? 1 : 0;
+        if($category_new['oneproduct']){
+         Category::query()->update(['one_product_page_category' => 0]);
+        }
+        Cache::forget('one_product_ids');
+        Cache::forget('one_product_category');
+        Artisan::call('cache:clear');
+
       }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();
@@ -128,7 +161,15 @@ class ShowCategory extends Component
     $this->cat = [];
     $this->editcategory = null;
   }
-  public function deleteSingleRecord()
+  public function confirmItemRemoval()
+  {
+    $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+    $this->delete = false;
+  }
+  public function deleteRecord()
   {
     $id = $this->categoryId;
     $category = Category::findOrFail($id);
@@ -138,7 +179,7 @@ class ShowCategory extends Component
         $productcat->delete();
       }
     }
-    $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
+    $subcategories = Subcategory::where('parent_id', $id)->orwhere('category_id', $id)->get();
     if ($subcategories != NULL) {
       foreach ($subcategories as $sub) {
         $sub->delete();
@@ -154,6 +195,7 @@ class ShowCategory extends Component
       File::deleteDirectory($filespath);
     }
     $category->delete();
+    $this->delete = false;
     return redirect()->route('category')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -165,5 +207,62 @@ class ShowCategory extends Component
     return view('livewire.show-category', [
       'category' => $this->category
     ]);
+  }
+  public function Productrelated()
+  {
+   $products = Products_categories::where('category_id', $this->categoryId)
+  ->with(['product' => function ($query) {
+    $query->where('active', 1)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'));
+  }])
+  ->get()
+  ->pluck('product')
+  ->filter();
+
+
+    $relatedProductsData = [];
+    foreach ($products as $parentProduct) {
+      foreach ($products as $index => $relatedProduct) {
+        if ($parentProduct->id !== $relatedProduct->id) {
+          $relatedProductsData[] = [
+            'parent_id' => $parentProduct->id,
+            'product_id' => $relatedProduct->id,
+            'sequence' => $index,
+            'created_at' => now(),
+            'updated_at' => now(),
+          ];
+        }
+      }
+    }
+
+    $existingRelations = Related_Products::whereIn('parent_id', $products->pluck('id'))
+      ->orWhereIn('product_id', $products->pluck('id'))
+      ->get()
+      ->map(function ($relation) {
+        return [
+          'parent_id' => $relation->parent_id,
+          'product_id' => $relation->product_id,
+        ];
+      })
+      ->toArray();
+
+    $newRelations = array_filter($relatedProductsData, function ($relation) use ($existingRelations) {
+      return !in_array(['parent_id' => $relation['parent_id'], 'product_id' => $relation['product_id']], $existingRelations, true) ||
+        !in_array(['parent_id' => $relation['product_id'], 'product_id' => $relation['parent_id']], $existingRelations, true);
+    });
+
+    $chunks = array_chunk($newRelations, 1000);
+    foreach ($chunks as $chunk) {
+      Related_Products::insert($chunk);
+    }
+
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
+    return;
   }
 }

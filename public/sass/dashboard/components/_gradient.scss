@@ -1,13 +1,5 @@
 
-// animation
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
+
 
 .gradient {
   --size: 400px;
@@ -22,7 +14,7 @@
   width: var(--size);
   height: var(--size);
   filter: blur(calc(var(--size) / 5));
-  background-image: linear-gradient(hsl(222, 84, 60, 100%), hsl(164, 79, 71));
+  background-image: linear-gradient(hsl(222, 84%, 60%, 100%), hsl(164, 79%, 71%));
   animation: rotate var(--speed) var(--easing) alternate infinite;
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
 }

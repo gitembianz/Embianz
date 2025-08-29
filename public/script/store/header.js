@@ -54,6 +54,10 @@ function dropmenus(menuID, setActive = false) {
       button.addEventListener("click", function () {
         menu.classList.toggle("active");
         list.classList.toggle("active");
+
+        if (menu.classList.contains("active")) {
+          menu.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
     } else {
       return;
@@ -75,8 +79,17 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
     // console.log("leftbar error");
     return;
   } else {
+
     buttonOpen.addEventListener("click", () => {
       list.classList.add("active");
+      // gtm view_cart event
+
+      dataLayer.push({
+        event: "view_minicart",
+        ecommerce: {
+        }
+       });
+
       body.style.overflow = "hidden";
       scrollEvent();
     });
@@ -85,8 +98,8 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
       body.style.overflow = "auto";
     });
     contentModal.addEventListener("click", (event) => {
-        list.classList.remove("active");
-        body.style.overflow = "auto";
+      list.classList.remove("active");
+      body.style.overflow = "auto";
     });
 
     function handleKeyPress(event) {
@@ -96,7 +109,7 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
       }
     }
 
-    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener("keydown", handleKeyPress);
   }
 }
 //<---------------------------- End LeftBar ---------------------------->
@@ -109,14 +122,17 @@ function searchBar() {
   const modalClose = document.getElementById("modalClose");
   const searching = document.getElementById("searching");
 
+  if(searchBtn){
+
   searchBtn.addEventListener("click", function () {
-    new Promise(resolve => {
+    new Promise((resolve) => {
       document.body.style.overflow = "hidden";
       resolve();
     }).then(() => {
       input.focus();
     });
   });
+  }
 
 
   closeBtn.addEventListener("click", function () {
@@ -132,23 +148,42 @@ function searchBar() {
     }
   }
 
-
   input.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      window.location.href = "/search/" + input.value;
+      window.location.href = "/search/" + encodeURIComponent(input.value);
     }
   });
   searching.addEventListener("click", function () {
-    window.location.href = "/search/" + input.value;
+    window.location.href = "/search/" + encodeURIComponent(input.value);
   });
 }
 
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
+//<------------------------ Double Tap Redirect ------------------------>
+let lastTap = 0;
+
+function DoubleTapRedirect(link) {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTap;
+  lastTap = currentTime;
+
+  if (tapLength < 500 && tapLength > 0) {
+    window.location.href = link;
+  }
+}
+//<---------------------- End Double Tap Redirect ---------------------->
+//<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 searchBar();
-leftbar("basketOpen", "basketClose", "basketList", "basketContent", "basketHidden");
+leftbar(
+  "basketOpen",
+  "basketClose",
+  "basketList",
+  "basketContent",
+  "basketHidden",
+);
 leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
 leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
 dropmenus(".dropmenu", false);

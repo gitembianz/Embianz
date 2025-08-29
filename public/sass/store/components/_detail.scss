@@ -1,0 +1,293 @@
+.details {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 7px;
+  max-height: 50vh;
+  min-height: 400px;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: $lightBlack;
+    top: 0;
+    left: -10px;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    max-height: unset;
+    min-height: unset;
+
+    &::after {
+      width: 100%;
+      height: 2px;
+      top: -10px;
+      left: 0px;
+    }
+
+    &.sticky {
+      position: sticky;
+      bottom: 20px;
+      z-index: 200;
+      background: $background;
+
+      &::after {
+        top: 0px;
+      }
+
+      @media (max-width: map-get($grid-breakpoints, md)) {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        padding: 10px 20px 30px;
+        bottom: -5px;
+        border-radius: 0;
+      }
+
+      &>.details__content:first-child {
+        display: none;
+      }
+
+      &>.details__content>.voucher {
+        display: none;
+      }
+
+      &>.voucher__error {
+        display: none;
+      }
+    }
+  }
+}
+
+.details__hidden {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 7px;
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    display: flex;
+  }
+}
+
+.details__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.details__title {
+  width: 100%;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: $lineHeight;
+}
+
+.details__text {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $lightBlack;
+
+  &>h3 {
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    margin: 0;
+  }
+
+  &>span {
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    margin: 0;
+  }
+}
+
+.voucher {
+  width: 100%;
+  height: 40px;
+  position: relative;
+
+  &>input {
+    width: 100%;
+    border-radius: 5px;
+    height: 100%;
+    border: 1px solid $lightBlack;
+    padding: 0 10px;
+    font-size: $inputSize;
+    color: $lightBlack;
+    font-weight: 400;
+    background: transparent;
+    outline: none;
+
+    &::placeholder {
+      font-size: $textSize;
+    }
+  }
+
+  &>button {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    height: 30px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $textSize;
+    font-weight: 400;
+    color: $background;
+    background: $lightBlack;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    transform: translateY(-50%);
+  }
+}
+
+.voucher__error {
+  font-size: $textSize;
+  line-height: $lineHeight;
+  font-weight: $lightWeight;
+  color: $darkRed;
+  width: 100%;
+  text-align: center;
+}
+
+.voucher__question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.voucher__question--text {
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
+  text-align: center;
+  width: 100%;
+}
+.voucher__question--bundle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+.voucher__question--btn {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid $lightBlack;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  font-weight: $lightWeight;
+  background-color: transparent;
+  color: $lightBlack;
+  flex: 1;
+  font-size: $textSize;
+
+  &:hover {
+    background: $lightBlack;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
+  }
+
+  &>svg {
+    stroke: $lightBlack;
+  }
+}
+
+.details__button {
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background: transparent;
+  font-size: $textSize;
+  border: 1.5px solid $lightBlack;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  color: $lightBlack;
+  font-weight: $lightWeight;
+
+  &:hover {
+    background: $lightBlack;
+    color: $secondary;
+  }
+
+  &:active {
+    background: $lightBlack;
+    color: $secondary;
+  }
+}
+
+.details__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  color: $lightBlack;
+  font-weight: $lightWeight;
+  border-radius: 50%;
+  border: none;
+  background: $secondary;
+  transition: all 0.3s ease-in-out;
+
+  &>svg {
+    stroke: $lightBlack;
+    transform: scale(0.7);
+  }
+
+  &:hover {
+    background: $lightBlack;
+    border: 1px solid $secondary;
+
+    &>svg {
+      stroke: $secondary;
+    }
+  }
+}
+
+.voucher__choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}

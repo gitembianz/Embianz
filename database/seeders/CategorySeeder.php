@@ -15,7 +15,7 @@ class CategorySeeder extends Seeder
     {
         Category::create([
             'name' => 'Toate produsele',
-            'has_parrent' => false,
+            'has_parent' => false,
             'store_tab' => false,
             'active' => true,
             'long_description' => 'Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul!',

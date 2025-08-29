@@ -11,23 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('account_id')->index()->nullable();
-            $table->foreign('account_id')->references('id')->on('accounts');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-            $table->string('address1')->nullable();
-            $table->string('address2')->nullable();
-            $table->string('country')->nullable();
-            $table->string('county')->nullable();
-            $table->string('city')->nullable();
-            $table->string('zipcode')->nullable();
-            $table->string('type')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('addresses')) {
+
+            Schema::create('addresses', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('account_id')->index()->nullable();
+                $table->foreign('account_id')->references('id')->on('accounts');
+                $table->string('first_name')->nullable();
+                $table->string('last_name')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('email')->nullable();
+                $table->string('address1')->nullable();
+                $table->string('address2')->nullable();
+                $table->string('country')->nullable();
+                $table->string('country_iso')->nullable();
+                $table->string('county')->nullable();
+                $table->string('county_iso')->nullable();
+                $table->string('city')->nullable();
+                $table->string('zipcode')->nullable();
+                $table->string('type')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

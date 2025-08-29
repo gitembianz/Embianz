@@ -15,164 +15,206 @@ class RelatedCategoryProduct extends Component
   public $showTable = false;
 
   //related variables
-  public $perPage = 10;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $showrelatedcat = false;
-  public $col = false;
-  public $all = false;
-  public $catidbeingremoved = null;
-  public $columns = ['Id', 'Short Description', 'Created At'];
+  public $showrelateitems = false;
+  public $idbeingremoved = null;
+  public $columns = ['Id', 'Category Name', 'Category Description', 'Category displayed elements', 'Category is active?', 'Is primary category?', 'Created At', 'Updated At'];
   public $selectedColumns = [];
   public $product;
-
-  //add variables
+  public $editindex;
+  public $var = [];
+  public $rind2 = null;
+  public $rind = null;
+  public $single = false;
+  public $multiple = false;
+  public $productsAndValues = [];
+  public $row = 1;
   public $searchadd = '';
-  public $orderByadd = 'id';
-  public $orderAscadd = true;
-  public $checkedadd = [];
-  public $selectPageadd = false;
-  public $selectAlladd = false;
-  public $coladd = false;
-  public $alladd = false;
-  public $columnsadd = ['Id', 'Short Description', 'Created At'];
-  public $selectedColumnsadd = [];
-  public $catidbeinglink = null;
-  public $totalRecords;
-  public $loadAmount = 10;
 
-  public function toggleTable()
+
+
+
+  // expand
+  public function expandRow2($index)
   {
-    $this->showrelatedcat = true;
-    $this->showTable = !$this->showTable;
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
   }
-  public function loadMore()
+  public function expandRow($index)
   {
-    $this->loadAmount += 10;
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
   }
-  public function cancel()
+  // edit item
+  public function edititem($index, $id)
+  {
+    $this->editindex = $index;
+    $record = Products_categories::find($id);
+    $this->var = [
+      $index . '.primary' => $record->primary_category == 1 ? true : false,
+    ];
+  }
+  public function canceledit()
+  {
+    $this->editindex = null;
+    $this->var = [];
+  }
+
+  public function saveitem($index, $id)
+  {
+    $record = $this->var[$index] ?? null;
+    if (!is_null($record)) {
+      $new = Products_categories::find($id);
+      if (array_key_exists('primary', $record)) {
+        if ($record['primary']) {
+          Products_categories::where('product_id', $this->product->id)
+            ->where('primary_category', true)
+            ->update(['primary_category' => false]);
+          $new->primary_category = $record['primary'];
+        }
+      }
+      $new->save();
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    } else {
+      session()->flash('notification', [
+        'message' => 'Nothing was edited!',
+        'type' => 'warning',
+        'title' => 'Warning'
+      ]);
+    }
+    $this->editindex = null;
+    $this->var = [];
+  }
+
+  // add related
+  public function addrelated()
+  {
+    $this->showrelateitems = true;
+    $this->showTable = true;
+  }
+  public function closemodal()
   {
     $this->showTable = false;
-  }
-  public function showColumnadd($column)
-  {
-    if ($column === 'Name') {
-      return true;
-    }
-    return in_array($column, $this->selectedColumnsadd);
-  }
-  public function updatedSelectPageadd($value)
-  {
-    if ($value) {
-      $this->checkedadd = $this->cats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
-    } else {
-      $this->checkedadd = [];
-    }
-  }
-  public function swapSortDirectionadd()
-  {
-    return $this->orderAscadd === '1' ? '0' : '1';
-  }
-  public function isCheckedadd($id)
-  {
-    return in_array($id, $this->checkedadd);
-  }
-  public function sortByadd($columnName)
-  {
-
-    if ($this->orderByadd === $columnName) {
-      $this->orderAscadd = $this->swapSortDirectionadd();
-    } else {
-      $this->orderAscadd = '1';
-    }
-
-    $this->orderByadd = $columnName;
-  }
-  public function selectAlladd()
-  {
-    $this->selectAlladd = true;
-    $this->checkedadd = $this->cats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getCatsProperty()
   {
     $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
-    $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
-    if (!empty($this->searchadd)) {
-      $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
+    return Category::whereNotIn('id', $relatedcatsIds)->where('name', 'like', '%' . $this->searchadd . '%')->get();
+  }
+  public function plus()
+  {
+    $this->row++;
+    $this->productsAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['name' => null, 'primary' => false]
+    ];
+  }
+  public function clear($index)
+  {
+    unset($this->productsAndValues[$index]);
+
+    $this->productsAndValues = array_values($this->productsAndValues);
+
+    $this->row--;
+    if ($this->row < 1) {
+      $this->showTable = false;
+      $this->productsAndValues[] = [
+        'allow' => false,
+        'itemselected' => null,
+        'product' => ['name' => null, 'primary' => 0]
+      ];
+      $this->row = 1;
+    }
+  }
+  public function dennyselect($index)
+  {
+    $this->productsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
+  public function allowselect($index)
+  {
+    foreach ($this->productsAndValues as &$item) {
+      $item['allow'] = false;
+    }
+    $this->productsAndValues[$index]['allow'] = true;
+    $this->searchadd = $this->productsAndValues[$index]['itemselected'];
+  }
+  public function selectitem($index, $id, $name)
+  {
+    $this->productsAndValues[$index]['itemselected'] = $name;
+    $this->productsAndValues[$index]['product']['idrel'] = $id;
+    $this->productsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
+  public function saveitems()
+  {
+    foreach ($this->productsAndValues as  $array) {
+      if (isset($array['product']['primary']) && isset($array['product']['idrel'])) {
+        if (isset($array['product']['primary'])) {
+          Products_categories::where('product_id', $this->product->id)
+            ->where('primary_category', true)
+            ->update(['primary_category' => false]);
+        }
+        Products_categories::create([
+          'product_id' => $this->product->id,
+          'category_id' => $array['product']['idrel'],
+          'primary_category' => $array['product']['primary']
+        ]);
+      } else {
+        session()->flash('notification', [
+          'message' => 'Please provide values',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
+        return;
+      }
     }
 
-    $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    if ($this->selectAlladd) {
-      return $unrelatedCatsQuery->get();
-    } else {
-      return $unrelatedCatsQuery->limit($this->loadAmount)->get();
-    }
-  }
-  public function confirmItemlink($itemtid)
-  {
-    $this->catidbeinglink = $itemtid;
-    $this->dispatchBrowserEvent('show-link-modal');
-  }
-  public function linkSingleRecord()
-  {
-    $id = $this->catidbeinglink;
-    $item = new  Products_categories();
-    $item->product_id = $this->product->id;
-    $item->category_id = $id;
-    $item->save();
-    $this->checkedadd = array_diff($this->checkedadd, [$id]);
+    $this->productsAndValues = [];
+    $this->row = 1;
+    $this->showTable = false;
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
-  }
-  public function confirmItemsLinkmultiple()
-  {
-    $this->dispatchBrowserEvent('show-link-modal-multiple');
-  }
-  public function linkRecords()
-  {
-    $items = Category::whereKey($this->checkedadd)->get();
-    foreach ($items as $item) {
-      $itemadd = new Products_categories();
-      $itemadd->product_id = $this->product->id;
-      $itemadd->category_id = $item->id;
-      $itemadd->save();
-    }
-    $this->checkedadd = [];
-    $this->selectPageadd = false;
-    session()->flash('notification', [
-      'message' => 'Records related successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function updatedCheckedadd()
-  {
-    $this->selectPageadd = false;
+    $this->mount($this->product);
   }
 
   //Related item function
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
+  }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
-  }
-  public function load()
-  {
-    $this->perPage += 10;
   }
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedcats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedcats->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -203,36 +245,57 @@ class RelatedCategoryProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedcatsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedcatsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getRelatedcatsProperty()
   {
     return $this->relatedcatsQuery->get();
   }
+
   public function getRelatedcatsQueryProperty()
   {
     return Products_categories::where('product_id', $this->product->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-  public function ItemRemoval($id)
+  public function mount(Product $product)
   {
-    $this->catidbeingremoved = $id;
-    $this->dispatchBrowserEvent('delete-modal-category');
+    $this->product = $product;
+    $this->selectedColumns = $this->columns;
+    $this->productsAndValues = [];
+    $this->row = 1;
+    $this->productsAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['name' => null, 'primary' => false]
+    ];
   }
+  public function render()
+  {
+    $relatedcats = $this->relatedcatsQuery
+      ->where(function ($query) {
+        $query->whereHas('category', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+        });
+      })->paginate($this->loadAmount);
+    return view('livewire.related-category-product', [
+      'relatedcats' => $relatedcats,
+      'cats' => $this->cats
+    ]);
+  }
+
+  // funciton for link and delete
   public function deleteSingleRecord()
   {
-    $item = Products_categories::findOrFail($this->catidbeingremoved);
+    $item = Products_categories::findOrFail($this->idbeingremoved);
     $item->delete();
-    $this->checked = array_diff($this->checked, [$this->catidbeingremoved]);
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
-  }
-  public function confirmItemsRemovalmultiple()
-  {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
   public function deleteRecords()
   {
@@ -244,36 +307,25 @@ class RelatedCategoryProduct extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function mount(Product $product)
+  public function confirmItemRemoval($id)
   {
-    $this->product = $product;
-    $this->selectedColumns = $this->columns;
-    $this->selectedColumnsadd = $this->columnsadd;
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
-  public function render()
+  public function confirmItemsRemoval()
   {
-    $relatedcats = $this->relatedcatsQuery
-      ->where(function ($query) {
-        $query->whereHas('category', function ($subQuery) {
-          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
-        });
-      })->get();
-    if ($this->showTable === true) {
-      return view('livewire.related-category-product', [
-        'relatedcats' => $relatedcats,
-        'cats' => $this->cats
-      ]);
-    } else {
-      return view('livewire.related-category-product', [
-        'relatedcats' => $this->relatedcats
-      ]);
-    }
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
 }

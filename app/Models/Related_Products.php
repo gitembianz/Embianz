@@ -12,4 +12,11 @@ class Related_Products extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    protected $fillable = [
+        'parent_id',
+        'product_id',
+        'sequence',
+        'created_at',
+        'updated_at'
+    ];
 }

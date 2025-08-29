@@ -11,6 +11,7 @@ class ShowSpec extends Component
 {
   public $itemId;
   public $edititem = null;
+  public $delete = false;
   public $record;
 
   public function render()
@@ -25,7 +26,12 @@ class ShowSpec extends Component
   }
   public function confirmItemRemoval()
   {
+    $this->delete = true;
     $this->dispatchBrowserEvent('show-delete-modal');
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
   }
   public function getSpecProperty()
   {
@@ -42,6 +48,7 @@ class ShowSpec extends Component
       }
     }
     $record->delete();
+    $this->delete = false;
     return redirect()->route('specs')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',

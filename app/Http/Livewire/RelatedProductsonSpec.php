@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
-use App\Models\Product_Spec;
 use App\Models\Specs;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Product_Spec;
 use Livewire\WithPagination;
 
 class RelatedProductsonSpec extends Component
@@ -13,7 +13,7 @@ class RelatedProductsonSpec extends Component
 
   use WithPagination;
   //related delclaration
-  public $perPage = 10;
+  public $loadAmount = 15;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -22,11 +22,9 @@ class RelatedProductsonSpec extends Component
   public $selectAll = false;
   public $showrelatedprods = false;
   public $specId;
-  public $col = false;
-  public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Created At'];
   public $selectedColumns = [];
-  public $idtodel = null;
+  public $idbeingremoved = null;
   public $addrelatedproducts  = false;
 
   //Add specs declaration
@@ -45,6 +43,43 @@ class RelatedProductsonSpec extends Component
   public $editmultiple = false;
   public $itemstoedit;
 
+  public $rind = null;
+  public $rind2 = null;
+  public $rind3 = null;
+  public $single = false;
+  public $multiple = false;
+
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
+    }
+  }
+
 
   public function render()
   {
@@ -53,7 +88,7 @@ class RelatedProductsonSpec extends Component
         $query->whereHas('product', function ($subQuery) {
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
         });
-      })->get();
+      })->paginate($this->loadAmount);
     if ($this->addrelatedproducts === true || $this->editmultiple  || $this->allow === true) {
       return view('livewire.related-productson-spec', [
         'relatedprods' => $relatedprods,
@@ -67,6 +102,7 @@ class RelatedProductsonSpec extends Component
   }
   public function mount($specId)
   {
+    $this->checked = [];
     $this->specId = $specId;
     $this->selectedColumns = $this->columns;
     $this->item = Specs::find($specId);
@@ -87,7 +123,7 @@ class RelatedProductsonSpec extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedprods->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprods->pluck('id')->toArray();
     } else {
       $this->checked = [];
     }
@@ -100,9 +136,11 @@ class RelatedProductsonSpec extends Component
   {
     $this->selectPage = false;
   }
-  public function isChecked($id)
+
+
+  public function isChecked($prodId)
   {
-    return in_array($id, $this->checked);
+    return in_array($prodId, $this->checked);
   }
   public function sortBy($columnName)
   {
@@ -129,19 +167,16 @@ class RelatedProductsonSpec extends Component
   public function getRelatedprodsQueryProperty()
   {
     return Product_Spec::where('spec_id', $this->specId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product', 'spec');
   }
-  public function confirmRemoval($id)
-  {
-    $this->idtodel = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
+
   public function deleteSingleRecord()
   {
-    $id = $this->idtodel;
+    $id = $this->idbeingremoved;
     $item = Product_Spec::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -158,15 +193,26 @@ class RelatedProductsonSpec extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmRemovalmultiple()
+  public function confirmItemRemoval($id)
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function editprod($id, $idprod, $index)
   {
@@ -188,13 +234,6 @@ class RelatedProductsonSpec extends Component
     if (isset($val["$index"]['value'])) {
       if (!empty($val["$index"]['value'])) {
         $prod->value = $val["$index"]['value'];
-        $prod->save();
-        $this->allow = false;
-        $this->productid = null;
-        $this->product = [];
-        $this->itemselected = null;
-        $this->editedrow = null;
-        $this->search = '';
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
@@ -204,6 +243,13 @@ class RelatedProductsonSpec extends Component
         return;
       }
     }
+    $prod->save();
+    $this->allow = false;
+    $this->productid = null;
+    $this->product = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -261,7 +307,7 @@ class RelatedProductsonSpec extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->selectPage = false;
     session()->flash('notification', [
@@ -312,7 +358,7 @@ class RelatedProductsonSpec extends Component
   }
   public function load()
   {
-    $this->perPage += 10;
+    $this->loadAmount += 10;
   }
   public function allowselect($index)
   {
@@ -338,7 +384,7 @@ class RelatedProductsonSpec extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->addrelatedproducts = false;
   }

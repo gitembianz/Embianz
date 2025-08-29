@@ -4,9 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Exchange;
 use App\Models\PriceList;
 use Livewire\WithPagination;
 use App\Models\PricelistEntries;
+use Illuminate\Support\Facades\DB;
 
 class RelatedProductsonPricelist extends Component
 {
@@ -22,12 +24,10 @@ class RelatedProductsonPricelist extends Component
   public $selectAll = false;
   public $showrelatedprods = false;
   public $priceId;
-  public $col = false;
-  public $all = false;
   public $columns = ['Id', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
 
   public $selectedColumns = [];
-  public $idtodel = null;
+  public $idbeingremoved = null;
   public $addrelatedproducts  = false;
 
   //Add specs declaration
@@ -45,6 +45,42 @@ class RelatedProductsonPricelist extends Component
   public $product;
   public $editmultiple = false;
   public $itemstoedit;
+  public $rind = null;
+  public $rind2 = null;
+  public $rind3 = null;
+  public $single = false;
+  public $multiple = false;
+
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
+    }
+  }
 
   public function render()
   {
@@ -85,7 +121,7 @@ class RelatedProductsonPricelist extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedprods->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprods->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -114,7 +150,7 @@ class RelatedProductsonPricelist extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedprodsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedprodsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getRelatedprodsProperty()
   {
@@ -125,17 +161,13 @@ class RelatedProductsonPricelist extends Component
     return PricelistEntries::where('pricelist_id', $this->priceId)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
   }
-  public function confirmRemoval($id)
-  {
-    $this->idtodel = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
   public function deleteSingleRecord()
   {
-    $id = $this->idtodel;
+    $id = $this->idbeingremoved;
     $item = PricelistEntries::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -152,15 +184,26 @@ class RelatedProductsonPricelist extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmRemovalmultiple()
+  public function confirmItemRemoval($id)
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
 
   public function edititem($id, $iditem, $index)
@@ -187,6 +230,9 @@ class RelatedProductsonPricelist extends Component
     $new->product_id = $this->productid;
     $val = $this->product[$index] ?? NULL;
     if (array_key_exists('vat', $val)) {
+      if ($val["vat"] === "") {
+        $val["vat"] = 0;
+      }
 
       if ($val["vat"] < 0) {
         session()->flash('notification', [
@@ -207,6 +253,9 @@ class RelatedProductsonPricelist extends Component
       $new->save();
     }
     if (array_key_exists('discount', $val)) {
+      if ($val["discount"] === "") {
+        $val["discount"] = 0;
+      }
       if ($val["discount"] < 0 || $val["discount"] >= 100) {
         session()->flash('notification', [
           'message' => 'Please provide a value biger than 0 and smaller that 100!',
@@ -241,7 +290,71 @@ class RelatedProductsonPricelist extends Component
     $this->product = [];
     $this->itemselected = null;
     $this->editedrow = null;
-    $this->search = '';
+
+    $item = Product::find($new->product_id);
+    $cartPrices = $item->carts_item()->pluck('price');
+    if ($cartPrices->isNotEmpty()) {
+      $averagePrice = $cartPrices->avg();
+    } else {
+      $averagePrice = $new->value;
+    }
+
+    $totalCost = 0;
+    $count = 0;
+    foreach ($item->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
+      $cost = $orderSupplier->price;
+      $supplierCurrency = $orderSupplier->order->currency ?? null;
+      $productCurrency = optional($item->product_prices->first())->pricelist->currency->name ?? null;
+
+      if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+        $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+          $q->where('name', $supplierCurrency);
+        })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+          $q->where('name', $productCurrency);
+        })->latest()->first();
+
+        if (!$exchange) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->latest()->first();
+
+          if ($exchange) {
+            $cost /= $exchange->value;
+          }
+        } else {
+          $cost *= $exchange->value;
+        }
+      }
+
+      if ($cost) {
+        $totalCost += $cost;
+        $count++;
+      }
+    }
+    $averageCost = $count > 0 ? ($totalCost / $count) : null;
+
+    $oldprice = optional($item->costs()->latest()->first())->price ?? null;
+
+    if ($oldprice && $oldprice != $averagePrice) {
+      DB::table('product_costs')->insert([
+        'product_id' => $item->id,
+        'price' => $averagePrice,
+        'cost' => $averageCost,
+        'date' => now(),
+        'created_by' => auth()->user()->name,
+        'last_modified_by' => auth()->user()->name,
+        'created_at' => now(),
+        'updated_at' => now()
+      ]);
+    } elseif (!$oldprice) {
+
+      DB::table('product_costs')->updateOrInsert(
+        ['product_id' => $item->id],
+        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+      );
+    }
 
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
@@ -279,7 +392,6 @@ class RelatedProductsonPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
     $this->editmultiple = false;
     $this->addrelatedproducts = false;
   }
@@ -307,6 +419,71 @@ class RelatedProductsonPricelist extends Component
           'title' => 'Missing Values'
         ]);
         return;
+      }
+
+      $item = Product::find($new->product_id);
+      $cartPrices = $item->carts_item()->pluck('price');
+      if ($cartPrices->isNotEmpty()) {
+        $averagePrice = $cartPrices->avg();
+      } else {
+        $averagePrice = $new->value;
+      }
+
+      $totalCost = 0;
+      $count = 0;
+      foreach ($item->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
+        $cost = $orderSupplier->price;
+        $supplierCurrency = $orderSupplier->order->currency ?? null;
+        $productCurrency = optional($item->product_prices->first())->pricelist->currency->name ?? null;
+
+        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->latest()->first();
+
+          if (!$exchange) {
+            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+              $q->where('name', $productCurrency);
+            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+              $q->where('name', $supplierCurrency);
+            })->latest()->first();
+
+            if ($exchange) {
+              $cost /= $exchange->value;
+            }
+          } else {
+            $cost *= $exchange->value;
+          }
+        }
+
+        if ($cost) {
+          $totalCost += $cost;
+          $count++;
+        }
+      }
+      $averageCost = $count > 0 ? ($totalCost / $count) : null;
+
+      $oldprice = optional($item->costs()->latest()->first())->price ?? null;
+
+      if ($oldprice && $oldprice != $averagePrice) {
+        DB::table('product_costs')->insert([
+          'product_id' => $item->id,
+          'price' => $averagePrice,
+          'cost' => $averageCost,
+          'date' => now(),
+          'created_by' => auth()->user()->name,
+          'last_modified_by' => auth()->user()->name,
+          'created_at' => now(),
+          'updated_at' => now()
+        ]);
+      } elseif (!$oldprice) {
+
+        DB::table('product_costs')->updateOrInsert(
+          ['product_id' => $item->id],
+          ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+        );
       }
     }
 
@@ -430,6 +607,70 @@ class RelatedProductsonPricelist extends Component
         ]);
         return;
       }
+      $product = Product::find($item->product_id);
+      $cartPrices = $item->carts_item()->pluck('price');
+      if ($cartPrices->isNotEmpty()) {
+        $averagePrice = $cartPrices->avg();
+      } else {
+        $averagePrice = $item->value;
+      }
+
+      $totalCost = 0;
+      $count = 0;
+      foreach ($product->order_suppliers->where('order.status', 'closed') as $orderSupplier) {
+        $cost = $orderSupplier->price;
+        $supplierCurrency = $orderSupplier->order->currency ?? null;
+        $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
+
+        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->latest()->first();
+
+          if (!$exchange) {
+            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+              $q->where('name', $productCurrency);
+            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+              $q->where('name', $supplierCurrency);
+            })->latest()->first();
+
+            if ($exchange) {
+              $cost /= $exchange->value;
+            }
+          } else {
+            $cost *= $exchange->value;
+          }
+        }
+
+        if ($cost) {
+          $totalCost += $cost;
+          $count++;
+        }
+      }
+      $averageCost = $count > 0 ? ($totalCost / $count) : null;
+
+      $oldprice = optional($product->costs()->latest()->first())->price ?? null;
+
+      if ($oldprice && $oldprice != $averagePrice) {
+        DB::table('product_costs')->insert([
+          'product_id' => $product->id,
+          'price' => $averagePrice,
+          'cost' => $averageCost,
+          'date' => now(),
+          'created_by' => auth()->user()->name,
+          'last_modified_by' => auth()->user()->name,
+          'created_at' => now(),
+          'updated_at' => now()
+        ]);
+      } elseif (!$oldprice) {
+
+        DB::table('product_costs')->updateOrInsert(
+          ['product_id' => $product->id],
+          ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+        );
+      }
     }
 
     $this->prod = [
@@ -441,7 +682,7 @@ class RelatedProductsonPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     session()->flash('notification', [
       'message' => 'Record edited successfully!',

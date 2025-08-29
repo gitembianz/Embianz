@@ -8,11 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $fillable = ['name', 'order_number', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'voucher_value', 'delivery_price', 'final_amount', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
+  protected $fillable = ['name', 'delivery_price_vat', 'billing_id', 'shipping_id', 'avg_cost', 'comments', 'promotion_value', 'order_number', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'voucher_value', 'delivery_price', 'final_amount', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
 
   public function orders()
   {
     return $this->hasMany(Order_Item::class, 'order_id');
+  }
+  public function invoices()
+  {
+    return $this->hasMany(Invoice::class, 'order_id');
+  }
+  public function awbs()
+  {
+    return $this->hasMany(Awbs::class, 'order_id');
   }
   public function cart()
   {
@@ -38,13 +46,23 @@ class Order extends Model
   {
     return $this->belongsTo(Voucher::class);
   }
+  public function billing()
+  {
+    return $this->belongsTo(Address::class, 'billing_id');
+  }
+  public function shipping()
+  {
+    return $this->belongsTo(Address::class, 'shipping_id');
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('session_id', 'like', '%' . $search . '%')
       ->orWhere('quantity_amount', 'like', '%' . $search . '%')
-      ->orWhere('status', 'like', '%' . $search . '%')
-      ->orWhere('sum_amount', 'like', '%' . $search . '%');
+      ->orWhere('sum_amount', 'like', '%' . $search . '%')
+      ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('comments', 'like', '%' . $search . '%')
+      ->orWhere('order_number', 'like', '%' . $search . '%');;
   }
 }

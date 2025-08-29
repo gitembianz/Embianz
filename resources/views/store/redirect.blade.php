@@ -1,5 +1,5 @@
-<x-store-head :canonical='"Redirect | "' :title='"Page not Found | "' :description="'Error, page not found | '"/>
-<x-store-header />
+<x-store-head :canonical='"Redirect | "' :title='"Page not Found"' :description="'Error, page not found | '"/>
+@livewire('store-header')
 <main>
   <div class="container redirect">
 		<h1>

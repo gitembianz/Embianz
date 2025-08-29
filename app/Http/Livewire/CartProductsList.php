@@ -2,299 +2,610 @@
 
 namespace App\Http\Livewire;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
-use App\Models\Cart_Item;
+use App\Models\UserSessions;
+use App\Models\UserPromotions;
 use Illuminate\Support\Facades\DB;
 
 
 class CartProductsList extends Component
 {
-    public $showcart = false;
-    public $voucher = "";
-    public $aplicabble_voucher = false;
-    public $message = null;
-    public $cartmodified = false;
-    public $session_id;
+  public $showcart = false;
+  public $voucher = "";
+  public $aplicabble_voucher = false;
+  public $message = null;
+  public $cartmodified = false;
+  public $session_id;
+  public $timer = 0;
+  private $confettiTriggered = false;
 
-    protected $listeners = [
-        'showcart' => 'cartshow',
-        'orderprocess' => 'orderprocess',
-        'newcartlist' => 'getCartItemsProperty',
-        'cartUpdated' => 'mount',
-    ];
-    public function render()
-    {
-        return view('livewire.cart-products-list', [
-            'cart' => $this->cart,
-            'cartItems' => $this->cartItems,
-        ]);
+  protected $listeners = [
+    'showcart' => 'cartshow',
+    'orderprocess' => 'mount',
+    'newcartlist' => 'mount',
+    'cartUpdated' => 'mount',
+    'timmerexpired' => 'checkpromotions',
+
+  ];
+
+  public function render()
+  {
+    return view('livewire.cart-products-list', [
+      'cart' => $this->showcart ? $this->cart : null,
+    ]);
+  }
+
+  public function mount()
+  {
+    $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+    $this->message = null;
+    $this->voucher = "";
+  }
+
+  public function getPromotionsProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
+      $user = UserSessions::where('sessions', $this->session_id)->first();
+      if (!$user) {
+        return collect();
+      }
+      return $user->promotions()
+        ->whereHas('promotion', function ($query) {
+          $query->where('active', true)
+            ->where('start_date', '<=', now()->format('Y-m-d'))
+            ->where('end_date', '>=', now()->format('Y-m-d'));
+        })
+        ->with('promotion')
+        ->get();
     }
-    public function getCartProperty()
-    {
-        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'currency_id')
-            ->where('session_id', $this->session_id)
-            ->where('status_id', '!=', app('global_cart_closed'))
-            ->with([
-                'voucher' => function ($query) {
-                    $query->select('code', 'id', 'percent', 'value');
-                },
-                'currency' => function ($query) {
-                    $query->select('id', 'symbol');
-                }
-            ])
-            ->latest()
-            ->first() ?? null;
+    return collect();
+  }
+
+  public function getGlobalPromotionsProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+      return collect(app()->make('promotions'))
+        ->filter(function ($promotion) {
+          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+            $promotion['start_date'] <= now()->format('Y-m-d') &&
+            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['type'] === 'amount';
+        });
+    } else {
+      return collect();
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
+  }
+
+  public function getCartProperty()
+  {
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+
+      $cachedProducts = app()->make('cached_products')->keyBy('id');
+
+      $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
+        ->where('session_id', $this->session_id)
+        ->where('status_id', '!=', app('global_cart_closed'))
+        ->with([
+          'voucher' => function ($query) {
+            $query->select('code', 'id', 'percent', 'value', 'start_date', 'end_date');
+          },
+          'cartItems' => function ($query) {
+            $query->select('id', 'cart_id', 'product_id', 'price', 'quantity');
+          }
+        ])
+        ->latest()
+        ->first();
+
+      if ($cart) {
+        foreach ($cart->cartItems as $item) {
+          if ($cachedProducts->has($item->product_id)) {
+            $item->setRelation('product', $cachedProducts->get($item->product_id));
+          }
         }
-    }
+      }
 
-    public function getCartItemsProperty()
-    {
-        if ($this->cart) {
-            return Cart_Item::select('id', 'quantity', 'price', 'product_id')
-                ->where('cart_id', $this->cart->id)
-                ->with([
-                    'product' => function ($query) {
-                        $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
-                            'media' => function ($query) {
-                                $query->select('path', 'name')->where('type', 'min');
-                            },
-                            'product_prices' => function ($query) {
-                                $query->select('product_id', 'value', 'pricelist_id')
-                                    ->with(['pricelist' => function ($query) {
-                                        $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                                    }]);
-                            },
-
-                        ]);
-                    }
-                ])->get() ?? collect();
-        } else {
-            return collect();
-        }
-    }
-    public function removevoucher()
-    {
-        $this->cart->update([
-            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
-            'voucher_id' => null,
-            'voucher_value' => 0,
-            'updated_at' => now(),
-            'status_id' => app('global_cart_new')
-        ]);
-        $this->message = null;
-        $this->voucher = "";
-        $this->emit('cartUpdated');
-    }
-    public function checkvoucher()
-    {
-        if ($this->cart) {
-            $voucher = Voucher::where('code', $this->voucher)
-                ->where('status_id', app('global_voucher_active'))
-                ->where('start_date', '<=',  now()->format('Y-m-d'))
-                ->where('end_date', '>=',  now()->format('Y-m-d'))
-                ->first();
-            if ($voucher) {
-                if ($voucher && $voucher->percent !== null) {
-                    $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
-
-                    $this->cart->update([
-                        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $discountAmount),
-                        'voucher_id' => $voucher->id,
-                        'voucher_value' => $discountAmount,
-                        'updated_at' => now(),
+      return $cart;
+    } else {
+      return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
+        ->where('session_id', $this->session_id)
+        ->where('status_id', '!=', app('global_cart_closed'))
+        ->with([
+          'voucher' => function ($query) {
+            $query->select('code', 'id', 'percent', 'value', 'start_date', 'end_date');
+          },
+          'cartItems' => function ($query) {
+            $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
+              ->with([
+                'product' => function ($query) {
+                  $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity', 'preorder')
+                    ->with([
+                      'media' => function ($query) {
+                        $query->select('path', 'name', 'type')->where('type', 'min');
+                      },
+                      'product_prices' => function ($query) {
+                        $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                      },
                     ]);
-                } else {
-                    if ($voucher->value > $this->cart->sum_amount) {
-                        $this->message = null;
-                        $this->cart->update([
-                            'final_amount' =>  app('global_delivery_price'),
-                            'voucher_id' => $voucher->id,
-                            'voucher_value' => $voucher->value,
-                            'updated_at' => now(),
-                        ]);
-                    } else {
-                        $this->message = null;
-                        $this->cart->update([
-                            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
-                            'voucher_id' => $voucher->id,
-                            'voucher_value' => $voucher->value,
-                            'updated_at' => now(),
-                        ]);
-                    }
                 }
-            } else {
-                $this->message = "Voucher-ul '" . $this->voucher .  "' nu a fost gasit!";
-                $this->voucher = "";
-                return false;
-            }
-            $this->emit('cartUpdated');
-            $this->voucher = "";
-            return true;
-        } else {
-            $this->message = null;
-            $this->emit('newcart');
-            return;
+              ]);
+          }
+        ])
+        ->latest()
+        ->first() ?? null;
+    }
+  }
+
+  public function removevoucher()
+  {
+
+    $sumAmount = $this->cart->cartItems->sum(fn($item) => $item->price * $item->quantity);
+    $this->cart->update([
+      'sum_amount' => $sumAmount,
+      'voucher_id' => null,
+      'voucher_value' => 0,
+      'final_amount' => $sumAmount + $this->cart->delivery_price - $this->cart->promotion_value,
+      'status_id' => app('global_cart_new'),
+      'updated_at' => now(),
+    ]);
+    $this->message = null;
+    $this->voucher = "";
+    $this->emit('cartUpdated');
+  }
+
+  private function calculateVoucherValue($voucher, $sumAmount)
+  {
+    return $voucher->percent !== null
+      ? ($voucher->percent / 100) * $sumAmount
+      : min($voucher->value, $sumAmount);
+  }
+
+  public function checkvoucher()
+  {
+    if (!$this->cart) {
+      $this->message = null;
+      $this->emit('newcart');
+      return;
+    }
+    $voucher = Voucher::where('code', $this->voucher)
+      ->where('status_id', app('global_voucher_active'))
+      ->whereDate('start_date', '<=', now())
+      ->whereDate('end_date', '>=', now())
+      ->first();
+    if (!$voucher) {
+      $this->message = "Voucher-ul '" . $this->voucher . "' nu a fost găsit!";
+      $this->voucher = "";
+      return false;
+    }
+    $this->cart->load('cartItems');
+    $sumAmount = $this->cart->cartItems->sum(fn($item) => $item->price * $item->quantity);
+    $discount = $this->calculateVoucherValue($voucher, $sumAmount);
+    $this->cart->update([
+      'sum_amount' => $sumAmount,
+      'voucher_id' => $voucher->id,
+      'voucher_value' => $discount,
+      'final_amount' => $sumAmount + $this->cart->delivery_price - $discount - $this->cart->promotion_value,
+      'updated_at' => now(),
+    ]);
+    $this->message = null;
+    $this->voucher = "";
+    $this->emit('cartUpdated');
+    return true;
+  }
+
+  protected function calculatePromoValue($promo, $amount)
+  {
+    if ($promo->promotion_value) {
+      return $promo->promotion_value;
+    }
+    if ($promo->promotion_percent) {
+      return round($amount * ($promo->promotion_percent / 100), 2);
+    }
+    return 0;
+  }
+
+  public function checkpromotions()
+  {
+    if (!app()->has('global_promotion_on') || app('global_promotion_on') !== "true" || !$this->cart) {
+      return;
+    }
+    $sumAmount = $this->cart->cartItems->sum(fn($item) => $item->price * $item->quantity);
+    $promotionValue = 0;
+    $this->timer = 0;
+    // Handle 'counter' promotion
+    $counter = optional($this->promotions)->firstWhere('promotion_type', 'counter');
+    if ($counter && Carbon::parse($counter->promotion_expiration_date)->isFuture()) {
+      $expiration = Carbon::parse($counter->promotion_expiration_date);
+      $this->timer = $expiration->diffInSeconds(now());
+
+      $promotionValue += $this->calculatePromoValue($counter, $sumAmount);
+    }
+    // Handle 'amount' promotions (non-mutating)
+    foreach ($this->promotions->where('promotion_type', 'amount') as $promo) {
+      if (
+        $promo->promotion_cart_amount <= $sumAmount &&
+        $promo->active
+      ) {
+        $promotionValue += $this->calculatePromoValue($promo, $sumAmount);
+      }
+    }
+    $this->cart->update([
+      'sum_amount' => $sumAmount,
+      'promotion_value' => $promotionValue,
+      'final_amount' => $sumAmount + $this->cart->delivery_price - $promotionValue - $this->cart->voucher_value,
+    ]);
+  }
+
+  public function seen()
+  {
+    $this->cart->seen_by_customer = false;
+    $this->cart->save();
+    $this->cartmodified = false;
+
+    return;
+  }
+
+  public function pricechanged()
+  {
+    if (!$this->cart) {
+      return;
+    }
+
+    $priceChanged = false;
+    $this->cart->load(['cartItems.product.product_prices']);
+
+    foreach ($this->cart->cartItems as $item) {
+      $latestPrice = optional($item->product->product_prices->first())->value;
+
+      if ($latestPrice === null) {
+        continue;
+      }
+
+      if ($item->price != $latestPrice) {
+        $item->price = $latestPrice;
+        $item->save();
+        $priceChanged = true;
+      }
+    }
+
+    if ($priceChanged) {
+      $sumAmount = $this->cart->cartItems->sum(fn($i) => $i->price * $i->quantity);
+
+      $voucherValue = 0;
+      if (
+        $this->cart->voucher &&
+        $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
+        $this->cart->voucher->end_date >= now()->format('Y-m-d')
+      ) {
+
+        if ($this->cart->voucher->percent !== null) {
+          $voucherValue = round($sumAmount * ($this->cart->voucher->percent / 100), 2);
+        } elseif ($this->cart->voucher->value !== null) {
+          $voucherValue = $this->cart->voucher->value;
         }
+      }
+
+      $this->cart->sum_amount = $sumAmount;
+      $this->cart->voucher_value = $voucherValue;
+      $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
+
+      if (
+        app()->has('global_customer_cart_notification') &&
+        app('global_customer_cart_notification') === "true"
+      ) {
+        $this->cart->seen_by_customer = true;
+        $this->cartmodified = true;
+      }
+
+      $this->cart->save();
     }
-    public function orderprocess()
-    {
-        $this->mount();
+  }
+
+  public function cartshow()
+  {
+    $this->showcart = true;
+  }
+
+  public function removeFromCart($productId)
+  {
+    if (!$this->cart || !$this->cart->id) {
+      return;
     }
 
-    public function updatingShowcart()
-    {
-        $this->message = null;
-        $this->voucher = "";
+    $this->cart->load(['cartItems', 'voucher']); // eager load to avoid N+1
+
+    $cartItem = $this->cart->cartItems->firstWhere('product_id', $productId);
+
+    if (!$cartItem) {
+      return;
     }
 
-    public function seen()
-    {
-        $this->cart->seen_by_customer = false;
-        $this->cart->save();
-        $this->cartmodified = false;
+    // Remove item
+    $amountToSubtract = $cartItem->price * $cartItem->quantity;
+    $quantityToSubtract = $cartItem->quantity;
 
+    $cartItem->delete();
+
+    // Refresh cartItems after deletion
+    $this->cart->load('cartItems');
+
+    // Recalculate sum and quantity
+    $sumAmount = $this->cart->cartItems->sum(fn($item) => $item->price * $item->quantity);
+    $quantityAmount = $this->cart->cartItems->sum('quantity');
+
+    // Recalculate voucher value
+    $voucherValue = 0;
+    if (
+      $this->cart->voucher &&
+      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+    ) {
+
+      if ($this->cart->voucher->percent !== null) {
+        $voucherValue = round($sumAmount * ($this->cart->voucher->percent / 100), 2);
+      } elseif ($this->cart->voucher->value !== null) {
+        $voucherValue = $this->cart->voucher->value;
+      }
+    }else{
+      $this->removevoucher();
+    }
+
+    // If cart is empty, clear voucher info
+    if ($quantityAmount == 0) {
+      $this->cart->voucher_id = null;
+      $voucherValue = 0;
+    }
+
+    $this->cart->quantity_amount = $quantityAmount;
+    $this->cart->sum_amount = $sumAmount;
+    $this->cart->voucher_value = $voucherValue;
+    $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
+    $this->cart->status_id = app('global_cart_new');
+    $this->cart->updated_at = now();
+    $this->cart->save();
+
+    $this->emit('cartUpdated');
+    $this->emit('timmerexpired');
+  }
+
+  public function cancel_aplicabble()
+  {
+    $this->voucher = "";
+    $this->continue();
+  }
+  public function confirm_aplicabble()
+  {
+    if ($this->checkvoucher()) {
+      $this->continue();
+    } else {
+      $this->aplicabble_voucher = false;
+      return;
+    }
+  }
+
+  public function continue()
+  {
+    if (!empty($this->voucher)) {
+      $this->aplicabble_voucher = true;
+      return;
+    }
+
+    if (!$this->cart || $this->cart->quantity_amount == 0) {
+      return;
+    }
+
+    $this->cart->load('cartItems.product');
+
+    $today = now()->toDateString();
+    $errorMessage = app()->has('global_order_error_quantity')
+      ? app('global_order_error_quantity')
+      : "Vă rog verificați detaliile comenzii!";
+
+    foreach ($this->cart->cartItems as $item) {
+      $product = $item->product;
+
+      if (
+        !$product->active ||
+        $product->start_date > $today ||
+        $product->end_date < $today
+      ) {
+        $this->emit('cartUpdated');
         return;
+      }
+
+      if ($item->quantity > $product->quantity && !$product->preorder) {
+        $this->dispatchBrowserEvent('alert__modal', ['message' => $errorMessage]);
+        return;
+      }
     }
 
-    public function mount()
-    {
-        $this->session_id = $this->getSessionId();
-        if ($this->cart && $this->cart->seen_by_customer) {
-            $this->cartmodified = true;
-        }
+    $this->cart->update([
+      'status_id' => app('global_cart_checkout'),
+    ]);
+
+    return redirect()->route('order');
+  }
+
+  public function increment($id)
+  {
+    if (!$this->cart) {
+      $this->emit('newcart');
+      return;
     }
 
-    public function pricechanged()
-    {
-        foreach ($this->cart->carts as $item) {
-            if (optional($item->product->product_prices->first())->value) {
+    // Eager load once for all needed relationships
+    $this->cart->loadMissing('cartItems.product.product_prices', 'voucher');
 
-                if ($item->price != $item->product->product_prices->first()->value) {
-                    $item->price = $item->product->product_prices->first()->value;
-                    $item->save();
-                    $sum_amount = 0;
-                    foreach ($this->cart->carts as $element) {
-                        $sum_amount = $sum_amount + $element->price * $element->quantity;
-                    }
-                    $this->cart->sum_amount = $sum_amount;
-                    if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
-                        $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
-                    } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
-                        $this->cart->voucher_value = $this->cart->voucher->value;
-                    }
-                    $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
-                    $this->cart->final_amount -= $this->cart->voucher_value;
-                    $this->cart->seen_by_customer = true;
-                    $this->cart->save();
-                    $this->cartmodified = true;
-                    return;
-                }
-            } else {
-                continue;
-            }
-        }
+    $cartItem = $this->cart->cartItems->firstWhere('id', $id);
+    if (!$cartItem) return;
+
+    $product = $cartItem->product;
+    $price = $product->product_prices->first()?->value ?? 0;
+
+    // Check stock or preorder
+    if ($cartItem->quantity >= $product->quantity && !$product->preorder) {
+      return;
     }
 
-    public function cartshow()
-    {
-        $this->showcart = true;
-    }
-    public function removeFromCart($productId)
-    {
+    // Increment quantities
+    $cartItem->increment('quantity');
+    $this->cart->increment('quantity_amount');
 
-        if ($this->cart->id) {
-            $cartItem = Cart_Item::where('cart_id', $this->cart->id)
-                ->where('product_id', $productId)
-                ->first();
-
-            if ($cartItem) {
-                $amountToSubtract = $cartItem->price * $cartItem->quantity;
-                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
-                    $voucher_value = ($this->cart->voucher->percent / 100) * ($this->cart->sum_amount - $amountToSubtract);
-                } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
-                    $voucher_value = $this->cart->voucher->value;
-                } else {
-                    $voucher_value = 0;
-                }
-                Cart::where('id', $this->cart->id)->update([
-                    'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
-                    'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
-                    'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount + delivery_price - $voucher_value END"),
-                    'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
-                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
-                    'updated_at' => now(),
-                    'status_id' => app('global_cart_new')
-                ]);
-                $cartItem->delete();
-                $this->emit('cartUpdated');
-            }
-        }
+    // Price mismatch: update and recalculate full sum
+    if ($cartItem->price != $price) {
+      $cartItem->price = $price;
+      $this->cart->seen_by_customer = true;
+      $cartItem->save();
     }
 
+    $this->cart->delivery_price = app('global_delivery_price');
 
-    public function cancel_aplicabble()
-    {
-        $this->voucher = "";
-        $this->continue();
+    // Recalculate voucher value
+    $sumAmount = $this->cart->cartItems->sum(fn($i) => $i->price * $i->quantity);
+
+    $voucherValue = 0;
+    if (
+      $this->cart->voucher &&
+      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+    ) {
+
+      if ($this->cart->voucher->percent !== null) {
+        $voucherValue = round($sumAmount * ($this->cart->voucher->percent / 100), 2);
+      } elseif ($this->cart->voucher->value !== null) {
+        $voucherValue = $this->cart->voucher->value;
+      }
+    }else{
+      $this->removevoucher();
     }
-    public function confirm_aplicabble()
-    {
-        if ($this->checkvoucher()) {
-            $this->continue();
-        } else {
-            $this->aplicabble_voucher = false;
-            return;
+
+    $this->cart->sum_amount = $sumAmount;
+    $this->cart->voucher_value = $voucherValue;
+    $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
+
+    $this->cart->status_id = app('global_cart_new');
+    $this->cart->save();
+
+    $this->emit('cartUpdated');
+
+    // Promotions
+    foreach ($this->globalpromotions as $promo) {
+      if ($this->cart->sum_amount >= $promo['cart_amount']) {
+        if ($user = UserSessions::where('sessions', $this->session_id)->first()) {
+          $this->createPromotion($user->id, $promo);
         }
+      }
     }
 
+    $this->checkpromotions();
+  }
 
-    public function continue()
-    {
-        if ($this->voucher != "") {
-            $this->aplicabble_voucher = true;
-            return;
-        }
-        if ($this->cartItems->isNotEmpty()) {
-            foreach ($this->cartItems as $item) {
-                if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
-                    $this->emit('cartUpdated');
-                    return;
-                }
-            }
-        }
-        $validateQuantity = true;
 
-        if ($this->cartItems->isNotEmpty()) {
-            foreach ($this->cartItems as $item) {
-                if ($item->quantity > $item->product->quantity) {
-                    $validateQuantity = false;
-                    if (app()->has('global_order_error_quantity')) {
-                        $message = app('global_order_error_quantity');
-                    } else {
-                        $message = "Vă rog verificați detaliile comenzii!";
-                    }
-                    $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
-                    return;
-                }
-            }
-        }
-
-        if ($validateQuantity) {
-            Cart::where('id', $this->cart->id)->update([
-                'status_id' => app('global_cart_checkout'),
-            ]);
-            return redirect()->route('order');
-        }
+  public function decrement($id)
+  {
+    if (!$this->cart) {
+      $this->emit('newcart');
+      return;
     }
+
+    // Load relationships to avoid N+1 queries
+    $this->cart->loadMissing('cartItems.product.product_prices', 'voucher');
+
+    $cartItem = $this->cart->cartItems->firstWhere('id', $id);
+
+    if (!$cartItem || $cartItem->quantity <= 1) {
+      return;
+    }
+
+    $product = $cartItem->product;
+    $price = $product->product_prices->first()?->value ?? 0;
+
+    // Decrement item and cart quantity
+    $cartItem->decrement('quantity');
+    $this->cart->decrement('quantity_amount');
+
+    // Price mismatch: update and recalculate full sum
+    if ($cartItem->price != $price) {
+      $cartItem->price = $price;
+      $this->cart->seen_by_customer = true;
+      $cartItem->save();
+    }
+
+    $this->cart->delivery_price = app('global_delivery_price');
+
+    // Recalculate voucher value
+    $sumAmount = $this->cart->cartItems->sum(fn($i) => $i->price * $i->quantity);
+
+    $voucherValue = 0;
+    if (
+      $this->cart->voucher &&
+      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+    ) {
+
+      if ($this->cart->voucher->percent !== null) {
+        $voucherValue = round($sumAmount * ($this->cart->voucher->percent / 100), 2);
+      } elseif ($this->cart->voucher->value !== null) {
+        $voucherValue = $this->cart->voucher->value;
+      }
+    }else{
+      $this->removevoucher();
+    }
+
+    $this->cart->sum_amount = $sumAmount;
+    $this->cart->voucher_value = $voucherValue;
+    $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
+
+    $this->cart->status_id = app('global_cart_new');
+    $this->cart->save();
+
+    $this->emit('cartUpdated');
+
+    $this->checkpromotions();
+  }
+
+
+  private function createPromotion($userId, $promo)
+  {
+    if ($this->confettiTriggered) {
+      return;
+    }
+
+    $existingPromotion = UserPromotions::where('session_id', $userId)
+      ->where('promotion_id', $promo['id'])
+      ->first();
+
+    $promotion = UserPromotions::updateOrCreate(
+      [
+        'session_id' => $userId,
+        'promotion_id' => $promo['id'],
+      ],
+      [
+        "promotion_type" => $promo['type'],
+        "promotion_cookieid" => $promo['cookieid'],
+        "promotion_start_date" => $promo['start_date'],
+        "promotion_expiration_date" => $promo['end_date'],
+        "promotion_cooldown_timer" => $promo['cooldown_timer'],
+        "promotion_cart_amount" => $promo['cart_amount'],
+        "promotion_value" => $promo['promotion_value'],
+        "promotion_percent" => $promo['promotion_percent'],
+        "active" => true, // Always set 'active' to true
+      ]
+    );
+
+    if (!$existingPromotion) {
+      $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
+
+      $this->dispatchBrowserEvent('confettialert__modal', ['message' => $message]);
+
+      $this->confettiTriggered = true;
+
+      usleep(200000);
+
+      $this->confettiTriggered = false;
+    }
+  }
 }

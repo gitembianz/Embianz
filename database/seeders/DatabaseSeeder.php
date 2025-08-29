@@ -30,5 +30,14 @@ class DatabaseSeeder extends Seeder
 
         // Seed database with stores
         $this->call(StoreSeeder::class);
+
+        // Seed database with variants
+        $this->call(VariantSeeder::class);
+
+        // Seed database with Text Labels
+        $this->call(TextLabelSeeder::class);
+
+        // Seed countiries
+        $this->call(CountrySeeder::class);
     }
 }
