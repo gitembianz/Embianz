@@ -46,7 +46,7 @@
 
         /* Card styling */
         .article-card {
-         height: 200px;
+            height: 200px;
             background-color: #fafafa;
             border-radius: 12px;
             overflow: hidden;
@@ -126,7 +126,15 @@
             font-size: 14px;
             color: #555;
             line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
+
 
         .read-more-button {
             margin-top: auto;
@@ -143,9 +151,19 @@
 
         @media (max-width: 768px) {
             .read-more-button {
+              margin-top: 5px;
                 width: 100%;
                 text-align: center;
                 /* optional: centers the text */
+            }
+
+            .article-card {
+                height: auto;
+            }
+
+            .article-image img {
+                height: 200px;
+                width: 100%;
             }
         }
     </style>
@@ -198,18 +216,21 @@
             <div class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
-                        <img @if ($loop->first) loading="eager"
-                        @else
-                        loading="lazy" @endif
-                            src="/{{ $article->media->where('type', 'main')->first()->path ?? 'images/store/default/' }}{{ $article->media->where('type', 'main')->first()->name ?? 'default.webp' }}"
-                            alt="{{ $article->name }}"
-                            data-name-alt="{{ $article->media->where('type', 'main')->first()->name ?? 'default' }} {{ $article->name }}">
+                        <a href="/{{ $article->media->where('type', 'original')->first()->path ?? $article->media->where('type', 'main')->first()->path }}{{ $article->media->where('type', 'original')->first()->name ?? $article->media->where('type', 'main')->first()->name }}"
+                            target="_blank">
+                            <img @if ($loop->first) loading="eager"
+                @else loading="lazy" @endif
+                                src="/{{ $article->media->where('type', 'main')->first()->path ?? 'images/store/default/' }}{{ $article->media->where('type', 'main')->first()->name ?? 'default.webp' }}"
+                                alt="{{ $article->name }}"
+                                data-name-alt="{{ $article->media->where('type', 'main')->first()->name ?? 'default' }} {{ $article->name }}">
+                        </a>
                     @else
-                        <img title="Default image"
-                            @if ($loop->first) loading="eager"
-                        @else
-                        loading="lazy" @endif
-                            class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+                        <a href="/images/store/default/default.webp" target="_blank">
+                            <img title="Default image"
+                                @if ($loop->first) loading="eager"
+                @else loading="lazy" @endif
+                                class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+                        </a>
                     @endif
                 </div>
 
@@ -227,7 +248,7 @@
                         {{ \Carbon\Carbon::parse($article->created_at)->format('M. j, Y') }}
                     </p>
 
-                    <p class="article-description">{{ $article->short_description }}{{ $article->short_description }}
+                    <p class="article-description">{{ $article->short_description }}
                     </p>
                     <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}"
                         class="read-more-button">
@@ -290,8 +311,8 @@
                     </h4>
                 </label>
 
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort7" value="date_new_old"
-                    id="sort7">
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort7"
+                    value="date_new_old" id="sort7">
                 <label class="filter__link sort__item" for="sort7">
                     <h4>
                         @if (app()->has('label_sort_date_as'))
