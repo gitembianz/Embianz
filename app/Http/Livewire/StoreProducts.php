@@ -48,13 +48,14 @@ class StoreProducts extends Component
         $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find(app('global_default_category')) ?? null;
       }
     }
+    $filteredValues = session()->get('filtered_values', []);
+
     if (isset($filteredValues['loadAmount'])) {
       $this->loadAmount = $filteredValues['loadAmount'];
     } else {
       $this->loadAmount = app('global_limit_load');
     }
 
-    $filteredValues = session()->get('filtered_values', []);
     if (isset($filteredValues['category_id']) && $this->category != null && $filteredValues['category_id'] == $this->category->id) {
       if (isset($filteredValues['queryfilters'])) {
         $this->queryfilters = $filteredValues['queryfilters'];

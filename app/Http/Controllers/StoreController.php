@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\ArticleCategory;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StoreController extends Controller
@@ -101,6 +102,31 @@ class StoreController extends Controller
       }
     }
     return view('store.products', compact('data', 'can', 'preload'));
+  }
+
+  public function blog($categorySlug = null)
+  {
+    $data = null;
+    $can = null;
+    $preload = null;
+    if ($categorySlug) {
+      if (is_numeric($categorySlug)) {
+        $category = ArticleCategory::find($categorySlug);
+      } else {
+        $category = ArticleCategory::where('seo_id', $categorySlug)->first();
+      }
+
+      if (!$category || $this->isCategoryInvalid($category)) {
+        throw new NotFoundHttpException();
+      }
+
+      $can = is_numeric($categorySlug) ? $category->id : $categorySlug;
+      $data = $category;
+    } else {
+      $data = null;
+    }
+
+    return view('store.blog', compact('data', 'can', 'preload'));
   }
 
   private function isCategoryInvalid($category)
@@ -201,6 +227,8 @@ class StoreController extends Controller
 
     return view('store.product', compact('data', 'preload'));
   }
+
+
 
   // payment function
   public function success()
