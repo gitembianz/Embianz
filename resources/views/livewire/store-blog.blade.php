@@ -151,7 +151,7 @@
 
         @media (max-width: 768px) {
             .read-more-button {
-              margin-top: 5px;
+                margin-top: 5px;
                 width: 100%;
                 text-align: center;
                 /* optional: centers the text */
@@ -216,7 +216,7 @@
             <div class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
-                        <a href="/{{ $article->media->where('type', 'original')->first()->path ?? $article->media->where('type', 'main')->first()->path }}{{ $article->media->where('type', 'original')->first()->name ?? $article->media->where('type', 'main')->first()->name }}"
+                        <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}"
                             target="_blank">
                             <img @if ($loop->first) loading="eager"
                 @else loading="lazy" @endif
@@ -225,12 +225,10 @@
                                 data-name-alt="{{ $article->media->where('type', 'main')->first()->name ?? 'default' }} {{ $article->name }}">
                         </a>
                     @else
-                        <a href="/images/store/default/default.webp" target="_blank">
-                            <img title="Default image"
-                                @if ($loop->first) loading="eager"
+                        <img title="Default image"
+                            @if ($loop->first) loading="eager"
                 @else loading="lazy" @endif
-                                class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                        </a>
+                            class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
                     @endif
                 </div>
 
