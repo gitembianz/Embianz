@@ -397,6 +397,17 @@ class RelatedMediaArticle extends Component
     }
     $this->resizeImage($file, $path, 70, 'min', $name, $fileExtension, true);
 
+    //main image(350x3500)
+    $ismain = $this->article->media()->where('type', 'main')->first();
+    if ($ismain) {
+      $oldPath = $ismain->path . $ismain->name;
+      if (File::exists($oldPath)) {
+        File::delete($oldPath);
+      }
+      $ismain->delete();
+    }
+    $this->resizeImage($file, $path, 350, 'main', $name, $fileExtension, true);
+
     //full image(640x640)
     $isfull = $this->article->media()->where('type', 'full')->first();
     if ($isfull) {
@@ -491,6 +502,16 @@ class RelatedMediaArticle extends Component
       $ismin->delete();
     }
     $this->resizeImage($file, $path, 70, 'min', $media->name, $media->extension, false);
+    //main image(350x3500)
+    $ismain = $this->article->media()->where('type', 'main')->first();
+    if ($ismain) {
+      $oldPath = $ismain->path . $ismain->name;
+      if (File::exists($oldPath)) {
+        File::delete($oldPath);
+      }
+      $ismain->delete();
+    }
+    $this->resizeImage($file, $path, 350, 'main', $media->name, $media->extension, false);
 
     //full image(640x640)
     $isfull = $this->article->media()->where('type', 'full')->first();

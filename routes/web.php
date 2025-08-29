@@ -229,6 +229,8 @@
       ->name('products')
       ->middleware('categorycheck');
     route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
+    route::get('/blog/{categorySlug?}', [StoreController::class, 'blog'])->name('blog');
+route::get('/article/{article}', [StoreController::class, 'article'])->name('article');
     //payments routes
     Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
     Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
