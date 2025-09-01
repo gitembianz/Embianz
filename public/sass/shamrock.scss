@@ -1,4 +1,4 @@
-/// 1. Themes 
+/// 1. Themes
 @import"store/themes/theme-shamrock";
 
 /// 2. Abstracts
@@ -51,6 +51,7 @@
 
 /// 6. Pages
 @import"store/pages/about";
+@import"store/pages/blog";
 @import"store/pages/contact";
 @import"store/pages/faq";
 @import"store/pages/product";
