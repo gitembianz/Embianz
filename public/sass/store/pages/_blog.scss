@@ -3,7 +3,6 @@
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
             padding: 20px;
-            background: #fff;
         }
 
         .article-card {
@@ -54,7 +53,7 @@
         }
 
         .article-category {
-            color: #777;
+            color: $lightBlack;
             font-size: 14px;
             margin-top: 4px;
             margin-bottom: 5px;
@@ -68,7 +67,7 @@
         }
 
         .article-date {
-            color: #777;
+            color: $lightBlack;
             font-size: 14px;
             margin-top: 4px;
             margin-bottom: 12px;
