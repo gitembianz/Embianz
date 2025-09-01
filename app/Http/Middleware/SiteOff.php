@@ -16,7 +16,7 @@ class SiteOff
        public function handle(Request $request, Closure $next): Response
     {
         if (app()->has('global_site_off') && app('global_site_off') === 'true') {
-            return redirect()->route('maintenance.page'); // Or ->to('/some-url')
+            return redirect()->route('maintenance.page');
         }
 
         return $next($request);

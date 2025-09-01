@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\ArticleCategory;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -228,6 +229,36 @@ class StoreController extends Controller
     return view('store.product', compact('data', 'preload'));
   }
 
+public function article($article = null)
+  {
+    if (is_numeric($article)) {
+      $articleId = $article;
+      $data = null;
+    } else {
+      $seoId = $article;
+      $data = null;
+    }
+
+
+      if (isset($articleId)) {
+        $data = Article::with('media')->find($articleId);
+      } elseif (isset($seoId)) {
+        $data = Article::with('media')->where('seo_id', $seoId)->first();
+      }
+
+      if ($data) {
+        $media = $data->media->firstWhere('type', 'full');
+        $preload = $media ? "/" . $media->path . $media->name : '';
+      } else {
+        $preload = '';
+      }
+
+    if (!$data || $data->active != true || $data->start_date > now()->format('Y-m-d') || $data->end_date < now()->format('Y-m-d')) {
+      throw new NotFoundHttpException();
+    }
+
+    return view('store.article', compact('data', 'preload'));
+  }
 
 
   // payment function
