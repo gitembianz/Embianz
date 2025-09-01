@@ -12,7 +12,6 @@
                     <span id="countdown" style="font-size: 30px; text-decoration:none!important"></span>
                 </div>
             @endif
-
             <div class="cookie__description">
                 <span>
                     @if (app()->has('label_cookie_description'))
@@ -178,7 +177,9 @@
                     <a class="logo" href="{{ url('/') }}">
                         <img title="{{ app('global_site_name') }} logo" loading="eager"
 
+
                             src="/images/store/svg/logo-light.svg" alt="logo">
+
 
                     </a>
                     <div class="social__list">
