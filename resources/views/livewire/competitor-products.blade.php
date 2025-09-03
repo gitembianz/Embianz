@@ -466,7 +466,7 @@
                                         @endphp
 
                                         @if ($relation)
-                                            <a href="{{ route($routeName, ['id' => $column]) }}"
+                                            <a href="{{ route($routeName, ['id' => $related->$column]) }}"
                                                 class="link-primary">
                                                 {{ $relation->name }}
                                             </a>

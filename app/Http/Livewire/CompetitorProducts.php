@@ -135,7 +135,7 @@ class CompetitorProducts extends Component
   }
   public function getProductsProperty()
   {
-    $relatedproductsIds = $this->relatedproducts->pluck('category_id')->toArray();
+    $relatedproductsIds = $this->relatedproducts->pluck('product_id')->toArray();
     return Product::whereNotIn('id', $relatedproductsIds)->where('name', 'like', '%' . $this->searchadd . '%')->get();
   }
   public function plus()
@@ -192,29 +192,42 @@ class CompetitorProducts extends Component
   }
   public function saveitems()
   {
-    foreach ($this->productsAndValues as  $array) {
-      if (isset($array['product']['idrel'])) {
+    foreach ($this->productsAndValues as $array) {
+    if (isset($array['product']['idrel'])) {
         $productprice = PricelistEntries::where('product_id', $array['product']['idrel'])
-          ->first()   // or by created_at if needed
-          ->value('value') ?? 0;
+            ->latest('created_at')
+            ->value('value') ?? 0;
+
+        $competitorPrice = $array['price'] ?? 0;
+
+        $differenceValue = $competitorPrice - $productprice;
+
+        $differencePercentage = $productprice > 0
+            ? round(($differenceValue / $productprice) * 100, 2)
+            : 0;
 
         ModelsCompetitorProducts::create([
-          'name' => $array['name'],
-          'url' => $array['url'],
-          'price' => $array['price'],
-          'competitor_id' => $this->competitor->id,
-          'product_id' => $array['product']['idrel'],
-          'internal_price	' => $productprice
+            'name' => $array['name'],
+            'url' => $array['url'],
+            'price' => $competitorPrice,
+            'competitor_id' => $this->competitor->id,
+            'product_id' => $array['product']['idrel'],
+            'internal_price' => $productprice,
+            'difference_value' => $differenceValue,
+            'difference_percent' => $differencePercentage,
+            'created_by' => auth()->user()->name,
+            'last_modified_by' => auth()->user()->name,
         ]);
-      } else {
+    } else {
         session()->flash('notification', [
-          'message' => 'Please provide values',
-          'type' => 'warning',
-          'title' => 'Missing Values'
+            'message' => 'Please provide values',
+            'type' => 'warning',
+            'title' => 'Missing Values'
         ]);
         return;
-      }
     }
+}
+
 
     $this->productsAndValues = [];
     $this->row = 1;
@@ -296,6 +309,49 @@ class CompetitorProducts extends Component
         'itemselected' => null,
         'product' => ['name' => null, 'idrel' => null]
       ];
+  }
+
+   // funciton for link and delete
+  public function deleteSingleRecord()
+  {
+    $item = ModelsCompetitorProducts::findOrFail($this->idbeingremoved);
+    $item->delete();
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+  public function deleteRecords()
+  {
+    $items = ModelsCompetitorProducts::whereKey($this->checked)->get();
+    foreach ($items as $item) {
+      $item->delete();
+    }
+    $this->checked = [];
+    $this->selectPage = false;
+    $this->multiple = false;
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+  public function confirmItemRemoval($id)
+  {
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
 
 }

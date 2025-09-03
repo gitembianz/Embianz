@@ -25,7 +25,7 @@ class CompetitorProducts extends Model
         'price',
         'internal_price',
         'difference_value',
-        'difference_percentage',
+        'difference_percent',
         'created_by',
         'last_modified_by'
     ];
