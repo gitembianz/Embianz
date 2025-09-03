@@ -71,6 +71,7 @@ class ShowProduct extends Component
       'low_stock_quantity' => $this->product->low_stock_quantity,
       'preorder' => $this->product->preorder == 1 ? true : false,
       'is_digital' => $this->product->is_digital == 1 ? true : false,
+      'google_category' => $this->product->google_category,
 
 
     ];
@@ -176,6 +177,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('meta_description', $product_new)) {
         $new->meta_description = $product_new['meta_description'];
+      }
+      if (array_key_exists('google_category', $product_new)) {
+        $new->google_category = $product_new['google_category'];
       }
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];

@@ -51,6 +51,15 @@
                 </svg>
                 <span>Products</span>
             </a>
+            <a class="button button--fill button--flexed button--primary @if ($active == 'competitor') button--active @endif"
+                href="{{ route('competitors') }}">
+                <svg>
+                    <line x1="12" y1="20" x2="12" y2="10"></line>
+                    <line x1="18" y1="20" x2="18" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="16"></line>
+                </svg>
+                <span>Competitors</span>
+            </a>
             <a class="button button--fill button--flexed button--primary @if ($active == 'articlecategory') button--active @endif"
                 href="{{ route('articlecategory') }}">
                 <svg>
@@ -384,6 +393,15 @@
                 <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
             </svg>
             <span>Products</span>
+        </a>
+        <a class="button button--long button--flexed button--primary @if ($active == 'competitor') button--secondary @endif"
+            href="{{ route('competitors') }}">
+            <svg>
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg>
+            <span>Competitors</span>
         </a>
         <a class="button button--long button--flexed button--primary @if ($active == 'articlecategory') button--secondary @endif"
             href="{{ route('articlecategory') }}">

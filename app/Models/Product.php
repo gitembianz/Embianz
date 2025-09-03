@@ -36,6 +36,7 @@ class Product extends Model
     'low_stock_quantity',
     'preorder',
     'is_digital',
+    'google_category',
   ];
 
   public static function search($search)
