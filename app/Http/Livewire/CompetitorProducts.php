@@ -105,6 +105,14 @@ class CompetitorProducts extends Component
       }
       if (array_key_exists('price', $record)) {
         $new->price = $record['price'];
+
+        $differenceValue = $record['price'] - $new->internal_price;
+
+        $differencePercentage = $new->internal_price > 0
+            ? round(($differenceValue / $new->internal_price) * 100, 2)
+            : 0;
+        $new->difference_value = $differenceValue;
+        $new->difference_percent = $differencePercentage;
       }
       $new->save();
       session()->flash('notification', [
