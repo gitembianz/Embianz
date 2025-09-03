@@ -81,6 +81,7 @@ class ProductController extends Controller
       'long_description' => $request->long_description,
       'seo_title' => $request->seo_title,
       'seo_id' => $seo_id,
+      'google_category' => $request->google_category,
       'created_by' => Auth::user()->name,
       'last_modified_by' => Auth::user()->name,
     ]);

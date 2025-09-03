@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\NewUser;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\Competitor;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -139,6 +140,24 @@ class AdminController extends Controller
     return redirect()->back()->with([
       'notification' => [
         'message' => 'Record added successfully! Click here <a href="' . route("show_article", ["id" => $item->id]) . '">' . $item->name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ]
+    ]);
+  }
+
+  public function store_competitor(Request $request)
+  {
+
+    $item = Competitor::create([
+      'name' => $request->name,
+      'url' => $request->url,
+      'created_by' => Auth::user()->name,
+      'last_modified_by' => Auth::user()->name,
+    ]);
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here <a href="' . route("show_competitor", ["id" => $item->id]) . '">' . $item->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
       ]
@@ -421,6 +440,11 @@ class AdminController extends Controller
   {
     $data = Static_Page::find($id);
     return view('admin.show_page', compact('data'));
+  }
+  public function show_competitor($id)
+  {
+    $data = Competitor::find($id);
+    return view('admin.show_competitor', compact('data'));
   }
   public function show_session($id)
   {

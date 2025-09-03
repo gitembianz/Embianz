@@ -46,8 +46,8 @@
                 @endforeach
 
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <input id="listview.name" type="text" wire:model.defer="listview.name">
+                    <label for="listview.name">Listview name</label>
                 </div>
 
 
@@ -88,8 +88,8 @@
 
                 @if ($edit)
                     <div class="input__tabs details__long">
-                        <input type="text" wire:model.defer="listview.name">
-                        <label>Listview name</label>
+                        <input id="listview.name2" type="text" wire:model.defer="listview.name">
+                        <label for="listview.name2">Listview name</label>
                     </div>
                     <div class="details__long">
 
@@ -101,8 +101,9 @@
                     <div class="details__long"
                         style="display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Columns</label>
-                            <select wire:model="selectedAvailable" size="8" style="width: 100%;">
+                            <label for="selectedAvailable1" style="font-weight: bold; color: white;">Columns</label>
+                            <select id="selectedAvailable1" wire:model="selectedAvailable" size="8"
+                                style="width: 100%;">
                                 @foreach ($availableFields as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -115,8 +116,10 @@
                         </div>
 
                         <div style="flex: 1;">
-                            <label style="font-weight: bold; color: white;">Visible Fields</label>
-                            <select wire:model="selectedVisible" size="8" style="width: 100%;">
+                            <label for="selectedVisible2" style="font-weight: bold; color: white;">Visible
+                                Fields</label>
+                            <select id="selectedVisible2" wire:model="selectedVisible" size="8"
+                                style="width: 100%;">
                                 @foreach ($listview['columns'] as $field)
                                     <option value="{{ $field }}">{{ $field }}</option>
                                 @endforeach
@@ -248,7 +251,7 @@
     </aside>
 
     {{-- Navigation --}}
-    <h1 class="table--name">{{ __('Vouchers') }} ({{ $vouchers->total() }})</h1>
+    <h1 class="table--name">{{ __('Competitors') }} ({{ $competitors->total() }})</h1>
     <nav class="nav--controls">
         @if ($activelistview)
 
@@ -286,8 +289,10 @@
                 </svg>
             </button>
         @endif
-        <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
-
+        {{-- Search Input --}}
+        <input name="search" class="input input--long" type="text" wire:model.debounce.300ms="search"
+            placeholder="Search...">
+        {{-- Refresh Button --}}
         {{-- IF CHECKED --}}
         <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
             {{-- Dropdown Button --}}
@@ -302,6 +307,8 @@
                 </button>
             </div>
         </div>
+
+
         {{-- Optional Dropdown --}}
         <div class="dropdown dropdown--right">
             {{-- Dropdown Button --}}
@@ -338,14 +345,16 @@
                         </svg>
                         <span>Add listview</span>
                     </button>
-                    <a class="button button--primary button--fill button--flexed" href="{{ route('new_voucher') }}">
+                    {{-- Add New Button --}}
+                    <a class="button button--primary button--fill button--flexed"
+                        href="{{ route('newcompetitor') }}">
                         <svg>
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="12" y1="18" x2="12" y2="12"></line>
                             <line x1="9" y1="15" x2="15" y2="15"></line>
                         </svg>
-                        <span>Add Voucher</span>
+                        <span>Add Competitor</span>
                     </a>
                     <button class="button button--primary button--fill button--flexed" wire:click="exportData">
                         <svg>
@@ -389,15 +398,15 @@
                 <tr>
                     <th style="border-right: none; border-left: none;">
                         <div class="checkbox--primary">
-                            <input type="checkbox" id="selectPage29" wire:model="selectPage" />
-                            <label for="selectPage29"></label>
+                            <input type="checkbox" id="selectPage3" wire:model="selectPage" />
+                            <label for="selectPage3"></label>
                         </div>
                     </th>
                     @foreach ($selectedColumns as $index => $column)
-                        <th @if ($index > 1) class="hidden" @endif>
+                        <th @if ($index >= 2) class="hidden" @endif>
                             <button wire:click="sortBy('{{ $column }}')"
                                 class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
-                                {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
+                                {{ $column }}
                                 <svg>
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
@@ -417,7 +426,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($vouchers->isEmpty())
+                @if ($competitors->isEmpty())
                     <tr>
                         <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
                     </tr>
@@ -425,242 +434,54 @@
                     @php
                         $i = 0;
                     @endphp
-                    @foreach ($vouchers as $nr => $voucher)
+                    @foreach ($competitors as $nr => $competitor)
                         <tr @if ($loop->last) id="last_record" @endif
-                            class="expandable-row @if ($this->isChecked($voucher->id)) active @endif">
+                            class="expandable-row @if ($this->isChecked($competitor->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
-                                    <input type="checkbox" value="{{ $voucher->id }}" id="{{ $voucher->id }}"
+                                    <input type="checkbox" value="{{ $competitor->id }}" id="{{ $competitor->id }}"
                                         wire:model="checked">
-                                    <label for="{{ $voucher->id }}"></label>
+                                    <label for="{{ $competitor->id }}"></label>
                                 </div>
                             </td>
                             @foreach ($selectedColumns as $index => $column)
-                                <td @if ($index > 1) class="hidden" @endif
-                                    wire:click="expandRow({{ $nr }})">
-                                    @if ($column === 'percent')
-                                        @if ($editindex !== $nr)
-                                            {{ $voucher->$column }} %
-                                        @else
-                                            <div class="searchable">
-                                                <input type="number" min="0" required
-                                                    class="input__searchable"
-                                                    wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                            </div>
-                                        @endif
-                                    @elseif ($column === 'value')
-                                        @if ($editindex !== $nr)
-                                            {{ $voucher->$column }}
-                                        @else
-                                            <div class="searchable">
-                                                <input type="number" min="0" required
-                                                    class="input__searchable"
-                                                    wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                            </div>
-                                        @endif
-                                    @elseif ($column === 'status_id')
-                                        @if ($editindex !== $nr)
-                                            {{ $voucher->status->name }}
-                                        @else
-                                            <div class="searchable">
-                                                <select class="input__searchable"
-                                                    wire:model.defer="voucher.{{ $nr }}.status_id">
-                                                    @foreach ($statuses as $status)
-                                                        <option value="{{ $status->id }}">
-                                                            {{ $status->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
-                                    @elseif ($column === 'single_use')
-                                        @if ($editindex !== $nr)
-                                            @if ($voucher->$column == '1')
-                                                <div class="checkbox--secondary disabled">
-                                                    <input type="checkbox" id="disabled4" disabled checked>
-                                                    <label for="disabled4"></label>
-                                                </div>
-                                            @else
-                                                <div class="checkbox--secondary disabled">
-                                                    <input type="checkbox" id="disabled4" disabled>
-                                                    <label for="disabled4"></label>
-                                                </div>
-                                            @endif
-                                        @else
-                                            <input type="checkbox"
-                                                wire:model.defer="voucher.{{ $nr }}.single_use">
-                                        @endif
-                                    @elseif ($column === 'name' || $column === 'code')
-                                        @if ($editindex !== $nr)
-                                            {{ $voucher->$column }}
-                                        @else
-                                            <div class="searchable">
-                                                <input type="text" required class="input__searchable"
-                                                    wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                            </div>
-                                        @endif
-                                    @elseif ($column === 'start_date' || $column === 'end_date')
-                                        @if ($editindex !== $nr)
-                                            {{ $voucher->$column }}
-                                        @else
-                                            <div class="searchable">
-                                                <input type="date" required class="input__searchable"
-                                                    wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                            </div>
-                                        @endif
+                                <td @if ($index >= 2) class="hidden" @endif
+                                    data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
+                                    @if ($column === 'name')
+                                        <a
+                                            href="{{ route('show_competitor', ['id' => $competitor->id]) }}">{{ strip_tags($competitor->name) }}</a>
                                     @else
-                                        {{ $voucher->$column }}
+                                        {{ $competitor->$column }}
                                     @endif
+                                </td>
                             @endforeach
                             <td style="border-right: none">
-                                <div style="display:flex;">
-                                    @if ($editindex !== $nr)
-                                        <button class="button button--secondary button--sm"
-                                            wire:click.prevent="edititem({{ $nr }}, {{ $voucher->id }})">
-                                            <svg>
-                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button class="button button--secondary button--sm"
-                                            wire:click.prevent="confirmItemRemoval({{ $voucher->id }})">
-                                            <svg>
-                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                <path
-                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    @else
-                                        <button class="button button--secondary button--sm"
-                                            wire:click.prevent="saveitem({{ $nr }} , {{ $voucher->id }})">
-                                            <svg>
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg>
-                                        </button>
-                                        <button class="button button--secondary button--sm"
-                                            wire:click.prevent="canceledit()">
-                                            <svg>
-                                                <line x1="18" y1="6" x2="6" y2="18">
-                                                </line>
-                                                <line x1="6" y1="6" x2="18" y2="18">
-                                                </line>
-                                            </svg>
-                                        </button>
-                                    @endif
-                                </div>
+                                <button wire:click.prevent="confirmItemRemoval({{ $competitor->id }})"
+                                    class="button button--secondary button--sm">
+                                    <svg>
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr class="details-row  @if ($row === $i) active @endif">
-                            <td colspan="17">
+                            <td colspan="18">
                                 <div class="details">
                                     @foreach ($selectedColumns as $index => $column)
-                                        @if ($index >= count($selectedColumns) - 9)
-                                            @if ($column === 'percent')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold> {{ $voucher->$column }} %
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                    <div class="searchable">
-                                                        <input type="number" min="0" required
-                                                            class="input__searchable"
-                                                            wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                                    </div>
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'value')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                    <div class="searchable">
-                                                        <input type="number" min="0" required
-                                                            class="input__searchable"
-                                                            wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                                    </div>
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'status_id')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ str_replace('_id', '', $column) }}:</bold>
-                                                        {{ $voucher->status->name }}
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                    <div class="searchable">
-                                                        <select class="input__searchable"
-                                                            wire:model.defer="voucher.{{ $nr }}.status_id">
-                                                            @foreach ($statuses as $status)
-                                                                <option value="{{ $status->id }}">
-                                                                    {{ $status->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'single_use')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                        @if ($voucher->$column == '1')
-                                                            <div class="checkbox--secondary disabled">
-                                                                <input type="checkbox" id="disabled9" disabled
-                                                                    checked>
-                                                                <label id="disabled9"></label>
-                                                            </div>
-                                                        @else
-                                                            <div class="checkbox--secondary disabled">
-                                                                <input type="checkbox" id="disabled10" disabled>
-                                                                <label id="disabled10"></label>
-                                                            </div>
-                                                        @endif
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                        <input type="checkbox"
-                                                            wire:model.defer="voucher.{{ $nr }}.single_use">
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'name' || $column === 'code')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                    <div class="searchable">
-                                                        <input type="text" required class="input__searchable"
-                                                            wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                                    </div>
-                                                    </p>
-                                                @endif
-                                            @elseif ($column === 'start_date' || $column === 'end_date')
-                                                @if ($editindex !== $nr)
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        <bold>{{ $column }}:</bold>
-                                                    <div class="searchable">
-                                                        <input type="date" required class="input__searchable"
-                                                            wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-                                                    </div>
-                                                    </p>
-                                                @endif
+                                        @if ($index >= 2)
+                                            @if ($column === 'name')
+                                                <p>
+                                                    <bold>{{ $column }}:</bold>
+                                                    <a
+                                                        href="{{ route('show_competitor', ['id' => $competitor->id]) }}">{{ $competitor->name }}</a>
+                                                </p>
                                             @else
                                                 <p>
-                                                    <bold>{{ $column }}:</bold> {{ $voucher->$column }}
+                                                    <bold>{{ $column }}:</bold>
+                                                    {{ $competitor->$column }}
                                                 </p>
                                             @endif
                                         @endif
@@ -679,7 +500,7 @@
         <x-admin-lazyload />
 
         {{-- Load More Manual --}}
-        @if ($loadAmount <= count($vouchers))
+        @if ($loadAmount <= count($competitors))
             <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
                 Load more
             </button>
