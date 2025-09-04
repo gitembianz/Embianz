@@ -143,9 +143,15 @@
         </div>
 
         {{-- Product Meta Description --}}
-        <div class="input__tabs details__long">
+        <div class="input__tabs">
             <input type="text" name="meta_description" placeholder=" " value="{{ old('meta_description') }}">
             <label>Meta Description</label>
+        </div>
+
+         {{-- Product Google Category --}}
+        <div class="input__tabs">
+            <input type="text" name="google_category" placeholder=" " value="{{ old('google_category') }}">
+            <label>Google Category</label>
         </div>
 
         {{-- Product Long Description --}}

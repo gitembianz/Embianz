@@ -190,21 +190,12 @@
   margin-top: $labelHeight;
 
     /// textarea & fake textarea style
-    /// 
-  & > div {
-    color: $primary;
-    background: $white;
-    padding: $padding;
-     width: 100%;
-    height: auto;
-  }
   & > textarea, span {
     width: 100%;
     height: auto;
     // min-height: 350px;
     resize: vertical;
-    min-height: 35px;
-  
+
     color: $primary;
     background: $white;
     padding: $padding;

@@ -51,6 +51,10 @@
       route::post('/store_article', [AdminController::class, 'store_article'])->name('store_article');
       route::get('/show_article/{id}/', [AdminController::class, 'show_article'])->name('show_article');
 
+      route::view('/competitors', 'admin.competitors')->name('competitors');
+      route::view('/add_competitor', 'admin.add_competitor')->name('newcompetitor');
+      route::post('/store_competitor', [AdminController::class, 'store_competitor'])->name('store_competitor');
+      route::get('/show_competitor/{id}/', [AdminController::class, 'show_competitor'])->name('show_competitor');
 
       //Products routes
       route::view('/products', 'admin.products')->name('all_products');

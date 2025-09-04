@@ -87,8 +87,7 @@
                         @endforeach
                         @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
                             <li>
-                                <a class="navbar__link"
-                                    href="{{ route('blog') }}">
+                                <a class="navbar__link" href="{{ route('blog') }}">
                                     @if (app()->has('label_blog_page'))
                                         {!! app('label_blog_page') !!}
                                     @endif
@@ -265,16 +264,15 @@
                         @endif
                     @endforeach
                 @endif
-                  @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
-                            <li>
-                                <a class="menu__link"
-                                    href="{{ route('blog') }}">
-                                    @if (app()->has('label_blog_page'))
-                                        {!! app('label_blog_page') !!}
-                                    @endif
-                                </a>
-                            </li>
-                        @endif
+                @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
+                    <li>
+                        <a class="menu__link" href="{{ route('blog') }}">
+                            @if (app()->has('label_blog_page'))
+                                {!! app('label_blog_page') !!}
+                            @endif
+                        </a>
+                    </li>
+                @endif
                 <li class="menufooter">Informații</li>
                 @if ($staticpages)
                     @foreach ($staticpages as $page)

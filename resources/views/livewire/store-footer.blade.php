@@ -177,10 +177,7 @@
                 <div class="footer__top">
                     <a class="logo" href="{{ url('/') }}">
                         <img title="{{ app('global_site_name') }} logo" loading="eager"
-
-
                             src="/images/store/svg/logo-light.svg" alt="logo">
-
 
                     </a>
                     <div class="social__list">
@@ -236,6 +233,13 @@
                 <div class="footer__bottom">
                     <div class="footer__list">
                         <h3 class="footer__title">Serviciu clienți</h3>
+                        @if (app()->has('global_footer_display_blog') && app('global_footer_display_blog') === 'true')
+                            <a class="footer__link" href="{{ route('blog') }}">
+                                @if (app()->has('label_blog_page'))
+                                    {!! app('label_blog_page') !!}
+                                @endif
+                            </a>
+                        @endif
                         @if ($staticpages)
                             @foreach ($staticpages as $page)
                                 @if ($page['sequence'] % 2 != 0)

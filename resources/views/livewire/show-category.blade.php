@@ -275,7 +275,6 @@
         </div>
 
         {{-- Category Long Description --}}
-
 <div class="textarea__tabs details__long">
   @if ($editcategory === null)
     <div class="disabled">{!! $category->long_description !!}</div>
@@ -635,8 +634,15 @@
 
   <label style="top:-25px; transform:none; color:#bbfcde;">Long Description Bottom</label>
 </div>
-
-
+        {{-- Category Long Description --}}
+        <div class="textarea__tabs details__long">
+            @if ($editcategory === null)
+                <span class="disabled">{{ $category->long_description_bottom }}</span>
+            @else
+                <textarea type="text" wire:model.defer="cat.long_description_bottom" required></textarea>
+            @endif
+            <label for="category__name">Long Description Bottom</label>
+        </div>
 
         {{-- Category Seo Title --}}
         <div class="input__tabs">

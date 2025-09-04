@@ -127,7 +127,6 @@
         </div>
 
         {{-- Category Long Description --}}
-
 <div class="textarea__tabs details__long">
   <div id="ck-host"></div>
   <input type="hidden" name="long_description" id="long_description_input"
@@ -285,7 +284,6 @@
   });
 })();
 </script>
-        
         <div class="textarea__tabs details__long">
             <textarea name="long_description_bottom" placeholder=" ">{{ old('long_description_bottom') }}</textarea>
             <label>Long Description Bottom</label>
@@ -448,7 +446,6 @@
   });
 })();
 </script>
-
         {{-- Category SEO Title --}}
         <div class="input__tabs">
             <input type="text" name="seo_title" placeholder=" " value="{{ old('seo_title') }}">
