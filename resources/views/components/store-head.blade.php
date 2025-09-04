@@ -45,6 +45,7 @@
     ?>
     <link rel="preload" href="{{ $href }}" as="style">
     <link rel="stylesheet" href="{{ $href }}" async>
+
     @if (app()->has('global_site_name'))
         <meta property="og:site_name" content="{{ app('global_site_name') }}">
     @endif

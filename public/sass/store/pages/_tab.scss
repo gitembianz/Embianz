@@ -62,6 +62,13 @@
   &.active {
     display: block;
   }
+
+  & > p {
+
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  line-height: 150%;
+}
 }
 
 .tab__info {
@@ -69,8 +76,11 @@
   font-weight: $lightWeight;
   color: $lightBlack;
   line-height: 150%;
-}
 
+
+
+
+}
 .tab__table {
   border-collapse: collapse;
   width: 100%;

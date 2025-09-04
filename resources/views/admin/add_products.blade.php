@@ -161,10 +161,165 @@
         </div>
 
         {{-- Product Long Description --}}
-        <div class="textarea__tabs details__long">
-            <textarea name="long_description" placeholder=" ">{{ old('long_description') }}</textarea>
-            <label>Long Description</label>
-        </div>
+       {{-- Long Description field (only one) --}}
+{{-- Host + hidden field (keeps form posting the HTML) --}}
+<div class="textarea__tabs details__long">
+  <div id="ck-host"></div>
+  <input type="hidden" name="long_description" id="long_description_input"
+         value="{!! old('long_description', $product->long_description ?? '') !!}">
+  <label style="top:-25px; transform:none; color: #bbfcde;">Long Description</label>
+</div>
+{{-- CKEditor styles + your editor-only styles --}}
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css">
+<style>
+  /* Reset look ONLY inside the editable area */
+  .ck-content {
+    font: 400 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #111;
+    /* optional: give it some height */
+    min-height: 280px;
+  }
+
+  /* Prevent weird box/paddings from your global CSS */
+  .ck-content * { box-sizing: border-box; }
+
+  /* Basic, clean defaults */
+  .ck-content p { margin: .8em 0; }
+  .ck-content h1, .ck-content h2, .ck-content h3,
+  .ck-content h4, .ck-content h5, .ck-content h6 {
+    margin: 1.2em 0 .6em;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+  .ck-content ul, .ck-content ol { margin: .8em 0; padding-left: 1.5em; }
+  .ck-content ul { list-style: disc outside; }
+  .ck-content ol { list-style: decimal outside; }
+  .ck-content a { text-decoration: underline; color: inherit; }
+  .ck-content img { max-width: 100%; height: auto; }
+  .ck-content table { border-collapse: collapse; width: 100%; }
+  .ck-content th, .ck-content td { border: 1px solid #ddd; padding: .5em; }
+  .ck-content blockquote { margin: 1em 0; padding-left: 1em; border-left: 3px solid #ddd; }
+  .ck-content hr { border: 0; border-top: 1px solid #e5e5e5; margin: 1.5em 0; }
+</style>
+<script>
+(function () {
+  // The initial HTML to load in the iframe editor
+  const initialHtml = @json(old('long_description', $product->long_description ?? '<p></p>'));
+
+  const srcdoc = `
+<!doctype html><html><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.css">
+  <style>
+    html,body{margin:0;height:100%}
+    .ck-content{min-height:280px; line-height:1.6;}
+    .ck-editor{max-width:100%}
+  </style>
+</head><body>
+  <div id="editor">${initialHtml}</div>
+
+  <script src="https://cdn.ckeditor.com/ckeditor5/46.0.0/ckeditor5.umd.js"><\/script>
+  <script>
+  (function(){
+    var CK = window.CKEDITOR;
+    CK.ClassicEditor.create(document.querySelector('#editor'), {
+      licenseKey: '{{ app('global_ckeditor_license') }}',
+      plugins: [
+        // essentials & UX
+        CK.Essentials, CK.Paragraph, CK.Autoformat, CK.PasteFromOffice, CK.RemoveFormat,
+        CK.FindAndReplace, CK.SelectAll, CK.Clipboard, CK.Undo,
+        // text formatting
+        CK.Bold, CK.Italic, CK.Underline, CK.Strikethrough, CK.Subscript, CK.Superscript,
+        CK.Code, CK.Highlight, CK.Font, CK.Alignment,
+        // structure
+        CK.Heading, CK.BlockQuote, CK.HorizontalLine, CK.PageBreak,
+        // lists
+        CK.List, CK.ListProperties, CK.TodoList, CK.Indent, CK.IndentBlock,
+        // links & media
+        CK.Link, CK.AutoLink, CK.MediaEmbed,
+        // images
+        CK.Image, CK.ImageCaption, CK.ImageStyle, CK.ImageToolbar, CK.LinkImage,
+        // tables
+        CK.Table, CK.TableToolbar, CK.TableProperties, CK.TableCellProperties,
+        // source view + general HTML support
+        CK.SourceEditing,
+        CK.GeneralHtmlSupport
+      ],
+
+      toolbar: [
+        'sourceEditing','|',
+        'undo','redo','findAndReplace','selectAll','|',
+        'heading','|',
+        'bold','italic','underline','strikethrough','subscript','superscript','code','removeFormat','|',
+        'highlight','link','blockQuote','codeBlock','horizontalLine','pageBreak','|',
+        'bulletedList','numberedList','todoList','outdent','indent','|',
+        'alignment','|',
+        'fontSize','fontFamily','fontColor','fontBackgroundColor','|',
+        'insertTable','mediaEmbed'
+      ],
+
+      list: { properties: { styles:true, startIndex:true, reversed:true } },
+      image: { toolbar: ['imageTextAlternative','|','imageStyle:inline','imageStyle:block','imageStyle:side','|','linkImage'] },
+      table: { contentToolbar: ['tableColumn','tableRow','mergeTableCells','tableProperties','tableCellProperties'] },
+
+      // 🔓 Allow ALL HTML tags/attrs/classes/styles in Source view
+      htmlSupport: {
+        allow: [
+          {
+            name: /.*/,        // any tag: div, section, iframe, video, etc.
+            attributes: true,  // any attributes (including data-*)
+            classes: true,     // any classes
+            styles: true       // any inline styles
+          }
+        ]
+      }
+    })
+    .then(function(editor){
+      // Expose to parent
+      window.editor = editor;
+
+      // Tell parent our height (for auto-resize)
+      function pingHeight(){
+        var h = document.documentElement.scrollHeight || document.body.scrollHeight || 320;
+        parent.postMessage({ type:'ck-height', h: h }, '*');
+      }
+      pingHeight();
+      editor.model.document.on('change:data', pingHeight);
+      window.addEventListener('resize', pingHeight);
+      setTimeout(pingHeight, 50);
+    }).catch(function(e){ console.error(e); });
+  })();
+  <\/script>
+</body></html>`;
+
+  // Create the iframe
+  const iframe = document.createElement('iframe');
+  iframe.id = 'ckframe';
+  iframe.srcdoc = srcdoc;
+  iframe.style.width = '100%';
+  iframe.style.minHeight = '320px';
+  iframe.style.border = '1px solid #ddd';
+  iframe.style.borderRadius = '8px';
+  iframe.style.background = '#fff';
+
+  document.getElementById('ck-host').appendChild(iframe);
+
+  // Auto-resize when the iframe reports new height
+  window.addEventListener('message', function (e) {
+    if (e.source === iframe.contentWindow && e.data && e.data.type === 'ck-height') {
+      iframe.style.height = Math.max(320, e.data.h) + 'px';
+    }
+  });
+
+  // Sync HTML to hidden input on submit
+  const form = document.getElementById('long_description_input')?.closest('form');
+  form?.addEventListener('submit', function () {
+    const ed = iframe.contentWindow && iframe.contentWindow.editor;
+    if (ed) document.getElementById('long_description_input').value = ed.getData();
+  });
+})();
+</script>
 
         {{-- Product SEO Title --}}
         <div class="input__tabs">
