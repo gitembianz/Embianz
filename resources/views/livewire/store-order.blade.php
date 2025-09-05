@@ -279,10 +279,10 @@
                             @endif
                         </h2>
                     </div>
-
                     {{-- alpine script --}}
                     <script>
                         document.addEventListener('alpine:init', () => {
+                          localStorage.removeItem('countiesDataCache');
                             Alpine.store('checkout', {
                                 countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
                                 isIdentic: @js($is_identic),
@@ -372,6 +372,37 @@
                                     juridicInput.dispatchEvent(new Event('input', {
                                         bubbles: true
                                     }));
+
+
+
+                                },
+
+                                nextstep() {
+                                    const SCounty = document.getElementById('ShippingCounty');
+                                    this.shipping_county = SCounty.value;
+                                    const hiddenCountyInput = document.getElementById('hiddenCountyInput');
+                                    hiddenCountyInput.value = SCounty.value;
+                                    hiddenCountyInput.dispatchEvent(new Event('input'));
+
+                                    const SCity = document.getElementById('ShippingCity');
+                                    this.shipping_city = SCity.value;
+                                    const hiddenCityInput = document.getElementById('hiddenCityInput');
+                                    hiddenCityInput.value = SCity.value;
+                                    hiddenCityInput.dispatchEvent(new Event('input'));
+
+                                    if (!this.isIdentic) {
+                                        const BCounty = document.getElementById('BillingCounty');
+                                        this.billing_county = BCounty.value;
+                                        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
+                                        hiddenCountyInputB.value = BCounty.value;
+                                        hiddenCountyInputB.dispatchEvent(new Event('input'));
+
+                                        const BCity = document.getElementById('BillingCity');
+                                        this.billing_city = BCity.value;
+                                        const hiddenCityInputB = document.getElementById('hiddenCityBillingInput');
+                                        hiddenCityInputB.value = BCity.value;
+                                        hiddenCityInputB.dispatchEvent(new Event('input'));
+                                    }
                                 },
 
                                 setIndividual() {
@@ -856,25 +887,25 @@
                             <!-----------------------   country billing  ----------------------------->
 
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
-                                <select name="selectcountry" x-model="$store.checkout.billingcountry" x-init="$watch('$store.checkout.billingcountry', value => {
-                                    // reset county + city in Alpine
-                                    // Also clear city input field if present
-                                    const cityInput = document.getElementById('BillingCity');
-                                    if (cityInput) {
-                                        cityInput.value = '';
-                                        cityInput.dispatchEvent(new Event('input'));
-                                    }
-                                    const countyInput = document.getElementById('BillingCounty');
-                                    if (countyInput) {
-                                        countyInput.value = '';
-                                        countyInput.dispatchEvent(new Event('input'));
-                                    }
+                                <select name="selectcountry" x-model="$store.checkout.billingcountry"
+                                    x-init="$watch('$store.checkout.billingcountry', value => {
+                                        // reset county + city in Alpine
+                                        // Also clear city input field if present
+                                        const cityInput = document.getElementById('BillingCity');
+                                        if (cityInput) {
+                                            cityInput.value = '';
+                                            cityInput.dispatchEvent(new Event('input'));
+                                        }
+                                        const countyInput = document.getElementById('BillingCounty');
+                                        if (countyInput) {
+                                            countyInput.value = '';
+                                            countyInput.dispatchEvent(new Event('input'));
+                                        }
 
 
-                                    // fetch new counties
-                                    $store.checkout.fetchBillingCountiesForCountry(value)
-                                })"
-                                    wire:model.defer="billing_country" class="select">
+                                        // fetch new counties
+                                        $store.checkout.fetchBillingCountiesForCountry(value)
+                                    })" wire:model.defer="billing_country" class="select">
                                     @foreach ($countries as $c)
                                         <option value="{{ $c['name'] }}">{{ $c['name'] }}</option>
                                     @endforeach
@@ -2074,7 +2105,7 @@
         @elseif ($step == 1 && $this->hasCartWithItems)
             <button class="checkout__button checkout__button--confirm" x-data
                 @click.prevent="
-        $store.checkout.syncToLivewire();
+        $store.checkout.syncToLivewire();$store.checkout.nextstep();
         if ($store.checkout.isIdentic) {
             validateShipping();
         } else if ($store.checkout.individual) {

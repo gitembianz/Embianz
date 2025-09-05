@@ -105,14 +105,20 @@ class CompetitorProducts extends Component
       }
       if (array_key_exists('price', $record)) {
         $new->price = $record['price'];
+        if($new->internal_price !=0){
 
-        $differenceValue = $record['price'] - $new->internal_price;
+          $differenceValue = $record['price'] - $new->internal_price;
 
-        $differencePercentage = $new->internal_price > 0
+          $differencePercentage = $new->internal_price > 0
             ? round(($differenceValue / $new->internal_price) * 100, 2)
             : 0;
-        $new->difference_value = $differenceValue;
-        $new->difference_percent = $differencePercentage;
+          $new->difference_value = $differenceValue;
+          $new->difference_percent = $differencePercentage;
+        }else{
+          $new->difference_value = 0;
+          $new->difference_percent = 0;
+        }
+
       }
       $new->save();
       session()->flash('notification', [
@@ -201,40 +207,37 @@ class CompetitorProducts extends Component
   public function saveitems()
   {
     foreach ($this->productsAndValues as $array) {
-    if (isset($array['product']['idrel'])) {
+      if (isset($array['product']['idrel'])) {
         $productprice = PricelistEntries::where('product_id', $array['product']['idrel'])
-            ->latest('created_at')
-            ->value('value') ?? 0;
+          ->latest('created_at')
+          ->value('value') ?? 0;
 
         $competitorPrice = $array['price'] ?? 0;
 
         $differenceValue = $competitorPrice - $productprice;
 
         $differencePercentage = $productprice > 0
-            ? round(($differenceValue / $productprice) * 100, 2)
-            : 0;
-
-        ModelsCompetitorProducts::create([
-            'name' => $array['name'],
-            'url' => $array['url'],
-            'price' => $competitorPrice,
-            'competitor_id' => $this->competitor->id,
-            'product_id' => $array['product']['idrel'],
-            'internal_price' => $productprice,
-            'difference_value' => $differenceValue,
-            'difference_percent' => $differencePercentage,
-            'created_by' => auth()->user()->name,
-            'last_modified_by' => auth()->user()->name,
-        ]);
-    } else {
-        session()->flash('notification', [
-            'message' => 'Please provide values',
-            'type' => 'warning',
-            'title' => 'Missing Values'
-        ]);
-        return;
+          ? round(($differenceValue / $productprice) * 100, 2)
+          : 0;
+      } else {
+        $productprice = 0;
+        $competitorPrice = $array['price'] ?? 0;
+        $differenceValue = 0;
+        $differencePercentage = 0;
+      }
+      ModelsCompetitorProducts::create([
+        'name' => $array['name'],
+        'url' => $array['url'],
+        'price' => $competitorPrice,
+        'competitor_id' => $this->competitor->id,
+        'product_id' => $array['product']['idrel'],
+        'internal_price' => $productprice,
+        'difference_value' => $differenceValue,
+        'difference_percent' => $differencePercentage,
+        'created_by' => auth()->user()->name,
+        'last_modified_by' => auth()->user()->name,
+      ]);
     }
-}
 
 
     $this->productsAndValues = [];
@@ -247,7 +250,7 @@ class CompetitorProducts extends Component
     ]);
     $this->mount($this->competitor, 'competitor_products');
   }
-    //Related item function
+  //Related item function
   public function loadMore()
   {
     $this->loadAmount += 10;
@@ -310,16 +313,16 @@ class CompetitorProducts extends Component
     $this->productsAndValues = [];
     $this->row = 1;
     $this->productsAndValues[] = [
-        'name' => null,
-        'url' => null,
-        'price' => null,
-        'allow' => false,
-        'itemselected' => null,
-        'product' => ['name' => null, 'idrel' => null]
-      ];
+      'name' => null,
+      'url' => null,
+      'price' => null,
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['name' => null, 'idrel' => null]
+    ];
   }
 
-   // funciton for link and delete
+  // funciton for link and delete
   public function deleteSingleRecord()
   {
     $item = ModelsCompetitorProducts::findOrFail($this->idbeingremoved);
@@ -361,5 +364,4 @@ class CompetitorProducts extends Component
     $this->multiple = false;
     $this->single = false;
   }
-
 }
