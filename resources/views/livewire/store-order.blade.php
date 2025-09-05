@@ -399,7 +399,7 @@
 
                                         const BCity = document.getElementById('BillingCity');
                                         this.billing_city = BCity.value;
-                                        const hiddenCityInputB = document.getElementById('hiddenCityBillingInput');
+                                        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
                                         hiddenCityInputB.value = BCity.value;
                                         hiddenCityInputB.dispatchEvent(new Event('input'));
                                     }
