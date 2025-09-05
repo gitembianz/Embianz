@@ -18,7 +18,7 @@ return new class extends Migration
         $table->string('name')->nullable();
         $table->decimal('price', 10, 2)->nullable();
         $table->longText('url')->nullable();
-        $table->unsignedBigInteger('product_id')->index();
+        $table->unsignedBigInteger('product_id')->index()->nullable();
         $table->foreign('product_id')->references('id')->on('products');
         $table->decimal('internal_price', 10, 2)->nullable();
         $table->unsignedBigInteger('competitor_id')->index();
@@ -49,7 +49,7 @@ return new class extends Migration
       }
       if (!Schema::hasColumn('competitor_products', 'product_id')) {
         Schema::table('competitor_products', function (Blueprint $table) {
-          $table->unsignedBigInteger('product_id')->index();
+          $table->unsignedBigInteger('product_id')->index()->nullable()->after('url');
         $table->foreign('product_id')->references('id')->on('products');
         });
       }
