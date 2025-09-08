@@ -88,10 +88,14 @@ class ShowOrder extends Component
     if ($value) {
       $this->services = app()->has('global_sam_services') ? json_decode(app('global_sam_services'), true) : null;
       $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
-      $this->persons = $this->addresses[0]['contact_persons'] ?? null;
-      $this->person = $this->persons[0]['id'] ?? null;
+
+      $this->persons = $this->addresses[0]['contact_persons'] ?? [];
+      $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
+
       $this->service = $this->services[0]['id'] ?? null;
-      $this->pickup_point = $this->addresses[0]['id'] ?? null;
+
+      $this->pickup_point = !empty($this->addresses) ? end($this->addresses)['id'] : null;
+
 
       if (
         is_null($this->person) ||
@@ -271,7 +275,7 @@ class ShowOrder extends Component
   public function get_fan_token()
   {
     $user = 'adtanase';
-    $pass = 'WCsIC3yVToe2400qufAb';
+    $pass = 'aPR&*(WU08Wf5STx';
     $client = new Client();
 
     $response = $client->post($this->fanUrl . '/login', [
