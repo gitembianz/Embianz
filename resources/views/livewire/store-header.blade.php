@@ -46,9 +46,7 @@
                                             </svg>
                                         </a>
                                         <ul class="dropdown__list">
-                                            @foreach ($category->subcategory->sortBy(function ($subcategory) {
-        return $subcategory->category->sequence;
-    }) as $subcategory)
+                                            @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
                                                 <li class="dropdown__item">
                                                     <a class="dropdown__item--button"
                                                         href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
@@ -61,9 +59,7 @@
                                                     </a>
                                                     @if ($subcategory->category->subcategory->count() != 0)
                                                         <div class="dropdown__item--list">
-                                                            @foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {
-        return $subsubCategory->category->sequence;
-    }) as $subsubCategory)
+                                                            @foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {return $subsubCategory->category->sequence;}) as $subsubCategory)
                                                                 <a class="dropdown__item--link"
                                                                     href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
                                                                     {!! $subsubCategory->category->name !!}
@@ -149,9 +145,7 @@
                     {{-- cart button --}}
                     <button class="header__btn" wire:click="$emit('showcart')" id="basketOpen"
                         aria-label="Open cart button">
-                        @if ($cart)
-                            @livewire('cart-quantity', ['cart' => $cart])
-                        @endif
+                            @livewire('cart-quantity')
                         <svg>
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -204,9 +198,7 @@
                                     </button>
                                 </div>
                                 <ul class="dropmenu__list">
-                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {
-        return $subcategory->category->sequence;
-    }) as $subcategory)
+                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
                                         <li class="submenu">
                                             <div class="submenu__button">
                                                 <a class="submenu__button--link"
@@ -229,9 +221,7 @@
                                             </div>
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <div class="submenu__list">
-                                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {
-        return $subcategory->category->sequence;
-    }) as $subcategory)
+                                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
                                                         <a class="submenu__link"
                                                             href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
                                                             @if ($subsubCategory->category->media->where('type', 'min')->first() != null)

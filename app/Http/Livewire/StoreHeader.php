@@ -3,13 +3,10 @@
 namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Cart;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\UserPromotions;
 use App\Models\UserSessions;
-use Illuminate\Support\Facades\Cache;
-use App\Models\Static_Page;
 
 class StoreHeader extends Component
 {
@@ -19,8 +16,7 @@ class StoreHeader extends Component
 
 
   protected $listeners = [
-    'newcart' => 'NewCart',
-    'orderprocess' => 'getCartProperty',
+    'orderprocess' => 'getCartProperty'
   ];
 
   private function getSessionId()
@@ -47,8 +43,7 @@ class StoreHeader extends Component
   public function render()
   {
     $data = [
-      'categories' => $this->categories,
-      'cart' => $this->cart,
+      'categories' => $this->categories
 
     ];
     return view('livewire.store-header', $data);
@@ -130,22 +125,6 @@ class StoreHeader extends Component
   }
 
 
-
-
-  public function getCartProperty()
-  {
-    return Cart::select('id', 'quantity_amount')
-      ->where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
-      ->latest()
-      ->first() ?? null;
-  }
-
-  public function NewCart()
-  {
-    $this->getCategoriesProperty();
-    $this->emit('newcartlist');
-  }
   protected function applyCategoryConditions($query)
   {
     $query->where('active', 1)
