@@ -1,11 +1,8 @@
-<div>
-    <div @if ($cart && $cart->quantity_amount != 0) style="display: flex !important"
-         @else style="display: none !important" @endif
-         id="cartCount" class="header__count">
+    <div id="cartCount" class="header__count"
+        style="opacity: {{ $quantity != 0 ? '1' : '0' }};">
         <span>
-            @if ($cart->quantity_amount != 0)
-                {{ $cart->quantity_amount }}
+            @if ($quantity)
+                {{ $quantity }}
             @endif
         </span>
     </div>
-</div>
