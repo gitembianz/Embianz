@@ -281,144 +281,169 @@
                     </div>
                     {{-- alpine script --}}
                     <script>
-                        document.addEventListener('alpine:init', () => {
-                          localStorage.removeItem('countiesDataCache');
-                            Alpine.store('checkout', {
-                                countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
-                                isIdentic: @js($is_identic),
-                                individual: @js($individual),
-                                juridic: @js($juridic),
-                                selectedCounty: @js($shipping_county),
-                                selectedCountyBilling: @js($billing_county),
-                                ShippingCountiesList: [],
-                                BillingCountiesList: [],
+document.addEventListener('alpine:init', () => {
+    localStorage.removeItem('countiesDataCache');
+    Alpine.store('checkout', {
+        countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
+        isIdentic: @js($is_identic),
+        individual: @js($individual),
+        juridic: @js($juridic),
+        selectedCounty: @js($shipping_county),
+        selectedCountyBilling: @js($billing_county),
+        ShippingCountiesList: [],
+        BillingCountiesList: [],
 
-                                country: @js($shipping_country),
-                                billingcountry: @js($billing_country),
+        country: @js($shipping_country),
+        billingcountry: @js($billing_country),
+
+        saveCache() {
+            localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
+        },
+
+        async fetchShippingCountiesForCountry(countryName) {
+            if (!countryName) {
+                this.ShippingCountiesList = [];
+                return;
+            }
+
+            const country = countryName.replace(/\s+/g, '_');
+
+            if (this.countiesDataCache[country]) {
+                this.ShippingCountiesList = this.countiesDataCache[country];
+                return;
+            }
+
+            try {
+                const res = await fetch(`/js/countries/${country}.json`);
+                if (!res.ok) throw new Error('Not found');
+                const data = await res.json();
+
+                this.countiesDataCache[country] = data.counties || [];
+                this.saveCache();
+
+                this.ShippingCountiesList = this.countiesDataCache[country];
+            } catch (e) {
+                this.ShippingCountiesList = [];
+            }
+        },
+
+        async fetchBillingCountiesForCountry(countryName) {
+            if (!countryName) {
+                this.BillingCountiesList = [];
+                return;
+            }
+
+            const country = countryName.replace(/\s+/g, '_');
+
+            if (this.countiesDataCache[country]) {
+                this.BillingCountiesList = this.countiesDataCache[country];
+                return;
+            }
+
+            try {
+                const res = await fetch(`/js/countries/${country}.json`);
+                if (!res.ok) throw new Error('Not found');
+                const data = await res.json();
+
+                this.countiesDataCache[country] = data.counties || [];
+                this.saveCache();
+
+                this.BillingCountiesList = this.countiesDataCache[country];
+            } catch (e) {
+                this.BillingCountiesList = [];
+            }
+        },
+
+        syncToLivewire() {
+            const hidden = document.getElementById('hidden_is_identic');
+            hidden.value = this.isIdentic ? 1 : 0;
+            hidden.dispatchEvent(new Event('input', {
+                bubbles: true
+            }));
+
+            const individualInput = document.getElementById('hidden_individual');
+            individualInput.value = this.individual ? 1 : 0;
+            individualInput.dispatchEvent(new Event('input', {
+                bubbles: true
+            }));
+
+            const juridicInput = document.getElementById('hidden_juridic');
+            juridicInput.value = this.juridic ? 1 : 0;
+            juridicInput.dispatchEvent(new Event('input', {
+                bubbles: true
+            }));
+        },
+
+        nextstep() {
+    const SCounty = document.getElementById('ShippingCounty');
+    this.shipping_county = SCounty.value;
+    const hiddenCountyInput = document.getElementById('hiddenCountyInput');
+    hiddenCountyInput.value = SCounty.value;
+    hiddenCountyInput.dispatchEvent(new Event('input'));
+
+    const SCity = document.getElementById('ShippingCity');
+    this.shipping_city = SCity.value;
+    const hiddenCityInput = document.getElementById('hiddenCityInput');
+    hiddenCityInput.value = SCity.value;
+    hiddenCityInput.dispatchEvent(new Event('input'));
+
+    @this.set('shipping_county', SCounty.value);
+    @this.set('shipping_city', SCity.value);
+
+    if (this.isIdentic) {
+        this.selectedCountyBilling = SCounty.value;
+        this.billingcountry = this.country;
+        
+        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
+        if (hiddenCountyInputB) {
+            hiddenCountyInputB.value = SCounty.value;
+            hiddenCountyInputB.dispatchEvent(new Event('input'));
+        }
+
+        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
+        if (hiddenCityInputB) {
+            hiddenCityInputB.value = SCity.value;
+            hiddenCityInputB.dispatchEvent(new Event('input'));
+        }
+        
+        @this.set('billing_county', SCounty.value);
+        @this.set('billing_city', SCity.value);
+        @this.set('billing_country', this.country);
+        
+    } else {
+        const BCounty = document.getElementById('BillingCounty');
+        this.billing_county = BCounty.value;
+        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
+        hiddenCountyInputB.value = BCounty.value;
+        hiddenCountyInputB.dispatchEvent(new Event('input'));
+
+        const BCity = document.getElementById('BillingCity');
+        this.billing_city = BCity.value;
+        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
+        hiddenCityInputB.value = BCity.value;
+        hiddenCityInputB.dispatchEvent(new Event('input'));
+        
+        @this.set('billing_county', BCounty.value);
+        @this.set('billing_city', BCity.value);
+    }
+},
 
 
-                                saveCache() {
-                                    localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
-                                },
 
-                                async fetchShippingCountiesForCountry(countryName) {
-                                    if (!countryName) {
-                                        this.ShippingCountiesList = [];
-                                        return;
-                                    }
+        setIndividual() {
+            this.individual = true;
+            this.juridic = false;
+            this.syncToLivewire();
+        },
 
-                                    const country = countryName.replace(/\s+/g, '_');
-
-                                    if (this.countiesDataCache[country]) {
-                                        this.ShippingCountiesList = this.countiesDataCache[country];
-                                        return;
-                                    }
-
-                                    try {
-                                        const res = await fetch(`/js/countries/${country}.json`);
-                                        if (!res.ok) throw new Error('Not found');
-                                        const data = await res.json();
-
-                                        this.countiesDataCache[country] = data.counties || [];
-                                        this.saveCache();
-
-                                        this.ShippingCountiesList = this.countiesDataCache[country];
-                                    } catch (e) {
-                                        this.ShippingCountiesList = [];
-                                    }
-                                },
-                                async fetchBillingCountiesForCountry(countryName) {
-                                    if (!countryName) {
-                                        this.BillingCountiesList = [];
-                                        return;
-                                    }
-
-                                    const country = countryName.replace(/\s+/g, '_');
-
-                                    if (this.countiesDataCache[country]) {
-                                        this.BillingCountiesList = this.countiesDataCache[country];
-                                        return;
-                                    }
-
-                                    try {
-                                        const res = await fetch(`/js/countries/${country}.json`);
-                                        if (!res.ok) throw new Error('Not found');
-                                        const data = await res.json();
-
-                                        this.countiesDataCache[country] = data.counties || [];
-                                        this.saveCache();
-
-                                        this.BillingCountiesList = this.countiesDataCache[country];
-                                    } catch (e) {
-                                        this.BillingCountiesList = [];
-                                    }
-                                },
-
-                                syncToLivewire() {
-                                    const hidden = document.getElementById('hidden_is_identic');
-                                    hidden.value = this.isIdentic ? 1 : 0;
-                                    hidden.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
-
-                                    const individualInput = document.getElementById('hidden_individual');
-                                    individualInput.value = this.individual ? 1 : 0;
-                                    individualInput.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
-
-                                    const juridicInput = document.getElementById('hidden_juridic');
-                                    juridicInput.value = this.juridic ? 1 : 0;
-                                    juridicInput.dispatchEvent(new Event('input', {
-                                        bubbles: true
-                                    }));
-
-
-
-                                },
-
-                                nextstep() {
-                                    const SCounty = document.getElementById('ShippingCounty');
-                                    this.shipping_county = SCounty.value;
-                                    const hiddenCountyInput = document.getElementById('hiddenCountyInput');
-                                    hiddenCountyInput.value = SCounty.value;
-                                    hiddenCountyInput.dispatchEvent(new Event('input'));
-
-                                    const SCity = document.getElementById('ShippingCity');
-                                    this.shipping_city = SCity.value;
-                                    const hiddenCityInput = document.getElementById('hiddenCityInput');
-                                    hiddenCityInput.value = SCity.value;
-                                    hiddenCityInput.dispatchEvent(new Event('input'));
-
-                                    if (!this.isIdentic) {
-                                        const BCounty = document.getElementById('BillingCounty');
-                                        this.billing_county = BCounty.value;
-                                        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
-                                        hiddenCountyInputB.value = BCounty.value;
-                                        hiddenCountyInputB.dispatchEvent(new Event('input'));
-
-                                        const BCity = document.getElementById('BillingCity');
-                                        this.billing_city = BCity.value;
-                                        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
-                                        hiddenCityInputB.value = BCity.value;
-                                        hiddenCityInputB.dispatchEvent(new Event('input'));
-                                    }
-                                },
-
-                                setIndividual() {
-                                    this.individual = true;
-                                    this.juridic = false;
-                                    this.syncToLivewire();
-                                },
-
-                                setJuridic() {
-                                    this.juridic = true;
-                                    this.individual = false;
-                                    this.syncToLivewire();
-                                }
-                            });
-                        });
-                    </script>
+        setJuridic() {
+            this.juridic = true;
+            this.individual = false;
+            this.syncToLivewire();
+        }
+    });
+});
+</script>
 
                     <style>
                         [x-cloak] {
@@ -559,7 +584,13 @@
                                 }" x-init="countyInput = county || '';
                                 $store.checkout.fetchShippingCountiesForCountry($store.checkout.country)"
                                 @click.away="open = false" wire:ignore>
-                                <input type="text" x-model="countyInput" @focus="open = true" placeholder="County"
+                                <input type="text" x-model="countyInput" @focus="open = true" @input="
+         const hidden = document.getElementById('hiddenCountyInput');
+         if (hidden) {
+           hidden.value = $event.target.value;
+           hidden.dispatchEvent(new Event('input', { bubbles: true }));
+         }
+       " placeholder="County"
                                     class="input" autocomplete="off" aria-label="County selection" id="ShippingCounty">
                                 <input required type="hidden" id="hiddenCountyInput"
                                     wire:model.defer="shipping_county" />
@@ -570,15 +601,12 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable" style="display: none;">
+                                <div x-show="open && filteredCounties().length > 0" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredCounties()" :key="c.name">
                                             <button type="button" class="item__searchable"
                                                 @click="selectCounty(c.name)" x-text="c.name">
                                             </button>
-                                        </template>
-                                        <template x-if="filteredCounties().length === 0">
-                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
@@ -628,7 +656,13 @@
                                 fetchCitiesForCounty(Alpine.store('checkout').selectedCounty);
                                 $watch('$store.checkout.selectedCounty', value => fetchCitiesForCounty(value));"
                                 @click.away="open = false">
-                                <input type="text" x-model.defer="cityInput" @focus="open = true"
+                                <input type="text" x-model.defer="cityInput" @focus="open = true" @input="
+         const hidden = document.getElementById('hiddenCityInput');
+         if (hidden) {
+           hidden.value = $event.target.value;
+           hidden.dispatchEvent(new Event('input', { bubbles: true }));
+         }
+       " 
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" aria-label="City selection" id="ShippingCity">
 
@@ -641,14 +675,11 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredCities().length > 0" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredCities()" :key="c.name">
                                             <button type="button" class="item__searchable"
                                                 @click="selectCity(c.name)" x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filteredCities().length === 0">
-                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
@@ -941,7 +972,17 @@
                                 }" x-init="billingcountyInput = county || '';
                                 $store.checkout.fetchBillingCountiesForCountry($store.checkout.billingcountry);"
                                 @click.away="open = false" wire:ignore>
-                                <input type="text" x-model.defer="billingcountyInput" @focus="open = true"
+                                <input type="text"
+       id="BillingCounty"
+       x-model="billingcountyInput"
+       @focus="open = true"
+       @input="
+         const hidden = document.getElementById('hiddenCountyBillingInput');
+         if (hidden) {
+           hidden.value = $event.target.value;
+           hidden.dispatchEvent(new Event('input', { bubbles: true }));
+         }
+       "
                                     placeholder="County" class="input" autocomplete="off"
                                     aria-label="County selection" id="BillingCounty">
                                 <input required type="hidden" id="hiddenCountyBillingInput"
@@ -954,14 +995,11 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredBillingCounties().length > 1" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredBillingCounties()" :key="c.name">
                                             <button type="button" class="item__searchable"
                                                 @click="selectBillingCounty(c.name)" x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filteredBillingCounties().length === 0">
-                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
@@ -1011,11 +1049,21 @@
                                 fetchBillingCitiesForCounty(Alpine.store('checkout').selectedCountyBilling);
                                 $watch('$store.checkout.selectedCountyBilling', value => fetchBillingCitiesForCounty(value));"
                                 @click.away="open = false">
-                                <input type="text" x-model.defer="cityInput" @focus="open = true"
+                               <input type="text"
+       id="BillingCity"
+       x-model="cityInput"
+       @focus="open = true"
+       @input="
+         const hidden = document.getElementById('hiddenBillingCityInput');
+         if (hidden) {
+           hidden.value = $event.target.value;
+           hidden.dispatchEvent(new Event('input', { bubbles: true }));
+         }
+       "
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" aria-label="City selection" id="BillingCity">
 
-                                <input type="hidden" id="hiddenBillingCityInput" wire:model.defer="shipping_city" />
+                                <input type="hidden" id="hiddenBillingCityInput" wire:model.defer="billing_city" />
 
                                 <span></span>
                                 <label for="BillingCity">
@@ -1024,14 +1072,11 @@
                                     @endif
                                 </label>
 
-                                <div x-show="open" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredBillingCities().length > 0" class="content__searchable" style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredBillingCities()" :key="c.name">
                                             <button type="button" class="item__searchable"
                                                 @click="selectBillingCity(c.name)" x-text="c.name"></button>
-                                        </template>
-                                        <template x-if="filteredBillingCities().length === 0">
-                                            <button class="item__searchable" disabled>No record found</button>
                                         </template>
                                     </div>
                                 </div>
@@ -1176,7 +1221,64 @@
                     <div class="total__container">
                         <!-------------- information -------------->
                         <div class="look__form">
+                           
                             <h3>
+                                @if (app()->has('label_order_delivery_check'))
+                                    {!! app('label_order_delivery_check') !!}
+                                @endif
+                            </h3>
+
+                            <span class="total__message">
+                                @if (app()->has('label_order_fullname'))
+                                    {!! app('label_order_fullname') !!}
+                                @endif:
+                                <strong>{{ $shipping_first }}</strong>
+                                <strong>{{ $shipping_last }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_phone'))
+                                    {!! app('label_order_phone') !!}
+                                @endif:
+                                <strong>{{ $shipping_phone }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_email'))
+                                    {!! app('label_order_email') !!}
+                                @endif:
+                                <strong>{{ $shipping_email }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_address1'))
+                                    {!! app('label_order_address1') !!}
+                                @endif:
+                                <strong>{{ $shipping_address1 }}</strong>
+                                <strong>{{ $shipping_address2 }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_country'))
+                                    {!! app('label_order_country') !!}
+                                @endif:
+                                <strong>{{ $shipping_country }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $shipping_county }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_city'))
+                                    {!! app('label_order_city') !!}
+                                @endif:
+                                <strong>{{ $shipping_city }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_zipcode'))
+                                    {!! app('label_order_zipcode') !!}
+                                @endif:
+                                <strong>{{ $shipping_zipcode }}</strong>
+                            </span>
+                             <h3>
                                 @if (app()->has('label_order_billing_check'))
                                     {!! app('label_order_billing_check') !!}
                                 @endif
@@ -1266,63 +1368,8 @@
                                 <strong>{{ $billing_zipcode }}</strong>
                             </span>
 
-                            <h3>
-                                @if (app()->has('label_order_delivery_check'))
-                                    {!! app('label_order_delivery_check') !!}
-                                @endif
-                            </h3>
-
-                            <span class="total__message">
-                                @if (app()->has('label_order_fullname'))
-                                    {!! app('label_order_fullname') !!}
-                                @endif:
-                                <strong>{{ $shipping_first }}</strong>
-                                <strong>{{ $shipping_last }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_phone'))
-                                    {!! app('label_order_phone') !!}
-                                @endif:
-                                <strong>{{ $shipping_phone }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_email'))
-                                    {!! app('label_order_email') !!}
-                                @endif:
-                                <strong>{{ $shipping_email }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_address1'))
-                                    {!! app('label_order_address1') !!}
-                                @endif:
-                                <strong>{{ $shipping_address1 }}</strong>
-                                <strong>{{ $shipping_address2 }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_country'))
-                                    {!! app('label_order_country') !!}
-                                @endif:
-                                <strong>{{ $shipping_country }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_county'))
-                                    {!! app('label_order_county') !!}
-                                @endif:
-                                <strong>{{ $shipping_county }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_city'))
-                                    {!! app('label_order_city') !!}
-                                @endif:
-                                <strong>{{ $shipping_city }}</strong>
-                            </span>
-                            <span class="total__message">
-                                @if (app()->has('label_order_zipcode'))
-                                    {!! app('label_order_zipcode') !!}
-                                @endif:
-                                <strong>{{ $shipping_zipcode }}</strong>
-                            </span>
                         </div>
+                        
 
                         <!---------------------------------------------------->
                         <div class="total__info">
