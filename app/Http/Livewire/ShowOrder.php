@@ -120,6 +120,7 @@ class ShowOrder extends Component
         'cityString' => $this->order->shipping->city,
         'address' => $this->order->shipping->address1,
         'postalCode' => $this->order->shipping->zipcode,
+        'email' => $this->order->account->email,
         'companyName' => $this->order->account->type != 'individual' ? $this->order->account->company_name : null,
         'companyOnrcNumber' => $this->order->account->type != 'individual' ? $this->order->account->registration_number : null,
         'companyIban' => $this->order->account->type != 'individual' ? $this->order->account->account : null,
@@ -456,10 +457,12 @@ class ShowOrder extends Component
       'awbPayment' => 1,
       'thirdPartyPickup' => 0,
 
+      'notifyRecipient' => true,
 
       'awbRecipient' => array_merge([
         'name' => $this->recipe['name'],
         'phoneNumber' => $this->recipe['phoneNumber'],
+        'email' => $this->recipe['email'],
         'personType' => $this->order->account->type === 'individual' ? 0 : 1,
         'countyString' => $this->recipe['countyString'],
         'cityString' => $this->recipe['cityString'],
@@ -472,6 +475,7 @@ class ShowOrder extends Component
         'companyBank' => $this->recipe['companyBank'],
         'companyCui' => $this->recipe['companyCui'],
       ] : []),
+
       'parcels' => [
         [
           'weight' => $this->parcel['weight'],
@@ -481,6 +485,7 @@ class ShowOrder extends Component
         ],
       ],
     ];
+
 
     try {
       $response = $client->post($this->samUrl . 'api/awb', [

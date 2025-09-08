@@ -89,6 +89,10 @@
                         <input type="text" wire:model.defer="recipe.phoneNumber">
                         <label>Phone</label>
                     </div>
+                    <div class="input__tabs details__long">
+                        <input type="text" wire:model.defer="recipe.email">
+                        <label>Email</label>
+                    </div>
                     <div class="input__tabs">
                         <input type="text" wire:model.defer="recipe.countyString">
                         <label>CountyString</label>
