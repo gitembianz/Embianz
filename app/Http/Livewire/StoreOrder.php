@@ -335,34 +335,55 @@ class StoreOrder extends Component
     $this->resetErrorBag();
   }
 
-  public function next()
-  {
+public function next()
+{
     if (!$this->cart->cartItems() || !$this->cart) {
-      $this->back = true;
+        $this->back = true;
     } else {
-      cookie()->queue(cookie()->forget('accountId'));
-      $this->resetErrorBag();
-      $this->validateData();
-      $this->updateFormSession();
-      $this->step++;
-      if ($this->is_identic) {
-        $this->billing_first = $this->shipping_first;
-        $this->billing_last = $this->shipping_last;
-        $this->billing_phone = $this->shipping_phone;
-        $this->billing_email = $this->shipping_email;
-        $this->billing_address1 = $this->shipping_address1;
-        $this->billing_address2 = $this->shipping_address2;
-        $this->billing_country = $this->shipping_country;
-        $this->billing_county = $this->shipping_county;
-        $this->billing_city = $this->shipping_city;
-        $this->billing_zipcode = $this->shipping_zipcode;
-      }
-      $this->cart->update([
-        'status_id' => app('global_cart_checkoutdetails')
-      ]);
-      $this->dispatchBrowserEvent('goup');
+        cookie()->queue(cookie()->forget('accountId'));
+        $this->resetErrorBag();
+        
+
+        $this->shipping_county = request('shipping_county', $this->shipping_county);
+        $this->shipping_city = request('shipping_city', $this->shipping_city);
+        $this->billing_county = request('billing_county', $this->billing_county);
+        $this->billing_city = request('billing_city', $this->billing_city);
+        
+        if ($this->is_identic) {
+            $this->billing_first = $this->shipping_first;
+            $this->billing_last = $this->shipping_last;
+            $this->billing_phone = $this->shipping_phone;
+            $this->billing_email = $this->shipping_email;
+            $this->billing_address1 = $this->shipping_address1;
+            $this->billing_address2 = $this->shipping_address2;
+            $this->billing_country = $this->shipping_country;
+            $this->billing_county = $this->shipping_county;
+            $this->billing_city = $this->shipping_city;
+            $this->billing_zipcode = $this->shipping_zipcode;
+        }
+        
+        $this->validateData();
+        $this->updateFormSession();
+        $this->step++;
+
+        $this->cart->update([
+            'status_id' => app('global_cart_checkoutdetails')
+        ]);
+        
+        if ($this->is_identic && $this->step == 2) {
+            $this->dispatchBrowserEvent('refreshBillingFields');
+        }
+        
+        $this->dispatchBrowserEvent('goup');
     }
-  }
+}
+
+
+
+
+
+
+
 
   public function validateData()
   {
