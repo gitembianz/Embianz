@@ -171,21 +171,28 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       Schema::hasTable('counties') &&
       Schema::hasTable('cities')
     ) {
+      $version = request()->cookie('countries_version');
+
+      if (!$version) {
+        $version = now()->format('YmdHis');
+        cookie()->queue(cookie()->forever('countries_version', $version));
+      }
+
       $activeCountries = Cache::rememberForever('active_countries', function () {
-         $countries = Country::where('status', true)
-                ->select(['id', 'name', 'iso_code'])
-                ->with(['counties' => function ($query) {
-                    $query->where('status', true)
-                        ->select(['id', 'country_id', 'name', 'iso_code'])
-                        ->orderBy('name') // ✅ Sort counties by name
-                        ->with(['cities' => function ($query) {
-                            $query->where('status', true)
-                                ->select(['id', 'county_id', 'name'])
-                                ->orderBy('name'); // ✅ Sort cities by name
-                        }]);
-                }])
-                ->orderBy('name') // ✅ Sort countries by name
-                ->get();
+        $countries = Country::where('status', true)
+          ->select(['id', 'name', 'iso_code'])
+          ->with(['counties' => function ($query) {
+            $query->where('status', true)
+              ->select(['id', 'country_id', 'name', 'iso_code'])
+              ->orderBy('name')
+              ->with(['cities' => function ($query) {
+                $query->where('status', true)
+                  ->select(['id', 'county_id', 'name'])
+                  ->orderBy('name');
+              }]);
+          }])
+          ->orderBy('name')
+          ->get();
 
         $folder = 'js/countries';
 
@@ -235,7 +242,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       });
 
       $this->app->instance('active_countries', $activeCountries);
-
+      $this->app->instance('countries_version', $version);
     }
   }
 

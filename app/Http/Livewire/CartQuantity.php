@@ -12,6 +12,8 @@ class CartQuantity extends Component
   protected $listeners = [
     'cartUpdated' => 'mount',
     'newcart' => 'mount',
+    'orderprocess' => 'mount'
+
   ];
 
   public function mount()
