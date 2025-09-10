@@ -127,7 +127,8 @@ class ProductController extends Controller
       ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
       ->leftJoin('media', function ($join) {
         $join->on('item_media.media_id', '=', 'media.id')
-          ->where('media.type', '=', 'full');
+          ->where('media.type', '=', 'full')
+          ->where('media.sequence','=','1');
       })
       ->leftJoin('products_categories', function ($join) {
         $join->on('products.id', '=', 'products_categories.product_id')
