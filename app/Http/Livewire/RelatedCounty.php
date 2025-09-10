@@ -196,6 +196,7 @@ class RelatedCounty extends Component
     $this->rand = 1;
     $this->add = false;
     Cache::forget('active_countries');
+    cookie()->queue(cookie()->forget('countries_version'));
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
@@ -237,6 +238,7 @@ class RelatedCounty extends Component
       $new->save();
 
       Cache::forget('active_countries');
+      cookie()->queue(cookie()->forget('countries_version'));
       session()->flash('notification', [
         'message' => 'Record edited successfully!',
         'type' => 'success',
@@ -262,6 +264,7 @@ class RelatedCounty extends Component
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
     Cache::forget('active_countries');
+    cookie()->queue(cookie()->forget('countries_version'));
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -281,6 +284,7 @@ class RelatedCounty extends Component
     $this->selectPage = false;
     $this->multiple = false;
     Cache::forget('active_countries');
+    cookie()->queue(cookie()->forget('countries_version'));
 
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',

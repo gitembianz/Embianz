@@ -276,174 +276,100 @@
                         <h2 class="section__title">
                             @if (app()->has('label_order_1_title'))
                                 {!! app('label_order_1_title') !!}
+                                {{ app('countries_version') }}
                             @endif
                         </h2>
                     </div>
+                    @php
+                        $version = app()->has('countries_version') ? app('countries_version') : 1;
+                    @endphp
                     {{-- alpine script --}}
                     <script>
-document.addEventListener('alpine:init', () => {
-    localStorage.removeItem('countiesDataCache');
-    Alpine.store('checkout', {
-        countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
-        isIdentic: @js($is_identic),
-        individual: @js($individual),
-        juridic: @js($juridic),
-        selectedCounty: @js($shipping_county),
-        selectedCountyBilling: @js($billing_county),
-        ShippingCountiesList: [],
-        BillingCountiesList: [],
+                        document.addEventListener('alpine:init', () => {
+                            const currentVersion = @js($version);
+                            const savedVersion = localStorage.getItem('countiesDataVersion');
 
-        country: @js($shipping_country),
-        billingcountry: @js($billing_country),
+                            console.log('Current Version:', currentVersion, 'Saved Version:', savedVersion);
 
-        saveCache() {
-            localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
-        },
+                            if (savedVersion !== currentVersion) {
+                                console.log('Version changed, clearing countiesDataCache');
+                                localStorage.removeItem('countiesDataCache');
+                                localStorage.setItem('countiesDataVersion', currentVersion);
+                            }
 
-        async fetchShippingCountiesForCountry(countryName) {
-            if (!countryName) {
-                this.ShippingCountiesList = [];
-                return;
-            }
+                            Alpine.store('checkout', {
+                                countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
+                                isIdentic: @js($is_identic),
+                                individual: @js($individual),
+                                juridic: @js($juridic),
+                                selectedCounty: @js($shipping_county),
+                                selectedCountyBilling: @js($billing_county),
+                                ShippingCountiesList: [],
+                                BillingCountiesList: [],
 
-            const country = countryName.replace(/\s+/g, '_');
+                                country: @js($shipping_country),
+                                billingcountry: @js($billing_country),
 
-            if (this.countiesDataCache[country]) {
-                this.ShippingCountiesList = this.countiesDataCache[country];
-                return;
-            }
+                                saveCache() {
+                                    localStorage.setItem('countiesDataCache', JSON.stringify(this.countiesDataCache));
+                                },
 
-            try {
-                const res = await fetch(`/js/countries/${country}.json`);
-                if (!res.ok) throw new Error('Not found');
-                const data = await res.json();
+                                async fetchShippingCountiesForCountry(countryName) {
+                                    if (!countryName) {
+                                        this.ShippingCountiesList = [];
+                                        return;
+                                    }
 
-                this.countiesDataCache[country] = data.counties || [];
-                this.saveCache();
+                                    const country = countryName.replace(/\s+/g, '_');
 
-                this.ShippingCountiesList = this.countiesDataCache[country];
-            } catch (e) {
-                this.ShippingCountiesList = [];
-            }
-        },
+                                    // ✅ Always check latest cache
+                                    if (this.countiesDataCache[country]) {
+                                        this.ShippingCountiesList = this.countiesDataCache[country];
+                                        return;
+                                    }
 
-        async fetchBillingCountiesForCountry(countryName) {
-            if (!countryName) {
-                this.BillingCountiesList = [];
-                return;
-            }
+                                    try {
+                                        const res = await fetch(`/js/countries/${country}.json`);
+                                        if (!res.ok) throw new Error('Not found');
+                                        const data = await res.json();
 
-            const country = countryName.replace(/\s+/g, '_');
+                                        this.countiesDataCache[country] = data.counties || [];
+                                        this.saveCache();
+                                        this.ShippingCountiesList = this.countiesDataCache[country];
+                                    } catch (e) {
+                                        this.ShippingCountiesList = [];
+                                    }
+                                },
 
-            if (this.countiesDataCache[country]) {
-                this.BillingCountiesList = this.countiesDataCache[country];
-                return;
-            }
+                                async fetchBillingCountiesForCountry(countryName) {
+                                    if (!countryName) {
+                                        this.BillingCountiesList = [];
+                                        return;
+                                    }
 
-            try {
-                const res = await fetch(`/js/countries/${country}.json`);
-                if (!res.ok) throw new Error('Not found');
-                const data = await res.json();
+                                    const country = countryName.replace(/\s+/g, '_');
 
-                this.countiesDataCache[country] = data.counties || [];
-                this.saveCache();
+                                    if (this.countiesDataCache[country]) {
+                                        this.BillingCountiesList = this.countiesDataCache[country];
+                                        return;
+                                    }
 
-                this.BillingCountiesList = this.countiesDataCache[country];
-            } catch (e) {
-                this.BillingCountiesList = [];
-            }
-        },
+                                    try {
+                                        const res = await fetch(`/js/countries/${country}.json`);
+                                        if (!res.ok) throw new Error('Not found');
+                                        const data = await res.json();
 
-        syncToLivewire() {
-            const hidden = document.getElementById('hidden_is_identic');
-            hidden.value = this.isIdentic ? 1 : 0;
-            hidden.dispatchEvent(new Event('input', {
-                bubbles: true
-            }));
+                                        this.countiesDataCache[country] = data.counties || [];
+                                        this.saveCache();
+                                        this.BillingCountiesList = this.countiesDataCache[country];
+                                    } catch (e) {
+                                        this.BillingCountiesList = [];
+                                    }
+                                },
+                            });
+                        });
+                    </script>
 
-            const individualInput = document.getElementById('hidden_individual');
-            individualInput.value = this.individual ? 1 : 0;
-            individualInput.dispatchEvent(new Event('input', {
-                bubbles: true
-            }));
-
-            const juridicInput = document.getElementById('hidden_juridic');
-            juridicInput.value = this.juridic ? 1 : 0;
-            juridicInput.dispatchEvent(new Event('input', {
-                bubbles: true
-            }));
-        },
-
-        nextstep() {
-    const SCounty = document.getElementById('ShippingCounty');
-    this.shipping_county = SCounty.value;
-    const hiddenCountyInput = document.getElementById('hiddenCountyInput');
-    hiddenCountyInput.value = SCounty.value;
-    hiddenCountyInput.dispatchEvent(new Event('input'));
-
-    const SCity = document.getElementById('ShippingCity');
-    this.shipping_city = SCity.value;
-    const hiddenCityInput = document.getElementById('hiddenCityInput');
-    hiddenCityInput.value = SCity.value;
-    hiddenCityInput.dispatchEvent(new Event('input'));
-
-    @this.set('shipping_county', SCounty.value);
-    @this.set('shipping_city', SCity.value);
-
-    if (this.isIdentic) {
-        this.selectedCountyBilling = SCounty.value;
-        this.billingcountry = this.country;
-        
-        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
-        if (hiddenCountyInputB) {
-            hiddenCountyInputB.value = SCounty.value;
-            hiddenCountyInputB.dispatchEvent(new Event('input'));
-        }
-
-        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
-        if (hiddenCityInputB) {
-            hiddenCityInputB.value = SCity.value;
-            hiddenCityInputB.dispatchEvent(new Event('input'));
-        }
-        
-        @this.set('billing_county', SCounty.value);
-        @this.set('billing_city', SCity.value);
-        @this.set('billing_country', this.country);
-        
-    } else {
-        const BCounty = document.getElementById('BillingCounty');
-        this.billing_county = BCounty.value;
-        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
-        hiddenCountyInputB.value = BCounty.value;
-        hiddenCountyInputB.dispatchEvent(new Event('input'));
-
-        const BCity = document.getElementById('BillingCity');
-        this.billing_city = BCity.value;
-        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
-        hiddenCityInputB.value = BCity.value;
-        hiddenCityInputB.dispatchEvent(new Event('input'));
-        
-        @this.set('billing_county', BCounty.value);
-        @this.set('billing_city', BCity.value);
-    }
-},
-
-
-
-        setIndividual() {
-            this.individual = true;
-            this.juridic = false;
-            this.syncToLivewire();
-        },
-
-        setJuridic() {
-            this.juridic = true;
-            this.individual = false;
-            this.syncToLivewire();
-        }
-    });
-});
-</script>
 
                     <style>
                         [x-cloak] {
@@ -584,14 +510,16 @@ document.addEventListener('alpine:init', () => {
                                 }" x-init="countyInput = county || '';
                                 $store.checkout.fetchShippingCountiesForCountry($store.checkout.country)"
                                 @click.away="open = false" wire:ignore>
-                                <input type="text" x-model="countyInput" @focus="open = true" @input="
+                                <input type="text" x-model="countyInput" @focus="open = true"
+                                    @input="
          const hidden = document.getElementById('hiddenCountyInput');
          if (hidden) {
            hidden.value = $event.target.value;
            hidden.dispatchEvent(new Event('input', { bubbles: true }));
          }
-       " placeholder="County"
-                                    class="input" autocomplete="off" aria-label="County selection" id="ShippingCounty">
+       "
+                                    placeholder="County" class="input" autocomplete="off" aria-label="County selection"
+                                    id="ShippingCounty">
                                 <input required type="hidden" id="hiddenCountyInput"
                                     wire:model.defer="shipping_county" />
                                 <span></span>
@@ -601,7 +529,8 @@ document.addEventListener('alpine:init', () => {
                                     @endif
                                 </label>
 
-                                <div x-show="open && filteredCounties().length > 0" class="content__searchable" style="display: none;">
+                                <div x-show="open && filteredCounties().length > 0" class="content__searchable"
+                                    style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredCounties()" :key="c.name">
                                             <button type="button" class="item__searchable"
@@ -656,13 +585,14 @@ document.addEventListener('alpine:init', () => {
                                 fetchCitiesForCounty(Alpine.store('checkout').selectedCounty);
                                 $watch('$store.checkout.selectedCounty', value => fetchCitiesForCounty(value));"
                                 @click.away="open = false">
-                                <input type="text" x-model.defer="cityInput" @focus="open = true" @input="
+                                <input type="text" x-model.defer="cityInput" @focus="open = true"
+                                    @input="
          const hidden = document.getElementById('hiddenCityInput');
          if (hidden) {
            hidden.value = $event.target.value;
            hidden.dispatchEvent(new Event('input', { bubbles: true }));
          }
-       " 
+       "
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" aria-label="City selection" id="ShippingCity">
 
@@ -675,7 +605,8 @@ document.addEventListener('alpine:init', () => {
                                     @endif
                                 </label>
 
-                                <div x-show="open & filteredCities().length > 0" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredCities().length > 0" class="content__searchable"
+                                    style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredCities()" :key="c.name">
                                             <button type="button" class="item__searchable"
@@ -972,11 +903,9 @@ document.addEventListener('alpine:init', () => {
                                 }" x-init="billingcountyInput = county || '';
                                 $store.checkout.fetchBillingCountiesForCountry($store.checkout.billingcountry);"
                                 @click.away="open = false" wire:ignore>
-                                <input type="text"
-       id="BillingCounty"
-       x-model="billingcountyInput"
-       @focus="open = true"
-       @input="
+                                <input type="text" id="BillingCounty" x-model="billingcountyInput"
+                                    @focus="open = true"
+                                    @input="
          const hidden = document.getElementById('hiddenCountyBillingInput');
          if (hidden) {
            hidden.value = $event.target.value;
@@ -995,7 +924,8 @@ document.addEventListener('alpine:init', () => {
                                     @endif
                                 </label>
 
-                                <div x-show="open & filteredBillingCounties().length > 1" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredBillingCounties().length > 1" class="content__searchable"
+                                    style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredBillingCounties()" :key="c.name">
                                             <button type="button" class="item__searchable"
@@ -1049,11 +979,8 @@ document.addEventListener('alpine:init', () => {
                                 fetchBillingCitiesForCounty(Alpine.store('checkout').selectedCountyBilling);
                                 $watch('$store.checkout.selectedCountyBilling', value => fetchBillingCitiesForCounty(value));"
                                 @click.away="open = false">
-                               <input type="text"
-       id="BillingCity"
-       x-model="cityInput"
-       @focus="open = true"
-       @input="
+                                <input type="text" id="BillingCity" x-model="cityInput" @focus="open = true"
+                                    @input="
          const hidden = document.getElementById('hiddenBillingCityInput');
          if (hidden) {
            hidden.value = $event.target.value;
@@ -1072,7 +999,8 @@ document.addEventListener('alpine:init', () => {
                                     @endif
                                 </label>
 
-                                <div x-show="open & filteredBillingCities().length > 0" class="content__searchable" style="display: none;">
+                                <div x-show="open & filteredBillingCities().length > 0" class="content__searchable"
+                                    style="display: none;">
                                     <div class="list__searchable">
                                         <template x-for="c in filteredBillingCities()" :key="c.name">
                                             <button type="button" class="item__searchable"
@@ -1221,7 +1149,7 @@ document.addEventListener('alpine:init', () => {
                     <div class="total__container">
                         <!-------------- information -------------->
                         <div class="look__form">
-                           
+
                             <h3>
                                 @if (app()->has('label_order_delivery_check'))
                                     {!! app('label_order_delivery_check') !!}
@@ -1278,7 +1206,7 @@ document.addEventListener('alpine:init', () => {
                                 @endif:
                                 <strong>{{ $shipping_zipcode }}</strong>
                             </span>
-                             <h3>
+                            <h3>
                                 @if (app()->has('label_order_billing_check'))
                                     {!! app('label_order_billing_check') !!}
                                 @endif
@@ -1369,7 +1297,7 @@ document.addEventListener('alpine:init', () => {
                             </span>
 
                         </div>
-                        
+
 
                         <!---------------------------------------------------->
                         <div class="total__info">
