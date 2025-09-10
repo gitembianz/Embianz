@@ -15,9 +15,7 @@ class StoreHeader extends Component
   public $staticpages;
 
 
-  protected $listeners = [
-    'orderprocess' => 'getCartProperty'
-  ];
+
 
   private function getSessionId()
   {

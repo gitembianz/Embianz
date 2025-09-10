@@ -342,13 +342,6 @@ class StoreOrder extends Component
     } else {
       cookie()->queue(cookie()->forget('accountId'));
       $this->resetErrorBag();
-
-
-      // $this->shipping_county = request('shipping_county', $this->shipping_county);
-      // $this->shipping_city = request('shipping_city', $this->shipping_city);
-      // $this->billing_county = request('billing_county', $this->billing_county);
-      // $this->billing_city = request('billing_city', $this->billing_city);
-
       if ($this->is_identic) {
         $this->billing_first = $this->shipping_first;
         $this->billing_last = $this->shipping_last;

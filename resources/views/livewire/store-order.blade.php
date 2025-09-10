@@ -288,15 +288,10 @@
                         document.addEventListener('alpine:init', () => {
                             const currentVersion = @js($version);
                             const savedVersion = localStorage.getItem('countiesDataVersion');
-
-                            console.log('Current Version:', currentVersion, 'Saved Version:', savedVersion);
-
                             if (savedVersion !== currentVersion) {
-                                console.log('Version changed, clearing countiesDataCache');
                                 localStorage.removeItem('countiesDataCache');
                                 localStorage.setItem('countiesDataVersion', currentVersion);
                             }
-
                             Alpine.store('checkout', {
                                 countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
                                 isIdentic: @js($is_identic),
@@ -322,19 +317,38 @@
 
                                     const country = countryName.replace(/\s+/g, '_');
 
-                                    // ✅ Always check latest cache
                                     if (this.countiesDataCache[country]) {
                                         this.ShippingCountiesList = this.countiesDataCache[country];
                                         return;
                                     }
+
 
                                     try {
                                         const res = await fetch(`/js/countries/${country}.json`);
                                         if (!res.ok) throw new Error('Not found');
                                         const data = await res.json();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         this.countiesDataCache[country] = data.counties || [];
                                         this.saveCache();
+
                                         this.ShippingCountiesList = this.countiesDataCache[country];
                                     } catch (e) {
                                         this.ShippingCountiesList = [];
@@ -349,10 +363,17 @@
 
                                     const country = countryName.replace(/\s+/g, '_');
 
+
+
+
+
+
+
                                     if (this.countiesDataCache[country]) {
                                         this.BillingCountiesList = this.countiesDataCache[country];
                                         return;
                                     }
+
 
                                     try {
                                         const res = await fetch(`/js/countries/${country}.json`);
@@ -361,11 +382,102 @@
 
                                         this.countiesDataCache[country] = data.counties || [];
                                         this.saveCache();
+
+
+
                                         this.BillingCountiesList = this.countiesDataCache[country];
                                     } catch (e) {
                                         this.BillingCountiesList = [];
                                     }
                                 },
+
+                                syncToLivewire() {
+                                    const hidden = document.getElementById('hidden_is_identic');
+                                    hidden.value = this.isIdentic ? 1 : 0;
+                                    hidden.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+
+                                    const individualInput = document.getElementById('hidden_individual');
+                                    individualInput.value = this.individual ? 1 : 0;
+                                    individualInput.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+
+                                    const juridicInput = document.getElementById('hidden_juridic');
+                                    juridicInput.value = this.juridic ? 1 : 0;
+                                    juridicInput.dispatchEvent(new Event('input', {
+                                        bubbles: true
+                                    }));
+                                },
+
+                                nextstep() {
+                                    const SCounty = document.getElementById('ShippingCounty');
+                                    this.shipping_county = SCounty.value;
+                                    const hiddenCountyInput = document.getElementById('hiddenCountyInput');
+                                    hiddenCountyInput.value = SCounty.value;
+                                    hiddenCountyInput.dispatchEvent(new Event('input'));
+
+                                    const SCity = document.getElementById('ShippingCity');
+                                    this.shipping_city = SCity.value;
+                                    const hiddenCityInput = document.getElementById('hiddenCityInput');
+                                    hiddenCityInput.value = SCity.value;
+                                    hiddenCityInput.dispatchEvent(new Event('input'));
+
+                                    @this.set('shipping_county', SCounty.value);
+                                    @this.set('shipping_city', SCity.value);
+
+                                    if (this.isIdentic) {
+                                        this.selectedCountyBilling = SCounty.value;
+                                        this.billingcountry = this.country;
+
+                                        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
+                                        if (hiddenCountyInputB) {
+                                            hiddenCountyInputB.value = SCounty.value;
+                                            hiddenCountyInputB.dispatchEvent(new Event('input'));
+                                        }
+
+                                        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
+                                        if (hiddenCityInputB) {
+                                            hiddenCityInputB.value = SCity.value;
+                                            hiddenCityInputB.dispatchEvent(new Event('input'));
+                                        }
+
+                                        @this.set('billing_county', SCounty.value);
+                                        @this.set('billing_city', SCity.value);
+                                        @this.set('billing_country', this.country);
+
+                                    } else {
+                                        const BCounty = document.getElementById('BillingCounty');
+                                        this.billing_county = BCounty.value;
+                                        const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
+                                        hiddenCountyInputB.value = BCounty.value;
+                                        hiddenCountyInputB.dispatchEvent(new Event('input'));
+
+                                        const BCity = document.getElementById('BillingCity');
+                                        this.billing_city = BCity.value;
+                                        const hiddenCityInputB = document.getElementById('hiddenBillingCityInput');
+                                        hiddenCityInputB.value = BCity.value;
+                                        hiddenCityInputB.dispatchEvent(new Event('input'));
+
+                                        @this.set('billing_county', BCounty.value);
+                                        @this.set('billing_city', BCity.value);
+                                    }
+                                },
+
+
+
+                                setIndividual() {
+                                    this.individual = true;
+                                    this.juridic = false;
+                                    this.syncToLivewire();
+                                },
+
+                                setJuridic() {
+                                    this.juridic = true;
+                                    this.individual = false;
+                                    this.syncToLivewire();
+                                }
                             });
                         });
                     </script>
