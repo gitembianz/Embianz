@@ -10,8 +10,9 @@ use App\Models\PricelistEntries;
 use Illuminate\Support\Facades\Schema;
 use App\Models\CompetitorProducts as ModelsCompetitorProducts;
 
-class CompetitorProducts extends Component
+class RelatedCompetitors extends Component
 {
+
   use WithPagination;
   public $showTable = false;
 
@@ -27,33 +28,31 @@ class CompetitorProducts extends Component
   public $idbeingremoved = null;
   public $columns;
   public $selectedColumns = [];
-  public $competitor;
+  public $product;
   public $editindex;
   public $item = [];
   public $rind2 = null;
   public $rind = null;
   public $single = false;
   public $multiple = false;
-  public $productsAndValues = [];
+  public $competitorsAndValues = [];
   public $row = 1;
   public $searchadd = '';
 
-
   public function render()
   {
-    $relatedproducts = $this->relatedproductsQuery
+    $relatedcompetitors = $this->relatedcompetitorsQuery
       ->where(function ($query) {
         $query->whereHas('competitor', function ($subQuery) {
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
         });
       })->paginate($this->loadAmount);
-    return view('livewire.competitor-products', [
-      'relatedproducts' => $relatedproducts,
-      'products' => $this->products
+    return view('livewire.related-competitors', [
+      'relatedcompetitors' => $relatedcompetitors,
+      'competitors' => $this->competitors
     ]);
   }
-
-  // expand
+    // expand
   public function expandRow2($index)
   {
     if ($this->rind2  === null) {
@@ -74,8 +73,7 @@ class CompetitorProducts extends Component
       $this->rind = null;
     }
   }
-
-  public function edititem($index, $id)
+    public function edititem($index, $id)
   {
     $this->editindex = $index;
     $record = ModelsCompetitorProducts::find($id);
@@ -90,8 +88,7 @@ class CompetitorProducts extends Component
     $this->editindex = null;
     $this->item = [];
   }
-
-  public function saveitem($index, $id)
+    public function saveitem($index, $id)
   {
     $record = $this->item[$index] ?? null;
     if (!is_null($record)) {
@@ -135,7 +132,6 @@ class CompetitorProducts extends Component
     $this->editindex = null;
     $this->item = [];
   }
-
   // add related
   public function addrelated()
   {
@@ -146,77 +142,70 @@ class CompetitorProducts extends Component
   {
     $this->showTable = false;
   }
-public function getProductsProperty()
-{
-    $relatedproductsIds = $this->relatedproducts
-        ->pluck('product_id')
-        ->filter()
-        ->toArray();
-
-    return Product::whereNotIn('id', $relatedproductsIds)
-        ->where('name', 'like', '%' . $this->searchadd . '%')
-        ->get();
-}
-
+  public function getCompetitorsProperty()
+  {
+    $relatedcompetitorsIds = $this->relatedcompetitors->pluck('competitor_id')->toArray();
+    return Competitor::whereNotIn('id', $relatedcompetitorsIds)->where('name', 'like', '%' . $this->searchadd . '%')->get();
+  }
   public function plus()
   {
     $this->row++;
-    $this->productsAndValues[] = [
+    $this->competitorsAndValues[] = [
       'name' => null,
       'url' => null,
       'price' => null,
       'allow' => false,
       'itemselected' => null,
-      'product' => ['name' => null, 'idrel' => null]
+      'competitor' => ['name' => null, 'idrel' => null]
     ];
   }
-  public function clear($index)
+    public function clear($index)
   {
     unset($this->productsAndValues[$index]);
 
-    $this->productsAndValues = array_values($this->productsAndValues);
+    $this->competitorsAndValues = array_values($this->competitorsAndValues);
 
     $this->row--;
     if ($this->row < 1) {
       $this->showTable = false;
-      $this->productsAndValues[] = [
+      $this->competitorsAndValues[] = [
         'name' => null,
         'url' => null,
         'price' => null,
         'allow' => false,
         'itemselected' => null,
-        'product' => ['name' => null, 'idrel' => null]
+        'competitor' => ['name' => null, 'idrel' => null]
       ];
       $this->row = 1;
     }
   }
-  public function dennyselect($index)
+    public function dennyselect($index)
   {
-    $this->productsAndValues[$index]['allow'] = false;
+    $this->competitorsAndValues[$index]['allow'] = false;
     $this->searchadd = '';
   }
   public function allowselect($index)
   {
-    foreach ($this->productsAndValues as &$item) {
+    foreach ($this->competitorsAndValues as &$item) {
       $item['allow'] = false;
     }
-    $this->productsAndValues[$index]['allow'] = true;
-    $this->searchadd = $this->productsAndValues[$index]['itemselected'];
+    $this->competitorsAndValues[$index]['allow'] = true;
+    $this->searchadd = $this->competitorsAndValues[$index]['itemselected'];
   }
-  public function selectitem($index, $id, $name)
+   public function selectitem($index, $id, $name)
   {
-    $this->productsAndValues[$index]['itemselected'] = $name;
-    $this->productsAndValues[$index]['product']['idrel'] = $id;
-    $this->productsAndValues[$index]['allow'] = false;
+    $this->competitorsAndValues[$index]['itemselected'] = $name;
+    $this->competitorsAndValues[$index]['competitor']['idrel'] = $id;
+    $this->competitorsAndValues[$index]['allow'] = false;
     $this->searchadd = '';
   }
   public function saveitems()
   {
-    foreach ($this->productsAndValues as $array) {
+    $productprice = PricelistEntries::where('product_id', $this->product->id)
+      ->latest('created_at')
+      ->value('value') ?? 0;
+    foreach ($this->competitorsAndValues as $array) {
       if (isset($array['product']['idrel'])) {
-        $productprice = PricelistEntries::where('product_id', $array['product']['idrel'])
-          ->latest('created_at')
-          ->value('value') ?? 0;
 
         $competitorPrice = $array['price'] ?? 0;
 
@@ -235,8 +224,8 @@ public function getProductsProperty()
         'name' => $array['name'],
         'url' => $array['url'],
         'price' => $competitorPrice,
-        'competitor_id' => $this->competitor->id,
-        'product_id' => $array['product']['idrel'],
+        'competitor_id' => $array['competitor']['idrel'],
+        'product_id' => $this->product->id,
         'internal_price' => $productprice,
         'difference_value' => $differenceValue,
         'difference_percent' => $differencePercentage,
@@ -246,7 +235,7 @@ public function getProductsProperty()
     }
 
 
-    $this->productsAndValues = [];
+    $this->competitorsAndValues = [];
     $this->row = 1;
     $this->showTable = false;
     session()->flash('notification', [
@@ -254,9 +243,9 @@ public function getProductsProperty()
       'type' => 'success',
       'title' => 'Success'
     ]);
-    $this->mount($this->competitor, 'competitor_products');
+    $this->mount($this->product, 'competitor_products');
   }
-  //Related item function
+   //Related item function
   public function loadMore()
   {
     $this->loadAmount += 10;
@@ -268,12 +257,12 @@ public function getProductsProperty()
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedproducts->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedcompetitors->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
   }
-  public function swapSortDirection()
+   public function swapSortDirection()
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
@@ -281,7 +270,7 @@ public function getProductsProperty()
   {
     $this->selectPage = false;
   }
-  public function isChecked($id)
+    public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
@@ -296,38 +285,36 @@ public function getProductsProperty()
 
     $this->orderBy = $columnName;
   }
-  public function selectAll()
+    public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedproductsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedcompetitorsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
-  public function getRelatedproductsProperty()
+  public function getRelatedcompetitorsProperty()
   {
-    return $this->relatedproductsQuery->get();
+    return $this->relatedcompetitorsQuery->get();
   }
-
-  public function getRelatedproductsQueryProperty()
+    public function getRelatedcompetitorsQueryProperty()
   {
-    return ModelsCompetitorProducts::where('competitor_id', $this->competitor->id)
+    return ModelsCompetitorProducts::where('product_id', $this->product->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-  public function mount(Competitor $competitor, $tableName = null)
+  public function mount(Product $product, $tableName = null)
   {
-    $this->competitor = $competitor;
+    $this->product = $product;
     $this->columns = Schema::getColumnListing($tableName);
     $this->selectedColumns = $this->columns;
-    $this->productsAndValues = [];
+    $this->competitorsAndValues = [];
     $this->row = 1;
-    $this->productsAndValues[] = [
+    $this->competitorsAndValues[] = [
       'name' => null,
       'url' => null,
       'price' => null,
       'allow' => false,
       'itemselected' => null,
-      'product' => ['name' => null, 'idrel' => null]
+      'competitor' => ['name' => null, 'idrel' => null]
     ];
   }
-
   // funciton for link and delete
   public function deleteSingleRecord()
   {
