@@ -80,7 +80,7 @@
         </button>
     </section>
     @foreach ($articles as $article)
-        <div class="article container">
+        <div style="padding-top: 15px" class="container">
             <div class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
