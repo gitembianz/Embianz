@@ -80,12 +80,11 @@
         </button>
     </section>
     @foreach ($articles as $article)
-        <div class="article container">
+        <div style="padding-top: 15px" class="container">
             <div class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
-                        <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}"
-                            target="_blank">
+                        <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}">
                             <img @if ($loop->first) loading="eager"
                 @else loading="lazy" @endif
                                 src="/{{ $article->media->where('type', 'main')->first()->path ?? 'images/store/default/' }}{{ $article->media->where('type', 'main')->first()->name ?? 'default.webp' }}"
@@ -129,6 +128,20 @@
             </div>
         </div>
     @endforeach
+    @unless (app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links')
+        <x-lazy />
+    @endunless
+    @if (app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links')
+        <section class="container">
+            {{ $articles->links() }}
+        </section>
+    @else
+        @if ($articles->total() >= $loadAmount)
+            <section class="container">
+                <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+            </section>
+        @endif
+    @endif
     <x-support />
     <div class="filter" id="sortList">
         <div class="filter__content" id="sortContent">
