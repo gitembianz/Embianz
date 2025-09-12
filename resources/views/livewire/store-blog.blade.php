@@ -84,8 +84,7 @@
             <div class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
-                        <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}"
-                            target="_blank">
+                        <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}">
                             <img @if ($loop->first) loading="eager"
                 @else loading="lazy" @endif
                                 src="/{{ $article->media->where('type', 'main')->first()->path ?? 'images/store/default/' }}{{ $article->media->where('type', 'main')->first()->name ?? 'default.webp' }}"
