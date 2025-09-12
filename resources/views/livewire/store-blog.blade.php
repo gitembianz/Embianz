@@ -129,6 +129,20 @@
             </div>
         </div>
     @endforeach
+    @unless (app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links')
+        <x-lazy />
+    @endunless
+    @if (app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links')
+        <section class="container">
+            {{ $articles->links() }}
+        </section>
+    @else
+        @if ($articles->total() >= $loadAmount)
+            <section class="container">
+                <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+            </section>
+        @endif
+    @endif
     <x-support />
     <div class="filter" id="sortList">
         <div class="filter__content" id="sortContent">

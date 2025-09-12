@@ -34,12 +34,12 @@ class StoreBlog extends Component
       $this->loadAmount = $filteredValues['loadAmount'];
     } else {
       session()->forget('filtered_values');
-      $this->loadAmount = app('global_limit_load');
+      $this->loadAmount = app('articles_limit_load');
     }
   }
   public function loadMore()
   {
-    $this->loadAmount += app('global_limit_load');
+    $this->loadAmount += app('articles_limit_load');
     if ($this->category != null) {
       session()->put('filtered_values', [
         'category_id' => $this->category->id,
