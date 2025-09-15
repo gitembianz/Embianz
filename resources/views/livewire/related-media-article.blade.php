@@ -78,7 +78,7 @@
         <div style="min-height: 160px" class="aside aside--confirm @if ($chose || $media || $externalmedia) active @endif">
             @if (!$externalmedia && !$media)
                 <span style="margin: 0.5rem 0; width: 100%; text-align: center">How you will upload?</span>
-                <input style="display: none" id="localMedia" wire:model="mediafile" type="file" accept="image/*">
+                <input style="display: none" id="localMedia" wire:model="media" type="file" accept="image/*">
                 <label class="button button--primary button--long" type="button" for="localMedia">
                     <span>Local Pick</span>
                 </label>
