@@ -4,26 +4,23 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use App\Models\AllJob;
-use App\Models\Status;
-use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Listview;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Artisan;
-
+use App\Models\ProductReviews;
 use Illuminate\Validation\Rule;
 use App\Jobs\DynamicCsvImportJob;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class Vouchertable extends Component
+
+
+class Reviewstable extends Component
 {
   use WithFileUploads;
   use WithPagination;
@@ -40,7 +37,7 @@ class Vouchertable extends Component
   public $columns;
   public $selectedColumns = [];
   public $editindex = null;
-  public $voucher = [];
+  public $item = [];
   public $statuses;
   public $row = null;
   public $single = false;
@@ -80,14 +77,15 @@ class Vouchertable extends Component
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.vouchertable', [
-      'vouchers' => $this->vouchers,
+    return view('livewire.reviewstable', [
+      'reviews' => $this->reviews,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
 
     ]);
   }
+
   public function mount($tableName)
   {
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
@@ -174,14 +172,14 @@ class Vouchertable extends Component
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
 
-  public function getVouchersProperty()
+  public function getReviewsProperty()
   {
-    return $this->vouchersQuery->paginate($this->loadAmount);
+    return $this->reviewsQuery->paginate($this->loadAmount);
   }
 
-  public function getVouchersQueryProperty()
+  public function getReviewsQueryProperty()
   {
-    $query = Voucher::search($this->search);
+    $query = ProductReviews::search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
@@ -540,8 +538,8 @@ class Vouchertable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -677,7 +675,7 @@ class Vouchertable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->vouchers->pluck('id')->map(fn($item) => (string) $item)->toArray();
+      $this->checked = $this->reviews->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -686,53 +684,34 @@ class Vouchertable extends Component
   {
     $this->selectPage = false;
   }
-  public function edititem($index, $id)
+    public function edititem($index, $id)
   {
-    $this->statuses = Status::where('type', 'voucher')->get();
     $this->editindex = $index;
     $this->row = $index;
-    $record = Voucher::find($id);
-    $this->voucher = [
-      $index . '.name' => $record->name,
-      $index . '.code' => $record->code,
-      $index . '.percent' => $record->percent,
-      $index . '.value' => $record->value,
-      $index . '.status_id' => $record->status->name,
-      $index . '.single_use' => $record->single_use == 1 ? true : false,
-      $index . '.start_date' => $record->start_date,
-      $index . '.end_date' => $record->end_date,
+    $record = ProductReviews::find($id);
+    $this->item[$index] = [
+      'acronim' => $record->acronim,
+      'score' => $record->score,
+      'comment' => $record->comment,
+      'approved' => $record->approved == 1 ? true : false,
     ];
   }
   public function saveitem($index, $id)
   {
-    $record = $this->voucher[$index] ?? null;
+    $record = $this->item[$index] ?? null;
     if (!is_null($record)) {
-      $new = Voucher::find($id);
-      if (array_key_exists('name', $record)) {
-        $new->name = $record['name'];
+      $new = ProductReviews::find($id);
+      if (array_key_exists('acronim', $record)) {
+        $new->acronim = $record['acronim'];
       }
-      if (array_key_exists('code', $record)) {
-        $new->code = $record['code'];
+      if (array_key_exists('score', $record)) {
+        $new->score = $record['score'];
       }
-      if (array_key_exists('percent', $record)) {
-        $new->percent = $record['percent'];
-        $new->value = null;
+      if (array_key_exists('comment', $record)) {
+        $new->comment = $record['comment'];
       }
-      if (array_key_exists('value', $record)) {
-        $new->value = $record['value'];
-        $new->percent = null;
-      }
-      if (array_key_exists('status_id', $record)) {
-        $new->status_id = $record['status_id'];
-      }
-      if (array_key_exists('single_use', $record)) {
-        $new->single_use = $record['single_use'];
-      }
-      if (array_key_exists('start_date', $record)) {
-        $new->start_date = $record['start_date'];
-      }
-      if (array_key_exists('end_date', $record)) {
-        $new->end_date = $record['end_date'];
+      if (array_key_exists('approved', $record)) {
+        $new->approved = $record['approved'] ? 1 : 0;
       }
       $new->save();
       session()->flash('notification', [
@@ -747,14 +726,13 @@ class Vouchertable extends Component
         'title' => 'Warning'
       ]);
     }
-    Cache::forget('promotions');
     $this->editindex = null;
-    $this->voucher = [];
+    $this->item = [];
   }
-  public function canceledit()
+   public function canceledit()
   {
     $this->editindex = null;
-    $this->voucher = [];
+    $this->item = [];
   }
   public function swapSortDirection()
   {
@@ -764,19 +742,19 @@ class Vouchertable extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function selectAll()
+    public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->vouchersQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->reviewsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
-  public function deleteSingleRecord()
+    public function deleteSingleRecord()
   {
     $id = $this->idbeingremoved;
-    $item = Voucher::findOrFail($id);
+    $item = ProductReviews::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
     $this->single = false;
@@ -786,7 +764,7 @@ class Vouchertable extends Component
       'title' => 'Success'
     ]);
   }
-  public function confirmItemRemoval($id)
+    public function confirmItemRemoval($id)
   {
     $this->idbeingremoved = $id;
     $this->single = true;
@@ -802,10 +780,8 @@ class Vouchertable extends Component
   }
   public function deleteRecords()
   {
-    $items = Voucher::whereKey($this->checked)->get();
+    $items = ProductReviews::whereKey($this->checked)->get();
     foreach ($items as $item) {
-      $id = $item->id;
-      $item = Voucher::find($id);
       $item->delete();
     }
     $this->checked = [];
@@ -817,7 +793,7 @@ class Vouchertable extends Component
       'title' => 'Success'
     ]);
   }
-  // export-import data
+    // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -848,7 +824,7 @@ class Vouchertable extends Component
         return in_array($col, $dbColumns);
       });
 
-      $query = $this->getVouchersQueryProperty();
+      $query = $this->getReviewsQueryProperty();
 
       $query->select($realColumns)->whereIn('id', $checked);
 
@@ -974,8 +950,7 @@ class Vouchertable extends Component
       'title' => 'Import Queued'
     ]);
   }
-
-  protected function writeChunk(string $path, array $header, array $rows): void
+    protected function writeChunk(string $path, array $header, array $rows): void
   {
     $handle = fopen($path, 'w');
     fputcsv($handle, $header);
