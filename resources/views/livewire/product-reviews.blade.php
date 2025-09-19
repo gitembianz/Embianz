@@ -109,24 +109,38 @@
                                             {{ $review->$column }}
                                         @else
                                             <input type="text" required class="input__searchable"
-                                              wire:model.defer="record.{{ $index }}.{{ $column }}">
+                                                wire:model.defer="record.{{ $index }}.{{ $column }}">
+                                        @endif
+                                    @elseif ($column === 'score')
+                                        @if ($editindex !== $index)
+                                            {{ $review->$column }}
+                                        @else
+                                            <div class="searchable">
+                                                <input type="number" min="0" step="1" max="5"
+                                                    class="input__searchable"
+                                                    wire:model.defer="record.{{ $index }}.{{ $column }}">
+                                            </div>
                                         @endif
                                     @elseif ($column === 'approved')
                                         @if ($editindex !== $index)
-                                            @if ($review->$column == '1')
-                                                <div class="checkbox--secondary disabled">
-                                                    <input type="checkbox" id="disabled4" disabled checked>
-                                                    <label for="disabled4"></label>
+                                            @if ($review->approved)
+                                                <div class="checkbox--secondary">
+                                                    <input type="checkbox" id="isactive{{ $index }}" disabled
+                                                        checked>
+                                                    <label for="isactive{{ $index }}"></label>
                                                 </div>
                                             @else
                                                 <div class="checkbox--secondary disabled">
-                                                    <input type="checkbox" id="disabled4" disabled>
-                                                    <label for="disabled4"></label>
+                                                    <input type="checkbox" id="notactive{{ $index }}" disabled>
+                                                    <label for="notactive{{ $index }}"></label>
                                                 </div>
                                             @endif
                                         @else
-                                            <input type="checkbox"
-                                                wire:model.defer="record.{{ $index }}.{{ $column }}">
+                                            <div class="checkbox--secondary inline">
+                                                <input type="checkbox" id="check{{ $index }}"
+                                                    wire:model.lazy="record.{{ $index }}.{{ $column }}" />
+                                                <label for="check{{ $index }}"></label>
+                                            </div>
                                         @endif
                                     @else
                                         {{ $review->$column }}

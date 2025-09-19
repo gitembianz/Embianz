@@ -77,6 +77,7 @@ class ProductReviews extends Component
         $record = ModelsProductReviews::find($id);
         $this->record[$index] = [
             'acronim' => $record->acronim,
+            'score' => $record->score,
             'approved' => $record->approved == 1 ? true : false,
         ];
     }
@@ -104,6 +105,15 @@ class ProductReviews extends Component
 
             if (array_key_exists('acronim', $record)) {
                 $new->acronim = $record['acronim'];
+            }
+            if (array_key_exists('score', $record)) {
+              if($record['score']<0){
+                $record['score']=0;
+              }
+              if($record['score']>5){
+                $record['score']=5;
+              }
+                $new->score = $record['score'];
             }
             if (array_key_exists('approved', $record)) {
                 $new->approved = $record['approved'] ? 1 : 0;

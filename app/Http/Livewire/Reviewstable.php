@@ -696,6 +696,18 @@ class Reviewstable extends Component
       'approved' => $record->approved == 1 ? true : false,
     ];
   }
+    public function approveitem($id)
+    {
+        $record = ProductReviews::find($id);
+        $record->approved = 1;
+        $record->save();
+        session()->flash('notification', [
+            'message' => 'Review approved successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+
   public function saveitem($index, $id)
   {
     $record = $this->item[$index] ?? null;
@@ -705,8 +717,14 @@ class Reviewstable extends Component
         $new->acronim = $record['acronim'];
       }
       if (array_key_exists('score', $record)) {
-        $new->score = $record['score'];
-      }
+              if($record['score']<0){
+                $record['score']=0;
+              }
+              if($record['score']>5){
+                $record['score']=5;
+              }
+                $new->score = $record['score'];
+            }
       if (array_key_exists('comment', $record)) {
         $new->comment = $record['comment'];
       }
