@@ -179,7 +179,7 @@ class Categoriestable extends Component
 
   public function getCategoriesQueryProperty()
   {
-    $query = Category::search($this->search);
+    $query = Category::panel_search($this->search);
     $query = $this->applyFilters($query);
     return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }

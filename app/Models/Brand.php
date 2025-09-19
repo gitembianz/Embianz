@@ -7,18 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'description'];
+  use HasFactory;
+  protected $fillable = ['name', 'description'];
 
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('description', 'like', '%' . $search . '%');
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
-    public function media()
-    {
-        return $this->morphToMany(Media::class, 'mediable', 'item_media');
-    }
+
+    return $query;
+  }
+  public function media()
+  {
+    return $this->morphToMany(Media::class, 'mediable', 'item_media');
+  }
 }

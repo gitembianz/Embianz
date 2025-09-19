@@ -327,7 +327,7 @@ class Productstable extends Component
   }
   public function getProductsQueryProperty()
   {
-    $query = Product::search($this->search);
+    $query = Product::panel_search($this->search);
 
     $query = $this->applyFilters($query);
 
