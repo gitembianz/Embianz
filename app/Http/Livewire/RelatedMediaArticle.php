@@ -53,9 +53,23 @@ class RelatedMediaArticle extends Component
 
   public function render()
   {
-    $filteredMedia = $this->article->media()
-      ->where('name', 'LIKE', '%' . $this->search . '%')
-      ->get();
+    $query = $this->article->media();
+
+    if (!empty($this->search)) {
+      $search = $this->search;
+      $query->where(function ($q) use ($search) {
+        $columns = Schema::getColumnListing('media');
+
+        foreach ($columns as $column) {
+          if ($column === 'id' || $column === 'created_at' || $column === 'updated_at') {
+            continue;
+          }
+          $q->orWhere($column, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    $filteredMedia = $query->get();
 
     return view('livewire.related-media-article', [
       'filteredMedia' => $filteredMedia

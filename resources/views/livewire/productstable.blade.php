@@ -606,17 +606,4 @@
             </button>
         @endif
     </div>
-    <script>
-        window.addEventListener('hydrateSortFromStorage', event => {
-            const table = event.detail.table;
-            const col = localStorage.getItem(`listview_sort_${table}_column`);
-            const dir = localStorage.getItem(`listview_sort_${table}_direction`);
-            if (col && dir) {
-                Livewire.dispatch('setSortFromStorage', {
-                    column: col,
-                    direction: dir
-                });
-            }
-        });
-    </script>
 </section>

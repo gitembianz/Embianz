@@ -7,19 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Promotion extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'details', 'cookieid' . 'active'];
+  use HasFactory;
+  protected $fillable = ['name', 'type', 'details', 'promotion_percent', 'promotion_value', 'start_date', 'end_date', 'cooldown_timer', 'cart_amount', 'cookieid', 'active'];
 
-    public function sessions()
-    {
-        return $this->hasMany(UserSessions::class, 'session_id');
+  public function sessions()
+  {
+    return $this->hasMany(UserSessions::class, 'session_id');
+  }
+
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
 
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('details', 'like', '%' . $search . '%');
-    }
+    return $query;
+  }
 }
