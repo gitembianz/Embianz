@@ -371,13 +371,6 @@ class StoreOrder extends Component
     }
   }
 
-
-
-
-
-
-
-
   public function validateData()
   {
     try {
@@ -475,17 +468,22 @@ class StoreOrder extends Component
 
   protected function findOrCreateAddress(array $data)
   {
-    $query = Address::where('account_id', $data['account_id'])
-      ->where('type', $data['type']);
+    $checkData = collect($data)->except(['is_default'])->toArray();
 
-    foreach ($data as $key => $value) {
-      if (!in_array($key, ['account_id', 'type'])) {
-        $query->where($key, $value);
-      }
+    $address = Address::where('account_id', $data['account_id'])
+      ->where('type', $data['type'])
+      ->where($checkData)
+      ->first();
+
+    if ($address) {
+      $address->update(['is_default' => true]);
+      return $address;
     }
 
-    return $query->first() ?? Address::create($data);
+    return Address::create($data);
   }
+
+
 
   public function confirm()
   {
