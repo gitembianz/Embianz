@@ -38,7 +38,20 @@ class Product extends Model
     'is_digital',
     'google_category',
   ];
+  public static function panel_search($search)
+  {
+    $query = static::query();
 
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()
@@ -51,11 +64,8 @@ class Product extends Model
 
           $query->where(function ($subQuery) use ($term, $soundexValue) {
             $subQuery->where('id', 'like', '%' . $term . '%')
-              ->orWhere('ean', 'like', '%' . $term . '%')
               ->orWhere('name', 'like', '%' . $term . '%')
-              ->orWhere('meta_description', 'like', '%' . $term . '%')
               ->orWhere('short_description', 'like', '%' . $term . '%')
-              ->orWhere('sku', 'like', '%' . $term . '%')
               ->orWhereRaw("
                             EXISTS (
                                 SELECT 1

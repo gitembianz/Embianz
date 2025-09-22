@@ -688,14 +688,29 @@ class RelatedMediaProduct extends Component
     $this->multiple = false;
     $this->single = false;
   }
-  public function render()
-  {
-    $filteredMedia = $this->product->media()
-      ->where('name', 'LIKE', '%' . $this->search . '%')
-      ->get();
+public function render()
+{
+    $query = $this->product->media();
+
+    if (!empty($this->search)) {
+        $search = $this->search;
+        $query->where(function ($q) use ($search) {
+            $columns = Schema::getColumnListing('media');
+
+            foreach ($columns as $column) {
+                if ($column === 'id' || $column === 'created_at' || $column === 'updated_at') {
+                    continue;
+                }
+                $q->orWhere($column, 'like', '%' . $search . '%');
+            }
+        });
+    }
+
+    $filteredMedia = $query->get();
 
     return view('livewire.related-media-product', [
-      'filteredMedia' => $filteredMedia
+        'filteredMedia' => $filteredMedia
     ]);
-  }
+}
+
 }

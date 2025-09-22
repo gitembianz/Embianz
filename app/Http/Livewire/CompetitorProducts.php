@@ -308,7 +308,7 @@ public function getProductsProperty()
 
   public function getRelatedproductsQueryProperty()
   {
-    return ModelsCompetitorProducts::where('competitor_id', $this->competitor->id)
+    return ModelsCompetitorProducts::search($this->search)->where('competitor_id', $this->competitor->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
   public function mount(Competitor $competitor, $tableName = null)

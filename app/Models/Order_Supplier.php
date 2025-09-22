@@ -7,25 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order_Supplier extends Model
 {
-    use HasFactory;
-    protected $fillable = ['name', 'status', 'exchange_id', 'date', 'sum_amount', 'final_amount', 'vat_sum_amount', 'supplier_name', 'currency', 'created_by', 'last_modified_by'];
+  use HasFactory;
+  protected $fillable = ['name', 'supplier_name', 'status', 'date', 'currency', 'exchange_id', 'quote_currency', 'final_amount', 'final_amount_quote_currency', 'vat_sum_amount', 'sum_amount', 'created_by', 'last_modified_by'];
 
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('supplier_name', 'like', '%' . $search . '%')
-            ->orWhere('status', 'like', '%' . $search . '%')
-            ->orWhere('created_by', 'like', '%' . $search . '%')
-            ->orWhere('last_modified_by', 'like', '%' . $search . '%');
+  public function items()
+  {
+    return $this->hasMany(Order_Supplier_Item::class, 'order__supplier_id');
+  }
+  public function exchange()
+  {
+    return $this->belongsTo(Exchange::class, 'exchange_id');
+  }
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
-    public function items()
-    {
-        return $this->hasMany(Order_Supplier_Item::class, 'order__supplier_id');
-    }
-    public function exchange()
-    {
-        return $this->belongsTo(Exchange::class, 'exchange_id');
-    }
+
+    return $query;
+  }
 }

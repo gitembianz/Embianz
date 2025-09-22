@@ -75,10 +75,22 @@ class ProductReviews extends Component
     {
         $this->editindex = $index;
         $record = ModelsProductReviews::find($id);
-        $this->record = [
-            $index . '.count' => $record->count,
-            $index . '.value' => $record->value
+        $this->record[$index] = [
+            'acronim' => $record->acronim,
+            'score' => $record->score,
+            'approved' => $record->approved == 1 ? true : false,
         ];
+    }
+    public function approveitem($id)
+    {
+        $record = ModelsProductReviews::find($id);
+        $record->approved = 1;
+        $record->save();
+        session()->flash('notification', [
+            'message' => 'Review approved successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
     }
     public function canceledit()
     {
@@ -91,30 +103,20 @@ class ProductReviews extends Component
         if (!is_null($record)) {
             $new = ModelsProductReviews::find($id);
 
-            if (array_key_exists('count', $record)) {
-                $new->count = $record['count'];
+            if (array_key_exists('acronim', $record)) {
+                $new->acronim = $record['acronim'];
             }
-            if (array_key_exists('value', $record)) {
-                if ($record['value'] <= 5 && $record['value'] > 0) {
-
-                    $new->value = $record['value'];
-                    $popularity = app('max_popularity') * ($record['value'] * 20) / 100;
-                    $new->product->update([
-                        'popularity' => $popularity
-                    ]);
-                    Cache::forget('max_popularity');
-                } else {
-                    session()->flash('notification', [
-                        'message' => 'Provide a value between 0-5!',
-                        'type' => 'warning',
-                        'title' => 'Warning'
-                    ]);
-                    $this->record = [
-                        $index . '.count' => $new->count,
-                        $index . '.value' => $record['value']
-                    ];
-                    return;
-                }
+            if (array_key_exists('score', $record)) {
+              if($record['score']<0){
+                $record['score']=0;
+              }
+              if($record['score']>5){
+                $record['score']=5;
+              }
+                $new->score = $record['score'];
+            }
+            if (array_key_exists('approved', $record)) {
+                $new->approved = $record['approved'] ? 1 : 0;
             }
             $new->save();
             session()->flash('notification', [

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PriceList extends Model
 {
   use HasFactory;
+  protected $fillable = ['name', 'active', 'currency_id', 'createdby', 'lastmodifiedby', 'created_at', 'updated_at'];
+
 
   public function currency()
   {
@@ -21,9 +23,16 @@ class PriceList extends Model
 
   public static function search($search)
   {
-    return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('created_at', 'like', '%' . $search . '%');
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
   }
 }

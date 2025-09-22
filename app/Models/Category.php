@@ -59,23 +59,41 @@ class Category extends Model
 
   protected $fillable = [
     'name',
-    'parent',
+    'accepted_items',
     'active',
+    'slider_sequence',
+    'has_parent',
+    'preload_image',
+    'one_product_page_category',
+    'display_variant_price',
     'long_description',
     'long_description_bottom',
-    'meta_description',
     'short_description',
+    'meta_description',
     'sequence',
-    'slider_sequence',
     'start_date',
     'end_date',
-    'createdby',
-    'lastmodifiedby',
+    'store_tab',
     'seo_title',
     'seo_id',
-    'preload_image',
-    'display_variant_price'
+    'createdby',
+    'lastmodifiedby',
   ];
+
+  public static function panel_search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
+  }
 
   public static function search($search)
   {
@@ -90,7 +108,6 @@ class Category extends Model
           $query->where(function ($subQuery) use ($term, $soundexValue) {
             $subQuery->where('id', 'like', '%' . $term . '%')
               ->orWhere('name', 'like', '%' . $term . '%')
-              ->orWhere('sequence', 'like', '%' . $term . '%')
               ->orWhere('short_description', 'like', '%' . $term . '%')
               ->orWhereRaw("
                             EXISTS (

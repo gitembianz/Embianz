@@ -51,6 +51,8 @@
       route::post('/store_article', [AdminController::class, 'store_article'])->name('store_article');
       route::get('/show_article/{id}/', [AdminController::class, 'show_article'])->name('show_article');
 
+      route::view('/reviews', 'admin.reviews')->name('reviews');
+
       route::view('/competitors', 'admin.competitors')->name('competitors');
       route::view('/add_competitor', 'admin.add_competitor')->name('newcompetitor');
       route::post('/store_competitor', [AdminController::class, 'store_competitor'])->name('store_competitor');
@@ -234,7 +236,7 @@
       ->middleware('categorycheck');
     route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
     route::get('/blog/{categorySlug?}', [StoreController::class, 'blog'])->name('blog');
-route::get('/article/{article}', [StoreController::class, 'article'])->name('article');
+    route::get('/article/{article}', [StoreController::class, 'article'])->name('article');
     //payments routes
     Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
     Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
@@ -255,13 +257,13 @@ route::get('/article/{article}', [StoreController::class, 'article'])->name('art
   //Speed test
   Route::get('/test1', function () {
     return response('', 200);
-});
+  });
 
-// Speed test with minimal Blade rendering
-Route::get('/test2', function () {
+  // Speed test with minimal Blade rendering
+  Route::get('/test2', function () {
     return view('speedtest');
-});
+  });
 
-Route::get('/sapi', function () {
+  Route::get('/sapi', function () {
     return php_sapi_name();
-});
+  });

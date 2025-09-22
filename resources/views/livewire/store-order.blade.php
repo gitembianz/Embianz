@@ -276,7 +276,6 @@
                         <h2 class="section__title">
                             @if (app()->has('label_order_1_title'))
                                 {!! app('label_order_1_title') !!}
-                                {{ app('countries_version') }}
                             @endif
                         </h2>
                     </div>

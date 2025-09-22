@@ -7,28 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class TextLabel extends Model
 {
-    use HasFactory;
-    protected $primaryKey = 'id';
-    public $timestamps = false;
+  use HasFactory;
+  protected $primaryKey = 'id';
+  public $timestamps = false;
 
-    protected $fillable = [
-        'parameter',
-        'value',
-        'description',
-        'createdby',
-        'lastmodifiedby',
-        'created_at',
-        'updated_at'
+  protected $fillable = [
+    'parameter',
+    'value',
+    'description',
+    'createdby',
+    'lastmodifiedby',
+    'created_at',
+    'updated_at'
 
-    ];
+  ];
 
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('parameter', 'like', '%' . $search . '%')
-            ->orWhere('value', 'like', '%' . $search . '%')
-            ->orWhere('description', 'like', '%' . $search . '%')
-            ->orWhere('created_at', 'like', '%' . $search . '%');
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
+
+    return $query;
+  }
 }

@@ -157,6 +157,22 @@
                     <label for="isNew3">Is New</label>
                 @endif
             </div>
+        </div>
+        <div class="details__checkboxes">
+            <div class="checkbox__details">
+                @if ($editproduct === null)
+                    @if ($product->is_digital)
+                        <input type="checkbox" id="digital1" checked class="disabled" disabled />
+                        <label for="digital1" class="disabled">Is Digital</label>
+                    @else
+                        <input type="checkbox" id="digital2" class="disabled" disabled />
+                        <label for="digital2" class="disabled">Is Digital</label>
+                    @endif
+                @else
+                    <input type="checkbox" id="digital3" wire:model.defer="prod.is_digital" />
+                    <label for="digital3">Is Digital</label>
+                @endif
+            </div>
             <div class="checkbox__details">
                 @if ($editproduct === null)
                     @if ($product->low_stock)
@@ -244,16 +260,18 @@
 
             </div>
         </div>
-        <div class="input__tabs">
-            @if ($editproduct === null)
-                <span class="disabled">{{ $product->low_stock_quantity }}</span>
-            @else
-                <input type="number" name="low_stock_quantity" wire:model.defer="prod.low_stock_quantity" required>
-            @endif
-            <label for="low_stock_quantity">Low Stock Quantity</label>
-        </div>
-
         <div class="details__checkboxes">
+
+            <div class="input__tabs">
+                @if ($editproduct === null)
+                    <span class="disabled">{{ $product->low_stock_quantity }}</span>
+                @else
+                    <input type="number" name="low_stock_quantity" wire:model.defer="prod.low_stock_quantity"
+                        required>
+                @endif
+                <label for="low_stock_quantity">Low Stock Quantity</label>
+            </div>
+
 
             {{-- Product Popularity --}}
             <div class="input__tabs">
@@ -322,16 +340,26 @@
             <label for="product__name">End Date</label>
         </div>
 
-        {{-- Product Meta Description --}}
-        <div class="input__tabs details__long">
-            @if ($editproduct === null)
-                <span class="disabled">{{ $product->meta_description }}</span>
-            @else
-                <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.meta_description"
-                    required>
-            @endif
-            <label for="product__name">Meta Description</label>
-        </div>
+            {{-- Product Meta Description --}}
+            <div class="input__tabs">
+                @if ($editproduct === null)
+                    <span class="disabled">{{ $product->meta_description }}</span>
+                @else
+                    <input type="text" placeholder=" " name="product__name"
+                        wire:model.defer="prod.meta_description" required>
+                @endif
+                <label for="product__name">Meta Description</label>
+            </div>
+            {{-- Product Meta Description --}}
+            <div class="input__tabs">
+                @if ($editproduct === null)
+                    <span class="disabled">{{ $product->google_category }}</span>
+                @else
+                    <input type="text" placeholder=" " name="google_category"
+                        wire:model.defer="prod.google_category" required>
+                @endif
+                <label for="product__name">Google Category</label>
+            </div>
 
         {{-- Comments --}}
         <div class="textarea__tabs details__long">
