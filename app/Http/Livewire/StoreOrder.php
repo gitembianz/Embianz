@@ -638,7 +638,7 @@ class StoreOrder extends Component
       $uniqueorderNumber = $prefix . str_pad($today, 3, '0', STR_PAD_LEFT);
       $this->orderNumber = $uniqueorderNumber;
 
-      $order = Order::create([
+      $order = Order::updateOrCreate([
         'name' => $uniqueName,
         'session_id' => $this->session_id,
         'account_id' => $account->id,
