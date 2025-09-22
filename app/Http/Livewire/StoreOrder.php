@@ -122,24 +122,32 @@ class StoreOrder extends Component
 
 
     if (session()->has('paymentsucces')) {
-      if ($this->cart->voucher && $this->cart->voucher->single_use) {
-        Voucher::where('id', $this->cart->voucher_id)->update([
-          'status_id' => app('global_voucher_closed')
+
+      if($this->cart){
+
+        if ($this->cart->voucher && $this->cart->voucher->single_use) {
+          Voucher::where('id', $this->cart->voucher_id)->update([
+            'status_id' => app('global_voucher_closed')
+          ]);
+        }
+        $this->cart->update([
+          'status_id' => app('global_cart_closed')
         ]);
+        $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
+        $order->status_id = app('global_order_processing');
+        $this->orderNumber = $order->order_number;
+        $order->save();
+        $this->new_order = $order;
+        foreach ($order->orders as $item) {
+          $item->product->quantity -= $item->quantity;
+          $item->product->save();
+        }
+        $this->step = 3;
+      }else{
+        $this->step = 1;
+        $this->emit('alert__modal', ['message' => 'Your cart is empty!']);
       }
-      $this->cart->update([
-        'status_id' => app('global_cart_closed')
-      ]);
-      $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
-      $order->status_id = app('global_order_processing');
-      $this->orderNumber = $order->order_number;
-      $order->save();
-      $this->new_order = $order;
-      foreach ($order->orders as $item) {
-        $item->product->quantity -= $item->quantity;
-        $item->product->save();
-      }
-      $this->step = 3;
+
       session()->forget('paymentsucces');
       try {
         Mail::to($order->account->email)->send(new ConfirmationOrder($order));
@@ -637,8 +645,7 @@ class StoreOrder extends Component
 
       $uniqueorderNumber = $prefix . str_pad($today, 3, '0', STR_PAD_LEFT);
       $this->orderNumber = $uniqueorderNumber;
-
-      $order = Order::updateOrCreate([
+      $orderdata = [
         'name' => $uniqueName,
         'session_id' => $this->session_id,
         'account_id' => $account->id,
@@ -656,9 +663,17 @@ class StoreOrder extends Component
         'currency_id' => $this->cart->currency_id,
         'status_id' => $status,
         'payment_id' => $this->payment['id'],
-        'voucher_id' => $this->cart->voucher_id
-      ]);
+        'voucher_id' => $this->cart->voucher_id ?? null,
+      ];
 
+      $order = Order::updateOrCreate(
+        ['cart_id' => $orderdata['cart_id']],
+        $orderdata
+      );
+
+      foreach ($order->orders as $item) {
+        $item->delete();
+      }
 
       $productsToUpdate = [];
       $orderItemsToInsert = [];
