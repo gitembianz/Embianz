@@ -26,10 +26,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class Vouchertable extends Component
 {
   use WithFileUploads;
+  use WithPagination;
   // importdata
   public $importdata = false;
   public $csvimportdata;
-  use WithPagination;
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -647,7 +647,6 @@ class Vouchertable extends Component
     $this->search = '';
     $this->mount($this->tableName);
   }
-
   public function sortBy($columnName)
   {
     if ($this->orderBy === $columnName) {

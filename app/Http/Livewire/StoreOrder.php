@@ -335,48 +335,41 @@ class StoreOrder extends Component
     $this->resetErrorBag();
   }
 
-public function next()
-{
+  public function next()
+  {
     if (!$this->cart->cartItems() || !$this->cart) {
-        $this->back = true;
+      $this->back = true;
     } else {
-        cookie()->queue(cookie()->forget('accountId'));
-        $this->resetErrorBag();
-        
+      cookie()->queue(cookie()->forget('accountId'));
+      $this->resetErrorBag();
+      if ($this->is_identic) {
+        $this->billing_first = $this->shipping_first;
+        $this->billing_last = $this->shipping_last;
+        $this->billing_phone = $this->shipping_phone;
+        $this->billing_email = $this->shipping_email;
+        $this->billing_address1 = $this->shipping_address1;
+        $this->billing_address2 = $this->shipping_address2;
+        $this->billing_country = $this->shipping_country;
+        $this->billing_county = $this->shipping_county;
+        $this->billing_city = $this->shipping_city;
+        $this->billing_zipcode = $this->shipping_zipcode;
+      }
 
-        $this->shipping_county = request('shipping_county', $this->shipping_county);
-        $this->shipping_city = request('shipping_city', $this->shipping_city);
-        $this->billing_county = request('billing_county', $this->billing_county);
-        $this->billing_city = request('billing_city', $this->billing_city);
-        
-        if ($this->is_identic) {
-            $this->billing_first = $this->shipping_first;
-            $this->billing_last = $this->shipping_last;
-            $this->billing_phone = $this->shipping_phone;
-            $this->billing_email = $this->shipping_email;
-            $this->billing_address1 = $this->shipping_address1;
-            $this->billing_address2 = $this->shipping_address2;
-            $this->billing_country = $this->shipping_country;
-            $this->billing_county = $this->shipping_county;
-            $this->billing_city = $this->shipping_city;
-            $this->billing_zipcode = $this->shipping_zipcode;
-        }
-        
-        $this->validateData();
-        $this->updateFormSession();
-        $this->step++;
+      $this->validateData();
+      $this->updateFormSession();
+      $this->step++;
 
-        $this->cart->update([
-            'status_id' => app('global_cart_checkoutdetails')
-        ]);
-        
-        if ($this->is_identic && $this->step == 2) {
-            $this->dispatchBrowserEvent('refreshBillingFields');
-        }
-        
-        $this->dispatchBrowserEvent('goup');
+      $this->cart->update([
+        'status_id' => app('global_cart_checkoutdetails')
+      ]);
+
+      if ($this->is_identic && $this->step == 2) {
+        $this->dispatchBrowserEvent('refreshBillingFields');
+      }
+
+      $this->dispatchBrowserEvent('goup');
     }
-}
+  }
 
 
 
@@ -387,41 +380,51 @@ public function next()
 
   public function validateData()
   {
-    $rules = [
-      'shipping_first'   => 'required|string|min:2|max:50',
-      'shipping_last'    => 'required|string|min:2|max:50',
-      'shipping_address1' => 'required|string|min:2|max:100',
-      'shipping_city'    => 'required|string|min:2|max:50',
-      'shipping_county'  => 'required|string|min:2|max:50',
-      'shipping_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
-      'shipping_email'   => 'required|email',
-
-    ];
-
-    if (!$this->is_identic) {
-      $billing = [
-        'billing_first'   => 'required|string|min:2|max:50',
-        'billing_last'    => 'required|string|min:2|max:50',
-        'billing_address1' => 'required|string|min:2|max:100',
-        'billing_city'    => 'required|string|min:2|max:50',
-        'billing_county'  => 'required|string|min:2|max:50',
-        'billing_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
-        'billing_email'   => 'required|email',
+    try {
+      $rules = [
+        'shipping_first'   => 'required|string|min:2|max:50',
+        'shipping_last'    => 'required|string|min:2|max:50',
+        'shipping_address1' => 'required|string|min:2|max:100',
+        'shipping_city'    => 'required|string|min:2|max:50',
+        'shipping_county'  => 'required|string|min:2|max:50',
+        'shipping_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
+        'shipping_email'   => 'required|email',
       ];
-      $rules = array_merge($rules, $billing);
-    }
 
-    if ($this->juridic) {
-      $juridicRules = [
-        'billing_company_name'     => 'required|string|min:2|max:100',
-        'billing_registration_code' => 'required|string|min:2|max:50',
-        'billing_registration_number' => 'required|string|min:1|max:50',
-      ];
-      $rules = array_merge($rules, $juridicRules);
-    }
+      if (!$this->is_identic) {
+        $billing = [
+          'billing_first'   => 'required|string|min:2|max:50',
+          'billing_last'    => 'required|string|min:2|max:50',
+          'billing_address1' => 'required|string|min:2|max:100',
+          'billing_city'    => 'required|string|min:2|max:50',
+          'billing_county'  => 'required|string|min:2|max:50',
+          'billing_phone'   => ['required', 'regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/'],
+          'billing_email'   => 'required|email',
+        ];
+        $rules = array_merge($rules, $billing);
+      }
 
-    $this->validate($rules);
+      if ($this->juridic) {
+        $juridicRules = [
+          'billing_company_name'       => 'required|string|min:2|max:100',
+          'billing_registration_code'  => 'required|string|min:2|max:50',
+          'billing_registration_number' => 'required|string|min:1|max:50',
+        ];
+        $rules = array_merge($rules, $juridicRules);
+      }
+
+      $this->validate($rules);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      $errors = $e->errors();
+
+      $this->dispatchBrowserEvent('validation-failed', [
+        'errors' => $errors
+      ]);
+
+      throw $e;
+    }
   }
+
 
   public function togglepayment($item)
   {

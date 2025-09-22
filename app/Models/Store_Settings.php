@@ -25,11 +25,16 @@ class Store_Settings extends Model
 
   public static function search($search)
   {
-    return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('parameter', 'like', '%' . $search . '%')
-      ->orWhere('value', 'like', '%' . $search . '%')
-      ->orWhere('description', 'like', '%' . $search . '%')
-      ->orWhere('created_at', 'like', '%' . $search . '%');
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
   }
 }

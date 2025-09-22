@@ -35,14 +35,7 @@ class RelatedInvoices extends Component
     public $previewContent = null;
     public function render()
     {
-        $invoices = $this->invoices
-            ->where(function ($query) {
-                $query->whereHas('order', function ($subQuery) {
-                    $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
-                })->orwhereHas('account', function ($subQuery) {
-                    $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
-                });
-            })->get();
+        $invoices = $this->invoices->get();
         return view('livewire.related-invoices', [
             'invoices' => $invoices
         ]);
@@ -114,10 +107,10 @@ class RelatedInvoices extends Component
     public function getInvoicesQueryProperty()
     {
         if ($this->object === 'order') {
-            return Invoice::where('order_id', $this->objectid)
+            return Invoice::search($this->search)->where('order_id', $this->objectid)
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
         } else {
-            return Invoice::where('account_id', $this->objectid)
+            return Invoice::search($this->search)->where('account_id', $this->objectid)
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
         }
     }

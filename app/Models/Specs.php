@@ -14,20 +14,26 @@ class Specs extends Model
   protected $fillable = [
     'name',
     'um',
-    'sequence', 'mark_as_filter'
+    'sequence',
+    'mark_as_filter'
   ];
-  public static function search($search)
-  {
-    return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('um', 'like', '%' . $search . '%')
-      ->orWhere('sequence', 'like', '%' . $search . '%')
-      ->orWhere('created_at', 'like', '%' . $search . '%');
-  }
 
   public function product_spec()
   {
     return $this->hasMany(Product_Spec::class, 'spec_id');
+  }
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
   }
 }

@@ -102,7 +102,7 @@ class RelatedCity extends Component
     }
     public function getCitiesQueryProperty()
     {
-        return City::where('county_id', $this->countyId)
+        return City::search($this->search)->where('county_id', $this->countyId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function confirmItemRemoval($id)

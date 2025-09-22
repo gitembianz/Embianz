@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $fillable = ['name', 'delivery_price_vat', 'billing_id', 'shipping_id', 'avg_cost', 'comments', 'promotion_value', 'order_number', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'voucher_value', 'delivery_price', 'final_amount', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
+  protected $fillable = ['order_number', 'name', 'session_id', 'comments', 'account_id', 'cart_id', 'quantity_amount', 'sum_amount', 'final_amount', 'delivery_price', 'delivery_price_vat', 'currency_id', 'status_id', 'payment_id', 'voucher_id', 'voucher_value', 'promotion_value', 'avg_cost', 'storno_date', 'invoice_series', 'external_storno_number', 'external_invoice_number', 'invoice_date', 'billing_id', 'shipping_id', 'created_at', 'updated_at'];
 
   public function orders()
   {
@@ -56,13 +56,16 @@ class Order extends Model
   }
   public static function search($search)
   {
-    return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('session_id', 'like', '%' . $search . '%')
-      ->orWhere('quantity_amount', 'like', '%' . $search . '%')
-      ->orWhere('sum_amount', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('comments', 'like', '%' . $search . '%')
-      ->orWhere('order_number', 'like', '%' . $search . '%');;
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
+    }
+
+    return $query;
   }
 }

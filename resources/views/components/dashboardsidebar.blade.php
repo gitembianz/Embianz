@@ -124,6 +124,15 @@
                 </svg>
                 <span>Vouchers</span>
             </a>
+            <a class="button button--fill button--flexed button--primary @if ($active == 'review') button--active @endif"
+                href="{{ route('reviews') }}">
+                <svg>
+                    <path
+                        d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                    </path>
+                </svg>
+                <span>Reviews</span>
+            </a>
             {{-- accounts --}}
             <a class="button button--fill button--flexed button--primary @if ($active == 'account') button--active @endif"
                 href="{{ route('accounts') }}">
@@ -466,6 +475,15 @@
                     d="M8 13c-.789 0 -2 -.672 -2 -1.5s.711 -1.5 1.5 -1.5c1.128 -.02 2.077 1.17 2.5 3c.423 -1.83 1.372 -3.02 2.5 -3c.789 0 1.5 .672 1.5 1.5s-1.211 1.5 -2 1.5h-4z" />
             </svg>
             <span>Vouchers</span>
+        </a>
+        <a class="button button--long button--flexed button--primary @if ($active == 'review') button--secondary @endif"
+            href="{{ route('reviews') }}">
+            <svg>
+                <path
+                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                </path>
+            </svg>
+            <span>Reviews</span>
         </a>
         {{-- accounts desktop --}}
         <a class="button button--long button--flexed button--primary @if ($active == 'account') button--secondary @endif"

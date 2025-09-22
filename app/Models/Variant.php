@@ -7,21 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Variant extends Model
 {
-    use HasFactory;
-    protected $fillable = [
-        'id',
-        'name',
-        'sequence'
-    ];
-    public function reference()
-    {
-        return $this->hasMany(ProductVariant::class, 'variant_id');
+  use HasFactory;
+  protected $fillable = [
+    'id',
+    'name',
+    'sequence'
+  ];
+  public function reference()
+  {
+    return $this->hasMany(ProductVariant::class, 'variant_id');
+  }
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('sequence', 'like', '%' . $search . '%');
-    }
+
+    return $query;
+  }
 }

@@ -3,46 +3,30 @@
 namespace App\Http\Livewire;
 
 use Carbon\Carbon;
-use App\Models\Job;
-use App\Models\Media;
 use App\Models\AllJob;
-use App\Models\JobLog;
-use App\Models\Product;
 use Livewire\Component;
 use App\Models\Listview;
-use App\Models\Wishlist;
-use App\Models\Cart_Item;
-use App\Models\ProductCost;
 use App\Models\CsvImportJob;
-use App\Models\Product_Spec;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-
+use App\Models\ProductReviews;
 use Illuminate\Validation\Rule;
-use App\Models\PricelistEntries;
-use App\Models\Related_Products;
 use App\Jobs\DynamicCsvImportJob;
-
-
 use Illuminate\Support\Facades\DB;
-use App\Models\Products_categories;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
-
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
-use App\Models\ProductReviews as ModelsProductReviews;
 
-class Productstable extends Component
+
+
+class Reviewstable extends Component
 {
-  use WithPagination;
   use WithFileUploads;
-
+  use WithPagination;
+  // importdata
+  public $importdata = false;
+  public $csvimportdata;
   public $loadAmount;
   public $search = '';
   public $orderBy;
@@ -50,19 +34,22 @@ class Productstable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $idbeingremoved = null;
   public $columns;
   public $selectedColumns = [];
+  public $editindex = null;
+  public $item = [];
+  public $statuses;
   public $row = null;
   public $single = false;
   public $multiple = false;
-  public $uploadcsv = false;
-  public $addlistview = false;
-  public $csvFile;
+  public $idbeingremoved = null;
+
+  // listview variables
   public $relation = false;
   public $editlistview = false;
   public $tableName;
   public $activelistview;
+  public $addlistview = false;
   public string $selectedAvailable = '';
   public string $selectedVisible = '';
   public bool $edit = true;
@@ -85,29 +72,20 @@ class Productstable extends Component
     'operator' => null,
     'value' => null,
   ];
-  protected $rules = [
-    'csvFile' => 'required|mimes:csv,txt',
-    'csvimportdata' => 'required|mimes:csv,txt',
-  ];
-
-  // importdata
-  public $importdata = false;
-  public $csvimportdata;
-
-
 
   public function render()
   {
     $activeId = $this->activelistview?->id;
 
-    return view('livewire.productstable', [
-      'products' => $this->products,
+    return view('livewire.reviewstable', [
+      'reviews' => $this->reviews,
       'listviews' => $this->listviews->filter(function ($view) use ($activeId) {
         return $view->id !== $activeId;
       }),
 
     ]);
   }
+
   public function mount($tableName)
   {
     $this->loadAmount = app()->bound('global_dashboard_limit_load')
@@ -118,10 +96,6 @@ class Productstable extends Component
     $this->columns = Schema::getColumnListing($tableName);
     sort($this->columns);
 
-    $quantityIndex = array_search('quantity', $this->columns);
-    if ($quantityIndex !== false) {
-      array_splice($this->columns, $quantityIndex + 1, 0, ['interim_quantity', 'quantity_ordered']);
-    }
 
     $listviews = $this->getListviewsProperty();
     $this->activelistview = $listviews->first();
@@ -198,7 +172,19 @@ class Productstable extends Component
     $this->selectedColumns = $this->listview['columns'] ?? [];
   }
 
+  public function getReviewsProperty()
+  {
+    return $this->reviewsQuery->paginate($this->loadAmount);
+  }
 
+  public function getReviewsQueryProperty()
+  {
+    $query = ProductReviews::search($this->search);
+    $query = $this->applyFilters($query);
+    return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
+  }
+
+  // listview functions
   public function updatingAddlistview($value)
   {
     if ($value) {
@@ -320,37 +306,6 @@ class Productstable extends Component
     return $query->where(function ($q) use ($final) {
       $final($q);
     });
-  }
-  public function getProductsProperty()
-  {
-    return $this->productsQuery->paginate($this->loadAmount);
-  }
-  public function getProductsQueryProperty()
-  {
-    $query = Product::panel_search($this->search);
-
-    $query = $this->applyFilters($query);
-
-    return $query
-      ->withCount([
-        'orders_item as interim_quantity' => function ($query) {
-          $query->whereHas('order', function ($q) {
-            $q->where('status_id', 31);
-          })
-            ->select(DB::raw('
-                    CASE
-                        WHEN COUNT(*) = 0 THEN products.quantity
-                        ELSE SUM(quantity) + products.quantity
-                    END
-                '));
-        },
-        'order_suppliers as quantity_ordered' => function ($query) {
-          $query->whereHas('order', function ($q) {
-            $q->where('status', '!=', 'closed');
-          })->select(DB::raw('SUM(quantity)'));
-        },
-      ])
-      ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc');
   }
   public function clearAllFilters()
   {
@@ -583,8 +538,8 @@ class Productstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -592,8 +547,6 @@ class Productstable extends Component
       ->orderBy('updated_at', 'desc')
       ->get();
   }
-
-
   public function moveToVisible()
   {
     if ($this->selectedAvailable !== '') {
@@ -662,229 +615,6 @@ class Productstable extends Component
       'title' => 'Success'
     ]);
   }
-
-  public function updatingcsvFile($value)
-  {
-    ini_set('max_execution_time', 300);
-    ini_set('memory_limit', '512M');
-
-    $file = fopen($value->getRealPath(), 'r');
-    // Skip the header row
-    $header = fgetcsv($file);
-    while ($row = fgetcsv($file)) {
-      $this->processRow($row);
-    }
-
-    fclose($file);
-    $this->uploadcsv = false;
-    session()->flash('notification', [
-      'message' => 'Media added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function processRow($row)
-  {
-    $id = $row[0]; // id
-    $mediaLink = $row[1]; // media link
-
-    $product = Product::find($id);
-
-    if ($product) {
-      $productType = class_basename(get_class($product));
-      $filespath = 'media/' . $productType . '/';
-      if (!File::exists($filespath)) {
-        File::makeDirectory($filespath, 0755, true);
-      }
-      if (!File::exists($filespath . $product->id)) {
-        File::makeDirectory($filespath . $product->id, 0755, true);
-      }
-      $path = $filespath . $product->id . "/";
-      $mediaLink = strtok($mediaLink, '?');
-      $mediaLink = preg_replace('/(_\d+x\d+)?(\.\w+)$/', '$2', $mediaLink);
-
-      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-      $fileExtension = strtolower(pathinfo($mediaLink, PATHINFO_EXTENSION));
-
-      if (!in_array($fileExtension, $allowedExtensions)) {
-        return;
-      }
-      $fileContent = file_get_contents($mediaLink);
-      if ($fileContent == false) {
-        return;
-      }
-      $imageInfo = getimagesizefromstring($fileContent);
-      if (app()->has('global_auto_webp') &&  app('global_auto_webp') === 'true') {
-        $image = Image::make($fileContent);
-        $webpContent = $image->encode('webp')->__toString();
-        $fileExtension = 'webp';
-        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-');
-
-
-        if (file_exists($path . $name . '.' . $fileExtension)) {
-          $j = 1;
-          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
-            $j++;
-          }
-          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
-        }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
-      } else {
-        $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
-        if (file_exists($path . $name)) {
-          $j = 1;
-          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
-            $j++;
-          }
-          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
-        }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
-      }
-
-      $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
-      if ($isoriginal) {
-        $isoriginal->delete();
-      }
-      $media = new Media();
-      $media->name = $name;
-      $media->extension = $fileExtension;
-      $media->width = $imageInfo[0];
-      $media->height =  $imageInfo[1];
-      $media->size = strlen($fileContent);
-      $media->type = 'original';
-      $media->sequence = 1;
-      $media->path = $path;
-      $media->createdby = Auth::user()->name;
-      $media->lastmodifiedby = Auth::user()->name;
-      $media->save();
-      $product->media()->attach($media->id);
-
-      $filePath = $path . $name;
-      $file = Storage::disk('public_upload')->get($filePath);
-
-      $ismin = $product->media()->where('type', 'min')->first();
-
-      if (!$ismin) {
-        $this->resizeImage(
-          $file,
-          $path,
-          70,
-          'min',
-          $name,
-          $fileExtension,
-          true,
-          1,
-          $product
-        );
-      } else {
-        $oldPath = $ismin->path . $ismin->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
-        }
-
-        $resizedImage = Image::make($file)
-          ->resize(70, 70, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-          });
-
-        $newPath = $ismin->path . "resized70_" . $name;
-        $resizedImage->encode('webp')->save($newPath);
-        $ismin->path = $ismin->path;
-        $ismin->name = "resized70_" . $name;
-        $ismin->sequence = 1;
-        $ismin->extension = $fileExtension;
-        $ismin->width = $resizedImage->width();
-        $ismin->height = $resizedImage->height();
-        $ismin->size = File::size($newPath);
-        $ismin->lastmodifiedby = Auth::user()->name;
-        $ismin->save();
-      }
-
-      $ismaim = $product->media()->where('type', 'main')->first();
-      if (!$ismaim) {
-        $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
-      } else {
-        $oldPath = $ismaim->path . $ismaim->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
-        }
-
-        $resizedImage = Image::make($file)
-          ->resize(300, 300, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-          });
-
-        $newPath = $ismaim->path . "resized300_" . $name;
-        $resizedImage->encode('webp')->save($newPath);
-        $ismaim->path = $ismaim->path;
-        $ismaim->name = "resized300_" . $name;
-        $ismaim->sequence = 1;
-        $ismaim->extension = $fileExtension;
-        $ismaim->width = $resizedImage->width();
-        $ismaim->height = $resizedImage->height();
-        $ismaim->size = File::size($newPath);
-        $ismaim->lastmodifiedby = Auth::user()->name;
-        $ismaim->save();
-      }
-
-      $isfull = $product->media()->where('type', 'full')->where('sequence', '1')->first();
-      if ($isfull) {
-        $isfull->delete();
-      }
-      $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, 1, $product);
-      return;
-    } else {
-      return;
-    }
-  }
-  private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence, $product)
-  {
-    if ($external) {
-      $resizedImage = Image::make($file)
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
-    } else {
-
-      $resizedImage = Image::make($file->getRealPath())
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
-    }
-
-    $resizedImage->encode('webp')->save($path . "resized{$size}_" . $name);
-
-    $resizedMedia = new Media();
-    $resizedMedia->path = $path;
-    $resizedMedia->name = "resized{$size}_" . $name;
-    $resizedMedia->sequence = $sequence;
-    $resizedMedia->extension = $extension;
-    $resizedMedia->type = $type;
-    $resizedMedia->width = $resizedImage->width();
-    $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = File::size($path . "resized{$size}_" . $name);
-    $resizedMedia->createdby = Auth::user()->name;
-    $resizedMedia->lastmodifiedby = Auth::user()->name;
-    $resizedMedia->save();
-
-    $product->media()->attach($resizedMedia->id);
-  }
-
-  public function expandRow($index)
-  {
-    if ($this->row  === null) {
-      $this->row = $index;
-    } elseif ($this->row != $index) {
-      $this->row = $index;
-    } else {
-      $this->row = null;
-    }
-  }
   public function setActiveListview($id)
   {
     $this->activelistview = Listview::find($id);
@@ -915,18 +645,6 @@ class Productstable extends Component
     $this->search = '';
     $this->mount($this->tableName);
   }
-  public function updatedSelectPage($value)
-  {
-    if ($value) {
-      $this->checked = $this->products->pluck('id')->map(fn($item) => (string) $item)->toArray();
-    } else {
-      $this->checked = [];
-    }
-  }
-  public function updatedChecked()
-  {
-    $this->selectPage = false;
-  }
   public function sortBy($columnName)
   {
     if ($this->orderBy === $columnName) {
@@ -937,192 +655,134 @@ class Productstable extends Component
     $this->orderBy = $columnName;
     $this->save_listview(true);
   }
+
+  // default functions
+  public function expandRow($index)
+  {
+    if ($this->editindex === $index) {
+      return;
+    } else {
+
+      if ($this->row  === null) {
+        $this->row = $index;
+      } elseif ($this->row != $index) {
+        $this->row = $index;
+      } else {
+        $this->row = null;
+      }
+    }
+  }
+  public function updatedSelectPage($value)
+  {
+    if ($value) {
+      $this->checked = $this->reviews->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    } else {
+      $this->checked = [];
+    }
+  }
+  public function updatedChecked()
+  {
+    $this->selectPage = false;
+  }
+    public function edititem($index, $id)
+  {
+    $this->editindex = $index;
+    $this->row = $index;
+    $record = ProductReviews::find($id);
+    $this->item[$index] = [
+      'acronim' => $record->acronim,
+      'score' => $record->score,
+      'comment' => $record->comment,
+      'approved' => $record->approved == 1 ? true : false,
+    ];
+  }
+    public function approveitem($id)
+    {
+        $record = ProductReviews::find($id);
+        $record->approved = 1;
+        $record->save();
+        session()->flash('notification', [
+            'message' => 'Review approved successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+
+  public function saveitem($index, $id)
+  {
+    $record = $this->item[$index] ?? null;
+    if (!is_null($record)) {
+      $new = ProductReviews::find($id);
+      if (array_key_exists('acronim', $record)) {
+        $new->acronim = $record['acronim'];
+      }
+      if (array_key_exists('score', $record)) {
+              if($record['score']<0){
+                $record['score']=0;
+              }
+              if($record['score']>5){
+                $record['score']=5;
+              }
+                $new->score = $record['score'];
+            }
+      if (array_key_exists('comment', $record)) {
+        $new->comment = $record['comment'];
+      }
+      if (array_key_exists('approved', $record)) {
+        $new->approved = $record['approved'] ? 1 : 0;
+      }
+      $new->save();
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    } else {
+      session()->flash('notification', [
+        'message' => 'Nothing was edited!',
+        'type' => 'warning',
+        'title' => 'Warning'
+      ]);
+    }
+    $this->editindex = null;
+    $this->item = [];
+  }
+   public function canceledit()
+  {
+    $this->editindex = null;
+    $this->item = [];
+  }
   public function swapSortDirection()
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
-  public function selectAll()
+  public function isChecked($id)
+  {
+    return in_array($id, $this->checked);
+  }
+    public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->productsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
+    $this->checked = $this->reviewsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
-  public function deleteRecords()
-  {
-    $products = Product::whereKey($this->checked)->get();
-    foreach ($products as $product) {
-      $id = $product->id;
-      $producttodel = Product::find($id);
-      if (
-        $producttodel->carts_item()->exists() ||
-        $producttodel->orders_item()->exists() ||
-        $producttodel->order_suppliers()->exists()
-      ) {
-        session()->flash('notification', [
-          'message' => 'This product is in use and cannot be deleted!',
-          'type' => 'danger',
-          'title' => 'Error'
-        ]);
-        $this->relation = true;
-        $this->single = false;
-        $this->idbeingremoved = $producttodel->id;
-        return;
-      }
-      $productcats = Products_categories::where('product_id', $id)->get();
-      if ($productcats != NULL) {
-        foreach ($productcats as $productcat) {
-          $productcat->delete();
-        }
-      }
-      $productspecs = Product_Spec::where('product_id', $id)->get();
-      if ($productspecs != NULL) {
-        foreach ($productspecs as $productspec) {
-          $productspec->delete();
-        }
-      }
-      $costs = ProductCost::where('product_id', $id)->get();
-      if ($costs != NULL) {
-        foreach ($costs as $cost) {
-          $cost->delete();
-        }
-      }
-      $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
-      if ($relproducts != NULL) {
-        foreach ($relproducts as $item) {
-          $item->delete();
-        }
-      }
-      //de comentat pe viitor
-      $productcarts = Cart_Item::where('product_id', $id)->get();
-      if ($productcarts != NULL) {
-        foreach ($productcarts as $cartitem) {
-          $cart = $cartitem->cart;
-          $cart->sum_amount -= $cartitem->price;
-          $cart->quantity_amount -= $cartitem->quantity;
-          $cart->save();
-          $cartitem->delete();
-          $this->emit('cartUpdated');
-        }
-      }
-      $productswishlist = Wishlist::where('product_id', $id)->get();
-      if ($productswishlist != NULL) {
-        foreach ($productswishlist as $productwis) {
-          $productwis->delete();
-          $this->emit('wishlistUpdated');
-        }
-      }
-      ModelsProductReviews::where('product_id', $id)->delete();
-
-      $productpricelists = PricelistEntries::where('product_id', $id)->get();
-      if ($productpricelists != NULL) {
-        foreach ($productpricelists as $productpricelist) {
-          $productpricelist->delete();
-        }
-      }
-      $medias = $producttodel->media()->get();
-      foreach ($medias as $media) {
-        $media->delete();
-      }
-      $productType = class_basename(get_class($producttodel));
-      $filespath = 'media/' . $productType . '/' . $producttodel->id;
-      if (File::exists($filespath)) {
-        File::deleteDirectory($filespath);
-      }
-      $producttodel->delete();
-    }
-    $this->checked = [];
-    $this->selectPage = false;
-    $this->multiple = false;
-    session()->flash('notification', [
-      'message' => 'Records deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function deleteSingleRecord()
+    public function deleteSingleRecord()
   {
     $id = $this->idbeingremoved;
-    $product = Product::findOrFail($id);
-    if (
-      $product->carts_item()->exists() ||
-      $product->orders_item()->exists() ||
-      $product->order_suppliers()->exists()
-    ) {
-      session()->flash('notification', [
-        'message' => 'This product is in use and cannot be deleted!',
-        'type' => 'danger',
-        'title' => 'Error'
-      ]);
-      $this->relation = true;
-      $this->single = false;
-      return;
-    }
-    $productcats = Products_categories::where('product_id', $id)->get();
-    if ($productcats != NULL) {
-      foreach ($productcats as $productcat) {
-        $productcat->delete();
-      }
-    }
-    $productcarts = Cart_Item::where('product_id', $id)->get();
-    if ($productcarts != NULL) {
-      foreach ($productcarts as $cartitem) {
-        $cart = $cartitem->cart;
-        $cart->sum_amount -= $cartitem->price;
-        $cart->quantity_amount -= $cartitem->quantity;
-        $cart->save();
-        $cartitem->delete();
-        $this->emit('cartUpdated');
-      }
-    }
-    $productswishlist = Wishlist::where('product_id', $id)->get();
-    if ($productswishlist != NULL) {
-      foreach ($productswishlist as $productwis) {
-        $productwis->delete();
-        $this->emit('wishlistUpdated');
-      }
-    }
-    $productspecs = Product_Spec::where('product_id', $id)->get();
-    if ($productspecs != NULL) {
-      foreach ($productspecs as $productspec) {
-        $productspec->delete();
-      }
-    }
-    ModelsProductReviews::where('product_id', $id)->delete();
-
-    $productpricelists = PricelistEntries::where('product_id', $id)->get();
-    if ($productpricelists != NULL) {
-      foreach ($productpricelists as $productpricelist) {
-        $productpricelist->delete();
-      }
-    }
-    $costs = ProductCost::where('product_id', $id)->get();
-    if ($costs != NULL) {
-      foreach ($costs as $cost) {
-        $cost->delete();
-      }
-    }
-    $medias = $product->media()->get();
-    foreach ($medias as $media) {
-      $media->delete();
-    }
-    $productType = class_basename(get_class($product));
-    $filespath = 'media/' . $productType . '/' . $product->id;
-    if (File::exists($filespath)) {
-      File::deleteDirectory($filespath);
-    }
-    $product->delete();
+    $item = ProductReviews::findOrFail($id);
+    $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
     $this->single = false;
     session()->flash('notification', [
-      'message' => 'Records deleted successfully!',
+      'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmItemRemoval($id)
+    public function confirmItemRemoval($id)
   {
     $this->idbeingremoved = $id;
     $this->single = true;
@@ -1136,113 +796,22 @@ class Productstable extends Component
     $this->multiple = false;
     $this->single = false;
   }
-  public function isChecked($id)
+  public function deleteRecords()
   {
-    return in_array($id, $this->checked);
-  }
-  public function ProductshuffledIds()
-  {
-    $products = Product::all();
-
-    $shuffledIds = range(1, $products->count());
-    shuffle($shuffledIds);
-
-    foreach ($products as $index => $product) {
-      $product->innerid = $shuffledIds[$index];
-      $product->save();
+    $items = ProductReviews::whereKey($this->checked)->get();
+    foreach ($items as $item) {
+      $item->delete();
     }
+    $this->checked = [];
+    $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
-      'message' => 'Product ids shuffled successfully!',
+      'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function Relatedshuffleseq()
-  {
-    $products = Product::all();
-
-    $shuffledIds = range(1, $products->count());
-    shuffle($shuffledIds);
-
-    foreach ($products  as $product) {
-      if ($product->related_product->count() != 0) {
-        $shuffledIds = range(1, $product->related_product->count());
-        shuffle($shuffledIds);
-        foreach ($product->related_product as $index => $related) {
-          $related->sequence = $shuffledIds[$index];
-          $related->save();
-        }
-      } else {
-        continue;
-      }
-    }
-    Cache::forget('cached_products');
-
-    session()->flash('notification', [
-      'message' => 'Related products sequence shuffled successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
-  public function forcedeleteRecord()
-  {
-    $product = Product::find($this->idbeingremoved);
-    $productcarts = $product->carts_item()->get();
-    if ($productcarts != NULL) {
-      foreach ($productcarts as $cartitem) {
-        $cart = $cartitem->cart;
-        $cart->sum_amount -= $cartitem->price * $cartitem->quantity;
-        $cart->quantity_amount -= $cartitem->quantity;
-        $cart->final_amount -= $cartitem->price * $cartitem->quantity;
-        $cart->save();
-        if ($cart->final_amount <= 0 || $cart->sum_amount <= 0) {
-          $cart->sum_amount = 0;
-          $cart->quantity_amount = 0;
-          $cart->final_amount = 0;
-          $cart->save();
-        }
-        $cartitem->delete();
-        $this->emit('cartUpdated');
-      }
-    }
-    $productorders = $product->orders_item()->get();
-    if ($productorders != NULL) {
-      foreach ($productorders as $orderitem) {
-        $order = $orderitem->order;
-        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
-        $order->quantity_amount -= $orderitem->quantity;
-        $order->final_amount -= $orderitem->price * $orderitem->quantity;
-        $order->save();
-        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
-          $order->sum_amount = 0;
-          $order->quantity_amount = 0;
-          $order->final_amount = 0;
-          $order->save();
-        }
-        $orderitem->delete();
-        $this->emit('orderUpdated');
-      }
-    }
-    $productordersuppliers = $product->order_suppliers()->get();
-    if ($productordersuppliers != NULL) {
-      foreach ($productordersuppliers as $orderitem) {
-        $order = $orderitem->order;
-        $order->sum_amount -= $orderitem->price * $orderitem->quantity;
-        $order->final_amount -= $orderitem->price * $orderitem->quantity;
-        $order->save();
-        if ($order->final_amount <= 0 || $order->sum_amount <= 0) {
-          $order->sum_amount = 0;
-          $order->final_amount = 0;
-          $order->save();
-        }
-        $orderitem->delete();
-        $this->emit('orderUpdated');
-      }
-    }
-    $this->deleteRecord();
-  }
-
-  // export-import data
+    // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -1273,48 +842,32 @@ class Productstable extends Component
         return in_array($col, $dbColumns);
       });
 
-      Product::select($realColumns)
-        ->withCount([
-          'orders_item as interim_quantity' => function ($query) {
-            $query->whereHas('order', function ($q) {
-              $q->where('status_id', 31);
-            })->select(DB::raw('
-                        CASE
-                            WHEN COUNT(*) = 0 THEN products.quantity
-                            ELSE SUM(quantity) + products.quantity
-                        END
-                    '));
-          },
-          'order_suppliers as quantity_ordered' => function ($query) {
-            $query->whereHas('order', function ($q) {
-              $q->where('status', '!=', 'closed');
-            })->select(DB::raw('SUM(quantity)'));
-          },
-        ])
-        ->whereIn('id', $checked)
-        ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')
-        ->chunk(1000, function ($items) use ($handle, $selectedColumns) {
-          foreach ($items as $item) {
-            $row = [];
+      $query = $this->getReviewsQueryProperty();
 
-            foreach ($selectedColumns as $column) {
-              $value = data_get($item, $column, '');
+      $query->select($realColumns)->whereIn('id', $checked);
 
-              if ($value instanceof Carbon) {
-                $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
-              } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
-                try {
-                  $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
-                } catch (\Exception $e) {
-                }
+      $query->chunk(1000, function ($items) use ($handle, $selectedColumns) {
+        foreach ($items as $item) {
+          $row = [];
+
+          foreach ($selectedColumns as $column) {
+            $value = data_get($item, $column, '');
+
+            if ($value instanceof Carbon) {
+              $value = $value->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+            } elseif (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value)) {
+              try {
+                $value = Carbon::parse($value)->setTimezone('Europe/Chisinau')->format('Y-m-d H:i:s');
+              } catch (\Exception $e) {
               }
-
-              $row[] = is_scalar($value) ? $value : json_encode($value);
             }
 
-            fputcsv($handle, $row);
+            $row[] = is_scalar($value) ? $value : json_encode($value);
           }
-        });
+
+          fputcsv($handle, $row);
+        }
+      });
 
       fclose($handle);
     }, $filename, [
@@ -1322,7 +875,6 @@ class Productstable extends Component
       'Content-Disposition' => "attachment; filename=\"$filename\"",
     ]);
   }
-
   public function updatingcsvimportdata($value)
   {
     ini_set('max_execution_time', 0);
@@ -1389,6 +941,7 @@ class Productstable extends Component
         'base_path' => 'import_chunks/' . $filenameBase,
       ]
     ]);
+
     $allJob = AllJob::create([
       'name' => 'DynamicCsvImportJob',
       'type' => 'csv_import',
@@ -1415,8 +968,7 @@ class Productstable extends Component
       'title' => 'Import Queued'
     ]);
   }
-
-  protected function writeChunk(string $path, array $header, array $rows): void
+    protected function writeChunk(string $path, array $header, array $rows): void
   {
     $handle = fopen($path, 'w');
     fputcsv($handle, $header);

@@ -174,15 +174,29 @@ class Jobstable extends Component
   }
 
   public function getJobsProperty()
-  {
+{
     if (Schema::hasTable($this->tableName)) {
-      $query = DB::table($this->tableName);
-      $query = $this->applyFilters($query);
-      return $query->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')->paginate($this->loadAmount);
+        $query = DB::table($this->tableName);
+
+        $query = $this->applyFilters($query);
+
+        if (!empty($this->search)) {
+            $search = $this->search;
+            $query->where(function ($q) use ($search) {
+                foreach (Schema::getColumnListing($this->tableName) as $column) {
+                    $q->orWhere($column, 'like', '%' . $search . '%');
+                }
+            });
+        }
+
+        return $query
+            ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')
+            ->paginate($this->loadAmount);
     } else {
-      return collect();
+        return collect();
     }
-  }
+}
+
 
   // listview functions
   public function updatingAddlistview($value)

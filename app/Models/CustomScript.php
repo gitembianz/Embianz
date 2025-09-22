@@ -7,19 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomScript extends Model
 {
-    use HasFactory;
-    protected $fillable = [
-        'name',
-        'type',
-        'content',
-        'active'
-    ];
-    public static function search($search)
-    {
-        return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%' . $search . '%')
-            ->orWhere('type', 'like', '%' . $search . '%')
-            ->orWhere('name', 'like', '%' . $search . '%')
-            ->orWhere('content', 'like', '%' . $search . '%');
+  use HasFactory;
+  protected $fillable = [
+    'name',
+    'type',
+    'content',
+    'active'
+  ];
+  public static function search($search)
+  {
+    $query = static::query();
+
+    if (!empty($search)) {
+      $query->where(function ($q) use ($search) {
+        foreach ((new static)->getFillable() as $field) {
+          $q->orWhere($field, 'like', '%' . $search . '%');
+        }
+      });
     }
+
+    return $query;
+  }
 }
