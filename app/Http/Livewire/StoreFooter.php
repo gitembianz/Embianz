@@ -71,22 +71,6 @@ class StoreFooter extends Component
 
       $sucscriber = Subscribers::create($validatedData);
 
-      $client = new Client();
-      $client->post('https://webto.salesforce.com/servlet/servlet.WebToLead', [
-        'headers' => [
-          'Accept' => 'application/json',
-        ],
-        'query' => [
-          'oid' => '00D09000008XPQu',
-          '00N9N000000PrL5' => config('app.url'),
-          'lead_source' => 'Web',
-          'email' => $sucscriber->email,
-        ],
-        'curl' => [
-          CURLOPT_SSL_VERIFYPEER => false,
-        ],
-      ]);
-
       $this->reset();
       $this->dispatchBrowserEvent('newsletterToggle');
     } catch (QueryException $e) {

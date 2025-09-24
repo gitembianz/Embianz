@@ -96,7 +96,7 @@ public function render()
     $this->linksingle = false;
   }
 
-    // function for add products
+    // function for add articles
   public function addrelated()
   {
     $this->showrelateitems = true;
@@ -162,10 +162,10 @@ public function render()
   public function linkSingleRecord()
   {
     $id = $this->idbeinglink;
-    $product = new  ArticleCategoryLink();
-    $product->product_id = $id;
-    $product->category_id = $this->category->id;
-    $product->save();
+    $article = new  ArticleCategoryLink();
+    $article->article_id = $id;
+    $article->category_id = $this->category->id;
+    $article->save();
     $this->linksingle = false;
 
     $this->checkedadd = array_diff($this->checkedadd, [$id]);
@@ -177,10 +177,10 @@ public function render()
   }
   public function linkRecords()
   {
-    $products = Article::whereKey($this->checkedadd)->get();
-    foreach ($products as $product) {
+    $articles = Article::whereKey($this->checkedadd)->get();
+    foreach ($articles as $product) {
       $prodadd = new ArticleCategoryLink();
-      $prodadd->product_id = $product->id;
+      $prodadd->article_id = $product->id;
       $prodadd->category_id = $this->category->id;
       $prodadd->save();
     }
