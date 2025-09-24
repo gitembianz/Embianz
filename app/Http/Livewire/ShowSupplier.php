@@ -138,7 +138,7 @@ class ShowSupplier extends Component
 
                 $interimQuantity = $product->orders_item()
                     ->whereHas('order', function ($q) {
-                        $q->where('status_id', 31);
+                        $q->where('status_id', app('global_order_processing'));
                     })->sum('quantity');
 
                 $item->product_quantity_interim = $product->quantity + $interimQuantity;

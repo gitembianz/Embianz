@@ -365,7 +365,7 @@ class StoreOrder extends Component
 
       $this->validateData();
       $this->updateFormSession();
-      $this->step++;
+      $this->step = 2;
 
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
