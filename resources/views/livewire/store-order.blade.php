@@ -2145,7 +2145,9 @@
                                 </svg>
                             </button>
                         @else
-                            <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
+                            <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm"
+                                wire:loading.attr="disabled" wire:loading.class="checkout__button--disabled"
+                                wire:target="confirm">
                                 @if (app()->has('label_order_confirm_step'))
                                     {!! app('label_order_confirm_step') !!}
                                 @endif
