@@ -540,9 +540,6 @@ class StoreOrder extends Component
       }
     } else {
       $this->emit('cartUpdated');
-      $this->validatequantity = false;
-      $message = app('label_order_error_cart') ?? "";
-      $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
       return;
     }
 
