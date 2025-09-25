@@ -382,7 +382,7 @@ class RelatedOrderSupplier extends Component
                 $query->withCount([
                     'orders_item as interim_quantity' => function ($query) {
                         $query->whereHas('order', function ($q) {
-                            $q->where('status_id', 31);
+                            $q->where('status_id', app('global_order_processing'));
                         })->select(DB::raw('sum(quantity)'));
                     },
                     'order_suppliers as total_quantity' => function ($query) {

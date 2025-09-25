@@ -335,7 +335,7 @@ class Productstable extends Component
       ->withCount([
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', 31);
+            $q->where('status_id', app('global_order_processing'));
           })
             ->select(DB::raw('
                     CASE
@@ -1277,7 +1277,7 @@ class Productstable extends Component
         ->withCount([
           'orders_item as interim_quantity' => function ($query) {
             $query->whereHas('order', function ($q) {
-              $q->where('status_id', 31);
+              $q->where('status_id', app('global_order_processing'));
             })->select(DB::raw('
                         CASE
                             WHEN COUNT(*) = 0 THEN products.quantity

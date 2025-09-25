@@ -201,7 +201,7 @@ class Orderstable extends Component
         'orders.product' => function ($query) {
           $query->withCount(['orders_item as interim_quantity' => function ($query) {
             $query->whereHas('order', function ($q) {
-              $q->where('status_id', 31);
+              $q->where('status_id', app('global_order_processing'));
             })->select(DB::raw('sum(quantity)'));
           }]);
         },
@@ -214,7 +214,7 @@ class Orderstable extends Component
       ]);
     $this->applyFilters($query);
     if ($this->status31Only) {
-      $query = $query->where('status_id', 31);
+      $query = $query->where('status_id', app('global_order_processing'));
     }
 
     if ($this->start_date_filter && $this->end_date_filter) {
