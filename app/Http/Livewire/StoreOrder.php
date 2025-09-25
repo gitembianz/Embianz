@@ -122,24 +122,32 @@ class StoreOrder extends Component
 
 
     if (session()->has('paymentsucces')) {
-      if ($this->cart->voucher && $this->cart->voucher->single_use) {
-        Voucher::where('id', $this->cart->voucher_id)->update([
-          'status_id' => app('global_voucher_closed')
+
+      if($this->cart){
+
+        if ($this->cart->voucher && $this->cart->voucher->single_use) {
+          Voucher::where('id', $this->cart->voucher_id)->update([
+            'status_id' => app('global_voucher_closed')
+          ]);
+        }
+        $this->cart->update([
+          'status_id' => app('global_cart_closed')
         ]);
+        $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
+        $order->status_id = app('global_order_processing');
+        $this->orderNumber = $order->order_number;
+        $order->save();
+        $this->new_order = $order;
+        foreach ($order->orders as $item) {
+          $item->product->quantity -= $item->quantity;
+          $item->product->save();
+        }
+        $this->step = 3;
+      }else{
+        $this->step = 1;
+        $this->emit('alert__modal', ['message' => 'Your cart is empty!']);
       }
-      $this->cart->update([
-        'status_id' => app('global_cart_closed')
-      ]);
-      $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
-      $order->status_id = app('global_order_processing');
-      $this->orderNumber = $order->order_number;
-      $order->save();
-      $this->new_order = $order;
-      foreach ($order->orders as $item) {
-        $item->product->quantity -= $item->quantity;
-        $item->product->save();
-      }
-      $this->step = 3;
+
       session()->forget('paymentsucces');
       try {
         Mail::to($order->account->email)->send(new ConfirmationOrder($order));
@@ -357,7 +365,7 @@ class StoreOrder extends Component
 
       $this->validateData();
       $this->updateFormSession();
-      $this->step++;
+      $this->step = 2;
 
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
@@ -370,13 +378,6 @@ class StoreOrder extends Component
       $this->dispatchBrowserEvent('goup');
     }
   }
-
-
-
-
-
-
-
 
   public function validateData()
   {
@@ -475,17 +476,22 @@ class StoreOrder extends Component
 
   protected function findOrCreateAddress(array $data)
   {
-    $query = Address::where('account_id', $data['account_id'])
-      ->where('type', $data['type']);
+    $checkData = collect($data)->except(['is_default'])->toArray();
 
-    foreach ($data as $key => $value) {
-      if (!in_array($key, ['account_id', 'type'])) {
-        $query->where($key, $value);
-      }
+    $address = Address::where('account_id', $data['account_id'])
+      ->where('type', $data['type'])
+      ->where($checkData)
+      ->first();
+
+    if ($address) {
+      $address->update(['is_default' => true]);
+      return $address;
     }
 
-    return $query->first() ?? Address::create($data);
+    return Address::create($data);
   }
+
+
 
   public function confirm()
   {
@@ -534,9 +540,6 @@ class StoreOrder extends Component
       }
     } else {
       $this->emit('cartUpdated');
-      $this->validatequantity = false;
-      $message = app('label_order_error_cart') ?? "";
-      $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
       return;
     }
 
@@ -639,8 +642,7 @@ class StoreOrder extends Component
 
       $uniqueorderNumber = $prefix . str_pad($today, 3, '0', STR_PAD_LEFT);
       $this->orderNumber = $uniqueorderNumber;
-
-      $order = Order::create([
+      $orderdata = [
         'name' => $uniqueName,
         'session_id' => $this->session_id,
         'account_id' => $account->id,
@@ -658,9 +660,17 @@ class StoreOrder extends Component
         'currency_id' => $this->cart->currency_id,
         'status_id' => $status,
         'payment_id' => $this->payment['id'],
-        'voucher_id' => $this->cart->voucher_id
-      ]);
+        'voucher_id' => $this->cart->voucher_id ?? null,
+      ];
 
+      $order = Order::updateOrCreate(
+        ['cart_id' => $orderdata['cart_id']],
+        $orderdata
+      );
+
+      foreach ($order->orders as $item) {
+        $item->delete();
+      }
 
       $productsToUpdate = [];
       $orderItemsToInsert = [];

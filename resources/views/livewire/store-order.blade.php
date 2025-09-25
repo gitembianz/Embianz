@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <!-------------------- Step First ---------------------->
-                @if ($step == 1)
+                @if ($step === 1)
                     <div class="section__header">
                         <h2 class="section__title">
                             @if (app()->has('label_order_1_title'))
@@ -282,7 +282,6 @@
                     @php
                         $version = app()->has('countries_version') ? app('countries_version') : 1;
                     @endphp
-                    {{-- alpine script --}}
                     <script>
                         document.addEventListener('alpine:init', () => {
                             const currentVersion = @js($version);
@@ -481,13 +480,11 @@
                         });
                     </script>
 
-
                     <style>
                         [x-cloak] {
                             display: none !important;
                         }
                     </style>
-
 
                     <!-------------- Form -------------->
                     <div class="checkout__container active">
@@ -556,6 +553,7 @@
                         </div>
 
                         <div class="checkout__form active">
+
                             <div class="checkout__top">
                                 <span>2</span>
                                 <h3>
@@ -564,8 +562,6 @@
                                     @endif
                                 </h3>
                             </div>
-
-
 
                             {{-- COUNTRY SELECT --}}
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
@@ -594,8 +590,6 @@
                                 </select>
                             @endif
 
-
-
                             {{-- SHIPPING COUNTY --}}
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="ShippingCountyParent" x-data="{
@@ -622,13 +616,11 @@
                                 $store.checkout.fetchShippingCountiesForCountry($store.checkout.country)"
                                 @click.away="open = false" wire:ignore>
                                 <input type="text" x-model="countyInput" @focus="open = true"
-                                    @input="
-         const hidden = document.getElementById('hiddenCountyInput');
-         if (hidden) {
-           hidden.value = $event.target.value;
-           hidden.dispatchEvent(new Event('input', { bubbles: true }));
-         }
-       "
+                                    @input="const hidden = document.getElementById('hiddenCountyInput');
+                                      if (hidden) {
+                                        hidden.value = $event.target.value;
+                                        hidden.dispatchEvent(new Event('input', { bubbles: true }));
+                                      }"
                                     placeholder="County" class="input" autocomplete="off" aria-label="County selection"
                                     id="ShippingCounty">
                                 <input required type="hidden" id="hiddenCountyInput"
@@ -651,7 +643,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-----------------------   city shipping  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
@@ -697,13 +688,11 @@
                                 $watch('$store.checkout.selectedCounty', value => fetchCitiesForCounty(value));"
                                 @click.away="open = false">
                                 <input type="text" x-model.defer="cityInput" @focus="open = true"
-                                    @input="
-         const hidden = document.getElementById('hiddenCityInput');
-         if (hidden) {
-           hidden.value = $event.target.value;
-           hidden.dispatchEvent(new Event('input', { bubbles: true }));
-         }
-       "
+                                    @input="const hidden = document.getElementById('hiddenCityInput');
+                                      if (hidden) {
+                                        hidden.value = $event.target.value;
+                                        hidden.dispatchEvent(new Event('input', { bubbles: true }));
+                                      }"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" aria-label="City selection" id="ShippingCity">
 
@@ -810,6 +799,7 @@
 
                         <div x-data :class="{ 'checkout__form active': !$store.checkout.isIdentic }"
                             x-show="!$store.checkout.isIdentic" x-cloak>
+
                             <div class="checkout__top">
                                 <span>3</span>
                                 <h3>
@@ -873,7 +863,7 @@
                                     @endif
                                 </label>
                             </div>
-                            <!-------------- Juridic -------------->
+
                             <!-----------------------   company name billing  ----------------------------->
                             <div x-show="$store.checkout.juridic" x-cloak wire:ignore
                                 class="checkout__item checkout__item--required" id="companyNameParent">
@@ -943,11 +933,12 @@
                                     @endif
                                 </label>
                             </div>
-                            <!-------------- End Juridic -------------->
+
                         </div>
 
                         <div x-data :class="{ 'checkout__form active': !$store.checkout.isIdentic }"
                             x-show="!$store.checkout.isIdentic" x-cloak>
+
                             <div class="checkout__top">
                                 <span>4</span>
                                 <h3>
@@ -958,7 +949,6 @@
                             </div>
 
                             <!-----------------------   country billing  ----------------------------->
-
                             @if (app()->has('global_order_display_country') && app('global_order_display_country') === 'true')
                                 <select name="selectcountry" x-model="$store.checkout.billingcountry"
                                     x-init="$watch('$store.checkout.billingcountry', value => {
@@ -986,8 +976,6 @@
                             @endif
 
                             <!-----------------------   county billing  ----------------------------->
-
-
                             <div class="checkout__item checkout__item--required searchable active"
                                 id="BillingCountyParent" x-data="{
                                     county: @entangle('billing_county'),
@@ -1016,13 +1004,11 @@
                                 @click.away="open = false" wire:ignore>
                                 <input type="text" id="BillingCounty" x-model="billingcountyInput"
                                     @focus="open = true"
-                                    @input="
-         const hidden = document.getElementById('hiddenCountyBillingInput');
-         if (hidden) {
-           hidden.value = $event.target.value;
-           hidden.dispatchEvent(new Event('input', { bubbles: true }));
-         }
-       "
+                                    @input="const hidden = document.getElementById('hiddenCountyBillingInput');
+                                      if (hidden) {
+                                        hidden.value = $event.target.value;
+                                        hidden.dispatchEvent(new Event('input', { bubbles: true }));
+                                      }"
                                     placeholder="County" class="input" autocomplete="off"
                                     aria-label="County selection" id="BillingCounty">
                                 <input required type="hidden" id="hiddenCountyBillingInput"
@@ -1045,7 +1031,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-----------------------   city billing  ----------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required searchable active"
@@ -1091,13 +1076,11 @@
                                 $watch('$store.checkout.selectedCountyBilling', value => fetchBillingCitiesForCounty(value));"
                                 @click.away="open = false">
                                 <input type="text" id="BillingCity" x-model="cityInput" @focus="open = true"
-                                    @input="
-         const hidden = document.getElementById('hiddenBillingCityInput');
-         if (hidden) {
-           hidden.value = $event.target.value;
-           hidden.dispatchEvent(new Event('input', { bubbles: true }));
-         }
-       "
+                                    @input="const hidden = document.getElementById('hiddenBillingCityInput');
+                                      if (hidden) {
+                                        hidden.value = $event.target.value;
+                                        hidden.dispatchEvent(new Event('input', { bubbles: true }));
+                                      }"
                                     placeholder="@if (app()->has('label_order_city')) {!! app('label_order_city') !!} @endif"
                                     class="input" aria-label="City selection" id="BillingCity">
 
@@ -1162,6 +1145,7 @@
                                     @endif
                                 </label>
                             </div>
+
                         </div>
                     </div>
 
@@ -1172,6 +1156,7 @@
                             @endif
                         </h2>
                     </div>
+
                     <!-------------- cash -------------->
                     @if ($cash['active'] != 0)
                         <div class="payment">
@@ -1246,9 +1231,10 @@
                     @endif
 
                     <script src="/script/store/order.js"></script>
+
                 @endif
                 <!------------------------------------------------------>
-                @if ($step == 2)
+                @if ($step === 2)
                     <?php $disables = []; ?>
                     <div class="section__header">
                         <h2 class="section__title">
@@ -1574,7 +1560,6 @@
                         </span>
                     </label>
 
-                    <!-- DataLayer Script pentru Step 2 -->
                     <div class="dlv" style="display: none">
                         <span class="dlv_currency">
                             @if (app()->has('global_currency_primary_name'))
@@ -1595,22 +1580,17 @@
                     </div>
                     <script>
                         function add_payment_info() {
-                            // Variables
                             var dlv = document.querySelector('.dlv');
-                            // Check if dlv element exists
                             if (!dlv) {
                                 console.error('Elementul cu clasa .dlv nu a fost găsit.');
                                 return;
                             }
-                            // Get all Values
                             var currency = dlv.querySelector('.dlv_currency').innerText.trim();
                             var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
                             var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
                             var payment = dlv.querySelector('.dlv_payment').innerText.trim();
                             var items = [];
-                            // Get all items
                             var dlv_items = dlv.querySelectorAll('.dlv_item');
-                            // Loop through each item
                             dlv_items.forEach(dlv_item => {
                                 var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
                                 var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
@@ -1618,7 +1598,6 @@
                                     '.'));
                                 var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
-                                // Create item object
                                 var item = {
                                     item_id: item_id,
                                     item_name: item_name,
@@ -1626,11 +1605,9 @@
                                     quantity: item_quantity
                                 };
 
-                                // Push item in the array
                                 items.push(item);
                             });
 
-                            // Create the data object
                             var dlvData = {
                                 currency: currency,
                                 value: value,
@@ -1638,13 +1615,10 @@
                                 payment: payment,
                                 items: items
                             };
-                            // Show the object
-                            // console.log(dlvData);
                             return dlvData;
                         };
                         var dlvData = add_payment_info();
 
-                        // Trimiterea datelor la Google Analytics folosind dataLayer.push
                         dataLayer.push({
                             ecommerce: null
                         });
@@ -1664,21 +1638,16 @@
                     </script>
                     <script>
                         function add_shipping_info() {
-                            // Variables
                             var dlv = document.querySelector('.dlv');
-                            // Check if dlv element exists
                             if (!dlv) {
                                 console.error('Elementul cu clasa .dlv nu a fost găsit.');
                                 return;
                             }
-                            // Get all Values
                             var currency = dlv.querySelector('.dlv_currency').innerText.trim();
                             var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
                             var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
                             var items = [];
-                            // Get all items
                             var dlv_items = dlv.querySelectorAll('.dlv_item');
-                            // Loop through each item
                             dlv_items.forEach(dlv_item => {
                                 var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
                                 var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
@@ -1686,7 +1655,6 @@
                                     '.'));
                                 var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
-                                // Create item object
                                 var item = {
                                     item_id: item_id,
                                     item_name: item_name,
@@ -1694,23 +1662,19 @@
                                     quantity: item_quantity
                                 };
 
-                                // Push item in the array
                                 items.push(item);
                             });
 
-                            // Create the data object
                             var dlvData = {
                                 currency: currency,
                                 value: value,
                                 coupon: coupon,
                                 items: items
                             };
-                            // Show the object
 
                             return dlvData;
                         };
                         var dlvData = add_shipping_info();
-                        // Trimiterea datelor la Google Analytics folosind dataLayer.push
                         dataLayer.push({
                             event: "add_shipping_info",
                             ecommerce: {
@@ -1741,480 +1705,480 @@
                         });
                     });
                 </script>
-    @endif
 
-    <!------------------------------------------>
-    @if ($step == 3)
-        <section class="section__header container">
-            <h1 class="section__title">
-                @if (app()->has('label_order_tag'))
-                    {!! app('label_order_tag') !!}
-                @endif {{ $new_order->order_number }}
-            </h1>
-        </section>
+                @if ($step === 3)
+                    <section class="section__header container">
+                        <h1 class="section__title">
+                            @if (app()->has('label_order_tag'))
+                                {!! app('label_order_tag') !!}
+                            @endif {{ $new_order->order_number }}
+                        </h1>
+                    </section>
 
-        <div class="section__header">
-            <h2>
-                @if (app()->has('label_order_default_text_confirmation'))
-                    {!! app('label_order_default_text_confirmation') !!}
-                @endif
-            </h2>
-        </div>
-        <div class="total__container">
-            <!------------- Order details --------------->
-            <div class="look__form">
-                <h3>
-                    @if (app()->has('label_order_billing_check'))
-                        {!! app('label_order_billing_check') !!}
-                    @endif
-                </h3>
-                <span class="total__message">
-                    @if (app()->has('label_order_fullname'))
-                        {!! app('label_order_fullname') !!}
-                    @endif:
-                    <strong>{{ $new_order->account->name }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_phone'))
-                        {!! app('label_order_phone') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->phone }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_email'))
-                        {!! app('label_order_email') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->email }}</strong>
-                </span>
-                @if ($juridic)
-                    <span class="total__message">
-                        @if (app()->has('label_order_company_name'))
-                            {!! app('label_order_company_name') !!}
-                        @endif:
-                        <strong>{{ $new_order->account->company_name }}</strong>
-                    </span>
-                    <span class="total__message">
-                        @if (app()->has('label_order_register_code'))
-                            {!! app('label_order_register_code') !!}
-                        @endif:
-                        <strong>{{ $new_order->account->registration_code }}</strong>
-                    </span>
-                    <span class="total__message">
-                        @if (app()->has('label_order_register_number'))
-                            {!! app('label_order_register_number') !!}
-                        @endif:
-                        <strong>{{ $new_order->account->registration_number }}</strong>
-                    </span>
-                    <span class="total__message">
-                        @if (app()->has('label_order_bankname'))
-                            {!! app('label_order_bankname') !!}
-                        @endif:
-                        <strong>{{ $new_order->account->bank_name }}</strong>
-                    </span>
-                    <span class="total__message">
-                        @if (app()->has('label_order_iban'))
-                            {!! app('label_order_iban') !!}
-                        @endif:
-                        <strong>{{ $new_order->account->account }}</strong>
-                    </span>
-                @endif
-                <span class="total__message">
-                    @if (app()->has('label_order_address1'))
-                        {!! app('label_order_address1') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->address1 }}</strong>
-                    <strong>{{ $new_order->billing->address2 }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_country'))
-                        {!! app('label_order_country') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->country }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_county'))
-                        {!! app('label_order_county') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->county }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_city'))
-                        {!! app('label_order_city') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->city }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_zipcode'))
-                        {!! app('label_order_zipcode') !!}
-                    @endif:
-                    <strong>{{ $new_order->billing->zipcode }}</strong>
-                </span>
-
-                <h3>
-                    @if (app()->has('label_order_delivery_check'))
-                        {!! app('label_order_delivery_check') !!}
-                    @endif
-                </h3>
-
-                <span class="total__message">
-                    @if (app()->has('label_order_fullname'))
-                        {!! app('label_order_fullname') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->first_name }}</strong>
-                    <strong>{{ $new_order->shipping->last_name }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_phone'))
-                        {!! app('label_order_phone') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->phone }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_email'))
-                        {!! app('label_order_email') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->email }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_address1'))
-                        {!! app('label_order_address1') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->address1 }}</strong>
-                    <strong>{{ $new_order->shipping->address2 }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_county'))
-                        {!! app('label_order_county') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->country }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_county'))
-                        {!! app('label_order_county') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->county }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_city'))
-                        {!! app('label_order_city') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->city }}</strong>
-                </span>
-                <span class="total__message">
-                    @if (app()->has('label_order_zipcode'))
-                        {!! app('label_order_zipcode') !!}
-                    @endif:
-                    <strong>{{ $new_order->shipping->zipcode }}</strong>
-                </span>
-            </div>
-            <!----------------------- Order sumary ----------------------------->
-            <div class="total__info">
-                @foreach ($new_order->orders as $cartItem)
-                    <div class="total__product">
-                        <span class="total__quantity">
-                            {{ $cartItem->quantity }} x
-                        </span>
-                        @if ($cartItem->product->media->where('type', 'min')->first())
-                            <img class="cart__list--img" title="{{ $cartItem->product->name }}"
-                                src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
-                                alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
-                        @else
-                            <img title="default image" class="cart__list--img"
-                                src="/images/store/default/default70.webp" alt="something wrong">
-                        @endif
-                        <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
-                            target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
-                        <span class="total__price">
-                            {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
-                            @if (app()->has('global_currency_primary_symbol'))
-                                {!! app('global_currency_primary_symbol') !!}
+                    <div class="section__header">
+                        <h2>
+                            @if (app()->has('label_order_default_text_confirmation'))
+                                {!! app('label_order_default_text_confirmation') !!}
                             @endif
-                        </span>
+                        </h2>
                     </div>
-                @endforeach
-                <div class="total__item">
-                    <span>
-                        @if (app()->has('label_order_payment_method'))
-                            {!! app('label_order_payment_method') !!}
-                        @endif
-                    </span>
-                    <span>{{ $new_order->payment->description }}</span>
-                </div>
-                @if ($new_order->promotion_value > 0)
-
-                    <div class="total__item">
-                        <span>
-                            @if (app()->has('label_cart_promotion_tag'))
-                                {!! app('label_cart_promotion_tag') !!}
+                    <div class="total__container">
+                        <!------------- Order details --------------->
+                        <div class="look__form">
+                            <h3>
+                                @if (app()->has('label_order_billing_check'))
+                                    {!! app('label_order_billing_check') !!}
+                                @endif
+                            </h3>
+                            <span class="total__message">
+                                @if (app()->has('label_order_fullname'))
+                                    {!! app('label_order_fullname') !!}
+                                @endif:
+                                <strong>{{ $new_order->account->name }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_phone'))
+                                    {!! app('label_order_phone') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->phone }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_email'))
+                                    {!! app('label_order_email') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->email }}</strong>
+                            </span>
+                            @if ($juridic)
+                                <span class="total__message">
+                                    @if (app()->has('label_order_company_name'))
+                                        {!! app('label_order_company_name') !!}
+                                    @endif:
+                                    <strong>{{ $new_order->account->company_name }}</strong>
+                                </span>
+                                <span class="total__message">
+                                    @if (app()->has('label_order_register_code'))
+                                        {!! app('label_order_register_code') !!}
+                                    @endif:
+                                    <strong>{{ $new_order->account->registration_code }}</strong>
+                                </span>
+                                <span class="total__message">
+                                    @if (app()->has('label_order_register_number'))
+                                        {!! app('label_order_register_number') !!}
+                                    @endif:
+                                    <strong>{{ $new_order->account->registration_number }}</strong>
+                                </span>
+                                <span class="total__message">
+                                    @if (app()->has('label_order_bankname'))
+                                        {!! app('label_order_bankname') !!}
+                                    @endif:
+                                    <strong>{{ $new_order->account->bank_name }}</strong>
+                                </span>
+                                <span class="total__message">
+                                    @if (app()->has('label_order_iban'))
+                                        {!! app('label_order_iban') !!}
+                                    @endif:
+                                    <strong>{{ $new_order->account->account }}</strong>
+                                </span>
                             @endif
-                        </span>
-                        <span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_address1'))
+                                    {!! app('label_order_address1') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->address1 }}</strong>
+                                <strong>{{ $new_order->billing->address2 }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_country'))
+                                    {!! app('label_order_country') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->country }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->county }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_city'))
+                                    {!! app('label_order_city') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->city }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_zipcode'))
+                                    {!! app('label_order_zipcode') !!}
+                                @endif:
+                                <strong>{{ $new_order->billing->zipcode }}</strong>
+                            </span>
 
-                            -{{ number_format($new_order->promotion_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
-                                {!! app('global_currency_primary_symbol') !!}
+                            <h3>
+                                @if (app()->has('label_order_delivery_check'))
+                                    {!! app('label_order_delivery_check') !!}
+                                @endif
+                            </h3>
+
+                            <span class="total__message">
+                                @if (app()->has('label_order_fullname'))
+                                    {!! app('label_order_fullname') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->first_name }}</strong>
+                                <strong>{{ $new_order->shipping->last_name }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_phone'))
+                                    {!! app('label_order_phone') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->phone }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_email'))
+                                    {!! app('label_order_email') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->email }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_address1'))
+                                    {!! app('label_order_address1') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->address1 }}</strong>
+                                <strong>{{ $new_order->shipping->address2 }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->country }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_county'))
+                                    {!! app('label_order_county') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->county }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_city'))
+                                    {!! app('label_order_city') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->city }}</strong>
+                            </span>
+                            <span class="total__message">
+                                @if (app()->has('label_order_zipcode'))
+                                    {!! app('label_order_zipcode') !!}
+                                @endif:
+                                <strong>{{ $new_order->shipping->zipcode }}</strong>
+                            </span>
+                        </div>
+                        <!----------------------- Order sumary ----------------------------->
+                        <div class="total__info">
+                            @foreach ($new_order->orders as $cartItem)
+                                <div class="total__product">
+                                    <span class="total__quantity">
+                                        {{ $cartItem->quantity }} x
+                                    </span>
+                                    @if ($cartItem->product->media->where('type', 'min')->first())
+                                        <img class="cart__list--img" title="{{ $cartItem->product->name }}"
+                                            src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+                                            alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
+                                    @else
+                                        <img title="default image" class="cart__list--img"
+                                            src="/images/store/default/default70.webp" alt="something wrong">
+                                    @endif
+                                    <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
+                                        target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
+                                    <span class="total__price">
+                                        {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
+                                        @if (app()->has('global_currency_primary_symbol'))
+                                            {!! app('global_currency_primary_symbol') !!}
+                                        @endif
+                                    </span>
+                                </div>
+                            @endforeach
+                            <div class="total__item">
+                                <span>
+                                    @if (app()->has('label_order_payment_method'))
+                                        {!! app('label_order_payment_method') !!}
+                                    @endif
+                                </span>
+                                <span>{{ $new_order->payment->description }}</span>
+                            </div>
+                            @if ($new_order->promotion_value > 0)
+
+                                <div class="total__item">
+                                    <span>
+                                        @if (app()->has('label_cart_promotion_tag'))
+                                            {!! app('label_cart_promotion_tag') !!}
+                                        @endif
+                                    </span>
+                                    <span>
+
+                                        -{{ number_format($new_order->promotion_value, 2, $decimal, $mill) }}
+                                        @if (app()->has('global_currency_primary_symbol'))
+                                            {!! app('global_currency_primary_symbol') !!}
+                                        @endif
+                                    </span>
+                                </div>
                             @endif
-                        </span>
+                            <div class="total__item">
+                                <span>
+                                    @if (app()->has('label_cart_delivery_tag'))
+                                        {!! app('label_cart_delivery_tag') !!}
+                                    @endif
+                                </span>
+                                <span>
+                                    @if ($new_order->delivery_price == 0)
+                                        @if (app()->has('label_cart_delivery_free'))
+                                            {!! app('label_cart_delivery_free') !!}
+                                        @endif
+                                    @else
+                                        {{ number_format($new_order->delivery_price, 2, $decimal, $mill) }}
+                                        @if (app()->has('global_currency_primary_symbol'))
+                                            {!! app('global_currency_primary_symbol') !!}
+                                        @endif
+                                    @endif
+                                </span>
+                            </div>
+                            @if ($new_order->voucher && $new_order->voucher_value > 0)
+                                <div class="total__item">
+                                    <span>
+                                        @if (app()->has('label_cart_voucher_tag'))
+                                            {!! app('label_cart_voucher_tag') !!}
+                                        @endif
+                                    </span>
+                                    <span>
+                                        -{{ number_format($new_order->voucher_value, 2, $decimal, $mill) }}
+                                        @if (app()->has('global_currency_primary_symbol'))
+                                            {!! app('global_currency_primary_symbol') !!}
+                                        @endif
+
+                                    </span>
+                                </div>
+                            @endif
+                            <div class="total__item">
+                                <span>
+                                    @if (app()->has('label_cart_total_tag'))
+                                        {!! app('label_cart_total_tag') !!}
+                                    @endif
+                                </span>
+                                <span
+                                    id="final__amount">{{ number_format($new_order->final_amount, 2, $decimal, $mill) }}
+                                    @if (app()->has('global_currency_primary_symbol'))
+                                        {!! app('global_currency_primary_symbol') !!}
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                @endif
-                <div class="total__item">
-                    <span>
-                        @if (app()->has('label_cart_delivery_tag'))
-                            {!! app('label_cart_delivery_tag') !!}
-                        @endif
-                    </span>
-                    <span>
-                        @if ($new_order->delivery_price == 0)
-                            @if (app()->has('label_cart_delivery_free'))
-                                {!! app('label_cart_delivery_free') !!}
-                            @endif
-                        @else
-                            {{ number_format($new_order->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
-                                {!! app('global_currency_primary_symbol') !!}
-                            @endif
-                        @endif
-                    </span>
-                </div>
-                @if ($new_order->voucher && $new_order->voucher_value > 0)
-                    <div class="total__item">
-                        <span>
-                            @if (app()->has('label_cart_voucher_tag'))
-                                {!! app('label_cart_voucher_tag') !!}
+                    <script>
+                        window.addEventListener('DOMContentLoaded', function() {
+                            Livewire.emit('orderprocess');
+                        });
+                    </script>
+                    <div class="dlv" style="display: none">
+                        <span class="dlv_currency">
+                            @if (app()->has('global_currency_primary_name'))
+                                {!! app('global_currency_primary_name') !!}
                             @endif
                         </span>
-                        <span>
-                            -{{ number_format($new_order->voucher_value, 2, $decimal, $mill) }}
-                            @if (app()->has('global_currency_primary_symbol'))
-                                {!! app('global_currency_primary_symbol') !!}
+                        <span class="dlv_value">{{ $new_order->final_amount }}</span>
+                        <span class="dlv_coupon">{{ optional($new_order->voucher)->code }}</span>
+                        <span class="dlv_transaction">{{ $new_order->order_number }}</span>
+                        <span class="dlv_shipping">
+                            @if ($new_order->delivery_price == 0)
+                                Gratuit
+                            @else
+                                {{ $new_order->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
+                                    {!! app('global_currency_primary_symbol') !!}
+                                @endif
                             @endif
-
                         </span>
+                        @foreach ($new_order->orders as $cartItem)
+                            <div class="dlv_item">
+                                <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
+                                <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
+                                <span class="dlv_item-price">{{ $cartItem->price }}</span>
+                                <span class="dlv_item-quantity">{{ $cartItem->quantity }}</span>
+                            </div>
+                        @endforeach
                     </div>
-                @endif
-                <div class="total__item">
-                    <span>
-                        @if (app()->has('label_cart_total_tag'))
-                            {!! app('label_cart_total_tag') !!}
-                        @endif
-                    </span>
-                    <span id="final__amount">{{ number_format($new_order->final_amount, 2, $decimal, $mill) }}
-                        @if (app()->has('global_currency_primary_symbol'))
-                            {!! app('global_currency_primary_symbol') !!}
-                        @endif
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script>
-            window.addEventListener('DOMContentLoaded', function() {
-                Livewire.emit('orderprocess');
-            });
-        </script>
-        <div class="dlv" style="display: none">
-            <span class="dlv_currency">
-                @if (app()->has('global_currency_primary_name'))
-                    {!! app('global_currency_primary_name') !!}
-                @endif
-            </span>
-            <span class="dlv_value">{{ $new_order->final_amount }}</span>
-            <span class="dlv_coupon">{{ optional($new_order->voucher)->code }}</span>
-            <span class="dlv_transaction">{{ $new_order->order_number }}</span>
-            <span class="dlv_shipping">
-                @if ($new_order->delivery_price == 0)
-                    Gratuit
-                @else
-                    {{ $new_order->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
-                        {!! app('global_currency_primary_symbol') !!}
-                    @endif
-                @endif
-            </span>
-            @foreach ($new_order->orders as $cartItem)
-                <div class="dlv_item">
-                    <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
-                    <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
-                    <span class="dlv_item-price">{{ $cartItem->price }}</span>
-                    <span class="dlv_item-quantity">{{ $cartItem->quantity }}</span>
-                </div>
-            @endforeach
-        </div>
-        <script>
-            async function purchase() {
-                var dlv = document.querySelector('.dlv');
-                if (!dlv) {
-                    console.error('Elementul cu clasa .dlv nu a fost găsit.');
-                    return;
-                }
+                    <script>
+                        async function purchase() {
+                            var dlv = document.querySelector('.dlv');
+                            if (!dlv) {
+                                console.error('Elementul cu clasa .dlv nu a fost găsit.');
+                                return;
+                            }
 
-                var currency = dlv.querySelector('.dlv_currency').innerText.trim();
-                var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-                var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-                var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
-                var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
+                            var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+                            var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+                            var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+                            var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
+                            var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
 
-                var items = [];
-                var dlv_items = dlv.querySelectorAll('.dlv_item');
-                dlv_items.forEach(dlv_item => {
-                    var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-                    var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-                    var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(
-                        ',', '.'));
-                    var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
-                    items.push({
-                        item_id,
-                        item_name,
-                        price: item_price,
-                        quantity: item_quantity
-                    });
-                });
+                            var items = [];
+                            var dlv_items = dlv.querySelectorAll('.dlv_item');
+                            dlv_items.forEach(dlv_item => {
+                                var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+                                var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+                                var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(
+                                    ',', '.'));
+                                var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+                                items.push({
+                                    item_id,
+                                    item_name,
+                                    price: item_price,
+                                    quantity: item_quantity
+                                });
+                            });
 
-                return {
-                    currency,
-                    value,
-                    coupon,
-                    transaction_id,
-                    shipping,
-                    items
-                };
-            }
-
-            async function extractShippingData() {
-                const lookForm = document.querySelector('.look__form');
-                if (!lookForm) {
-                    console.error('Shipping information not found.');
-                    return;
-                }
-
-                const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0]
-                    .innerText
-                    .trim();
-                const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1]
-                    .innerText
-                    .trim();
-                const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector(
-                        'strong')
-                    .innerText.trim();
-                const email = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
-                    .querySelector('strong').innerText.trim();
-                const street = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
-                    .nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
-                const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
-                    .nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-                const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
-                    .nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
-                const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling
-                    .nextElementSibling
-                    .nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong')
-                    .innerText
-                    .trim();
-                const country = 'RO';
-
-                return {
-                    email: email.toLowerCase().trim(),
-                    phone_number: phone.trim(),
-                    address: {
-                        first_name: firstName.toLowerCase().trim(),
-                        last_name: lastName.toLowerCase().trim(),
-                        street: street.toLowerCase().trim(),
-                        city: city.toLowerCase().trim(),
-                        region: region.toLowerCase().trim(),
-                        postal_code: postalCode.trim(),
-                        country: country.toLowerCase().trim()
-                    }
-                };
-            }
-
-            async function pushPurchaseEvent() {
-                const dlvData = await purchase();
-                const userData = await extractShippingData();
-
-                if (!dlvData || !userData) {
-                    console.error("Missing data for the purchase event.");
-                    return;
-                }
-
-                dataLayer.push({
-                    ecommerce: null
-                }); // Clear any previous ecommerce data
-                dataLayer.push({
-                    event: "purchase",
-                    ecommerce: {
-                        currency: dlvData.currency,
-                        value: dlvData.value,
-                        coupon: dlvData.coupon,
-                        transaction_id: dlvData.transaction_id,
-                        shipping: dlvData.shipping,
-                        items: dlvData.items,
-                        user_data: {
-                            email: userData.email,
-                            phone_number: userData.phone_number,
-                            address: userData.address
+                            return {
+                                currency,
+                                value,
+                                coupon,
+                                transaction_id,
+                                shipping,
+                                items
+                            };
                         }
-                    }
-                });
-            }
 
-            pushPurchaseEvent();
-        </script>
+                        async function extractShippingData() {
+                            const lookForm = document.querySelector('.look__form');
+                            if (!lookForm) {
+                                console.error('Shipping information not found.');
+                                return;
+                            }
+
+                            const firstName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[0]
+                                .innerText
+                                .trim();
+                            const lastName = lookForm.querySelectorAll('h3')[1].nextElementSibling.querySelectorAll('strong')[1]
+                                .innerText
+                                .trim();
+                            const phone = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.querySelector(
+                                    'strong')
+                                .innerText.trim();
+                            const email = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+                                .querySelector('strong').innerText.trim();
+                            const street = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+                                .nextElementSibling.querySelectorAll('strong')[0].innerText.trim();
+                            const region = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+                                .nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+                            const city = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling.nextElementSibling
+                                .nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong').innerText.trim();
+                            const postalCode = lookForm.querySelectorAll('h3')[1].nextElementSibling.nextElementSibling
+                                .nextElementSibling
+                                .nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('strong')
+                                .innerText
+                                .trim();
+                            const country = 'RO';
+
+                            return {
+                                email: email.toLowerCase().trim(),
+                                phone_number: phone.trim(),
+                                address: {
+                                    first_name: firstName.toLowerCase().trim(),
+                                    last_name: lastName.toLowerCase().trim(),
+                                    street: street.toLowerCase().trim(),
+                                    city: city.toLowerCase().trim(),
+                                    region: region.toLowerCase().trim(),
+                                    postal_code: postalCode.trim(),
+                                    country: country.toLowerCase().trim()
+                                }
+                            };
+                        }
+
+                        async function pushPurchaseEvent() {
+                            const dlvData = await purchase();
+                            const userData = await extractShippingData();
+
+                            if (!dlvData || !userData) {
+                                console.error("Missing data for the purchase event.");
+                                return;
+                            }
+
+                            dataLayer.push({
+                                ecommerce: null
+                            }); // Clear any previous ecommerce data
+                            dataLayer.push({
+                                event: "purchase",
+                                ecommerce: {
+                                    currency: dlvData.currency,
+                                    value: dlvData.value,
+                                    coupon: dlvData.coupon,
+                                    transaction_id: dlvData.transaction_id,
+                                    shipping: dlvData.shipping,
+                                    items: dlvData.items,
+                                    user_data: {
+                                        email: userData.email,
+                                        phone_number: userData.phone_number,
+                                        address: userData.address
+                                    }
+                                }
+                            });
+                        }
+
+                        pushPurchaseEvent();
+                    </script>
+                @endif
+
+                <!------------------- Controls ------------------->
+                <div class="checkout__header" style="flex-direction: row !important">
+                    @if ($step == 2)
+                        <button class="checkout__button" wire:click.prevent="previous()"
+                            aria-label="go to previous step">
+                            <svg>
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            @if (app()->has('label_order_previous_step'))
+                                {!! app('label_order_previous_step') !!}
+                            @endif
+                        </button>
+                        @if ($modification)
+                            <button class="checkout__button checkout__button--confirm item__button--disabled">
+                                @if (app()->has('label_order_confirm_step'))
+                                    {!! app('label_order_confirm_step') !!}
+                                @endif
+                                <svg>
+                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                </svg>
+                            </button>
+                        @else
+                            <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm"
+                                wire:loading.attr="disabled" wire:loading.class="checkout__button--disabled"
+                                wire:target="confirm">
+                                @if (app()->has('label_order_confirm_step'))
+                                    {!! app('label_order_confirm_step') !!}
+                                @endif
+                                <svg>
+                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                </svg>
+                            </button>
+                        @endif
+                    @elseif ($step == 1 && $this->hasCartWithItems)
+                        <button class="checkout__button checkout__button--confirm" x-data
+                            @click.prevent=" $store.checkout.syncToLivewire();$store.checkout.nextstep();
+                  if ($store.checkout.isIdentic) {
+                      validateShipping();
+                  } else if ($store.checkout.individual) {
+                      validateAllData();
+                  } else {
+                      validateJuridic();
+                  }"
+                            wire:click.prevent="next()" aria-label="go to next step" style="margin: 0 auto;">
+                            @if (app()->has('label_order_next_step'))
+                                {!! app('label_order_next_step') !!}
+                            @endif
+                            <svg>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </section>
     @endif
-    <!------------------- Controls ------------------->
-    <div class="checkout__header" style="flex-direction: row !important">
-        @if ($step == 2)
-            <button class="checkout__button" wire:click.prevent="previous()" aria-label="go to previous step">
-                <svg>
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                @if (app()->has('label_order_previous_step'))
-                    {!! app('label_order_previous_step') !!}
-                @endif
-            </button>
-            @if ($modification)
-                <button class="checkout__button checkout__button--confirm item__button--disabled">
-                    @if (app()->has('label_order_confirm_step'))
-                        {!! app('label_order_confirm_step') !!}
-                    @endif
-                    <svg>
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </button>
-            @else
-                <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
-                    @if (app()->has('label_order_confirm_step'))
-                        {!! app('label_order_confirm_step') !!}
-                    @endif
-                    <svg>
-                        <polyline points="9 11 12 14 22 4"></polyline>
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                    </svg>
-                </button>
-            @endif
-        @elseif ($step == 1 && $this->hasCartWithItems)
-            <button class="checkout__button checkout__button--confirm" x-data
-                @click.prevent="
-        $store.checkout.syncToLivewire();$store.checkout.nextstep();
-        if ($store.checkout.isIdentic) {
-            validateShipping();
-        } else if ($store.checkout.individual) {
-            validateAllData();
-        } else {
-            validateJuridic();
-        }
-    "
-                wire:click.prevent="next()" aria-label="go to next step" style="margin: 0 auto;">
-                @if (app()->has('label_order_next_step'))
-                    {!! app('label_order_next_step') !!}
-                @endif
-                <svg>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </button>
-
-
-
-
-        @endif
-    </div>
-</div>
-</section>
 </div>

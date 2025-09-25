@@ -436,7 +436,9 @@
                         </span>
                     @else
                         <a class="leftbar__button leftbar__button--long" id="headerContinue"
-                            wire:click.prevent="continue()">
+                            wire:click.prevent="continue"
+                                wire:loading.attr="disabled" wire:loading.class="item__button--disabled"
+                                wire:target="continue">
                             @if (app()->has('label_cart_order'))
                                 {!! app('label_cart_order') !!}
                             @endif
