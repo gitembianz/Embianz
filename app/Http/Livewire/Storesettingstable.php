@@ -24,6 +24,8 @@ use Illuminate\Validation\Rule;
 use App\Models\PricelistEntries;
 
 use App\Jobs\DynamicCsvImportJob;
+use App\Models\Article;
+use App\Models\ArticleCategory;
 use Database\Seeders\StoreSeeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -1212,6 +1214,19 @@ class Storesettingstable extends Component
       $url->addChild('priority', $priority);
     }
 
+    // Active Articles
+    $articles = Article::where('active', true)
+      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->get();
+
+    foreach ($articles as $article) {
+      $url = $xml->addChild('url');
+      $articleUrl = route('article', ['article' => $article->seo_id ?? $article->id]);
+      $url->addChild('loc', htmlspecialchars($articleUrl));
+      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('priority', '0.8');
+    }
+
     // Active Products
     $products = Product::where('active', true)
       ->where('type', '!=', 'parent')
@@ -1225,6 +1240,19 @@ class Storesettingstable extends Component
       $url->addChild('lastmod', now()->toAtomString());
       $url->addChild('priority', '0.8');
     }
+
+    // Blog main page and categories
+      $this->generateBlogCategoryPages($xml, null);
+       // All other categories
+    $blogcategories = ArticleCategory::where('active', true)
+      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->get();
+
+    foreach ($blogcategories as $category) {
+
+      $this->generateBlogCategoryPages($xml, $category);
+    }
+
 
     // Global default category
     if (app()->has('global_default_category') && app('global_default_category') != "") {
@@ -1298,14 +1326,14 @@ class Storesettingstable extends Component
 
     for ($page = 1; $page <= $totalPages; $page++) {
       $url = $xml->addChild('url');
-   if (app()->has('global_default_category') && app('global_default_category') != "" && $isDefaultCategory) {
-      $categoryUrl = route('products');
-    }else{
+      if (app()->has('global_default_category') && app('global_default_category') != "" && $isDefaultCategory) {
+        $categoryUrl = route('products');
+      } else {
 
-      $categoryUrl = route('products', [
-        'categorySlug' => $category->seo_id ?? $category->id
-      ]);
-    }
+        $categoryUrl = route('products', [
+          'categorySlug' => $category->seo_id ?? $category->id
+        ]);
+      }
 
       if ($page > 1) {
 
@@ -1321,6 +1349,50 @@ class Storesettingstable extends Component
       $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
     }
   }
+  private function generateBlogCategoryPages(&$xml, $category)
+  {
+    if ($category) {
+
+      $articlesCount = $category->article_categories()
+        ->whereHas('article', function ($query) {
+          $query->where('active', true)
+            ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
+        })
+        ->count();
+    } else {
+      $articlesCount = Article::where('active', true)
+        ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())->count();
+    }
+
+    $limit = app('global_articles_limit_load');
+    $totalPages = ceil($articlesCount / $limit);
+
+    for ($page = 1; $page <= $totalPages; $page++) {
+      $url = $xml->addChild('url');
+      if ($category) {
+        $categoryUrl = route('blog', [
+          'categorySlug' => $category->seo_id ?? $category->id
+        ]);
+      } else {
+        $categoryUrl = route('blog');
+      }
+
+      if ($page > 1) {
+
+        if ($page === 1) {
+          $categoryUrl .= $page;
+        } else {
+          $categoryUrl .= "?page=" . $page;
+        }
+      }
+
+      $url->addChild('loc', htmlspecialchars($categoryUrl));
+      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('priority', $category ? '0.9' : '0.8');
+    }
+  }
+
+
   public function refreshfilters()
   {
     Cache::forget('cached_specifications');
