@@ -846,7 +846,9 @@ class Orderstable extends Component
         }
       }
       $deliveryPrice = $order->delivery_price;
-      $deliveryPriceWithoutVAT = $deliveryPrice / (1 + (21 / 100));
+      $deliveryPriceVat = (int) ($order->delivery_price_vat ?: (app('global_delivery_price_vat') ?: 21));
+
+      $deliveryPriceWithoutVAT = $deliveryPrice / (1 + ($deliveryPriceVat / 100));
 
       if ($deliveryPrice > 0) {
         if ($type === 'invoice_xml') {
@@ -865,7 +867,7 @@ class Orderstable extends Component
               4
             ),
             'Valoare' => number_format($deliveryPriceWithoutVAT, 4),
-            'ProcTVA' => number_format(21, 2),
+            'ProcTVA' => number_format($deliveryPriceVat, 2),
             'TVA' => number_format($order->delivery_price - $deliveryPriceWithoutVAT, 4),
           ];
         } else {
@@ -883,7 +885,7 @@ class Orderstable extends Component
               4
             ),
             'Valoare' => '-' . number_format($deliveryPriceWithoutVAT, 4),
-            'ProcTVA' => number_format(21, 2),
+            'ProcTVA' => number_format($deliveryPriceVat, 2),
             'TVA' => '-' . number_format($order->delivery_price - $deliveryPriceWithoutVAT, 4),
           ];
         }
