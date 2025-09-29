@@ -587,7 +587,7 @@ class StoreOrder extends Component
         'address2' => $this->billing_address2,
         'type' => 'billing',
         'country' => $this->billing_country,
-        'country_iso' => Country::where('name', $this->billing_country)->first()->iso_code,
+        'country_iso' => Country::where('name', $this->billing_country)->first()->iso_code ?? null,
         'county' => $this->billing_county,
         'county_iso' => County::where('name', $this->billing_county)->first()->iso_code ?? null,
         'city' => $this->billing_city,

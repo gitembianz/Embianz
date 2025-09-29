@@ -41,7 +41,7 @@
             <span class="article-image-modal-close">&times;</span>
             <img class="article-image-modal-content" id="modalImage">
         </div>
-        <h1 class="article-title">{{ $article->name }}</h1>
+        <h1 class="showarticle-title">{{ $article->name }}</h1>
         @php
             $primaryCategory = $article->article_categories->where('primary_category', true)->first();
         @endphp
