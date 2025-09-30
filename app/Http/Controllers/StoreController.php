@@ -14,7 +14,7 @@ class StoreController extends Controller
 
   public function search($slug = null)
   {
-    if ($slug != null) {
+    if ($slug != null || $slug != '') {
       $data = $slug;
     } else {
       $data = null;

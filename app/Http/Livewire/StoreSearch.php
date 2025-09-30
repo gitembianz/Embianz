@@ -39,8 +39,8 @@ class StoreSearch extends Component
     }
     public function mount($data = null)
     {
-        if ($data != null) {
-            $this->search = urldecode($data);
+      if ($data !== null && $data !== '') {
+        $this->search = urldecode($data);
             $search_from_session = session()->get('search_values', []);
             if (isset($search_from_session['value']) && $search_from_session['value'] != $data) {
                 session()->put('search_values', [

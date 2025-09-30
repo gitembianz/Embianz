@@ -608,7 +608,7 @@ class StoreOrder extends Component
           'address2' => $this->shipping_address2,
           'type' => 'shipping',
           'country' => $this->shipping_country,
-          'country_iso' => Country::where('name', $this->shipping_country)->first()->iso_code,
+          'country_iso' => Country::where('name', $this->shipping_country)->first()->iso_code ?? null,
           'county' => $this->shipping_county,
           'county_iso' => County::where('name', $this->shipping_county)->first()->iso_code ?? null,
           'city' => $this->shipping_city,
