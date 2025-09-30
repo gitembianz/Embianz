@@ -145,17 +145,20 @@
                         <a
                             href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
                             @if ($element->media->first() != null)
-                                <img title="{{ $product->name }}, {{ $product->short_description }}" @if ($loop->first) loading="eager"
-                        @else
-                        loading="lazy" @endif
+                                <img title="{{ $product->name }}, {{ $product->short_description }}"
+                                    @if ($loop->first) loading="eager"
+                    @else
+                    loading="lazy" @endif
                                     class="card-image"
                                     src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
                                     alt="{{ $element->name }}">
                             @else
-                                <img title="Default image" @if ($loop->first) loading="eager"
-                        @else
-                        loading="lazy" @endif class="card-image"
-                                    src="/images/store/default/default300.webp" alt="something wrong">
+                                <img title="Default image"
+                                    @if ($loop->first) loading="eager"
+                    @else
+                    loading="lazy" @endif
+                                    class="card-image" src="/images/store/default/default300.webp"
+                                    alt="something wrong">
                             @endif
                         </a>
 
@@ -581,83 +584,77 @@
     <!---------------------- Support Center -------------------->
     <x-support />
     <script>
-  document.addEventListener("livewire:load", function() {
-   injectJsonLd();
+        document.addEventListener("livewire:load", function() {
+            injectJsonLd();
 
-   function injectJsonLd() {
-    let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
-    existingScripts.forEach(script => script.remove());
+            function injectJsonLd() {
+                let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+                existingScripts.forEach(script => script.remove());
 
-    let jsonLdElements = document.querySelectorAll('.json-ld-data');
-    jsonLdElements.forEach(element => {
-     let productData = element.dataset.productJson;
-     let product = JSON.parse(productData);
+                let jsonLdElements = document.querySelectorAll('.json-ld-data');
+                jsonLdElements.forEach(element => {
+                    let productData = element.dataset.productJson;
+                    let product = JSON.parse(productData);
 
-     let currencyElement = document.querySelector('.dlv_currency');
-     let price = (product.product_prices && product.product_prices.length > 0) ?
-      `${product.product_prices[0].value}` : `0`;
-     let ratingValue = (product.reviews && product.reviews.length > 0) ?
-      `${product.reviews[0].value}` : `0`;
-     let reviewCount = (product.reviews && product.reviews.length > 0) ?
-      `${product.reviews[0].count}` : `0`;
-     let currency = currencyElement.textContent.trim();
-     let media = (product.media && product.media.length > 0) ?
-      `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
-      `${window.location.origin}/images/store/default/default300.webp`;
-     if (price != '0' || (ratingValue != '0') && (reviewCount != 0)) {
-      let jsonLd = {
-       "@context": "https://schema.org/",
-       "@type": "Product",
-       "name": product.name,
-       "image": media,
-       "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
-       "brand": {
-        "@type": "Brand",
-        "name": product.brand
-       },
-       "sku": product.sku,
-       "offers": {
-        "@type": "Offer",
-        "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
-        "priceCurrency": currency,
-        "price": price,
-        "availability": `https://schema.org/InStock`,
-        "priceValidUntil": product.end_date,
-        "hasMerchantReturnPolicy": {
-         "value": true
-        },
-        "shippingDetails": {
-         "type": "FreeShipping",
-         "price": "0"
-        },
-        "aggregateRating": {
-         "@type": "AggregateRating",
-         "ratingValue": ratingValue,
-         "reviewCount": reviewCount
-        },
-        "review": {
-         "@type": "Review",
-         "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": ratingValue,
-          "bestRating": 5
-         },
-         "author": {
-          "@type": "Person",
-          "name": "anonim"
-         }
-        },
-       }
-      };
+                    let currencyElement = document.querySelector('.dlv_currency');
+                    let price = (product.product_prices && product.product_prices.length > 0) ?
+                        `${product.product_prices[0].value}` : `0`;
+                    let ratingValue = (product.reviews && product.reviews.length > 0) ?
+                        `${product.reviews[0].value}` : `0`;
+                    let reviewCount = (product.reviews && product.reviews.length > 0) ?
+                        `${product.reviews[0].count}` : `0`;
+                    let currency = currencyElement.textContent.trim();
+                    let media = (product.media && product.media.length > 0) ?
+                        `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
+                        `${window.location.origin}/images/store/default/default300.webp`;
+                    if (price != '0' || (ratingValue != '0') && (reviewCount != 0)) {
+                        let jsonLd = {
+                            "@context": "https://schema.org/",
+                            "@type": "Product",
+                            "name": product.name,
+                            "image": media,
+                            "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
+                            "brand": {
+                                "@type": "Brand",
+                                "name": product.brand
+                            },
+                            "sku": product.sku,
+                            "offers": {
+                                "@type": "Offer",
+                                "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
+                                "priceCurrency": currency,
+                                "price": price,
+                                "availability": "https://schema.org/InStock",
+                                "priceValidUntil": product.end_date
+                                // Remove hasMerchantReturnPolicy and shippingDetails here or replace with valid properties
+                            },
+                            "aggregateRating": {
+                                "@type": "AggregateRating",
+                                "ratingValue": ratingValue,
+                                "reviewCount": reviewCount
+                            },
+                            "review": {
+                                "@type": "Review",
+                                "reviewRating": {
+                                    "@type": "Rating",
+                                    "ratingValue": ratingValue,
+                                    "bestRating": 5
+                                },
+                                "author": {
+                                    "@type": "Person",
+                                    "name": "anonim"
+                                }
+                            }
+                        };
 
-      let script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.textContent = JSON.stringify(jsonLd);
-      document.head.appendChild(script);
-     }
-    });
-   }
-  });
- </script>
+                        let script = document.createElement('script');
+                        script.type = 'application/ld+json';
+                        script.textContent = JSON.stringify(jsonLd);
+                        document.head.appendChild(script);
+                    }
+                });
+            }
+        });
+    </script>
     <script src="/script/store/catalog.js" defer></script>
 </div>
