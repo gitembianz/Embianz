@@ -319,31 +319,10 @@
                                         this.ShippingCountiesList = this.countiesDataCache[country];
                                         return;
                                     }
-
-
                                     try {
                                         const res = await fetch(`/js/countries/${country}.json`);
                                         if (!res.ok) throw new Error('Not found');
                                         const data = await res.json();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                         this.countiesDataCache[country] = data.counties || [];
                                         this.saveCache();
 
@@ -352,7 +331,6 @@
                                         this.ShippingCountiesList = [];
                                     }
                                 },
-
                                 async fetchBillingCountiesForCountry(countryName) {
                                     if (!countryName) {
                                         this.BillingCountiesList = [];
@@ -360,18 +338,10 @@
                                     }
 
                                     const country = countryName.replace(/\s+/g, '_');
-
-
-
-
-
-
-
                                     if (this.countiesDataCache[country]) {
                                         this.BillingCountiesList = this.countiesDataCache[country];
                                         return;
                                     }
-
 
                                     try {
                                         const res = await fetch(`/js/countries/${country}.json`);
@@ -427,7 +397,6 @@
 
                                     if (this.isIdentic) {
                                         this.selectedCountyBilling = SCounty.value;
-                                        this.billingcountry = this.country;
 
                                         const hiddenCountyInputB = document.getElementById('hiddenCountyBillingInput');
                                         if (hiddenCountyInputB) {
@@ -443,7 +412,6 @@
 
                                         @this.set('billing_county', SCounty.value);
                                         @this.set('billing_city', SCity.value);
-                                        @this.set('billing_country', this.country);
 
                                     } else {
                                         const BCounty = document.getElementById('BillingCounty');
