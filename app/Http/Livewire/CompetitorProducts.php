@@ -109,7 +109,7 @@ class CompetitorProducts extends Component
           $differenceValue = $record['price'] - $new->internal_price;
 
           $differencePercentage = $new->internal_price > 0
-            ? round(($differenceValue / $new->internal_price) * 100, 2)
+            ? round(($differenceValue / $record['price']) * 100, 2)
             : 0;
           $new->difference_value = $differenceValue;
           $new->difference_percent = $differencePercentage;
