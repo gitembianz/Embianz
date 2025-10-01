@@ -12,11 +12,13 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
 use App\Jobs\DynamicCsvImportJob;
+use App\Models\CompetitorProducts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
+use App\Jobs\CompetitorsRefreshPriceDifference;
 
 
 class Competitorstable extends Component
@@ -904,5 +906,28 @@ class Competitorstable extends Component
       fputcsv($handle, $row);
     }
     fclose($handle);
+  }
+
+  public function calculateDifferences(){
+     DB::transaction(function () {
+      $allJob = AllJob::create([
+        'name' => CompetitorsRefreshPriceDifference::class,
+        'type' => 'competitor_price_refresh',
+        'status' => 'pending',
+        'payload' => [],
+        'related_table' => 'competitor_products',
+      ]);
+
+      DB::afterCommit(function () use ($allJob) {
+        CompetitorsRefreshPriceDifference::dispatch($allJob->id);
+      });
+    });
+
+    session()->flash('notification', [
+      'message' => 'Prices corrected successfully started by job!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
   }
 }
