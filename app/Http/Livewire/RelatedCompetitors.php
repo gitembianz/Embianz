@@ -205,7 +205,7 @@ class RelatedCompetitors extends Component
       ->latest('created_at')
       ->value('value') ?? 0;
     foreach ($this->competitorsAndValues as $array) {
-      if (isset($array['product']['idrel'])) {
+      if (isset($array['competitor']['idrel'])) {
 
         $competitorPrice = $array['price'] ?? 0;
 
@@ -220,6 +220,7 @@ class RelatedCompetitors extends Component
         $differenceValue = 0;
         $differencePercentage = 0;
       }
+
       ModelsCompetitorProducts::create([
         'name' => $array['name'],
         'url' => $array['url'],
