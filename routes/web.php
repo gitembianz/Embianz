@@ -189,7 +189,6 @@
 
       route::get('/checkorders', [AdminController::class, 'checkorders'])->name('checkorders');
       route::get('/updatecosts', [AdminController::class, 'updatecosts']);
-      route::get('/getavgvalues', [AdminController::class, 'getavgvalues'])->name('getavgvalues');
 
 
 
