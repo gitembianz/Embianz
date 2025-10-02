@@ -84,14 +84,16 @@ class ShowArticle extends Component
         }
       }
     }
+    if ($rec['seo_id'] != $this->article->seo_id) {
 
-    if (!empty($rec['seo_id'])) {
-      $seo_id = $this->generateUniqueSeoId($rec['seo_id']);
-    } else {
-      $seo_id = $this->generateUniqueSeoId($rec['name'] ?? $this->article->name);
+      if (!empty($rec['seo_id'])) {
+        $seo_id = $this->generateUniqueSeoId($rec['seo_id']);
+      } else {
+        $seo_id = $this->generateUniqueSeoId($rec['name'] ?? $this->article->name);
+      }
+
+      $this->article->seo_id = str_replace(' ', '-', $seo_id);
     }
-
-    $this->article->seo_id = str_replace(' ', '-', $seo_id);
 
     $this->article->last_modified_by = auth()->user()->name;
     $this->article->save();

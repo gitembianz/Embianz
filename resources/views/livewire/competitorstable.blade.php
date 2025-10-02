@@ -356,6 +356,14 @@
                         </svg>
                         <span>Add Competitor</span>
                     </a>
+                    <button class="button button--primary button--fill button--flexed" wire:click="calculateDifferences">
+                        <svg>
+                            <line x1="19" y1="5" x2="5" y2="19"></line>
+                            <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                            <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                        </svg>
+                        <span>Calculate difernces</span>
+                    </button>
                     <button class="button button--primary button--fill button--flexed" wire:click="exportData">
                         <svg>
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
