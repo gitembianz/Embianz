@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\User;
+use App\Mail\NewUser;
 use App\Models\Brand;
 use App\Models\Order;
+use App\Models\AllJob;
 use App\Models\County;
 use App\Models\Account;
+use App\Models\Article;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\Variant;
@@ -15,29 +18,28 @@ use App\Models\Voucher;
 use App\Models\Currency;
 use App\Models\Exchange;
 use App\Models\Promotion;
+use App\Models\Competitor;
 use App\Models\Static_Page;
+use Illuminate\Support\Str;
 use App\Models\CustomScript;
 use App\Models\UserSessions;
 use Illuminate\Http\Request;
 use App\Models\Order_Supplier;
 use App\Models\ProductVariant;
 use App\Models\Store_Settings;
+use App\Models\ArticleCategory;
+
+use App\Jobs\CalculateOrdersCost;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use App\Models\ProductReviews as ModelsProductReviews;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NewUser;
-use App\Models\Article;
-use App\Models\ArticleCategory;
-use App\Models\Competitor;
-use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -823,36 +825,4 @@ class AdminController extends Controller
     }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
   }
 
-  public function getavgvalues()
-  {
-    $orders = Order::with('orders.product.costs')->get();
-    foreach ($orders as $order) {
-      $cost = 0;
-      foreach ($order->orders as $item) {
-        if ($item->product->costs->isEmpty()) {
-          $cost = 0;
-          break;
-        }
-        if (!$item->product->costs->last()->cost) {
-          $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
-          if ($possiblecost) {
-            $cost += $possiblecost->cost * $item->quantity;
-          } else {
-            $cost = 0;
-            break;
-          }
-        } else {
-          $cost += optional($item->product->costs->last())->cost  * $item->quantity;
-        }
-      }
-      if ($cost > 0) {
-        $order->update(['avg_cost' => $cost]);
-      }
-    }
-    return redirect()->route('orders')->with('notification', [
-      'message' => 'Average cost updated!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-  }
 }

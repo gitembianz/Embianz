@@ -212,7 +212,7 @@ class RelatedCompetitors extends Component
         $differenceValue = $competitorPrice - $productprice;
 
         $differencePercentage = $productprice > 0
-          ? round(($differenceValue / $productprice) * 100, 2)
+          ? round(($differenceValue / $competitorPrice) * 100, 2)
           : 0;
       } else {
         $productprice = 0;
