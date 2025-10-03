@@ -385,8 +385,17 @@
                     </tr>
                 @else
                     @foreach ($relatedcompetitors as $nr => $related)
+                    @php
+                      if($related->difference_value < 0){
+                        $class = 'notprocess';
+                      }elseif($related->difference_value > 0){
+                        $class = 'process';
+                      }else{
+                        $class = null;
+                      }
+                    @endphp
                         <tr @if ($loop->last) id="last_record" @endif
-                            class="expandable-row @if ($this->isChecked($related->id)) active @endif">
+                            class="expandable-row {{ $class }} @if ($this->isChecked($related->id)) active @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
                                     <input type="checkbox" value="{{ $related->id }}" id="{{ $related->id }}"

@@ -43,7 +43,7 @@ class CompetitorsRefreshPriceDifference implements ShouldQueue
             $competitorPrice = $competitor->price ?? 0;
             $differenceValue = $competitorPrice - $productprice;
             $differencePercentage = $productprice > 0
-              ? round(($differenceValue / $productprice) * 100, 2)
+              ? round(($differenceValue / $competitorPrice) * 100, 2)
               : 0;
             $competitor->update([
               'internal_price' => $productprice,

@@ -12,17 +12,18 @@ use App\Models\CsvImportJob;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Validation\Rule;
+use App\Jobs\CalculateOrdersCost;
+
 use App\Jobs\DynamicCsvImportJob;
-
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Illuminate\Support\Facades\Artisan;
 
 class Orderstable extends Component
 {
@@ -1315,5 +1316,27 @@ class Orderstable extends Component
       fputcsv($handle, $row);
     }
     fclose($handle);
+  }
+  public function getavgvalues()
+  {
+
+    DB::transaction(function () {
+      $allJob = AllJob::create([
+        'name' => CalculateOrdersCost::class,
+        'type' => 'calculate_orders_cost',
+        'status' => 'pending',
+        'payload' => [],
+        'related_table' => 'orders',
+      ]);
+
+      DB::afterCommit(function () use ($allJob) {
+        CalculateOrdersCost::dispatch($allJob->id);
+      });
+    });
+    session()->flash('notification', [
+      'message' => 'Orders cost calculation successfully started by job!',
+      'type' => 'success',
+      'title' => 'Import Queued'
+    ]);
   }
 }
