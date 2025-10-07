@@ -16,7 +16,8 @@ class ProductReviews extends Model
     'product_id',
     'acronim',
     'score',
-    'commnent'
+    'commnent',
+    'approved',
   ];
   public static function search($search)
   {

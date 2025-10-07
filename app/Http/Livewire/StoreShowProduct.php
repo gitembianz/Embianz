@@ -15,6 +15,14 @@ class StoreShowProduct extends Component
   public $back = false;
   public $wishlistItems;
   public $lastVisited;
+  public $reviews45;
+  public $rating;
+  public $avrage;
+  public $rating5;
+  public $rating4;
+  public $rating3;
+  public $rating2;
+  public $rating1;
 
 
   public function render()
@@ -37,7 +45,18 @@ class StoreShowProduct extends Component
     }
     array_unshift($this->lastVisited, $productId);
     cookie()->queue(cookie()->make('last_visited_products', json_encode($this->lastVisited), 60 * 24 * 30));
+
+    $this->rating = $this->product->reviews->avg('score') ?? 0;
+    $this->reviews45 = $this->product->reviews->whereIn('score', [4, 5])->count() ?? 0;
+    $this->avrage = round(($this->reviews45 / $this->product->reviews->count()) * 100);
+if( $this->product->reviews->count() > 0){
+    $this->rating5 = $this->product->reviews->where('score', 5)->count() ??0;
+    $this->rating4 = $this->product->reviews->where('score', 4)->count() ??0;
+    $this->rating3 = $this->product->reviews->where('score', 3)->count() ??0;
+    $this->rating2 = $this->product->reviews->where('score', 2)->count() ??0;
+    $this->rating1 = $this->product->reviews->where('score', 1)->count() ??0;
   }
+}
 
   public function getLastProductProperty()
   {
@@ -73,7 +92,6 @@ class StoreShowProduct extends Component
     }
   }
 
-
   public function isInWishlist($productId)
   {
     return in_array($productId, $this->wishlistItems);
@@ -101,7 +119,8 @@ class StoreShowProduct extends Component
               ->orderBy('sequence');
           },
           'reviews' => function ($query) {
-            $query->select('product_id', 'count', 'value');
+            $query->where('approved', true)
+              ->select('id', 'product_id', 'acronim', 'score', 'approved', 'comment');
           },
           'product_specs' => function ($query) {
             $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
@@ -124,9 +143,6 @@ class StoreShowProduct extends Component
                   ->with([
                     'media' => function ($query) {
                       $query->select('path', 'name', 'type')->where('type', 'main');
-                    },
-                    'reviews' => function ($query) {
-                      $query->select('product_id', 'count', 'value');
                     },
                     'product_categories' => function ($query) {
                       $query->select('product_id', 'category_id', 'primary_category')
