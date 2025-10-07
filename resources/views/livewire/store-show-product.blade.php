@@ -621,6 +621,104 @@
             </div>
         </section>
     @endif
+
+    @if (app()->has('global_review_system') && app('global_review_system') === 'true')
+        <section>
+            <div class="section__header container">
+                <h2 class="section__title">
+                    @if (app()->has('label_pdp_reviews_section_title'))
+                        {!! app('label_pdp_reviews_section_title') !!}
+                    @endif
+                </h2>
+            </div>
+
+            <div class="container grid-product-reviews">
+                <div class="product-reviews">
+                    <div class="product-reviews__info reviews-info">
+                        <h2 class="product__title">{{ $product->reviews->count() }} reviews</h2>
+
+
+                        <div class="ratingscore">
+                            <div class="rating" style="--rating: {{ $rating * 20 }}%;"></div>
+                            @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+                                ({{ number_format($rating, 2) }})
+                            @endif
+                        </div>
+                        <div>
+                        </div>
+
+                        @if ($reviews45 > 0)
+                            <div class="reviews-info__percentage">
+                                {{ $reviews45 }}
+                                @if (app()->has('label_pdp_reviews_out_of'))
+                                    {!! app('label_pdp_reviews_out_of') !!}
+                                @endif
+                                {{ $product->reviews->count() }}
+                                ({{ round($avrage) }}%)
+                            </div>
+                            <span class="reviews-info__caption">
+                                @if (app()->has('label_pdp_reviews_customers_recommended'))
+                                    {!! app('label_pdp_reviews_customers_recommended') !!}
+                                @endif
+                            </span>
+                        @endif
+                    </div>
+                    <div class="product-reviews__bar reviews-bar">
+                        <ul class="list-reset reviews-bar__list">
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">5</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating5 }}">
+                                        <span
+                                            class="progress-bar__inner-line progress-bar__inner-line--excellent"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating5 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">4</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating4 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--good"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating4 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">3</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating3 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--normal"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating3 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">2</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating2 }}">
+                                        <span
+                                            class="progress-bar__inner-line progress-bar__inner-line--not-bad"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating2 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">1</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating1 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--bad"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating1 }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!---------------------- Support Center -------------------->
     <x-support />
     <script>

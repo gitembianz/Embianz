@@ -45,4 +45,8 @@ class AllJob extends Model
 
     return $query;
   }
+  public function jobs()
+  {
+    return $this->hasMany(ScheduleJob::class, 'job_id');
+  }
 }

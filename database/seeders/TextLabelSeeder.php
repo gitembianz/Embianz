@@ -283,6 +283,9 @@ Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'cr
       ['parameter' => 'blog_page_title', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'blog_page_description', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'add_review_button', 'value' => 'Adauga un review', 'description' => 'Add review button', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_section_title', 'value' => 'Reviews', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_out_of', 'value' => 'din', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_customers_recommended', 'value' => 'Clienti recomanda acest produs', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

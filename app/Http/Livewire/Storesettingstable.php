@@ -10,9 +10,7 @@ use App\Models\AllJob;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Exchange;
 use App\Models\Listview;
-use App\Models\Static_Page;
 use Illuminate\Support\Str;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
@@ -21,7 +19,6 @@ use App\Models\Store_Settings;
 use App\Jobs\RefreshPricesChunkJob;
 
 use Illuminate\Validation\Rule;
-use App\Models\PricelistEntries;
 
 use App\Jobs\DynamicCsvImportJob;
 use App\Models\Article;
@@ -37,8 +34,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Response;
-use App\Models\ProductReviews as ModelsProductReviews;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Models\ProductReviews;
 
 class Storesettingstable extends Component
 {
@@ -915,27 +911,75 @@ class Storesettingstable extends Component
   }
   public function seedreviews()
   {
+    $acronims = [
+      'JD',
+      'AM',
+      'CR',
+      'LS',
+      'MK',
+      'PT',
+      'RB',
+      'SN',
+      'VL',
+      'XT',
+      'AN',
+      'BG',
+      'CZ',
+      'DK',
+      'EV',
+      'FP',
+      'GH',
+      'HK',
+      'IL',
+      'JM'
+    ];
+
+    $comments = [
+      'Produs excelent, foarte mulțumit!',
+      'Exact ce aveam nevoie, funcționează perfect.',
+      'Calitate foarte bună și livrare rapidă.',
+      'Raport calitate-preț foarte bun.',
+      'A depășit așteptările mele.',
+      'Produs bun, îl recomand.',
+      'Sunt foarte încântat de această achiziție.',
+      'Construcție solidă, se simte premium.',
+      'Livrare rapidă și ambalaj de calitate.',
+      'Merită cumpărat din nou.',
+      'Funcționează impecabil, recomand cu încredere.',
+      'Servicii excelente, produsul conform descrierii.',
+      'Preț corect pentru ceea ce oferă.',
+      'Foarte practic și ușor de folosit.',
+      'Un produs de încredere, recomand oricui.'
+    ];
+
     $prods = Product::where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->get();
 
     foreach ($prods as $product) {
       if (!$product->reviews->first()) {
-        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+        $acronim = $acronims[array_rand($acronims)];
+        $comm = $comments[array_rand($comments)];
+        $slug = strtolower($acronim) . '-' . rand(1000, 9999);
 
-        ModelsProductReviews::create([
+        ProductReviews::create([
           'product_id' => $product->id,
-          'count' => 1,
-          'value' => $value
+          'acronim'    => $slug,
+          'score'      => rand(4, 5),
+          'comment'    => 'Produs excelent, foarte mulțumit!',
+          'approved'   => true
         ]);
       }
     }
+
     session()->flash('notification', [
       'message' => 'Reviews added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+      'type'    => 'success',
+      'title'   => 'Success'
     ]);
   }
+
   public function actualizeaza()
   {
     Artisan::call('cache:clear');
@@ -1242,8 +1286,8 @@ class Storesettingstable extends Component
     }
 
     // Blog main page and categories
-      $this->generateBlogCategoryPages($xml, null);
-       // All other categories
+    $this->generateBlogCategoryPages($xml, null);
+    // All other categories
     $blogcategories = ArticleCategory::where('active', true)
       ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
       ->get();

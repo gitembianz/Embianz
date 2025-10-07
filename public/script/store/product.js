@@ -801,3 +801,16 @@ lastseenSlider();
 miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
+
+// Progress Bar Rating
+const bars = document.querySelectorAll('.progress-bar__outter-line');
+const COUNT_STARS = 12;
+
+if(bars.length > 0){
+  bars.forEach(el => {
+    let rating = el.dataset.rating;
+
+    let percent = (100 * rating) / COUNT_STARS;
+    el.querySelector('.progress-bar__inner-line').style.width = `${percent}%`;
+  });
+}

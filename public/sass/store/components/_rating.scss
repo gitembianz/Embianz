@@ -22,3 +22,116 @@
   align-items: center;
   margin-top:5px;
 }
+
+// review sistem
+         .list-reset {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .grid-product-reviews {
+                display: grid;
+                grid-template-columns: 1fr 390px;
+                gap: 105px;
+            }
+
+            .product-reviews {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .reviews-info {
+
+                &__title {
+                    margin-bottom: 20px;
+                    font-weight: 900;
+                    font-size: 32px;
+                    line-height: 130%;
+                    color: #1E212C;
+                }
+
+                .rating {
+                    margin-bottom: 20px;
+                }
+
+                &__caption {
+                    display: block;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 150%;
+                    color: #787A80;
+                }
+            }
+
+            .reviews-bar {
+                &__list {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &__item {
+                    display: flex;
+                    align-items: center;
+
+                    &:not(:last-child) {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+
+            .progress-bar {
+                display: flex;
+                align-items: center;
+
+                &__star {
+                    margin-right: 16px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 150%;
+                    color: #787A80;
+                }
+
+                &__outter-line {
+                    overflow: hidden;
+                    position: relative;
+                    width: 356px;
+                    height: 4px;
+                    border-radius: 40px;
+                    background-color: #E5E8ED;
+                }
+
+                &__inner-line {
+                    position: absolute;
+                    height: 4px;
+                    border-radius: 40px;
+
+                    &--excellent {
+                        background-color: #03CEA4;
+                    }
+
+                    &--good {
+                        background-color: #1FDF58;
+                    }
+
+                    &--normal {
+                        background-color: #F2EA2B;
+                    }
+
+                    &--not-bad {
+                        background-color: #F89828;
+                    }
+
+                    &--bad {
+                        background-color: #FF4242;
+                    }
+                }
+
+                &__quantity {
+                    margin-left: 16px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 150%;
+                    color: #787A80;
+                }
+            }
