@@ -250,31 +250,44 @@
 
     {{-- Modal add new listview --}}
     <aside>
-        <div class="background background--center @if ($addlistview) active @endif"></div>
-        <div class="aside aside--confirm @if ($addlistview) active @endif"
+        <div class="background background--center @if ($addjob) active @endif"></div>
+        <div class="aside aside--confirm @if ($addjob) active @endif"
             style="min-height: 225px !important;">
             <div class="tabs__content details__view active" style="max-height: 100%;">
 
                 <span class="details__long"
                     style="text-align: center; font-size: 1.2em; font-weight: bold; color: #fff !important;">
-                    New Jobs
+                    New Schedule Job
                 </span>
                 @foreach ($errors->all() as $error)
                     <span class="details__long"
                         style="text-align: center; font-size: 1.2em; font-weight: bold; color: red !important;">{{ $error }}</span>
                 @endforeach
-
                 <div class="input__tabs details__long">
-                    <input type="text" wire:model.defer="listview.name">
-                    <label>Listview name</label>
+                    <select wire:model.defer="service">
+                        <option value="">-- Select a Job --</option>
+                        @foreach ($jobslist as $job)
+                            <option value="{{ $job }}">{{ $job }}</option>
+                        @endforeach
+                    </select>
+                    <label>Job</label>
                 </div>
 
+                <div class="input__tabs details__long">
+                    <select wire:model.defer="frequency">
+                        <option value="">-- Select Frequency --</option>
+                        @foreach ($frequencies as $minutes => $label)
+                            <option value="{{ $minutes }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <label>Run Frequency</label>
+                </div>
 
                 <button class="button button--primary button--long" wire:click.prevent="add_listview()">
                     <span>Save</span>
                 </button>
                 <button class="button button--danger button--long" style="margin-bottom: 10px !important"
-                    wire:click.prevent="$set('addlistview', false)">
+                    wire:click.prevent="$set('addjob', false)">
                     <span>Cancel</span>
                 </button>
 
@@ -344,7 +357,7 @@
                 <button class="button button--primary button--long" wire:click="$set('tableName', 'jobs')">
                     Queued Jobs
                 </button>
-                 <button class="button button--primary button--long" wire:click="$set('tableName', 'all_jobs')">
+                <button class="button button--primary button--long" wire:click="$set('tableName', 'all_jobs')">
                     All Jobs
                 </button>
             </div>
@@ -421,8 +434,8 @@
                         </svg>
                         <span>Import data</span>
                     </button>
-                       <button class="button button--primary button--fill button--flexed"
-                        wire:click="$set('addlistview', true)">
+                    <button class="button button--primary button--fill button--flexed"
+                        wire:click="$set('addjob', true)">
                         <svg>
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
