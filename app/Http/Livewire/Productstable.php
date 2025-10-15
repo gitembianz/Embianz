@@ -718,6 +718,7 @@ class Productstable extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
+
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-');
 
 
@@ -728,7 +729,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
+        Storage::disk('media')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
@@ -739,7 +740,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
+        Storage::disk('media')->put($path . $name, $fileContent);
       }
 
       $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
@@ -761,7 +762,7 @@ class Productstable extends Component
       $product->media()->attach($media->id);
 
       $filePath = $path . $name;
-      $file = Storage::disk('public_upload')->get($filePath);
+      $file = Storage::disk('media')->get($filePath);
 
       $ismin = $product->media()->where('type', 'min')->first();
 
