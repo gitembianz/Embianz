@@ -67,6 +67,7 @@ if( $this->product->reviews->count() > 0){
         ->where('id', '!=', $this->productId)
         ->where('start_date', '<=', now()->format('Y-m-d'))
         ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->orderBy('quantity', 'DESC')
         ->select('id', 'name', 'preorder', 'low_stock', 'sku', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
         ->with([
           'media' => function ($query) {
@@ -139,6 +140,7 @@ if( $this->product->reviews->count() > 0){
                 $query->where('active', 1)
                   ->where('start_date', '<=', now()->format('Y-m-d'))
                   ->where('end_date', '>=', now()->format('Y-m-d'))
+                  ->orderBy('quantity', 'DESC')
                   ->select('id', 'preorder', 'name', 'sku', 'low_stock', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
                   ->with([
                     'media' => function ($query) {
