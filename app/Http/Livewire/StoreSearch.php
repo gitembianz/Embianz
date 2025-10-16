@@ -155,6 +155,7 @@ return Product::search($this->search)
                   }]);
               }
           ])
+          ->orderBy('quantity', 'DESC')
           ->orderBy('popularity', 'DESC')
           ->orderBy('innerid', 'ASC')
           ->paginate($this->loadAmount);
@@ -186,6 +187,7 @@ return Product::search($this->search)
                   }]);
               }
           ])
+          ->orderBy('quantity', 'DESC')
           ->orderBy('popularity', 'DESC')
           ->orderBy('innerid', 'ASC')
           ->paginate($this->loadAmount);

@@ -116,6 +116,7 @@ class GeneralSearch extends Component
                   $query->select('product_id', 'value', 'pricelist_id');
               }
           ])
+          ->orderBy('quantity', 'DESC')
           ->orderBy('popularity', 'DESC')
           ->orderBy('innerid', 'ASC')
           ->limit(app('global_limit_searchitems'))

@@ -104,6 +104,7 @@
                 <table class="expandable-table">
                     <thead>
                         <tr>
+                          <th></th>
                             <th>
                                 <div class="table--btn">Media</div>
                             </th>
@@ -140,7 +141,8 @@
                         @endphp
                         @foreach ($medias as $index => $media)
                             <tr class="expandable-row">
-                                <td wire:click="expandRow3({{ $index }})" style="width: auto;">
+                              <td wire:click="expandRow3({{ $index }})">{{ $k +1 }}</td>
+                                <td wire:click="expandRow3({{ $index }})">
                                     @if (str_starts_with($media->getMimeType(), 'image'))
                                         <img loading="eager"
                                             src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}"
@@ -163,7 +165,7 @@
                                 <td>
                                     <div class="searchable">
                                         <input type="number" class="input__searchable"
-                                            placeholder="Media sequence ex: 1,2..." min="0" required
+                                            placeholder="ex:1,2..." min="0" required
                                             wire:model.defer="file_sequences.{{ $index }}">
                                     </div>
                                 </td>
@@ -494,7 +496,7 @@
                                 </td>
                                 <td wire:click="expandRow({{ $index }})">
                                     @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
-                                        <img loading="eager" src="/{{ $file->path . $file->name }}"
+                                        <img loading="lazy" src="/{{ $file->path . $file->name }}"
                                             alt="{{ $file->name }}" width="50">
                                     @else
                                         A problem with media

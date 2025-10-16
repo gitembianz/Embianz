@@ -20,6 +20,7 @@ return new class extends Migration
         $table->unsignedBigInteger('job_id')->nullable();
         $table->foreign('job_id')->references('id')->on('all_jobs')->onDelete('cascade');
         $table->text('error')->nullable();
+        $table->text('details')->nullable();
         $table->timestamp('started_at')->nullable();
         $table->timestamp('finished_at')->nullable();
         $table->timestamps();
@@ -51,6 +52,11 @@ return new class extends Migration
       if (!Schema::hasColumn('schedule_jobs', 'error')) {
         Schema::table('schedule_jobs', function (Blueprint $table) {
           $table->text('error')->nullable();
+        });
+      }
+      if (!Schema::hasColumn('schedule_jobs', 'details')) {
+        Schema::table('schedule_jobs', function (Blueprint $table) {
+          $table->text('details')->nullable();
         });
       }
       if (!Schema::hasColumn('schedule_jobs', 'started_at')) {
