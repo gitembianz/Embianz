@@ -307,7 +307,7 @@ class AdminController extends Controller
       "date" => $request->date,
       "status" => "draft",
       'currency' => $request->currency,
-      'quote_currency' => $request->exchange,
+      'quote_currency' => $request->quote_currency,
       'exchange_id' => $request->exchange,
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
