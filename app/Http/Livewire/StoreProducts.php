@@ -161,8 +161,9 @@ class StoreProducts extends Component
     }
 
     return $query
-    ->orderBy('quantity', 'DESC')->orderBy('popularity', 'DESC')
-      ->orderBy('innerid', 'ASC')->paginate($this->loadAmount);
+      ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
+      ->orderBy('innerid', 'ASC')
+      ->paginate($this->loadAmount);
   }
 
   // filters fro cache
