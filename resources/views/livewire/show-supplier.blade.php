@@ -140,6 +140,7 @@
                     <span class="disabled">{{ $supplier->currency }}</span>
                 @else
                     <select wire:model.defer="record.currency">
+                      <option value="">-- Select Currency --</option>
                         @foreach ($currencies as $currency)
                             <option value="{{ $currency->name }}">{{ $currency->name }}</option>
                         @endforeach
@@ -153,6 +154,8 @@
                     <span class="disabled">{{ $supplier->quote_currency }}</span>
                 @else
                     <select wire:model.defer="record.quote_currency">
+                      <option value="">-- Select Quote Currency --</option>
+
                         @foreach ($currencies as $currency)
                             <option value="{{ $currency->name }}">{{ $currency->name }}</option>
                         @endforeach

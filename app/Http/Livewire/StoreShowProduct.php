@@ -49,14 +49,14 @@ class StoreShowProduct extends Component
     $this->rating = $this->product->reviews->avg('score') ?? 0;
     $this->reviews45 = $this->product->reviews->whereIn('score', [4, 5])->count() ?? 0;
     $this->avrage = round(($this->reviews45 / $this->product->reviews->count()) * 100);
-if( $this->product->reviews->count() > 0){
-    $this->rating5 = $this->product->reviews->where('score', 5)->count() ??0;
-    $this->rating4 = $this->product->reviews->where('score', 4)->count() ??0;
-    $this->rating3 = $this->product->reviews->where('score', 3)->count() ??0;
-    $this->rating2 = $this->product->reviews->where('score', 2)->count() ??0;
-    $this->rating1 = $this->product->reviews->where('score', 1)->count() ??0;
+    if ($this->product->reviews->count() > 0) {
+      $this->rating5 = $this->product->reviews->where('score', 5)->count() ?? 0;
+      $this->rating4 = $this->product->reviews->where('score', 4)->count() ?? 0;
+      $this->rating3 = $this->product->reviews->where('score', 3)->count() ?? 0;
+      $this->rating2 = $this->product->reviews->where('score', 2)->count() ?? 0;
+      $this->rating1 = $this->product->reviews->where('score', 1)->count() ?? 0;
+    }
   }
-}
 
   public function getLastProductProperty()
   {
@@ -140,7 +140,8 @@ if( $this->product->reviews->count() > 0){
                 $query->where('active', 1)
                   ->where('start_date', '<=', now()->format('Y-m-d'))
                   ->where('end_date', '>=', now()->format('Y-m-d'))
-                  ->orderBy('quantity', 'DESC')
+                  ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
+                  ->orderBy('innerid', 'ASC')
                   ->select('id', 'preorder', 'name', 'sku', 'low_stock', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
                   ->with([
                     'media' => function ($query) {

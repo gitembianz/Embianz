@@ -61,8 +61,7 @@ class StoreMain extends Component
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=', now()->format('Y-m-d'))
         ->where('end_date', '>=', now()->format('Y-m-d'))
-        ->orderBy('quantity', 'DESC')
-        ->orderBy('popularity', 'DESC')
+        ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
         ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
@@ -106,8 +105,7 @@ class StoreMain extends Component
         ->where('start_date', '<=',  now()->format('Y-m-d'))
         ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->where('is_new', true)
-        ->orderBy('quantity', 'DESC')
-        ->orderBy('popularity', 'DESC')
+        ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
         ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
