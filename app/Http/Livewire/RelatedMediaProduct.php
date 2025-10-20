@@ -38,7 +38,6 @@ class RelatedMediaProduct extends Component
   public $file_sequences = [];
   public $file_resize = [];
   public $file_link = [];
-  public $file_name = [];
   public $editedMediaIndex = null;
   public $i;
   public $j;
@@ -206,13 +205,11 @@ class RelatedMediaProduct extends Component
     $this->externalmedia = false;
     $this->file_sequences = [];
     $this->file_link = [];
-    $this->file_name = [];
   }
   public function clear($i)
   {
     array_splice($this->file_sequences, $i, 1);
     array_splice($this->file_link, $i, 1);
-    array_splice($this->file_name, $i, 1);
     array_splice($this->file_resize, $i, 1);
     $this->row--;
 
@@ -223,68 +220,67 @@ class RelatedMediaProduct extends Component
   public function saveexternal()
   {
     $productType = class_basename(get_class($this->product));
-    //check for directory
     $filespath = 'media/' . $productType . '/';
+    $path = $filespath . $this->product->id . "/";
+
+
     if (!File::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
     if (!File::exists($filespath . $this->product->id)) {
       File::makeDirectory($filespath . $this->product->id, 0755, true);
     }
-    $path = $filespath . $this->product->id . "/";
+
 
     for ($i = 0; $i <= $this->row; $i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
-        'file_link.*' => 'required|url',
-        'file_name.*' => 'required'
+        'file_link.*' => 'required|url'
       ]);
-      $urlComponents = parse_url($this->file_link[$i]);
 
-      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
-      $this->file_link[$i] = $urlWithoutParams;
+      $mediaLink = strtok($this->file_link[$i], '?');
+      $mediaLink = preg_replace('/(_\d+x\d+)?(\.\w+)$/', '$2', $mediaLink);
+
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-      $fileExtension = strtolower(pathinfo($this->file_link[$i], PATHINFO_EXTENSION));
+      $fileExtension = strtolower(pathinfo($mediaLink, PATHINFO_EXTENSION));
 
       if (!in_array($fileExtension, $allowedExtensions)) {
-        continue;
+        return;
       }
-      $fileContent = file_get_contents($this->file_link[$i]);
+      $fileContent = file_get_contents($mediaLink);
       if ($fileContent == false) {
-        continue;
+        return;
       }
       $imageInfo = getimagesizefromstring($fileContent);
-      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') === 'true') {
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
-        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '.' . $fileExtension;
-        if (file_exists($path . $name)) {
-          $this->j = 1;
-          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension)) {
-            $this->j++;
+
+        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-');
+
+
+        if (file_exists($path . $name . '.' . $fileExtension)) {
+          $j = 1;
+          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
+            $j++;
           }
-          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension;
+          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
+        Storage::disk('media')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '.' . $fileExtension;
+        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '.' . $fileExtension;
         if (file_exists($path . $name)) {
-          $this->j = 1;
-          while (file_exists($path . strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension)) {
-            $this->j++;
+          $j = 1;
+          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
+            $j++;
           }
-          $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$i])) . '(' . $this->j . ').' . $fileExtension;
+          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
+        Storage::disk('media')->put($path . $name, $fileContent);
       }
-      $isoriginal = $this->product->media()->where('type', 'original')->where('sequence', '1')->first();
-      if ($this->file_sequences[$i] == '1' && $isoriginal) {
-        $isoriginal->delete();
-      }
-
 
       $media = new Media();
       $media->name = $name;
@@ -293,7 +289,7 @@ class RelatedMediaProduct extends Component
       $media->height =  $imageInfo[1];
       $media->size = strlen($fileContent);
       $media->type = 'original';
-      $media->sequence = $this->file_sequences[$i];
+      $media->sequence = 1;
       $media->path = $path;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
@@ -304,89 +300,24 @@ class RelatedMediaProduct extends Component
       $filePath = $path . $name;
       $file = Storage::disk('public_upload')->get($filePath);
 
-      // Set the file content
-      if ($this->file_resize[$i]) {
-        //Resize system
-        //Min image -Search
-        if ($this->file_sequences[$i] == '1') {
-
-          $ismin = $this->product->media()->where('type', 'min')->first();
-
-          if (!$ismin) {
-            $this->resizeImage(
-              $file,
-              $path,
-              70,
-              'min',
-              $name,
-              $fileExtension,
-              true,
-              $this->file_sequences[$i]
-            );
-          } else {
-            $oldPath = $ismin->path . $ismin->name;
-            if (File::exists($oldPath)) {
-              File::delete($oldPath);
+      // Handle resized versions
+      if (!empty($this->file_resize[$this->i])) {
+        if ($this->file_sequences[$this->i] == '1') {
+          foreach (['min' => 70, 'main' => 300, 'full' => 640] as $typeKey => $resize) {
+            $existing = $this->product->media()->where('type', $typeKey)->first();
+            if ($existing) {
+              $oldPath = $existing->path . $existing->name;
+              if (Storage::disk('media')->exists($oldPath)) {
+                Storage::disk('media')->delete($oldPath);
+              }
+              $existing->delete();
             }
-
-            $resizedImage = Image::make($file)
-              ->resize(70, 70, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-              });
-
-            $newPath = $ismin->path . "resized70_" . $name;
-            $resizedImage->encode('webp')->save($newPath);
-            $ismin->path = $ismin->path;
-            $ismin->name = "resized70_" . $name;
-            $ismin->sequence = $this->file_sequences[$i];
-            $ismin->extension = $fileExtension;
-            $ismin->width = $resizedImage->width();
-            $ismin->height = $resizedImage->height();
-            $ismin->size = File::size($newPath);
-            $ismin->lastmodifiedby = Auth::user()->name;
-            $ismin->save();
+            $this->resizeImage($file, $path, $resize, $typeKey, $name, $fileExtension, false, $this->file_sequences[$this->i]);
           }
-
-          $ismaim = $this->product->media()->where('type', 'main')->first();
-          if (!$ismaim) {
-            $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, $this->file_sequences[$i]);
-          } else {
-            $oldPath = $ismaim->path . $ismaim->name;
-            if (File::exists($oldPath)) {
-              File::delete($oldPath);
-            }
-
-            $resizedImage = Image::make($file)
-              ->resize(300, 300, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-              });
-
-            $newPath = $ismaim->path . "resized300_" . $name;
-            $resizedImage->encode('webp')->save($newPath);
-            $ismaim->path = $ismaim->path;
-            $ismaim->name = "resized300_" . $name;
-            $ismaim->sequence = $this->file_sequences[$i];
-            $ismaim->extension = $fileExtension;
-            $ismaim->width = $resizedImage->width();
-            $ismaim->height = $resizedImage->height();
-            $ismaim->size = File::size($newPath);
-            $ismaim->lastmodifiedby = Auth::user()->name;
-            $ismaim->save();
-          }
+        } else {
+          $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, false, $this->file_sequences[$this->i]);
         }
-
-        $isfull = $this->product->media()->where(
-          'type',
-          'full'
-        )->where('sequence', '1')->first();
-        if ($this->file_sequences[$i] == '1' && $isfull) {
-          $isfull->delete();
-        }
-        $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, $this->file_sequences[$i]);
       }
-
 
       session()->flash('notification', [
         'message' => 'Record related successfully!',
@@ -398,82 +329,86 @@ class RelatedMediaProduct extends Component
     $this->externalmedia = false;
     $this->file_sequences = [];
     $this->file_link = [];
-    $this->file_name = [];
     $this->chose = false;
     $this->mount($this->product);
   }
 
   public function save()
-{
+  {
     $productType = class_basename(get_class($this->product));
     $path = 'media/' . $productType . '/' . $this->product->id . '/';
+    if (!File::exists($path)) {
+      File::makeDirectory($path, 0755, true);
+    }
+    if (!File::exists($path . $this->product->id)) {
+      File::makeDirectory($path . $this->product->id, 0755, true);
+    }
 
     $this->i = 0;
 
     foreach ($this->medias as $file) {
-        $media = new Media();
 
-        $type = (app()->has('global_auto_webp') && app('global_auto_webp') == 'true')
-            ? 'webp'
-            : $file->getClientOriginalExtension();
+      $type = (app()->has('global_auto_webp') && app('global_auto_webp') == 'true')
+        ? 'webp'
+        : $file->getClientOriginalExtension();
 
-        $image = Image::make($file);
-        $width = $image->width();
-        $height = $image->height();
+      $image = Image::make($file);
+      $width = $image->width();
+      $height = $image->height();
 
-        $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-');
-        $fileName = $nameBase . '.' . $type;
+      $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-');
+      $fileName = $nameBase . '.' . $type;
 
-        $counter = 1;
-        while (Storage::disk('media')->exists($path . $fileName)) {
-            $fileName = "{$nameBase}({$counter}).{$type}";
-            $counter++;
+      $counter = 1;
+      while (Storage::disk('media')->exists($path . $fileName)) {
+        $fileName = "{$nameBase}({$counter}).{$type}";
+        $counter++;
+      }
+
+      $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', '1')->first();
+      if ($this->file_sequences[$this->i] == '1' && $isOriginal) {
+        $oldFile = $isOriginal->path . $isOriginal->name;
+        if (Storage::disk('media')->exists($oldFile)) {
+          Storage::disk('media')->delete($oldFile);
         }
+        $isOriginal->delete();
+      }
 
-        $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', '1')->first();
-        if ($this->file_sequences[$this->i] == '1' && $isOriginal) {
-            $oldFile = $isOriginal->path . $isOriginal->name;
-            if (Storage::disk('media')->exists($oldFile)) {
-                Storage::disk('media')->delete($oldFile);
+      $file->storeAs($path, $fileName, 'media');
+      $media = new Media();
+      $media->path = $path;
+      $media->name = $fileName;
+      $media->sequence = $this->file_sequences[$this->i];
+      $media->type = 'original';
+      $media->extension = $type;
+      $media->width = $width;
+      $media->height = $height;
+      $media->size = $file->getSize();
+      $media->createdby = Auth::user()->name;
+      $media->lastmodifiedby = Auth::user()->name;
+      $media->save();
+
+      $this->product->media()->attach($media->id);
+
+      // Handle resized versions
+      if (!empty($this->file_resize[$this->i])) {
+        if ($this->file_sequences[$this->i] == '1') {
+          foreach (['min' => 70, 'main' => 300, 'full' => 640] as $typeKey => $resize) {
+            $existing = $this->product->media()->where('type', $typeKey)->first();
+            if ($existing) {
+              $oldPath = $existing->path . $existing->name;
+              if (Storage::disk('media')->exists($oldPath)) {
+                Storage::disk('media')->delete($oldPath);
+              }
+              $existing->delete();
             }
-            $isOriginal->delete();
+            $this->resizeImage($file, $path, $resize, $typeKey, $fileName, $type, false, $this->file_sequences[$this->i]);
+          }
+        } else {
+          $this->resizeImage($file, $path, 640, 'full', $fileName, $type, false, $this->file_sequences[$this->i]);
         }
-
-        $file->storeAs($path, $fileName, 'media');
-
-        $media->path = $path;
-        $media->name = $fileName;
-        $media->sequence = $this->file_sequences[$this->i];
-        $media->type = 'original';
-        $media->extension = $type;
-        $media->width = $width;
-        $media->height = $height;
-        $media->size = $file->getSize();
-        $media->createdby = Auth::user()->name;
-        $media->lastmodifiedby = Auth::user()->name;
-        $media->save();
-
-        $this->product->media()->attach($media->id);
-
-        // Handle resized versions
-        if (!empty($this->file_resize[$this->i])) {
-            if ($this->file_sequences[$this->i] == '1') {
-                foreach (['min' => 70, 'main' => 300, 'full' => 640] as $typeKey => $resize) {
-                    $existing = $this->product->media()->where('type', $typeKey)->first();
-                    if ($existing) {
-                        $oldPath = $existing->path . $existing->name;
-                        if (Storage::disk('media')->exists($oldPath)) {
-                            Storage::disk('media')->delete($oldPath);
-                        }
-                        $existing->delete();
-                    }
-                    $this->resizeImage($file, $path, $resize, $typeKey, $fileName, $type, false, $this->file_sequences[$this->i]);
-                }
-            }else{
-              $this->resizeImage($file, $path, 640, 'full', $fileName, $type, false, $this->file_sequences[$this->i]);
-            }
-        }
-        $this->i++;
+      }
+      $this->i++;
     }
 
     // Reset state
@@ -484,19 +419,19 @@ class RelatedMediaProduct extends Component
     $this->chose = false;
 
     session()->flash('notification', [
-        'message' => 'Record edited successfully!',
-        'type' => 'success',
-        'title' => 'Success'
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
     ]);
-}
+  }
 
   private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence)
-{
+  {
     $resizedImage = Image::make($external ? $file : $file->getRealPath())
-        ->resize($size, $size, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+      ->resize($size, $size, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+      });
 
     $resizedName = "resized{$size}_" . $name;
     $resizedImage->encode('webp');
@@ -517,7 +452,7 @@ class RelatedMediaProduct extends Component
     $resizedMedia->save();
 
     $this->product->media()->attach($resizedMedia->id);
-}
+  }
 
   public function updatingMedias($value)
   {

@@ -104,7 +104,7 @@
                 <table class="expandable-table">
                     <thead>
                         <tr>
-                          <th></th>
+                            <th></th>
                             <th>
                                 <div class="table--btn">Media</div>
                             </th>
@@ -141,7 +141,7 @@
                         @endphp
                         @foreach ($medias as $index => $media)
                             <tr class="expandable-row">
-                              <td wire:click="expandRow3({{ $index }})">{{ $k +1 }}</td>
+                                <td wire:click="expandRow3({{ $index }})">{{ $k + 1 }}</td>
                                 <td wire:click="expandRow3({{ $index }})">
                                     @if (str_starts_with($media->getMimeType(), 'image'))
                                         <img loading="eager"
@@ -164,8 +164,8 @@
                                 </td>
                                 <td>
                                     <div class="searchable">
-                                        <input type="number" class="input__searchable"
-                                            placeholder="ex:1,2..." min="0" required
+                                        <input type="number" class="input__searchable" placeholder="ex:1,2..."
+                                            min="0" required
                                             wire:model.defer="file_sequences.{{ $index }}">
                                     </div>
                                 </td>
@@ -261,19 +261,19 @@
                 <table class="expandable-table">
                     <thead>
                         <tr>
-                            <th style="width: auto !important;">
-                                <div class="table--btn">Name</div>
+                            <th style="width: 3% !important">
+                                <div class="table--btn" > </div>
                             </th>
-                            <th>
-                                <div class="table--btn">Sequence</div>
+                            <th style="width: 10% !important">
+                                <div class="table--btn" >Sequence</div>
                             </th>
-                            <th class="hidden">
+                            <th class="hidden" class="hidden" style="width: 74% !important">
                                 <div class="table--btn">Link</div>
                             </th>
-                            <th class="hidden">
+                            <th class="hidden" style="width: 10% !important">
                                 <div class="table--btn">Automatic resize</div>
                             </th>
-                            <th>
+                            <th style="width: 3% !important">
                                 <button class="button button--secondary button--sm" style="opacity: 0">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
@@ -291,12 +291,8 @@
                         @endphp
                         @for ($i = 0; $i <= $row; $i++)
                             <tr class="expandable-row">
-                                <td style="width: auto !important;" wire:click="expandRow2({{ $i }})"
-                                    style="width: auto;">
-                                    <div class="searchable">
-                                        <input required placeholder="Media name" type="text"
-                                            class="input__searchable" wire:model="file_name.{{ $i }}">
-                                    </div>
+                                <td>
+                                    {{ $i + 1 }}
                                 </td>
                                 <td wire:click="expandRow2({{ $i }})">
                                     <div class="searchable">
@@ -360,8 +356,8 @@
                                         <div class="checkbox--primary">
                                             <input type="checkbox" id="checkbox4{{ $i }}"
                                                 wire:model.defer="file_resize.{{ $i }}" />
-                                            <lable for="checkbox4{{ $i }}">
-                                                </lab>
+                                            <label for="checkbox4{{ $i }}">
+                                                </label>
                                         </div>
                                         </p>
                                     </div>
@@ -374,7 +370,6 @@
                     </tbody>
                 </table>
             </div>
-
         </form>
     </aside>
 

@@ -700,6 +700,7 @@ class Productstable extends Component
         File::makeDirectory($filespath . $product->id, 0755, true);
       }
       $path = $filespath . $product->id . "/";
+
       $mediaLink = strtok($mediaLink, '?');
       $mediaLink = preg_replace('/(_\d+x\d+)?(\.\w+)$/', '$2', $mediaLink);
 
