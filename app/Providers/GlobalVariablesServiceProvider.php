@@ -173,11 +173,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     ) {
       $version = request()->cookie('countries_version');
 
-      if (!$version) {
-        $version = now()->format('YmdHis');
-        cookie()->queue(cookie()->forever('countries_version', $version));
-      }
-
       $activeCountries = Cache::rememberForever('active_countries', function () {
         $countries = Country::where('status', true)
           ->select(['id', 'name', 'iso_code'])
@@ -242,7 +237,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       });
 
       $this->app->instance('active_countries', $activeCountries);
-      $this->app->instance('countries_version', $version);
     }
   }
 
