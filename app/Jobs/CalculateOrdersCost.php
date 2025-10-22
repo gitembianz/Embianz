@@ -4,7 +4,10 @@ namespace App\Jobs;
 
 use App\Models\Order;
 use App\Models\AllJob;
+use App\Models\Exchange;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
+use App\Models\Order_Supplier_Item;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,6 +31,77 @@ class CalculateOrdersCost implements ShouldQueue
   public function handle(): void
   {
     AllJob::where('id', $this->allJobId)->update(['status' => 'processing']);
+
+    try{
+      Order_Supplier_Item::wherehas('order_supplier', function ($query) {
+        $query->where('status', 'closed');
+      })->chunk(500, function ($entries) {
+        foreach ($entries as $item) {
+
+
+        $cartPrices = $item->product->carts_item()->pluck('price');
+        if ($cartPrices->isNotEmpty()) {
+          $averagePrice = $cartPrices->avg();
+        } else {
+          $averagePrice = optional($item->product->product_prices->first())->value;
+        }
+        $cost = $item->price;
+        $supplierCurrency = $item->order->currency ?? null;
+        $productCurrency = optional($item->product->product_prices->first())->pricelist->currency->name ?? null;
+
+        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
+            $q->where('name', $supplierCurrency);
+          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
+            $q->where('name', $productCurrency);
+          })->latest()->first();
+
+          if (!$exchange) {
+            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
+              $q->where('name', $productCurrency);
+            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
+              $q->where('name', $supplierCurrency);
+            })->latest()->first();
+
+            if ($exchange) {
+              $cost /= $exchange->value;
+            }
+          } else {
+            $cost *= $exchange->value;
+          }
+        }
+
+        if (!$item->product->costs->count()) {
+          DB::table('product_costs')->updateOrInsert(
+            ['product_id' => $item->product->id],
+            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+          );
+        } else {
+          $oldcost = $item->product->costs()->latest()->first()->cost;
+          if ($oldcost != $item->price) {
+            $averageCost = ($oldcost + $cost) / 2;
+            DB::table('product_costs')->insert([
+              'product_id' => $item->product->id,
+              'price' => $averagePrice,
+              'cost' => $averageCost,
+              'date' => now(),
+              'created_by' => auth()->user()->name,
+              'last_modified_by' => auth()->user()->name,
+              'created_at' => now(),
+              'updated_at' => now()
+            ]);
+          }
+        }
+      }
+      });
+    } catch (\Throwable $e) {
+      AllJob::where('id', $this->allJobId)->update([
+        'status' => 'failed',
+        'error' => $e->getMessage(),
+      ]);
+
+      throw $e;
+    }
 
     try {
 

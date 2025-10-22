@@ -270,6 +270,9 @@
                         data-step="@if (app()->has('label_order_step_3')) {!! app('label_order_step_3') !!} @endif">3
                     </div>
                 </div>
+                @php
+                    $version = app()->has('countries_version') ? app('countries_version') : 1;
+                @endphp
                 <!-------------------- Step First ---------------------->
                 @if ($step === 1)
                     <div class="section__header">
@@ -279,9 +282,7 @@
                             @endif
                         </h2>
                     </div>
-                    @php
-                        $version = app()->has('countries_version') ? app('countries_version') : 1;
-                    @endphp
+
                     <script>
                         document.addEventListener('alpine:init', () => {
                             const currentVersion = @js($version);
@@ -290,8 +291,14 @@
                                 localStorage.removeItem('countiesDataCache');
                                 localStorage.setItem('countiesDataVersion', currentVersion);
                             }
+                            let storedCache = {};
+                            try {
+                                storedCache = JSON.parse(localStorage.getItem('countiesDataCache') || '{}');
+                            } catch (e) {
+                                localStorage.removeItem('countiesDataCache');
+                            }
                             Alpine.store('checkout', {
-                                countiesDataCache: JSON.parse(localStorage.getItem('countiesDataCache') || '{}'),
+                                countiesDataCache: storedCache,
                                 isIdentic: @js($is_identic),
                                 individual: @js($individual),
                                 juridic: @js($juridic),
