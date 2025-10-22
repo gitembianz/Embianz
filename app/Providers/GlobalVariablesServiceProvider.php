@@ -171,7 +171,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       Schema::hasTable('counties') &&
       Schema::hasTable('cities')
     ) {
-      $version = request()->cookie('countries_version');
 
       $activeCountries = Cache::rememberForever('active_countries', function () {
         $countries = Country::where('status', true)
@@ -232,14 +231,14 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
           $final[] = $countryData;
         }
-
+        $version = now()->format('YmdHi');
+        Cache::forever('countries_version', $version);
         return $final;
       });
 
       $this->app->instance('active_countries', $activeCountries);
     }
   }
-
 
 
   private function loadGlobalCustomScripts()
