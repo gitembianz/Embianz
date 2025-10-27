@@ -286,6 +286,15 @@ Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'cr
       ['parameter' => 'pdp_reviews_section_title', 'value' => 'Reviews', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'pdp_reviews_out_of', 'value' => 'din', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'pdp_reviews_customers_recommended', 'value' => 'Clienti recomanda acest produs', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_no_reviews', 'value' => 'Acest produs nu are revi', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_description', 'value' => 'Opiniile clienților noștri — experiențe reale, rezultate autentice.', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_button', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_title', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_description', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_acronim', 'value' => 'Acronim', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_mesage', 'value' => 'Comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_mesage_placeholder', 'value' => 'Lasa un comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_modal_description', 'value' => 'Selectează stelele, introdu acronimul tău și lasă un mesaj scurt', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

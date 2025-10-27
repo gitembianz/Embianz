@@ -804,7 +804,7 @@ miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
 
 // Progress Bar Rating
 const bars = document.querySelectorAll('.progress-bar__outter-line');
-const COUNT_STARS = 12;
+const COUNT_STARS = document.getElementById('total_reviews') ? parseInt(document.getElementById('total_reviews').value) : 0;
 
 if(bars.length > 0){
   bars.forEach(el => {
@@ -814,3 +814,5 @@ if(bars.length > 0){
     el.querySelector('.progress-bar__inner-line').style.width = `${percent}%`;
   });
 }
+
+
