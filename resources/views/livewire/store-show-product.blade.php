@@ -169,7 +169,6 @@
         <!------------------------------------------------------>
     </section>
 
-
     <section class="tab container">
         <div class="tab__top">
             <button class="tab__button active" onclick="switchTab(0)">
@@ -178,7 +177,6 @@
                 @endif
             </button>
             @if ($product->product_specs->isNotEmpty())
-
                 <button class="tab__button" onclick="switchTab(1)">
                     @if (app()->has('label_pdp_details_tag'))
                         {!! app('label_pdp_details_tag') !!}
@@ -190,7 +188,6 @@
             <p class="tab__info">{!! $product->long_description !!}</p>
         </div>
         @if ($product->product_specs->isNotEmpty())
-
             <div class="tab__content">
                 <table class="tab__table">
                     <thead>
@@ -228,11 +225,6 @@
                 </table>
             </div>
         @endif
-        <!----------------- End Product details ---------------->
-        <!------------------------------------------------------>
-        <!--------------------- End Section --------------------->
-        <!------------------------------------------------------>
-        <!------------------ End Section Description ------------>
     </section>
 
     <script>
@@ -251,10 +243,220 @@
             });
         }
     </script>
-    <h2></h2>
-    {{-- Display all categories --}}
-    @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
 
+
+    <div wire:ignore class="alertorder">
+        <div class="alertorder__content">
+            <div>
+                <h2>
+                    @if (app()->has('label_pdp_add_review_title'))
+                        {!! app('label_pdp_add_review_title') !!}
+                    @endif
+                </h2>
+                <p class="subtitle">
+                    @if (app()->has('label_pdp_add_review_modal_description'))
+                        {!! app('label_pdp_add_review_modal_description') !!}
+                    @endif
+                </p>
+
+                <form wire:submit.prevent="saveReview">
+                    {{-- ⭐ Rating --}}
+                    <div class="stars" wire:ignore>
+                        @for ($i = 1; $i <= 5; $i++)
+                            <input type="radio" id="rating-{{ $i }}" name="addrating"
+                                value="{{ $i }}" wire:model.live="addrating" />
+                            <label for="rating-{{ $i }}" title="{{ $i }} stars">★</label>
+                        @endfor
+                    </div>
+                    @error('addrating')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+
+                    {{-- 🧍 Acronym --}}
+                    <div wire:ignore class="checkout__item checkout__item--required">
+                        <input type="text" wire:model.defer="acronym"
+                            placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" required
+                            id="acroniminput">
+                        <span></span>
+                        <label for="acroniminput">
+                            @if (app()->has('label_pdp_add_review_acronim'))
+                                {!! app('label_pdp_add_review_acronim') !!}
+                            @endif
+                        </label>
+                    </div>
+
+                    {{-- 💬 Message --}}
+                    <div class="checkout__item checkout__item--required" id="message">
+                        <textarea style="height: 150px;padding: 10px 20px;" name="description" rows="15" maxlength="5000" required
+                            placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+                        <label for="00N9N000000QGVj">Mesaj</label>
+                        <span></span>
+                    </div>
+
+                    {{-- ✅ Submit --}}
+                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                        @if (app()->has('label_add_review_button'))
+                            {!! app('label_add_review_button') !!}
+                        @endif
+                    </button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        /* .review-card {
+            max-width: 500px;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+        } */
+
+        /* .review-card h2 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        } */
+
+        /* .review-card .subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 16px;
+        } */
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .input-row label {
+            display: block;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .input-row input,
+        .input-row textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .input-row input:focus,
+        .input-row textarea:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+            outline: none;
+        }
+
+        .stars {
+            display: flex;
+            gap: 6px;
+        }
+
+        .stars input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .stars label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #d1d5db;
+            transition: color .2s ease;
+        }
+
+        .stars label:hover,
+        .stars label:hover~label {
+            color: #fbbf24;
+        }
+
+        .stars input:checked~label {
+            color: #f59e0b;
+        }
+
+        .btn {
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #f59e0b, #d97706);
+            border: 0;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error {
+            font-size: 12px;
+            color: #b91c1c;
+        }
+
+        .preview {
+            margin-top: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+            padding: 12px;
+        }
+
+        .stars-preview {
+            color: #f59e0b;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .preview-name {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .preview-msg {
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .muted {
+            color: #9ca3af;
+        }
+    </style>
+
+    {{-- <script>
+  // addreview form toggle
+  window.addEventListener('review__modal', event => {
+    console.log('review modal event triggered');
+   const alertorder = document.querySelector(".alertorder");
+   const body = document.querySelector("body");
+   const close = document.querySelector(".alertorder__close");
+   document.querySelector(".alertorder__descr").innerText = event.detail.message;
+   alertorder.classList.remove("out");
+   alertorder.classList.add("active");
+   body.style.overflow = "hidden";
+   close.addEventListener("click", () => {
+    alertorder.classList.add("out");
+    alertorder.classList.remove("active");
+    body.style.overflow = "auto";
+   });
+  });
+</script> --}}
+
+
+    <h2></h2>
+    @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
         <section class="container">
             <div class="related__cat">
                 @if (app()->has('label_pdp_category_tag'))
@@ -271,14 +473,10 @@
                 @endif
             </div>
         </section>
-
     @endif
-    <!---------------------------------------------------------->
-    <!------------------- Section Description ------------------>
     @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
         <section>
-            <div class="section__header
-      container">
+            <div class="section__header container">
                 <h2 class="section__title">
                     @if (app()->has('label_pdp_relatedproducts_slider_title'))
                         {!! app('label_pdp_relatedproducts_slider_title') !!}
@@ -291,11 +489,7 @@
                 </p>
             </div>
         </section>
-        <!----------------- End Section Description ---------------->
-        <!---------------------------------------------------------->
-        <!---------------------- Slider Cards ---------------------->
         <section id="relatedSlider" class="related__slider container section__margin">
-            {{-- <div class="related__navigation"> --}}
             <button class="related__btn prev" aria-label="Previous related slider">
                 <svg>
                     <polyline points="15 18 9 12 15 6"></polyline>
@@ -306,10 +500,9 @@
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </button>
-            {{--
-    </div> --}}
+
             <div class="related__wrapper">
-                @foreach ($product->related_product as $product)
+                @foreach ($product->related_product as $index => $product)
                     @if (
                         $product->product &&
                             $product->product->active == true &&
@@ -318,7 +511,6 @@
                         <div class="card product" style="width: 100%;">
                             <a style="width: 100%"
                                 href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
-
                                 @if ($product->product->media->first() != null)
                                     <img loading="eager" width="300" height="300" class="card-image"
                                         src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
@@ -328,23 +520,29 @@
                                         src="/images/store/default/default300.webp" alt="something wrong">
                                 @endif
                             </a>
-                            @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key($product->product->id))
-                            <?php if ($product->product->product_prices->count() != 0) {
-                                $price = number_format($product->product->product_prices->first()->value, 2, $decimal, $mill);
-                                $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
-                            } else {
-                                $price = null;
-                                $discount = false;
-                            }
-                            ?>
+                            @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key('relw' . $index))
+                            @php
+                                if ($product->product->product_prices->count() != 0) {
+                                    $price = number_format(
+                                        $product->product->product_prices->first()->value,
+                                        2,
+                                        $decimal,
+                                        $mill,
+                                    );
+                                    $discount =
+                                        $product->product->product_prices->first()->discount != 0 ? true : false;
+                                } else {
+                                    $price = null;
+                                    $discount = false;
+                                }
+                            @endphp
+
                             @if ($price)
                                 @if (
                                     ($product->product->quantity < app('global_low_stock') && $product->product->quantity > 0) ||
                                         $product->product->low_stock)
                                     <p
-                                        class="card-status @if ($discount) save-secondary
-          @else
-             save @endif ">
+                                        class="card-status @if ($discount) save-secondary @else save @endif ">
                                         @if (app()->has('label_product_status_stock'))
                                             {!! app('label_product_status_stock') !!}
                                         @endif
@@ -367,7 +565,6 @@
                                         </p>
                                     @endif
                                 @endif
-                                {{-- tagul de discount --}}
                             @else
                                 <p class="card-status save">
                                     @if (app()->has('label_product_status_coming_soon'))
@@ -377,7 +574,8 @@
                             @endif
                             <div class="card-info">
                                 <div class="card-text">
-                                    <h2><a style="text-decoration: none; font-weight:500"
+                                    <h2>
+                                        <a style="text-decoration: none; font-weight:500"
                                             href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->name }}</a>
                                     </h2>
                                     @php
@@ -427,7 +625,7 @@
                                     </p>
                                 </div>
                                 @if ($price)
-                                    @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
+                                    @livewire('add-to-cart-button', ['product' => $product->product], key('rel' . $index))
                                 @else
                                     <button class="card-button-disabled" aria-label="Disabled Add to cart button">
                                         @if (app()->has('label_add_to_cart_button_indisponibil'))
@@ -446,7 +644,8 @@
                                 </span>
                             </div>
                             <div style="display: none" class="json-ld-data"
-                                data-product-json='@json($product->product)'></div>
+                                data-product-json='@json($product->product)'>
+                            </div>
                         </div>
                     @endif
                 @endforeach
@@ -456,8 +655,7 @@
 
     @if ($last_visited_products->count() > 0)
         <section>
-            <div class="section__header
-      container">
+            <div class="section__header container">
                 <h2 class="section__title">
                     @if (app()->has('label_pdp_lastviewproducts_slider_title'))
                         {!! app('label_pdp_lastviewproducts_slider_title') !!}
@@ -485,7 +683,7 @@
 
             </div>
             <div class="related__wrapperlast">
-                @foreach ($last_visited_products as $product)
+                @foreach ($last_visited_products as $key => $product)
                     <div class="card product" style="width: 100%;">
                         <a style="width: 100%"
                             href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
@@ -499,7 +697,7 @@
                                     src="/images/store/default/default300.webp" alt="something wrong">
                             @endif
                         </a>
-                        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $product->id))
+                        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $key))
                         <?php if ($product->product_prices->count() != 0) {
                             $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -596,7 +794,7 @@
                                 </p>
                             </div>
                             @if ($price)
-                                @livewire('add-to-cart-button', ['product' => $product], key('last' . $product->id))
+                                @livewire('add-to-cart-button', ['product' => $product], key('adlast' . $key))
                             @else
                                 <button class="card-button-disabled" aria-label="Disabled Add to cart button">
                                     @if (app()->has('label_add_to_cart_button_indisponibil'))
@@ -631,9 +829,16 @@
                     @endif
                 </h2>
             </div>
+            @if ($product->reviews)
+                <input type="hidden" name="total_reviews" id="total_reviews"
+                    value="{{ $product->reviews->count() }}">
+                <p class="section__text" style="padding: 15px">
+                    @if (app()->has('label_pdp_reviews_description'))
+                        {!! app('label_pdp_reviews_description') !!}
+                    @endif
+                </p>
+                <div class="container grid-product-reviews">
 
-            <div class="container grid-product-reviews">
-                <div class="product-reviews">
                     <div class="product-reviews__info reviews-info">
                         <h2 class="product__title">{{ $product->reviews->count() }} reviews</h2>
 
@@ -663,6 +868,7 @@
                             </span>
                         @endif
                     </div>
+
                     <div class="product-reviews__bar reviews-bar">
                         <ul class="list-reset reviews-bar__list">
                             <li class="reviews-bar__item">
@@ -714,13 +920,211 @@
                             </li>
                         </ul>
                     </div>
+
+                    <div class="product-reviews__info">
+                        <h2 class="product__title">
+                            @if (app()->has('label_pdp_add_review_title'))
+                                {!! app('label_pdp_add_review_title') !!}
+                            @endif
+                        </h2>
+                        <p class="subtitle">
+                            @if (app()->has('label_pdp_add_review_description'))
+                                {!! app('label_pdp_add_review_description') !!}
+                            @endif
+                        </p>
+                        <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                            @if (app()->has('label_add_review_button'))
+                                {!! app('label_add_review_button') !!}
+                            @endif
+                        </button>
+                    </div>
+
+
+                    {{-- <div class="review-card">
+                        <h2>Leave a Review</h2>
+                        <p class="subtitle">Select stars, enter your acronym, and leave a short message.</p>
+
+                        <form wire:submit.prevent="saveReview">
+                            <div class="stars" wire:ignore>
+                                @for ($i = 5; $i >= 1; $i--)
+                                    <input type="radio" id="rating-{{ $i }}" name="addrating"
+                                        value="{{ $i }}" wire:model.live="addrating" />
+                                    <label for="rating-{{ $i }}"
+                                        title="{{ $i }} stars">★</label>
+                                @endfor
+                            </div>
+                            @error('addrating')
+                                <span class="error">{{ $message }}</span>
+                            @enderror
+
+                            <div class="input-row">
+                                <label>Acronym</label>
+                                <input type="text" maxlength="5" placeholder="e.g. J.D."
+                                    wire:model.live="acronym" style="text-transform: uppercase;">
+                                @error('acronym')
+                                    <span class="error">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="input-row">
+                                <label>Message</label>
+                                <textarea rows="3" placeholder="Write your message..." wire:model.live="message"></textarea>
+                                @error('message')
+                                    <span class="error">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <button type="submit" class="btn" wire:loading.attr="disabled">
+                                <span wire:loading.remove>Save Review</span>
+                                <span wire:loading>Saving...</span>
+                            </button>
+                        </form>
+                    </div> --}}
+
+                    {{-- <style>
+                        .review-card {
+                            max-width: 500px;
+                            background: #f8fafc;
+                            border-radius: 12px;
+                            padding: 20px;
+                            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+                        }
+
+                        .review-card h2 {
+                            margin: 0 0 6px;
+                            font-size: 20px;
+                        }
+
+                        .review-card .subtitle {
+                            color: #6b7280;
+                            font-size: 14px;
+                            margin-bottom: 16px;
+                        }
+
+                        form {
+                            display: grid;
+                            gap: 14px;
+                        }
+
+                        .input-row label {
+                            display: block;
+                            font-size: 13px;
+                            color: #6b7280;
+                            margin-bottom: 4px;
+                        }
+
+                        .input-row input,
+                        .input-row textarea {
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 8px;
+                            border: 1px solid #e5e7eb;
+                            font-size: 14px;
+                            box-sizing: border-box;
+                            background: #fff;
+                        }
+
+                        .input-row input:focus,
+                        .input-row textarea:focus {
+                            border-color: #f59e0b;
+                            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+                            outline: none;
+                        }
+
+                        .stars {
+                            direction: rtl;
+                            display: flex;
+                            gap: 6px;
+                            justify-content: flex-start;
+                        }
+
+                        .stars input {
+                            position: absolute;
+                            opacity: 0;
+                            pointer-events: none;
+                        }
+
+                        .stars label {
+                            cursor: pointer;
+                            font-size: 30px;
+                            color: #d1d5db;
+                            transition: color .2s ease;
+                        }
+
+                        .stars label:hover,
+                        .stars label:hover~label {
+                            color: #fbbf24;
+                        }
+
+                        .stars input:checked~label {
+                            color: #f59e0b;
+                        }
+
+                        .btn {
+                            padding: 10px 14px;
+                            background: linear-gradient(180deg, #f59e0b, #d97706);
+                            border: 0;
+                            border-radius: 10px;
+                            color: #fff;
+                            font-weight: 600;
+                            cursor: pointer;
+                        }
+
+                        .btn:disabled {
+                            opacity: 0.6;
+                            cursor: not-allowed;
+                        }
+
+                        .error {
+                            font-size: 12px;
+                            color: #b91c1c;
+                        }
+
+                        .preview {
+                            margin-top: 18px;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 10px;
+                            background: #fff;
+                            padding: 12px;
+                        }
+
+                        .stars-preview {
+                            color: #f59e0b;
+                            font-size: 20px;
+                            margin-bottom: 6px;
+                        }
+
+                        .preview-name {
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 4px;
+                        }
+
+                        .preview-msg {
+                            color: #374151;
+                            font-size: 14px;
+                        }
+
+                        .muted {
+                            color: #9ca3af;
+                        }
+                    </style> --}}
+
                 </div>
-            </div>
+            @else
+                <div class="container">
+                    <p class="section__text">
+                        @if (app()->has('label_pdp_reviews_no_reviews'))
+                            {!! app('label_pdp_reviews_no_reviews') !!}
+                        @endif
+                    </p>
+            @endif
         </section>
     @endif
 
     <!---------------------- Support Center -------------------->
     <x-support />
+
     <script>
         document.addEventListener("livewire:load", function() {
             injectJsonLd();

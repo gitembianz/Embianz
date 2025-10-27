@@ -24,6 +24,10 @@ class StoreShowProduct extends Component
   public $rating2;
   public $rating1;
 
+  public $addrating = null;
+  public $acronym = '';
+  public $message = '';
+
 
   public function render()
   {
@@ -164,5 +168,9 @@ class StoreShowProduct extends Component
         ->where('id', $this->productId)
         ->first();
     }
+  }
+  public function addreview()
+  {
+      $this->emit('review__modal');
   }
 }
