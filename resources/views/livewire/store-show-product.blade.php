@@ -245,24 +245,24 @@
     </script>
 
 
-    <div wire:ignore class="alertorder">
+    <div class="alertorder active" id="review__modal">
         <div class="alertorder__content">
             <div>
-                <h2>
+                <h2 style="text-align: center">
                     @if (app()->has('label_pdp_add_review_title'))
                         {!! app('label_pdp_add_review_title') !!}
                     @endif
                 </h2>
-                <p class="subtitle">
+                <p class="subtitle" style="margin-top: 10px; text-align:center">
                     @if (app()->has('label_pdp_add_review_modal_description'))
                         {!! app('label_pdp_add_review_modal_description') !!}
                     @endif
                 </p>
 
                 <form wire:submit.prevent="saveReview">
-                    {{-- ⭐ Rating --}}
+                    {{-- Rating --}}
                     <div class="stars" wire:ignore>
-                        @for ($i = 1; $i <= 5; $i++)
+                        @for ($i = 5; $i >= 1; $i--)
                             <input type="radio" id="rating-{{ $i }}" name="addrating"
                                 value="{{ $i }}" wire:model.live="addrating" />
                             <label for="rating-{{ $i }}" title="{{ $i }} stars">★</label>
@@ -272,12 +272,11 @@
                         <span class="error">{{ $message }}</span>
                     @enderror
 
-                    {{-- 🧍 Acronym --}}
-                    <div wire:ignore class="checkout__item checkout__item--required">
+                    {{-- Acronym --}}
+                    <div class="checkout__item checkout__item--required">
                         <input type="text" wire:model.defer="acronym"
                             placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" required
                             id="acroniminput">
-                        <span></span>
                         <label for="acroniminput">
                             @if (app()->has('label_pdp_add_review_acronim'))
                                 {!! app('label_pdp_add_review_acronim') !!}
@@ -285,23 +284,20 @@
                         </label>
                     </div>
 
-                    {{-- 💬 Message --}}
+                    {{-- Message --}}
                     <div class="checkout__item checkout__item--required" id="message">
-                        <textarea style="height: 150px;padding: 10px 20px;" name="description" rows="15" maxlength="5000" required
-                            placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
-                        <label for="00N9N000000QGVj">Mesaj</label>
-                        <span></span>
+                        <textarea wire:model.defer="message" style="height: 150px; padding: 10px 20px;" maxlength="5000" required
+                            placeholder="Spune-ne mai multe. Incepe să scrii aici..."></textarea>
+                        <label>Mesaj</label>
                     </div>
 
-                    {{-- ✅ Submit --}}
-                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                    {{-- Submit --}}
+                    <button type="submit" class="leftbar__button" style="margin-top: 10px">
                         @if (app()->has('label_add_review_button'))
                             {!! app('label_add_review_button') !!}
                         @endif
                     </button>
                 </form>
-
-
             </div>
         </div>
     </div>
@@ -309,58 +305,17 @@
 
 
     <style>
-        /* .review-card {
-            max-width: 500px;
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
-        } */
-
-        /* .review-card h2 {
-            margin: 0 0 6px;
-            font-size: 20px;
-        } */
-
-        /* .review-card .subtitle {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 16px;
-        } */
-
         form {
             display: grid;
             gap: 14px;
         }
 
-        .input-row label {
-            display: block;
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .input-row input,
-        .input-row textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            font-size: 14px;
-            box-sizing: border-box;
-            background: #fff;
-        }
-
-        .input-row input:focus,
-        .input-row textarea:focus {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
-            outline: none;
-        }
-
         .stars {
+            direction: rtl;
             display: flex;
             gap: 6px;
+            justify-content: center;
+            align-items: center;
         }
 
         .stars input {
@@ -371,7 +326,7 @@
 
         .stars label {
             cursor: pointer;
-            font-size: 30px;
+            font-size: 50px;
             color: #d1d5db;
             transition: color .2s ease;
         }
@@ -383,55 +338,6 @@
 
         .stars input:checked~label {
             color: #f59e0b;
-        }
-
-        .btn {
-            padding: 10px 14px;
-            background: linear-gradient(180deg, #f59e0b, #d97706);
-            border: 0;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .error {
-            font-size: 12px;
-            color: #b91c1c;
-        }
-
-        .preview {
-            margin-top: 18px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            background: #fff;
-            padding: 12px;
-        }
-
-        .stars-preview {
-            color: #f59e0b;
-            font-size: 20px;
-            margin-bottom: 6px;
-        }
-
-        .preview-name {
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .preview-msg {
-            color: #374151;
-            font-size: 14px;
-        }
-
-        .muted {
-            color: #9ca3af;
         }
     </style>
 
@@ -938,178 +844,6 @@
                             @endif
                         </button>
                     </div>
-
-
-                    {{-- <div class="review-card">
-                        <h2>Leave a Review</h2>
-                        <p class="subtitle">Select stars, enter your acronym, and leave a short message.</p>
-
-                        <form wire:submit.prevent="saveReview">
-                            <div class="stars" wire:ignore>
-                                @for ($i = 5; $i >= 1; $i--)
-                                    <input type="radio" id="rating-{{ $i }}" name="addrating"
-                                        value="{{ $i }}" wire:model.live="addrating" />
-                                    <label for="rating-{{ $i }}"
-                                        title="{{ $i }} stars">★</label>
-                                @endfor
-                            </div>
-                            @error('addrating')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
-
-                            <div class="input-row">
-                                <label>Acronym</label>
-                                <input type="text" maxlength="5" placeholder="e.g. J.D."
-                                    wire:model.live="acronym" style="text-transform: uppercase;">
-                                @error('acronym')
-                                    <span class="error">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="input-row">
-                                <label>Message</label>
-                                <textarea rows="3" placeholder="Write your message..." wire:model.live="message"></textarea>
-                                @error('message')
-                                    <span class="error">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <button type="submit" class="btn" wire:loading.attr="disabled">
-                                <span wire:loading.remove>Save Review</span>
-                                <span wire:loading>Saving...</span>
-                            </button>
-                        </form>
-                    </div> --}}
-
-                    {{-- <style>
-                        .review-card {
-                            max-width: 500px;
-                            background: #f8fafc;
-                            border-radius: 12px;
-                            padding: 20px;
-                            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
-                        }
-
-                        .review-card h2 {
-                            margin: 0 0 6px;
-                            font-size: 20px;
-                        }
-
-                        .review-card .subtitle {
-                            color: #6b7280;
-                            font-size: 14px;
-                            margin-bottom: 16px;
-                        }
-
-                        form {
-                            display: grid;
-                            gap: 14px;
-                        }
-
-                        .input-row label {
-                            display: block;
-                            font-size: 13px;
-                            color: #6b7280;
-                            margin-bottom: 4px;
-                        }
-
-                        .input-row input,
-                        .input-row textarea {
-                            width: 100%;
-                            padding: 10px;
-                            border-radius: 8px;
-                            border: 1px solid #e5e7eb;
-                            font-size: 14px;
-                            box-sizing: border-box;
-                            background: #fff;
-                        }
-
-                        .input-row input:focus,
-                        .input-row textarea:focus {
-                            border-color: #f59e0b;
-                            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
-                            outline: none;
-                        }
-
-                        .stars {
-                            direction: rtl;
-                            display: flex;
-                            gap: 6px;
-                            justify-content: flex-start;
-                        }
-
-                        .stars input {
-                            position: absolute;
-                            opacity: 0;
-                            pointer-events: none;
-                        }
-
-                        .stars label {
-                            cursor: pointer;
-                            font-size: 30px;
-                            color: #d1d5db;
-                            transition: color .2s ease;
-                        }
-
-                        .stars label:hover,
-                        .stars label:hover~label {
-                            color: #fbbf24;
-                        }
-
-                        .stars input:checked~label {
-                            color: #f59e0b;
-                        }
-
-                        .btn {
-                            padding: 10px 14px;
-                            background: linear-gradient(180deg, #f59e0b, #d97706);
-                            border: 0;
-                            border-radius: 10px;
-                            color: #fff;
-                            font-weight: 600;
-                            cursor: pointer;
-                        }
-
-                        .btn:disabled {
-                            opacity: 0.6;
-                            cursor: not-allowed;
-                        }
-
-                        .error {
-                            font-size: 12px;
-                            color: #b91c1c;
-                        }
-
-                        .preview {
-                            margin-top: 18px;
-                            border: 1px solid #e5e7eb;
-                            border-radius: 10px;
-                            background: #fff;
-                            padding: 12px;
-                        }
-
-                        .stars-preview {
-                            color: #f59e0b;
-                            font-size: 20px;
-                            margin-bottom: 6px;
-                        }
-
-                        .preview-name {
-                            font-weight: 600;
-                            letter-spacing: 0.5px;
-                            margin-bottom: 4px;
-                        }
-
-                        .preview-msg {
-                            color: #374151;
-                            font-size: 14px;
-                        }
-
-                        .muted {
-                            color: #9ca3af;
-                        }
-                    </style> --}}
-
                 </div>
             @else
                 <div class="container">
