@@ -205,7 +205,7 @@ protected $messages = [
     $this->product->reviews()->create([
       'acronim' => $this->acronym,
       'score' => $this->addrating,
-      'comment' => $this->message,
+      'commnent' => $this->message,
       'approved' => false,
     ]);
     $this->showaddreview = false;
