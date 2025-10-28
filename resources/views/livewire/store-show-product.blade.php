@@ -245,7 +245,7 @@
     </script>
 
 
-    <div class="alertorder active" id="review__modal">
+    <div class="alertorder @if ($showaddreview) active @endif" id="review__modal">
         <div class="alertorder__content">
             <div>
                 <h2 style="text-align: center">
@@ -268,9 +268,7 @@
                             <label for="rating-{{ $i }}" title="{{ $i }} stars">★</label>
                         @endfor
                     </div>
-                    @error('addrating')
-                        <span class="error">{{ $message }}</span>
-                    @enderror
+
 
                     {{-- Acronym --}}
                     <div class="checkout__item checkout__item--required">
@@ -290,7 +288,15 @@
                             placeholder="Spune-ne mai multe. Incepe să scrii aici..."></textarea>
                         <label>Mesaj</label>
                     </div>
-
+                    @if ($errors->any())
+                        <div class="error-list">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li class="error">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     {{-- Submit --}}
                     <button type="submit" class="leftbar__button" style="margin-top: 10px">
                         @if (app()->has('label_add_review_button'))
@@ -339,26 +345,41 @@
         .stars input:checked~label {
             color: #f59e0b;
         }
+
+        .error-list {
+            margin-bottom: 15px;
+            background: #ffe5e5;
+            border: 1px solid #ffb3b3;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+
+        .error-list li {
+            color: #d60000;
+            font-size: 0.9rem;
+            list-style: none;
+            margin: 4px 0;
+        }
     </style>
 
-    {{-- <script>
-  // addreview form toggle
-  window.addEventListener('review__modal', event => {
-    console.log('review modal event triggered');
-   const alertorder = document.querySelector(".alertorder");
-   const body = document.querySelector("body");
-   const close = document.querySelector(".alertorder__close");
-   document.querySelector(".alertorder__descr").innerText = event.detail.message;
-   alertorder.classList.remove("out");
-   alertorder.classList.add("active");
-   body.style.overflow = "hidden";
-   close.addEventListener("click", () => {
-    alertorder.classList.add("out");
-    alertorder.classList.remove("active");
-    body.style.overflow = "auto";
-   });
-  });
-</script> --}}
+    <script>
+        // addreview form toggle
+        window.addEventListener('review__modal', event => {
+            console.log('review modal event triggered');
+            // const alertorder = document.querySelector(".alertorder");
+            // const body = document.querySelector("body");
+            // const close = document.querySelector(".alertorder__close");
+            // document.querySelector(".alertorder__descr").innerText = event.detail.message;
+            // alertorder.classList.remove("out");
+            // alertorder.classList.add("active");
+            // body.style.overflow = "hidden";
+            // close.addEventListener("click", () => {
+            //     alertorder.classList.add("out");
+            //     alertorder.classList.remove("active");
+            //     body.style.overflow = "auto";
+            // });
+        });
+    </script>
 
 
     <h2></h2>
@@ -750,9 +771,9 @@
 
 
                         <div class="ratingscore">
-                            <div class="rating" style="--rating: {{ $rating * 20 }}%;"></div>
+                            <div class="rating" style="--rating: {{ $score * 20 }}%;"></div>
                             @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                                ({{ number_format($rating, 2) }})
+                                ({{ number_format($score, 2) }})
                             @endif
                         </div>
                         <div>

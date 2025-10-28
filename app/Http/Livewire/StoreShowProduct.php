@@ -16,7 +16,7 @@ class StoreShowProduct extends Component
   public $wishlistItems;
   public $lastVisited;
   public $reviews45;
-  public $rating;
+  public $score;
   public $avrage;
   public $rating5;
   public $rating4;
@@ -25,8 +25,30 @@ class StoreShowProduct extends Component
   public $rating1;
 
   public $addrating = null;
+  public bool $showaddreview = false;
   public $acronym = '';
   public $message = '';
+
+  protected $rules = [
+    'addrating' => 'required|integer|min:1|max:5',
+    'acronym'   => 'required|string|max:50',
+    'message'   => 'required|string|max:5000',
+];
+
+protected $messages = [
+    'addrating.required' => 'Te rugăm să selectezi o notă între 1 și 5 stele.',
+    'addrating.integer'  => 'Valoarea ratingului trebuie să fie un număr întreg.',
+    'addrating.min'      => 'Ratingul minim este 1 stea.',
+    'addrating.max'      => 'Ratingul maxim este 5 stele.',
+
+    'acronym.required' => 'Te rugăm să introduci un acronim.',
+    'acronym.string'   => 'Acronimul trebuie să fie un text valid.',
+    'acronym.max'      => 'Acronimul nu poate depăși 50 de caractere.',
+
+    'message.required' => 'Te rugăm să scrii un mesaj.',
+    'message.string'   => 'Mesajul trebuie să conțină doar text.',
+    'message.max'      => 'Mesajul nu poate depăși 5000 de caractere.',
+];
 
 
   public function render()
@@ -50,7 +72,7 @@ class StoreShowProduct extends Component
     array_unshift($this->lastVisited, $productId);
     cookie()->queue(cookie()->make('last_visited_products', json_encode($this->lastVisited), 60 * 24 * 30));
 
-    $this->rating = $this->product->reviews->avg('score') ?? 0;
+    $this->score = $this->product->reviews->avg('score') ?? 0;
     $this->reviews45 = $this->product->reviews->whereIn('score', [4, 5])->count() ?? 0;
     $this->avrage = round(($this->reviews45 / $this->product->reviews->count()) * 100);
     if ($this->product->reviews->count() > 0) {
@@ -169,8 +191,24 @@ class StoreShowProduct extends Component
         ->first();
     }
   }
+
   public function addreview()
   {
-      $this->emit('review__modal');
+    $this->showaddreview = true;
+    $this->emit('review__modal');
+  }
+
+  public function saveReview()
+  {
+    $this->validate();
+
+    $this->product->reviews()->create([
+      'acronim' => $this->acronym,
+      'score' => $this->addrating,
+      'comment' => $this->message,
+      'approved' => false,
+    ]);
+    $this->showaddreview = false;
+
   }
 }
