@@ -846,6 +846,35 @@
                         </button>
                     </div>
                 </div>
+                <div class="container" style="margin-top: 15px">
+                    <p class="section__text">
+                        @if (app()->has('label_pdp_reviews_list'))
+                            {!! app('label_pdp_reviews_list') !!}
+                        @endif
+                    </p>
+                </div>
+                @foreach ($product_reviews as $review)
+                    <div style="padding-top: 15px" class="container">
+                        <div class="article-card">
+                            <div class="article-content">
+
+                                <h2 class="article-title">{{ $review->acronim }}</h2>
+                                <div class="ratingscore">
+                                    <div class="rating" style="--rating: {{ $review->score * 20 }}%;"></div>
+                                    @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+                                        ({{ number_format($review->score, 2) }})
+                                    @endif
+                                </div>
+                                <p class="article-date">
+                                    {{ \Carbon\Carbon::parse($review->created_at)->format('M. j, Y') }}
+                                </p>
+
+                                <p class="article-description">{{ $review->comment }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             @else
                 <div class="container">
                     <p class="section__text">
@@ -853,6 +882,7 @@
                             {!! app('label_pdp_reviews_no_reviews') !!}
                         @endif
                     </p>
+                </div>
             @endif
         </section>
     @endif
