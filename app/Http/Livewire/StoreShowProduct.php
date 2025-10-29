@@ -24,9 +24,12 @@ class StoreShowProduct extends Component
   public $rating3;
   public $rating2;
   public $rating1;
+  public $limitload;
 
   public $addrating = null;
   public bool $showaddreview = false;
+  public bool $sendreview = false;
+
   public $acronym = '';
   public $message = '';
 
@@ -34,9 +37,9 @@ class StoreShowProduct extends Component
     'addrating' => 'required|integer|min:1|max:5',
     'acronym'   => 'required|string|max:50',
     'message'   => 'required|string|max:5000',
-];
+  ];
 
-protected $messages = [
+  protected $messages = [
     'addrating.required' => 'Te rugăm să selectezi o notă între 1 și 5 stele.',
     'addrating.integer'  => 'Valoarea ratingului trebuie să fie un număr întreg.',
     'addrating.min'      => 'Ratingul minim este 1 stea.',
@@ -49,7 +52,7 @@ protected $messages = [
     'message.required' => 'Te rugăm să scrii un mesaj.',
     'message.string'   => 'Mesajul trebuie să conțină doar text.',
     'message.max'      => 'Mesajul nu poate depăși 5000 de caractere.',
-];
+  ];
 
 
   public function render()
@@ -62,6 +65,7 @@ protected $messages = [
   }
   public function mount($productId)
   {
+    $this->limitload = app()->has('global_review_limit_load') ? (int)app('global_review_limit_load') : 8;
     $this->productId = $productId;
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
 
@@ -127,11 +131,12 @@ protected $messages = [
       return ProductReviews::where('product_id', $this->productId)
         ->where('approved', 1)
         ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id')
-        ->get() ?? collect();
-    } else {
-      return collect();
+        ->paginate($this->limitload);
     }
+
+    return collect();
   }
+
 
   public function isInWishlist($productId)
   {
@@ -223,6 +228,6 @@ protected $messages = [
       'approved' => false,
     ]);
     $this->showaddreview = false;
-
+    $this->sendreview = true;
   }
 }

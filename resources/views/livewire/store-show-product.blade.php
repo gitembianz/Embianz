@@ -245,7 +245,7 @@
     </script>
 
 
-    <div class="alertorder @if ($showaddreview) active @endif" id="review__modal">
+    <div class="alertorder @if ($showaddreview) active @elseif($sendreview) out @endif" id="review__modal">
         <div class="alertorder__content">
             <div>
                 <h2 style="text-align: center">
@@ -905,6 +905,13 @@
                         </div>
                     </div>
                 @endforeach
+                @if (app()->has('global_pagination') && app('global_pagination') === 'links')
+                    <section class="container">
+                        {{ $product_reviews->links() }}
+                    </section>
+                @else
+                    <x-lazy />
+                @endif
             @else
                 <div class="container">
                     <p class="section__text">
