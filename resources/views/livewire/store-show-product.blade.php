@@ -746,7 +746,7 @@
                 </p>
                 <div class="container grid-product-reviews">
 
-                    <div class="product-reviews__info reviews-info">
+                    <div wire:ignore class="product-reviews__info reviews-info">
                         <h2 class="product__title">{{ $product->reviews->count() }} reviews</h2>
 
 
@@ -776,7 +776,7 @@
                         @endif
                     </div>
 
-                    <div class="product-reviews__bar reviews-bar">
+                    <div wire:ignore class="product-reviews__bar reviews-bar">
                         <ul class="list-reset reviews-bar__list">
                             <li class="reviews-bar__item">
                                 <div class="progress-bar">
