@@ -360,6 +360,19 @@
             list-style: none;
             margin: 4px 0;
         }
+
+        .circle-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 32px;
+            text-transform: uppercase;
+        }
     </style>
 
     <h2></h2>
@@ -854,23 +867,40 @@
                     </p>
                 </div>
                 @foreach ($product_reviews as $review)
+                    @php
+                        $initial = strtoupper(mb_substr($review->acronim, 0, 1));
+                        $colors = [
+                            '#E57373',
+                            '#81C784',
+                            '#64B5F6',
+                            '#FFD54F',
+                            '#BA68C8',
+                            '#4DB6AC',
+                            '#FF8A65',
+                            '#A1887F',
+                        ];
+                        $color = $colors[crc32($review->acronim) % count($colors)];
+                    @endphp
+
                     <div style="padding-top: 15px" class="container">
                         <div class="article-card">
-                            <div class="article-content">
+                            <div class="article-image">
+                                <div class="circle-avatar" style="background-color: {{ $color }};">
+                                    {{ $initial }}
+                                </div>
+                            </div>
 
+                            <div class="article-content">
                                 <h2 class="article-title">{{ $review->acronim }}</h2>
                                 <div class="ratingscore">
                                     <div class="rating" style="--rating: {{ $review->score * 20 }}%;"></div>
-                                    @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                                        ({{ number_format($review->score, 2) }})
-                                    @endif
+                                    ({{ number_format($review->score, 2) }})
                                 </div>
                                 <p class="article-date">
                                     {{ \Carbon\Carbon::parse($review->created_at)->format('M. j, Y') }}
                                 </p>
 
-                                <p class="article-description">{{ $review->comment }}
-                                </p>
+                                <p class="article-description">{{ $review->comment }}</p>
                             </div>
                         </div>
                     </div>
