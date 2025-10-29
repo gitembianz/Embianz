@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 
 use App\Models\Product;
+use App\Models\ProductReviews;
 use Livewire\Component;
 use App\Models\Wishlist;
 
@@ -55,7 +56,8 @@ protected $messages = [
   {
     return view('livewire.store-show-product', [
       'product' => $this->product,
-      'last_visited_products' => $this->lastproduct
+      'last_visited_products' => $this->lastproduct,
+      'product_reviews' => $this->productreviews,
     ]);
   }
   public function mount($productId)
@@ -113,6 +115,18 @@ protected $messages = [
             $query->select('product_id', 'value', 'discount', 'value_no_discount');
           },
         ])
+        ->get() ?? collect();
+    } else {
+      return collect();
+    }
+  }
+
+  public function getProductReviewsProperty()
+  {
+    if (app('global_review_system') === 'true') {
+      return ProductReviews::where('product_id', $this->productId)
+        ->where('approved', 1)
+        ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id')
         ->get() ?? collect();
     } else {
       return collect();
@@ -205,7 +219,7 @@ protected $messages = [
     $this->product->reviews()->create([
       'acronim' => $this->acronym,
       'score' => $this->addrating,
-      'commnent' => $this->message,
+      'comment' => $this->message,
       'approved' => false,
     ]);
     $this->showaddreview = false;

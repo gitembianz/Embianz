@@ -362,26 +362,6 @@
         }
     </style>
 
-    <script>
-        // addreview form toggle
-        window.addEventListener('review__modal', event => {
-            console.log('review modal event triggered');
-            // const alertorder = document.querySelector(".alertorder");
-            // const body = document.querySelector("body");
-            // const close = document.querySelector(".alertorder__close");
-            // document.querySelector(".alertorder__descr").innerText = event.detail.message;
-            // alertorder.classList.remove("out");
-            // alertorder.classList.add("active");
-            // body.style.overflow = "hidden";
-            // close.addEventListener("click", () => {
-            //     alertorder.classList.add("out");
-            //     alertorder.classList.remove("active");
-            //     body.style.overflow = "auto";
-            // });
-        });
-    </script>
-
-
     <h2></h2>
     @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
         <section class="container">
