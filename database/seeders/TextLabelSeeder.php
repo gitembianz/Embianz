@@ -295,6 +295,7 @@ Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'cr
       ['parameter' => 'pdp_add_review_mesage', 'value' => 'Comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'pdp_add_review_mesage_placeholder', 'value' => 'Lasa un comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'pdp_add_review_modal_description', 'value' => 'Selectează stelele, introdu acronimul tău și lasă un mesaj scurt', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_list', 'value' => 'Vezi ce au spus alti cleinti despre acest produs', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

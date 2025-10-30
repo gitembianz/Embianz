@@ -283,14 +283,13 @@
                     <label>Run Frequency</label>
                 </div>
 
-                <button class="button button--primary button--long" wire:click.prevent="add_listview()">
+                <button class="button button--primary button--long" wire:click.prevent="add_job()">
                     <span>Save</span>
                 </button>
                 <button class="button button--danger button--long" style="margin-bottom: 10px !important"
                     wire:click.prevent="$set('addjob', false)">
                     <span>Cancel</span>
                 </button>
-
             </div>
         </div>
     </aside>

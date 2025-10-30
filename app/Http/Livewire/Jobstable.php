@@ -78,6 +78,8 @@ class Jobstable extends Component
   public array $jobslist = [
     'IPGeolocation',
   ];
+  public $frequency;
+  public $service;
   public array $frequencies = [
     '1'    => 'Every 1 minute',
     '5'    => 'Every 5 minutes',
@@ -983,5 +985,52 @@ class Jobstable extends Component
       fputcsv($handle, $row);
     }
     fclose($handle);
+  }
+  // add job
+  public function add_job()
+  {
+    $this->validate([
+      'service' => 'required|string',
+      'frequency' => 'required|integer|min:1',
+    ], [
+      'service.required' => 'Selectează un job.',
+      'frequency.required' => 'Selectează frecvența de rulare.',
+    ]);
+
+    try {
+      $job = AllJob::create([
+        'name' => $this->service,
+        'type' => 'scheduled',
+        'status' => 'pending',
+        'is_recurring' => true,
+        'recurrence_rule' => "every_{$this->frequency}_minutes",
+        'next_run_at' => Carbon::now()->addMinutes($this->frequency),
+        'active' => true,
+      ]);
+
+      if (class_exists($this->service)) {
+        dispatch(new $this->service());
+      } else {
+        session()->flash('notification', [
+          'message' => "Dynamic job class not found: {$this->service}",
+          'type' => 'error',
+          'title' => 'Succes'
+        ]);
+       }
+
+      // Reset UI
+      $this->reset(['service', 'frequency', 'addjob']);
+      session()->flash('notification', [
+        'message' => 'Job adăugat și programat cu succes.',
+        'type' => 'success',
+        'title' => 'Succes'
+      ]);
+    } catch (\Exception $e) {
+      session()->flash('notification', [
+        'message' => 'A apărut o eroare la salvarea jobului.',
+        'type' => 'error',
+        'title' => 'Import Queued'
+      ]);
+    }
   }
 }
