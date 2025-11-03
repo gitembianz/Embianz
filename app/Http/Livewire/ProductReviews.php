@@ -92,6 +92,17 @@ class ProductReviews extends Component
             'title' => 'Success'
         ]);
     }
+     public function dennyitem($id)
+    {
+        $record = ModelsProductReviews::find($id);
+        $record->approved = false;
+        $record->save();
+        session()->flash('notification', [
+            'message' => 'Review denny successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
     public function canceledit()
     {
         $this->editindex = null;
