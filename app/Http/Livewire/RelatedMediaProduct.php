@@ -166,7 +166,6 @@ class RelatedMediaProduct extends Component
   {
     $this->row = 0;
     $this->externalmedia = true;
-    $this->file_name[$this->row] = null;
     $this->file_sequences[$this->row] = null;
     $this->file_link[$this->row] = null;
     $this->file_resize[$this->row] = false;
@@ -174,7 +173,6 @@ class RelatedMediaProduct extends Component
   public function plus()
   {
     $this->row++;
-    $this->file_name[$this->row] = null;
     $this->file_sequences[$this->row] = null;
     $this->file_link[$this->row] = null;
     $this->file_resize[$this->row] = false;

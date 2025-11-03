@@ -244,8 +244,9 @@
         }
     </script>
 
-
-    <div class="alertorder @if ($showaddreview) active @elseif($sendreview) out @endif" id="review__modal">
+    {{-- modal add review --}}
+    <div class="alertorder @if ($showaddreview) active @elseif($sendreview) out @endif"
+        id="review__modal">
         <div class="alertorder__content">
             <div>
                 <h2 style="text-align: center">
