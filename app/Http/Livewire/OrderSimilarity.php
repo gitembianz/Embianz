@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Response;
 class OrderSimilarity extends Component
 {
   use WithPagination;
-  public $columns = ['Reference', 'Order', 'Products', 'Similarity'];
+  public $columns = ['Order', 'Products', 'Similarity'];
   public $selectedColumns = [];
   public $order;
   public $orderId;
