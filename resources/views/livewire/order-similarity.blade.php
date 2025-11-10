@@ -5,10 +5,8 @@
     <div class="accordion__header">
         <button
             class="button button--flexed button--fill button--primary @if ($showrelated) button--secondary active @endif"
-            wire:click.prevent="$set('showrelated', {{ $showrelated ? 'false' : 'true' }})"
-        >
+            wire:click.prevent="$set('showrelated', {{ $showrelated ? 'false' : 'true' }})">
             {{ __('Order similarities') }} ({{ $similarities ? $similarities->count() : 0 }})
-
             <svg>
                 <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -20,12 +18,13 @@
             <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
 
             <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
-                <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
+                <button class="button button--primary button--centered button--long" tooltip="Actions with checked"
+                    tooltip-top>
                     <span>With Checked ({{ count($checked) }})</span>
                 </button>
                 <div class="dropdown__content">
                     <button class="button button--primary button--long" wire:click="dowlandproducts">
-                        Get products quantities
+                        Get products
                     </button>
                 </div>
             </div>
@@ -51,6 +50,9 @@
                 </div>
             </div>
         </nav>
+        @if (count($checked) >= $limitselect)
+            <button class="button button--fill button--secondary" style="margin-top: 10px;">You can select a maximum of {{ $this->limitselect }} orders.</button>
+        @endif
 
         <table class="expandable-table">
             <thead>
@@ -76,46 +78,52 @@
                             $order = $item['order'];
                             $similarity = $item['similarity'];
                             $products = $item['products'];
+                            $valid = $item['valid'] ?? true;
                             $idsString = $order->id;
+                            $isChecked = $this->isChecked($idsString);
+                            $isDisabled = !$valid || (!$isChecked && count($checked) >= $limitselect);
                         @endphp
 
-                        <tr class="expandable-row @if ($this->isChecked($idsString)) active @endif">
+                        <tr
+                            class="expandable-row
+                            @if ($isChecked) active @endif
+                            @if (!$valid || (in_array($item['order']->id, $notprocesabbleorderIds))) notprocess @endif">
                             <td style="border-left: none" data-title="Check">
                                 <div class="checkbox--primary">
-                                    <input type="checkbox" value="{{ $idsString }}" id="checkbox-{{ $idsString }}" wire:model="checked">
+                                    <input type="checkbox" value="{{ $idsString }}" id="checkbox-{{ $idsString }}"
+                                        wire:model="checked" @if ($isDisabled || (in_array($item['order']->id, $notprocesabbleorderIds))) disabled @endif>
                                     <label for="checkbox-{{ $idsString }}"></label>
                                 </div>
                             </td>
 
-                            @if ($this->showColumn('Order'))
-                                <td>
-                                    <a href="{{ route('show_order', ['id' => $order->id]) }}">
-                                        {{ $order->name ?? 'Order #' . $order->id }}
-                                    </a>
-                                </td>
-                            @endif
+                            <td>
+                                <a href="{{ route('show_order', ['id' => $order->id]) }}">
+                                    {{ $order->name ?? 'Order #' . $order->id }}
+                                </a>
+                            </td>
 
-                            @if ($this->showColumn('Products'))
-                                <td>
-                                    <ul>
-                                        @foreach ($products as $product)
-                                            <li>
-                                                {{ $product['name'] ?? 'Unknown' }}
-                                                <small>sku({{ $product['sku'] ?? '-' }})</small> — qty x{{ $product['quantity'] }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </td>
-                            @endif
+                            <td>
+                                <ul>
+                                    @foreach ($products as $product)
+                                        <li>
+                                            {{ $product['name'] ?? 'Unknown' }}
+                                            <small>sku({{ $product['sku'] ?? '-' }})</small> — qty
+                                            x{{ $product['quantity'] }}
+                                            <span
+                                                style="color: {{ $product['available'] < $product['quantity'] ? 'red' : 'green' }}">
+                                                ({{ $product['available'] }} available)
+                                            </span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </td>
 
-                            @if ($this->showColumn('Similarity'))
-                                <td>{{ $similarity }}%</td>
-                            @endif
+                            <td>{{ $similarity }}%</td>
                         </tr>
                     @endforeach
                 @else
                     <tr>
-                        <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
+                        <td class="table--empty" colspan="4">No record found.</td>
                     </tr>
                 @endif
             </tbody>
