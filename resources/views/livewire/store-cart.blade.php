@@ -51,7 +51,7 @@
       $disabled[$index] = false;
       $nonquantity[$index] = false;
 
-      if ($cartItem->product->active != true || $cartItem->product->start_date > onfig('app.timezone'))->format('Y-m-d') || ($cartItemduct->end_date < now(config('app.timezone'))->format('Y-m-d') || ($cartItem->product->quantity < 0 && !$cartItem->product->preorder))) {
+      if ($cartItem->product->active != true || $cartItem->product->start_date > now(config('app.timezone'))->format('Y-m-d') || ($cartItem->product->end_date < now(config('app.timezone'))->format('Y-m-d') || ($cartItem->product->quantity < 0 && !$cartItem->product->preorder))) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
