@@ -50,8 +50,8 @@ class RefreshPricesChunkJob implements ShouldQueue
       });
 
       Product::where('active', true)
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->chunk(500, function ($products) use ($epsilon) {
           foreach ($products as $product) {
             $cartPrices = $product->carts_item->pluck('price');
@@ -99,11 +99,11 @@ class RefreshPricesChunkJob implements ShouldQueue
                 'product_id' => $product->id,
                 'price' => $averagePrice,
                 'cost' => $averageCost,
-                'date' => now(),
+                'date' => now(config('app.timezone')),
                 'created_by' => Auth::user()->name ?? 'system',
                 'last_modified_by' => Auth::user()->name ?? 'system',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => now(config('app.timezone')),
+                'updated_at' => now(config('app.timezone')),
               ]);
             } elseif (!$oldPrice) {
               DB::table('product_costs')->updateOrInsert(
@@ -111,11 +111,11 @@ class RefreshPricesChunkJob implements ShouldQueue
                 [
                   'price' => $averagePrice,
                   'cost' => $averageCost,
-                  'date' => now(),
+                  'date' => now(config('app.timezone')),
                   'created_by' => Auth::user()->name ?? 'system',
                   'last_modified_by' => Auth::user()->name ?? 'system',
-                  'created_at' => now(),
-                  'updated_at' => now(),
+                  'created_at' => now(config('app.timezone')),
+                  'updated_at' => now(config('app.timezone')),
                 ]
               );
             }
@@ -123,7 +123,7 @@ class RefreshPricesChunkJob implements ShouldQueue
         });
       AllJob::where('id', $this->allJobId)->update([
         'status' => 'finished',
-        'finished_at' => now(),
+        'finished_at' => now(config('app.timezone')),
       ]);
       Log::info('RefreshPricesChunkJob completed successfully.');
     } catch (\Throwable $e) {

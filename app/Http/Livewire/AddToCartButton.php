@@ -31,8 +31,8 @@ class AddToCartButton extends Component
       return collect(app()->make('promotions'))
         ->filter(function ($promotion) {
           return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now()->format('Y-m-d') &&
-            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
             $promotion['type'] === 'amount';
         });
     } else {

@@ -74,7 +74,7 @@ class CalculateOrdersCost implements ShouldQueue
         if (!$item->product->costs->count()) {
           DB::table('product_costs')->updateOrInsert(
             ['product_id' => $item->product->id],
-            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(config('app.timezone')), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))]
           );
         } else {
           $oldcost = $item->product->costs()->latest()->first()->cost;
@@ -84,11 +84,11 @@ class CalculateOrdersCost implements ShouldQueue
               'product_id' => $item->product->id,
               'price' => $averagePrice,
               'cost' => $averageCost,
-              'date' => now(),
+              'date' => now(config('app.timezone')),
               'created_by' => auth()->user()->name,
               'last_modified_by' => auth()->user()->name,
-              'created_at' => now(),
-              'updated_at' => now()
+              'created_at' => now(config('app.timezone')),
+              'updated_at' => now(config('app.timezone'))
             ]);
           }
         }
@@ -134,7 +134,7 @@ class CalculateOrdersCost implements ShouldQueue
 
       AllJob::where('id', $this->allJobId)->update([
         'status' => 'finished',
-        'finished_at' => now(),
+        'finished_at' => now(config('app.timezone')),
       ]);
     } catch (\Throwable $e) {
       AllJob::where('id', $this->allJobId)->update([

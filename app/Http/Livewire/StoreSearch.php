@@ -111,8 +111,8 @@ class StoreSearch extends Component
           return $matches
             && $product->active
             && $product->type != 'parent'
-            && $product->start_date <= now()->format('Y-m-d')
-            && $product->end_date >= now()->format('Y-m-d');
+            && $product->start_date <= now(config('app.timezone'))->format('Y-m-d')
+            && $product->end_date >= now(config('app.timezone'))->format('Y-m-d');
         })->sortByDesc('popularity')->sortByDesc('innerid');
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -134,8 +134,8 @@ class StoreSearch extends Component
               ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
               ->where('active', true)
               ->where('type', '!=', 'parent')
-              ->where('start_date', '<=',  now()->format('Y-m-d'))
-              ->where('end_date', '>=',  now()->format('Y-m-d'))
+              ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+              ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
               ->whereIn('id', $ids)
               ->with([
                 'media' => function ($query) {
@@ -165,8 +165,8 @@ class StoreSearch extends Component
             ->select('id', 'preorder', 'name', 'seo_id', 'low_stock', 'short_description', 'type', 'quantity')
             ->where('active', true)
             ->where('type', '!=', 'parent')
-            ->where('start_date', '<=',  now()->format('Y-m-d'))
-            ->where('end_date', '>=',  now()->format('Y-m-d'))
+            ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
             ->with([
               'media' => function ($query) {
                 $query->select('path', 'name', 'type')->where('type', 'main');
@@ -219,8 +219,8 @@ class StoreSearch extends Component
 
           return $matches
             && $category->active
-            && $category->start_date <= now()->format('Y-m-d')
-            && $category->end_date >= now()->format('Y-m-d');
+            && $category->start_date <= now(config('app.timezone'))->format('Y-m-d')
+            && $category->end_date >= now(config('app.timezone'))->format('Y-m-d');
         });
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -238,8 +238,8 @@ class StoreSearch extends Component
         return Category::search($this->search)
           ->select('id', 'name', 'seo_id', 'short_description', 'long_description')
           ->where('active', true)
-          ->where('start_date', '<=', now()->format('Y-m-d'))
-          ->where('end_date', '>=', now()->format('Y-m-d'))
+          ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+          ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
           ->with([
             'media' => function ($query) {
               $query->select('path', 'name')->where('type', 'min');

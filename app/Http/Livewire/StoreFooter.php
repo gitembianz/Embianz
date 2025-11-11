@@ -45,7 +45,7 @@ class StoreFooter extends Component
 
       if ($existingPromotion && $existingPromotion->promotion_expiration_date) {
         $expirationDate = Carbon::parse($existingPromotion->promotion_expiration_date);
-        $now = Carbon::now();
+        $now = Carbon::now(config('app.timezone'));
 
         $this->timer = $expirationDate->greaterThan($now)
           ? $expirationDate->diffInSeconds($now)

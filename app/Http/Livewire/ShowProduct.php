@@ -218,7 +218,7 @@ class ShowProduct extends Component
         $new->ean = $product_new['ean'];
       }
       $new->last_modified_by = Auth::user()->name;
-      $new->updated_at = now();
+      $new->updated_at = now(config('app.timezone'));
       $new->save();
       $this->emit('itemSaved');
       session()->flash('notification', [

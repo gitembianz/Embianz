@@ -427,8 +427,8 @@
                     @if (
                         $product->product &&
                             $product->product->active == true &&
-                            $product->product->end_date >= now()->format('Y-m-d') &&
-                            $product->product->start_date <= now()->format('Y-m-d'))
+                            $product->product->end_date >= now(config('app.timezone'))->format('Y-m-d') &&
+                            $product->product->start_date <= now(config('app.timezone'))->format('Y-m-d'))
                         <div class="card product" style="width: 100%;">
                             <a style="width: 100%"
                                 href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">

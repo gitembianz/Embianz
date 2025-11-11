@@ -23,7 +23,7 @@ class CategorySeeder extends Seeder
             'short_description' => 'Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul!',
             'sequence' => 1,
             'slider_sequence' => 0,
-            'start_date' => now(),
+            'start_date' => now(config('app.timezone')),
             'end_date' => '2030-01-01',
             'createdby' => 'admin',
             'lastmodifiedby' => 'admin',

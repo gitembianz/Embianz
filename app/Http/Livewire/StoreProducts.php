@@ -87,8 +87,8 @@ class StoreProducts extends Component
   {
     $query = Product::search($this->search)
       ->where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->with([
         'variants' => function ($query) {
           $query->with(['product' => function ($query) {

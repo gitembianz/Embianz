@@ -626,7 +626,7 @@ class Countriestable extends Component
     }
 
     $this->activelistview->update([
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
 
     $this->listview = [
@@ -743,8 +743,8 @@ class Countriestable extends Component
           'phone_code' => $elem['phone_code'],
           'currency' => $elem['currency'],
           'status' => true,
-          'created_at' => now(),
-          'updated_at' => now()
+          'created_at' => now(config('app.timezone')),
+          'updated_at' => now(config('app.timezone'))
         ]);
       }
     }

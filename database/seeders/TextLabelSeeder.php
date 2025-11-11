@@ -10,7 +10,7 @@ class TextLabelSeeder extends Seeder
 {
   public static function labels()
   {
-    $currentTime = now();
+    $currentTime = now(config('app.timezone'));
     return [
       ['parameter' => 'support_title', 'value' => 'La noi te bucuri de:', 'description' => 'Support title - h2', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'support_livechat_title', 'value' => 'Live Chat', 'description' => 'Support livechat title - h3', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],

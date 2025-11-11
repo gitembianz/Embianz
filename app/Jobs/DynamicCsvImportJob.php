@@ -47,19 +47,19 @@ class DynamicCsvImportJob implements ShouldQueue
 
       $jobRecord->update([
         'status' => 'processing',
-        'started_at' => now(),
+        'started_at' => now(config('app.timezone')),
       ]);
-      $allJobRecord?->update(['status' => 'processing', 'started_at' => now()]);
+      $allJobRecord?->update(['status' => 'processing', 'started_at' => now(config('app.timezone'))]);
 
       if (!Schema::hasTable($this->table)) {
         $jobRecord->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => "Table {$this->table} does not exist.",
         ]);
         $allJobRecord?->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'error' => "Table {$this->table} does not exist."
         ]);
         return;
@@ -69,12 +69,12 @@ class DynamicCsvImportJob implements ShouldQueue
       if (!file_exists($filePath)) {
         $jobRecord->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => "CSV file not found at {$filePath}.",
         ]);
         $allJobRecord?->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'error' => "CSV file not found at {$filePath}."
         ]);
         return;
@@ -87,12 +87,12 @@ class DynamicCsvImportJob implements ShouldQueue
         fclose($file);
         $jobRecord->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => "CSV header missing.",
         ]);
         $allJobRecord?->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'error' => "CSV header missing."
         ]);
         return;
@@ -119,12 +119,12 @@ class DynamicCsvImportJob implements ShouldQueue
           fclose($file);
           $jobRecord->update([
             'status' => 'failed',
-            'finished_at' => now(),
+            'finished_at' => now(config('app.timezone')),
             'errors' => "Missing required column: {$required}.",
           ]);
            $allJobRecord?->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'error' => "Missing required column: {$required}."
         ]);
           return;
@@ -152,24 +152,24 @@ class DynamicCsvImportJob implements ShouldQueue
       fclose($file);
 
       if (!empty($errors)) {
-        $errorFile = 'imports/review_errors_' . now()->timestamp . '.csv';
+        $errorFile = 'imports/review_errors_' . now(config('app.timezone'))->timestamp . '.csv';
         $this->exportErrorCsv($errors, $errorFile, $jobRecord);
 
         $jobRecord->update([
           'status' => 'finished',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => "Completed with errors. {$totalRows} rows processed, " . count($errors) . " failed.",
         ]);
       } else {
         $jobRecord->update([
           'status' => 'finished',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => null,
         ]);
       }
        $allJobRecord?->update([
           'status' => 'finished',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => null,
         ]);
     } catch (\Throwable $e) {
@@ -177,7 +177,7 @@ class DynamicCsvImportJob implements ShouldQueue
       if ($jobRecord) {
         $jobRecord->update([
           'status' => 'failed',
-          'finished_at' => now(),
+          'finished_at' => now(config('app.timezone')),
           'errors' => $e->getMessage(),
         ]);
       }

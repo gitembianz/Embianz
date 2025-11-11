@@ -504,7 +504,7 @@ class StoreOrder extends Component
     if ($this->cart->cartItems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
       if ($this->cart->voucher) {
         $voucher = $this->cart->voucher;
-        $currentDate = now()->format('Y-m-d');
+        $currentDate = now(config('app.timezone'))->format('Y-m-d');
         if ($voucher->status_id == app('global_voucher_closed') || $voucher->start_date > $currentDate || $voucher->end_date < $currentDate) {
           $message = app('label_order_error_voucher') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
@@ -512,7 +512,7 @@ class StoreOrder extends Component
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')) - $this->cart->promotion_value,
             'voucher_id' => null,
             'voucher_value' => 0,
-            'updated_at' => now(),
+            'updated_at' => now(config('app.timezone')),
           ]);
           return;
         }
@@ -523,7 +523,7 @@ class StoreOrder extends Component
 
       foreach ($this->cart->cartItems as $item) {
         $product = $item->product;
-        $currentDate = now()->format('Y-m-d');
+        $currentDate = now(config('app.timezone'))->format('Y-m-d');
 
         if ($item->quantity > $product->quantity && !$product->preorder) {
           $this->validatequantity = false;
@@ -627,7 +627,7 @@ class StoreOrder extends Component
       $uniqueName = "{$baseName}_" . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
       $status = $this->payment['type'] != 'card' ? app('global_order_processing') : app('global_order_check_payment');
 
-      $prefix = app('global_order_prefix') . now()->format('Ymd');
+      $prefix = app('global_order_prefix') . now(config('app.timezone'))->format('Ymd');
 
       $lastTodayOrder = Order::where('order_number', 'LIKE', "{$prefix}%")
         ->latest('order_number')
@@ -686,8 +686,8 @@ class StoreOrder extends Component
           'price' => $item->price,
           'quantity' => $item->quantity,
           'vat' => $item->vat,
-          'created_at' => now(),
-          'updated_at' => now()
+          'created_at' => now(config('app.timezone')),
+          'updated_at' => now(config('app.timezone'))
         ];
       }
 
@@ -706,7 +706,7 @@ class StoreOrder extends Component
         $cases = implode(" ", $cases);
         $ids = implode(",", $ids);
 
-        DB::update("UPDATE products SET quantity = CASE $cases END, updated_at = ? WHERE id IN ($ids)", array_merge($bindings, [now()]));
+        DB::update("UPDATE products SET quantity = CASE $cases END, updated_at = ? WHERE id IN ($ids)", array_merge($bindings, [now(config('app.timezone'))]));
       }
 
       if (!empty($orderItemsToInsert)) {

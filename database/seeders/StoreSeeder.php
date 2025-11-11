@@ -9,7 +9,7 @@ class StoreSeeder extends Seeder
 {
     public static function settings()
     {
-        $currentTime = now();
+        $currentTime = now(config('app.timezone'));
         return [
             ['parameter' => 'delivery_price', 'value' => '20', 'description' => 'Delivery Price', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'limit_category', 'value' => '6', 'description' => 'Limit Category', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],

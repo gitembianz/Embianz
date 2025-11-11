@@ -51,7 +51,7 @@
     @foreach ($items as $index => $item)
      <?php
      $disabled[$index] = false;
-     if ($item->product->active != true || $item->product->start_date > now()->format('Y-m-d') || $item->product->end_date < now()->format('Y-m-d')) {
+     if ($item->product->active != true || $item->product->start_date > now(config('app.timezone'))->format('Y-m-d') || $item->product->end_date < now(config('app.timezone'))->format('Y-m-d')) {
          $disabled[$index] = true;
      } ?>
      <li class="leftbar__item">

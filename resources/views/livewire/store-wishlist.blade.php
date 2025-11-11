@@ -30,7 +30,7 @@
     @foreach ($wishlistitems as $index => $item)
      <?php
      $disabled[$index] = false;
-     if ($item->product->active != true || $item->product->start_date > now()->format('Y-m-d') || $item->product->end_date < now()->format('Y-m-d')) {
+     if ($item->product->active != true || $item->product->start_date > onfig('app.timezone'))->format('Y-m-d') || $itemduct->end_date < now(config('app.timezone'))->format('Y-m-d')) {
          $disabled[$index] = true;
      } ?>
      <div class="basket__item">
