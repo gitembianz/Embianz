@@ -73,8 +73,8 @@ class GeneralSearch extends Component
           return $matches
             && $product->active
             && $product->type != 'parent'
-            && $product->start_date <= now()->format('Y-m-d')
-            && $product->end_date >= now()->format('Y-m-d');
+            && $product->start_date <= now(config('app.timezone'))->format('Y-m-d')
+            && $product->end_date >= now(config('app.timezone'))->format('Y-m-d');
         })->sortByDesc('popularity')->sortByDesc('innerid')->take(app('global_limit_searchitems'));
       } else {
         if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
@@ -84,8 +84,8 @@ class GeneralSearch extends Component
               ->select('id', 'name', 'seo_id', 'type', 'short_description')
               ->where('active', true)
               ->where('type', '!=', 'parent')
-              ->where('start_date', '<=', now()->format('Y-m-d'))
-              ->where('end_date', '>=', now()->format('Y-m-d'))
+              ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+              ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
               ->whereIn('id', $ids)
               ->with([
                 'media' => function ($query) {
@@ -106,8 +106,8 @@ class GeneralSearch extends Component
             ->select('id', 'name', 'seo_id', 'type', 'short_description')
             ->where('active', true)
             ->where('type', '!=', 'parent')
-            ->where('start_date', '<=', now()->format('Y-m-d'))
-            ->where('end_date', '>=', now()->format('Y-m-d'))
+            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
             ->with([
               'media' => function ($query) {
                 $query->select('path', 'name', 'type')->where('type', 'min');
@@ -148,15 +148,15 @@ class GeneralSearch extends Component
 
           return $matches
             && $category->active
-            && $category->start_date <= now()->format('Y-m-d')
-            && $category->end_date >= now()->format('Y-m-d');
+            && $category->start_date <= now(config('app.timezone'))->format('Y-m-d')
+            && $category->end_date >= now(config('app.timezone'))->format('Y-m-d');
         })->take(app('global_limit_searchitems'));
       } else {
         return Category::search($this->search)
           ->select('id', 'name', 'seo_id')
           ->where('active', true)
-          ->where('start_date', '<=',  now()->format('Y-m-d'))
-          ->where('end_date', '>=',  now()->format('Y-m-d'))
+          ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+          ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
           ->with([
             'media' => function ($query) {
               $query->select('path', 'name')->where('type', 'min');

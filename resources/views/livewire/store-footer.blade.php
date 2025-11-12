@@ -114,7 +114,7 @@
                 }
 
                 function tick(endTime) {
-                    const now = Math.floor(Date.now() / 1000);
+                    const now = Math.floor(Date.now(config('app.timezone')) / 1000);
                     let timeLeft = Math.max(endTime - now, 0);
                     if (timeLeft > 0) {
                         const days = Math.floor(timeLeft / 86400);
@@ -137,7 +137,7 @@
                 }
 
                 function initTimer() {
-                    const now = Math.floor(Date.now() / 1000);
+                    const now = Math.floor(Date.now(config('app.timezone')) / 1000);
                     const endTime = now + cooldownPeriod;
                     if (cooldownPeriod > 0) {
                         startTimer(endTime);

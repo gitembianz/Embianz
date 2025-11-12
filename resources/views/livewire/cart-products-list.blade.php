@@ -53,7 +53,7 @@
                     $disabled[$index] = false;
                     $nonquantity[$index] = false;
 
-                    if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || ($cartItem->product->end_date < now()->format('Y-m-d') || ($cartItem->product->quantity < 0 && !$cartItem->product->preorder))) {
+                    if ($cartItem->product->active != true || $cartItem->product->start_date > now(config('app.timezone'))->format('Y-m-d') || ($cartItem->product->end_date < now(config('app.timezone'))->format('Y-m-d') || ($cartItem->product->quantity < 0 && !$cartItem->product->preorder))) {
                         $disabled[$index] = true;
                         $isdisabled = true;
                     }
@@ -460,7 +460,7 @@
                     }
 
                     function setEndTime(serverTimer) {
-                        const now = Math.floor(Date.now() / 1000);
+                        const now = Math.floor(Date.now(config('app.timezone')) / 1000);
                         localStorage.setItem(storageKey, now + serverTimer);
                     }
 
@@ -470,7 +470,7 @@
                         const endTime = parseInt(localStorage.getItem(storageKey));
 
                         ticker = setInterval(() => {
-                            const now = Math.floor(Date.now() / 1000);
+                            const now = Math.floor(Date.now(config('app.timezone')) / 1000);
                             const timeLeft = Math.max(endTime - now, 0);
 
                             if (timeLeft > 0) {

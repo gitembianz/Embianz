@@ -50,8 +50,7 @@ class TrackUserSession
     $visitedUrl  = $request->fullUrl();
     $httpReferer = $request->headers->get('referer');
 
-    $timezone = config('app.timezone');
-    $now = Carbon::now($timezone);
+    $now = Carbon::now(config('app.timezone'));
 
     $data = [
       'sessions'     => $sessionId,

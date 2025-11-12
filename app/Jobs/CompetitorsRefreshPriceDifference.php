@@ -50,7 +50,7 @@ class CompetitorsRefreshPriceDifference implements ShouldQueue
               'difference_value' => $differenceValue,
               'difference_percent' => $differencePercentage,
               'last_modified_by' => 'system',
-              'updated_at' => now(),
+              'updated_at' => now(config('app.timezone')),
             ]);
           }
         }
@@ -58,7 +58,7 @@ class CompetitorsRefreshPriceDifference implements ShouldQueue
 
       AllJob::where('id', $this->allJobId)->update([
         'status' => 'finished',
-        'finished_at' => now(),
+        'finished_at' => now(config('app.timezone')),
       ]);
     } catch (\Throwable $e) {
       AllJob::where('id', $this->allJobId)->update([

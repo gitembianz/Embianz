@@ -1380,8 +1380,8 @@
                                         $nonquantity[$index] = false;
                                         if (
                                             $cartItem->product->active != true ||
-                                            $cartItem->product->start_date > now()->format('Y-m-d') ||
-                                            $cartItem->product->end_date < now()->format('Y-m-d')
+                                            $cartItem->product->start_date > now(config('app.timezone'))->format('Y-m-d') ||
+                                            $cartItem->product->end_date < now(config('app.timezone'))->format('Y-m-d')
                                         ) {
                                             $disabled[$index] = true;
                                             $this->emit('isdisabled');

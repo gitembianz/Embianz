@@ -118,7 +118,7 @@ class StoreCart extends Component
           'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount + delivery_price - $voucher_value END"),
           'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
           'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
-          'updated_at' => now(),
+          'updated_at' => now(config('app.timezone')),
           'status_id' => app('global_cart_new')
         ]);
         $cartItem->delete();
@@ -194,7 +194,7 @@ class StoreCart extends Component
       'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
       'voucher_id' => null,
       'voucher_value' => 0,
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
       'status_id' => app('global_cart_new')
     ]);
     $this->message = null;
@@ -206,8 +206,8 @@ class StoreCart extends Component
     if ($this->cart) {
       $voucher = Voucher::where('code', $this->voucher)
         ->where('status_id', app('global_voucher_active'))
-        ->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'))
+        ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
         ->first();
       if ($voucher) {
         if ($voucher && $voucher->percent !== null) {
@@ -217,7 +217,7 @@ class StoreCart extends Component
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $discountAmount),
             'voucher_id' => $voucher->id,
             'voucher_value' => $discountAmount,
-            'updated_at' => now(),
+            'updated_at' => now(config('app.timezone')),
           ]);
         } else {
           if ($voucher->value > $this->cart->sum_amount) {
@@ -226,7 +226,7 @@ class StoreCart extends Component
               'final_amount' =>  app('global_delivery_price'),
               'voucher_id' => $voucher->id,
               'voucher_value' => $voucher->value,
-              'updated_at' => now(),
+              'updated_at' => now(config('app.timezone')),
             ]);
           } else {
             $this->message = null;
@@ -234,7 +234,7 @@ class StoreCart extends Component
               'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
               'voucher_id' => $voucher->id,
               'voucher_value' => $voucher->value,
-              'updated_at' => now(),
+              'updated_at' => now(config('app.timezone')),
             ]);
           }
         }
@@ -277,7 +277,7 @@ class StoreCart extends Component
     }
     if ($this->cart->quantity_amount != 0) {
       foreach ($this->cart->cartItems as $item) {
-        if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
+        if (($item->product->active != true) || ($item->product->start_date > now(config('app.timezone'))->format('Y-m-d')) || ($item->product->end_date < now(config('app.timezone'))->format('Y-m-d'))) {
           $this->emit('cartUpdated');
           return;
         }

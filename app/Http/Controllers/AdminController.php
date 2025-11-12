@@ -62,8 +62,8 @@ class AdminController extends Controller
       "phone"             => $request->phone,
       "adress"            => $request->adress,
       "password"          => bcrypt($rawPassword),
-      "created_at"        => now(),
-      "updated_at"        => now(),
+      "created_at"        => now(config('app.timezone')),
+      "updated_at"        => now(config('app.timezone')),
     ];
 
     User::insert($values);
@@ -221,8 +221,8 @@ class AdminController extends Controller
       'display_in_footer' => $request->has('display_in_footer'),
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
-      "created_at" => now(),
-      "updated_at" => now()
+      "created_at" => now(config('app.timezone')),
+      "updated_at" => now(config('app.timezone'))
 
     );
 
@@ -311,8 +311,8 @@ class AdminController extends Controller
       'exchange_id' => $request->exchange,
       "created_by" => Auth::user()->name,
       "last_modified_by" => Auth::user()->name,
-      "created_at" => now(),
-      "updated_at" => now()
+      "created_at" => now(config('app.timezone')),
+      "updated_at" => now(config('app.timezone'))
     );
 
     Order_Supplier::insert($values);
@@ -389,8 +389,8 @@ class AdminController extends Controller
       "cart_amount" => $request->amount,
       "cookieid" => $innerid,
       "active" => $request->has('active'),
-      "created_at" => now(),
-      "updated_at" => now()
+      "created_at" => now(config('app.timezone')),
+      "updated_at" => now(config('app.timezone'))
     );
 
     Promotion::insert($values);
@@ -544,8 +544,8 @@ class AdminController extends Controller
       "description" => $request->description,
       "createdby" => Auth::user()->name,
       "lastmodifiedby" => Auth::user()->name,
-      "created_at" => now(),
-      "updated_at" => now()
+      "created_at" => now(config('app.timezone')),
+      "updated_at" => now(config('app.timezone'))
 
     );
 
@@ -572,8 +572,8 @@ class AdminController extends Controller
     $values = array(
       "name" => $request->name,
       "sequence" => $request->sequence,
-      "created_at" => now(),
-      "updated_at" => now()
+      "created_at" => now(config('app.timezone')),
+      "updated_at" => now(config('app.timezone'))
     );
 
     Variant::insert($values);
@@ -693,8 +693,8 @@ class AdminController extends Controller
   public function seedreviews()
   {
     $prods = Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))->get();
 
     foreach ($prods as $product) {
       if (!$product->reviews->first()) {
@@ -712,8 +712,8 @@ class AdminController extends Controller
   public function updatereviews()
   {
     $prods = Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))->get();
 
     foreach ($prods as $product) {
       $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
@@ -726,8 +726,8 @@ class AdminController extends Controller
   public function updateCosts()
   {
     $products = Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->get();
 
     foreach ($products as $product) {
@@ -778,7 +778,7 @@ class AdminController extends Controller
 
       DB::table('product_costs')->updateOrInsert(
         ['product_id' => $product->id],
-        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+        ['price' => $averagePrice, 'cost' => $averageCost, 'date' => now(config('app.timezone')), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))]
       );
     }
 

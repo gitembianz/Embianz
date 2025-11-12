@@ -123,7 +123,7 @@ class IPGeolocation implements ShouldQueue
     $this->jobRecord = AllJob::find($this->allJobId);
     $this->jobRecord?->update([
       'status' => $status,
-      'finished_at' => now(),
+      'finished_at' => now(config('app.timezone')),
       'log' => ($this->jobRecord->log ?? '') . "\n" . $log,
     ]);
 
@@ -133,7 +133,7 @@ class IPGeolocation implements ShouldQueue
       'status' => $status,
       'job_id' => $this->allJobId,
       'details' => $log,
-      'finished_at' => now(),
+      'finished_at' => now(config('app.timezone')),
     ]);
   }
 }

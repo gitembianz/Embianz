@@ -668,7 +668,7 @@
                             <td wire:click="expandRow({{ $index }})" class="hidden">
                                 @if ($editindex !== $index)
                                     {{ $store->value }}@if ($store->parameter == 'time_zone')
-                                        (time is: {{ now() }}) - Please refresh to update after the edit
+                                        (time is: {{ now(config('app.timezone')) }}) - Please refresh to update after the edit
                                     @endif
                                 @else
                                     <div class="searchable">
@@ -731,7 +731,7 @@
                                         <p>
                                             <bold>Value:</bold>
                                             {{ $store->value }}@if ($store->parameter == 'time_zone')
-                                                (time is: {{ now() }}) - Please refresh to update after the
+                                                (time is: {{ now(config('app.timezone')) }}) - Please refresh to update after the
                                                 edit
                                             @endif
                                         </p>

@@ -14,9 +14,9 @@ class VariantSeeder extends Seeder
     public function run(): void
     {
         DB::table('variants')->insert([
-            ['name' => 'culoare', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'marime', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'material', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'culoare', 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))],
+            ['name' => 'marime', 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))],
+            ['name' => 'material', 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))],
         ]);
     }
 }

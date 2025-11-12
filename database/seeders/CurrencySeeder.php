@@ -12,7 +12,7 @@ class CurrencySeeder extends Seeder
    */
   public function run()
   {
-    $currentTime = now();
+    $currentTime = now(config('app.timezone'));
 
     $currencies = [
       [

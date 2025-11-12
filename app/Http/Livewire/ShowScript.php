@@ -106,7 +106,7 @@ class ShowScript extends Component
                     return;
                 }
             }
-            $new->updated_at = now();
+            $new->updated_at = now(config('app.timezone'));
             $new->save();
             Cache::forget('global_scripts');
 

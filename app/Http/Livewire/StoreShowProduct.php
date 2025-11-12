@@ -97,8 +97,8 @@ class StoreShowProduct extends Component
         ->orderByRaw("FIELD(id, " . implode(',', $this->lastVisited) . ")")
         ->where('active', 1)
         ->where('id', '!=', $this->productId)
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->orderBy('quantity', 'DESC')
         ->select('id', 'name', 'preorder', 'low_stock', 'sku', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
         ->with([
@@ -183,8 +183,8 @@ class StoreShowProduct extends Component
               ->orderByRaw('(SELECT innerid FROM products WHERE products.id = product_id) DESC')
               ->with(['product' => function ($query) {
                 $query->where('active', 1)
-                  ->where('start_date', '<=', now()->format('Y-m-d'))
-                  ->where('end_date', '>=', now()->format('Y-m-d'))
+                  ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+                  ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
                   ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
                   ->orderBy('innerid', 'ASC')
                   ->select('id', 'preorder', 'name', 'sku', 'low_stock', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')

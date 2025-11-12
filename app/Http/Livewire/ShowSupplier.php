@@ -205,7 +205,7 @@ class ShowSupplier extends Component
         if (!$item->product->costs->count()) {
           DB::table('product_costs')->updateOrInsert(
             ['product_id' => $item->product->id],
-            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(), 'updated_at' => now()]
+            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(config('app.timezone')), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))]
           );
         } else {
           $oldcost = $item->product->costs()->latest()->first()->cost;
@@ -215,11 +215,11 @@ class ShowSupplier extends Component
               'product_id' => $item->product->id,
               'price' => $averagePrice,
               'cost' => $averageCost,
-              'date' => now(),
+              'date' => now(config('app.timezone')),
               'created_by' => auth()->user()->name,
               'last_modified_by' => auth()->user()->name,
-              'created_at' => now(),
-              'updated_at' => now()
+              'created_at' => now(config('app.timezone')),
+              'updated_at' => now(config('app.timezone'))
             ]);
           }
         }

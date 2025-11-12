@@ -27,7 +27,7 @@ class RunScheduledJobs extends Command
     {
         $jobs = AllJob::where('is_recurring', true)
             ->where('active', true)
-            ->where('next_run_at', '<=', Carbon::now())
+            ->where('next_run_at', '<=', Carbon::now(config('app.timezone')))
             ->get();
 
         foreach ($jobs as $job) {
@@ -38,7 +38,7 @@ class RunScheduledJobs extends Command
                 // Update next run time
                 $interval = (int) filter_var($job->recurrence_rule, FILTER_SANITIZE_NUMBER_INT) ?: 5;
                 $job->update([
-                    'next_run_at' => Carbon::now()->addMinutes($interval),
+                    'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($interval),
                     'status' => 'running',
                 ]);
             } else {

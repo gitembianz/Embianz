@@ -662,7 +662,7 @@ class Jobstable extends Component
     }
 
     $this->activelistview->update([
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
 
     $this->listview = [
@@ -1004,7 +1004,7 @@ class Jobstable extends Component
         'status' => 'pending',
         'is_recurring' => true,
         'recurrence_rule' => "every_{$this->frequency}_minutes",
-        'next_run_at' => Carbon::now()->addMinutes($this->frequency),
+        'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($this->frequency),
         'active' => true,
       ]);
 

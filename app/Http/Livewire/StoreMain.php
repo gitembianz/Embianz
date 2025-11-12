@@ -18,8 +18,8 @@ class StoreMain extends Component
 
       return app()->make('cached_categories')->where('slider_sequence', '!=', '0')->sortBy('slider_sequence');
     } else {
-      return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'))->with(['media' => function ($query) {
+      return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))->with(['media' => function ($query) {
           $query->select('path', 'name', 'sequence', 'width', 'height')->where('type', 'original');
         }])->orderby('slider_sequence')->get();
     }
@@ -59,8 +59,8 @@ class StoreMain extends Component
         ->select('id', 'preorder', 'end_date', 'low_stock', 'innerid', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
         ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
@@ -102,8 +102,8 @@ class StoreMain extends Component
         ->select('id', 'preorder', 'end_date', 'innerid', 'name', 'seo_id', 'ean', 'low_stock', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
-        ->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'))
+        ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
         ->where('is_new', true)
         ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
         ->orderBy('innerid', 'ASC')

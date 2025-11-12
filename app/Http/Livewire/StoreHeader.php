@@ -62,7 +62,7 @@ class StoreHeader extends Component
       $promotionCookieId = $counterpromo['cookieid'];
       $existingCookieId = request()->cookie('pcid');
       $promotionCooldown = $counterpromo['cooldown_timer'];
-      $expirationDate = now()->addMinutes($promotionCooldown);
+      $expirationDate = now(config('app.timezone'))->addMinutes($promotionCooldown);
 
       $user = UserSessions::where('sessions', $this->session_id)->first();
 
@@ -79,7 +79,7 @@ class StoreHeader extends Component
           if ($existingPromotion->promotion_cookieid !== $promotionCookieId) {
             $existingPromotion->update([
               "promotion_cookieid" => $promotionCookieId,
-              "promotion_start_date" => now(),
+              "promotion_start_date" => now(config('app.timezone')),
               "promotion_cooldown_timer" => $promotionCooldown,
               "promotion_expiration_date" => $expirationDate,
               "promotion_value" => $counterpromo['promotion_value'],
@@ -113,7 +113,7 @@ class StoreHeader extends Component
       "promotion_id" => $counterpromo['id'],
       "promotion_type" => $counterpromo['type'],
       "promotion_cookieid" => $promotionCookieId,
-      "promotion_start_date" => now(),
+      "promotion_start_date" => now(config('app.timezone')),
       "promotion_cooldown_timer" => $promotionCooldown,
       "promotion_expiration_date" => $expirationDate,
       "promotion_value" => $counterpromo['promotion_value'],
@@ -127,8 +127,8 @@ class StoreHeader extends Component
   {
     $query->where('active', 1)
       ->where('store_tab', 1)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->orderBy('sequence');
   }
   public function getCategoriesProperty()
@@ -177,8 +177,8 @@ class StoreHeader extends Component
         ->where('active', 1)
         ->where('store_tab', 1)
         ->where('has_parent', 0)
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->orderBy('sequence')
         ->limit(app('global_limit_category'))
         ->get();
@@ -191,8 +191,8 @@ class StoreHeader extends Component
       return collect(app()->make('promotions'))
         ->filter(function ($promotion) {
           return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now()->format('Y-m-d') &&
-            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
             $promotion['type'] === 'counter';
         });
     } else {

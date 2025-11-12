@@ -149,7 +149,7 @@ class ShowCategory extends Component
 
       }
       $new->lastmodifiedby = Auth::user()->name;
-      $new->updated_at = now();
+      $new->updated_at = now(config('app.timezone'));
       $new->save();
       $this->emit('itemSaved');
       session()->flash('notification', [
@@ -213,8 +213,8 @@ class ShowCategory extends Component
    $products = Products_categories::where('category_id', $this->categoryId)
   ->with(['product' => function ($query) {
     $query->where('active', 1)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'));
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'));
   }])
   ->get()
   ->pluck('product')
@@ -229,8 +229,8 @@ class ShowCategory extends Component
             'parent_id' => $parentProduct->id,
             'product_id' => $relatedProduct->id,
             'sequence' => $index,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => now(config('app.timezone')),
+            'updated_at' => now(config('app.timezone')),
           ];
         }
       }

@@ -133,8 +133,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             'product_categories.product' => function ($query) {
               $query->select('id', 'seo_id', 'innerid', 'active', 'start_date', 'end_date')
                 ->where('active', true)
-                ->whereDate('start_date', '<=', now())
-                ->whereDate('end_date', '>=', now())
+                ->whereDate('start_date', '<=', now(config('app.timezone')))
+                ->whereDate('end_date', '>=', now(config('app.timezone')))
                 ->orderBy('innerid');
             }
           ])
@@ -233,14 +233,14 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             }
 
             // ✅ Generate version only when cache is built
-            $version = now()->format('YmdHi');
+            $version = now(config('app.timezone'))->format('YmdHi');
             Cache::forever('countries_version', $version);
 
             return $final;
         });
 
         // ✅ Retrieve the version from cache, not regenerate it
-        $version = Cache::get('countries_version', now()->format('YmdHi'));
+        $version = Cache::get('countries_version', now(config('app.timezone'))->format('YmdHi'));
 
         // Make both instances available globally
         $this->app->instance('countries_version', $version);
@@ -332,8 +332,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $products = Cache::rememberForever('cached_products', function () {
 
       return Product::where('active', true)
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->with([
           'product_categories' => function ($query) {
             $query->select('product_id', 'category_id', 'primary_category');
@@ -350,8 +350,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
           'related_product' => function ($query) {
             $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
               'product' => function ($query) {
-                $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
-                  ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                $query->where('active', 1)->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
+                  ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
                     'media' => function ($query) {
                       $query->select('path', 'name', 'type')->where('type', 'main');
                     },
@@ -376,8 +376,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             $query->with(['variants' => function ($query) {
               $query->distinct('variant_id')->with(['product' => function ($query) {
                 $query->where('active', true)
-                  ->where('start_date', '<=', now()->format('Y-m-d'))
-                  ->where('end_date', '>=', now()->format('Y-m-d'))
+                  ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+                  ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
                   ->with([
                     'media' => function ($query) {
                       $query->select('path', 'name')->where('type', 'min');
@@ -457,8 +457,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         }
       ])
         ->where('active', 1)
-        ->where('start_date', '<=', now()->format('Y-m-d'))
-        ->where('end_date', '>=', now()->format('Y-m-d'))
+        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
         ->get();
     });
     if ($defaultCategory && !$categories->contains('id', $defaultCategoryId)) {
@@ -471,8 +471,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   {
     $query->where('active', 1)
       ->where('store_tab', 1)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->orderBy('sequence');
   }
   private function loadAllSpecificationsIntoCache()
@@ -493,8 +493,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         ->whereHas('product', function ($query) {
           $query->where('active', true)
             ->where('type', '!=', 'parent')
-            ->where('start_date', '<=', now()->format('Y-m-d'))
-            ->where('end_date', '>=', now()->format('Y-m-d'))
+            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
             ->whereHas('product_categories');
         })
         ->get();
@@ -544,8 +544,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     if (Schema::hasTable('promotions')) {
       $promotions = Cache::rememberForever('promotions', function () {
         $promotions = Promotion::where('active', true)
-          ->where('start_date', '<=', now()->format('Y-m-d'))
-          ->where('end_date', '>=', now()->format('Y-m-d'))
+          ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+          ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
           ->get();
 
         return $promotions->toArray();

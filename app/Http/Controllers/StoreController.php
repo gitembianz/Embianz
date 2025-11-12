@@ -62,8 +62,8 @@ class StoreController extends Controller
       ->sortByAsc('innerid')
       ->first()
       : Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->whereHas('product_categories', function ($query) use ($category) {
         $query->where('category_id', $category->id);
       })
@@ -134,8 +134,8 @@ class StoreController extends Controller
   {
     return $category->id != app('global_default_category') &&
       ($category->active != true ||
-        $category->start_date > now()->format('Y-m-d') ||
-        $category->end_date < now()->format('Y-m-d'));
+        $category->start_date > now(config('app.timezone'))->format('Y-m-d') ||
+        $category->end_date < now(config('app.timezone'))->format('Y-m-d'));
   }
 
   private function getPreloadImage($product, $data, $useCache)
@@ -222,7 +222,7 @@ class StoreController extends Controller
       }
     }
 
-    if (!$data || $data->active != true || $data->start_date > now()->format('Y-m-d') || $data->end_date < now()->format('Y-m-d')) {
+    if (!$data || $data->active != true || $data->start_date > now(config('app.timezone'))->format('Y-m-d') || $data->end_date < now(config('app.timezone'))->format('Y-m-d')) {
       throw new NotFoundHttpException();
     }
 
@@ -253,7 +253,7 @@ public function article($article = null)
         $preload = '';
       }
 
-    if (!$data || $data->active != true || $data->start_date > now()->format('Y-m-d') || $data->end_date < now()->format('Y-m-d')) {
+    if (!$data || $data->active != true || $data->start_date > now(config('app.timezone'))->format('Y-m-d') || $data->end_date < now(config('app.timezone'))->format('Y-m-d')) {
       throw new NotFoundHttpException();
     }
 
