@@ -27,12 +27,6 @@ class StoreHeader extends Component
 
     cookie()->queue(cookie()->make('sessionId', $sessionId, 60 * 24 * $period));
 
-    if ($cookieSessionId) {
-      DB::table('sessions')
-        ->where('id', session()->getId())
-        ->update(['innersession' => $cookieSessionId]);
-    }
-
     return $sessionId;
   }
 
@@ -122,6 +116,21 @@ class StoreHeader extends Component
     ]);
   }
 
+   public function getPromotionProperty()
+  {
+    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
+
+      return collect(app()->make('promotions'))
+        ->filter(function ($promotion) {
+          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['type'] === 'counter';
+        });
+    } else {
+      return collect();
+    }
+  }
 
   protected function applyCategoryConditions($query)
   {
@@ -184,19 +193,5 @@ class StoreHeader extends Component
         ->get();
     }
   }
-  public function getPromotionProperty()
-  {
-    if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
 
-      return collect(app()->make('promotions'))
-        ->filter(function ($promotion) {
-          return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
-            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
-            $promotion['type'] === 'counter';
-        });
-    } else {
-      return collect();
-    }
-  }
 }
