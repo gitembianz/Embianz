@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             // \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\TrackUserSession::class, // Add this line
+            \App\Http\Middleware\PromotionInit::class, // Add this line for PromotionInit middleware
 
         ],
 
