@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Request as ServerRequest;
@@ -38,31 +39,37 @@ class TrackUserSession
     }
 
     $cookieid = $request->cookie('sessionId');
+    $now = Carbon::now(config('app.timezone'))->format('Y-m-d H:i:s');
 
     if ($cookieid) {
       DB::statement("
         UPDATE user_sessions
-        SET updated_at = NOW(),
+        SET updated_at = ?,
             visited_url = ?
         WHERE sessions = ?
     ", [
+        $now,
         $request->fullUrl(),
         $cookieid,
       ]);
     } else {
       $sessionId = Session::getId();
+
       DB::statement("
         INSERT INTO user_sessions
         (sessions, created_at, updated_at, ip_address, user_agent, http_referer, visited_url)
-        VALUES (?, NOW(), NOW(), ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ", [
         $sessionId,
+        $now,
+        $now,
         ServerRequest::ip(),
         $userAgent,
         $request->headers->get('referer'),
         $request->fullUrl(),
       ]);
     }
+
     return $next($request);
   }
 
