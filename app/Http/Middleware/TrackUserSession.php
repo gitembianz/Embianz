@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Request as ServerRequest;
-use Illuminate\Support\Carbon;
 
 class TrackUserSession
 {
   protected static bool $checkedTable = false;
-  protected static bool $hasVisitedUrl = false;
   protected static bool $bootstrapped = false;
 
   public function handle(Request $request, Closure $next)
@@ -32,11 +30,6 @@ class TrackUserSession
         return Schema::hasTable('user_sessions');
       });
 
-      self::$hasVisitedUrl = self::$checkedTable &&
-        Cache::rememberForever('schema_check_user_sessions_visited_url', function () {
-          return Schema::hasColumn('user_sessions', 'visited_url');
-        });
-
       self::$bootstrapped = true;
     }
 
@@ -44,33 +37,32 @@ class TrackUserSession
       return $next($request);
     }
 
-    // ✅ Prepare data
-    $sessionId   = $request->cookie('sessionId') ?? Session::getId();
-    $ipAddress   = ServerRequest::ip();
-    $visitedUrl  = $request->fullUrl();
-    $httpReferer = $request->headers->get('referer');
+    $cookieid = $request->cookie('sessionId');
 
-    $now = Carbon::now(config('app.timezone'));
-
-    $data = [
-      'sessions'     => $sessionId,
-      'created_at'   => $now,
-      'updated_at'   => $now,
-      'ip_address'   => $ipAddress,
-      'user_agent'   => $userAgent,
-      'http_referer' => $httpReferer,
-    ];
-
-    if (self::$hasVisitedUrl) {
-      $data['visited_url'] = $visitedUrl;
+    if ($cookieid) {
+      DB::statement("
+        UPDATE user_sessions
+        SET updated_at = NOW(),
+            visited_url = ?
+        WHERE sessions = ?
+    ", [
+        $request->fullUrl(),
+        $cookieid,
+      ]);
+    } else {
+      $sessionId = Session::getId();
+      DB::statement("
+        INSERT INTO user_sessions
+        (sessions, created_at, updated_at, ip_address, user_agent, http_referer, visited_url)
+        VALUES (?, NOW(), NOW(), ?, ?, ?, ?)
+    ", [
+        $sessionId,
+        ServerRequest::ip(),
+        $userAgent,
+        $request->headers->get('referer'),
+        $request->fullUrl(),
+      ]);
     }
-
-    DB::table('user_sessions')->upsert(
-      $data,
-      ['sessions'],
-      ['updated_at']
-    );
-
     return $next($request);
   }
 
