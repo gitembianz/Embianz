@@ -2,13 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Livewire\Component;
 use App\Models\Subscribers;
-use App\Models\Static_Page;
-use App\Models\UserSessions;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\QueryException;
 
 class StoreFooter extends Component
@@ -40,7 +35,8 @@ class StoreFooter extends Component
   public function timmerexpired()
   {
     $this->timer = 0;
-    $this->emit('timmerexpired');
+    // $this->emit('timmerexpired');
+    $this->dispatchBrowserEvent('refresh-page');
   }
 
   public function store()
