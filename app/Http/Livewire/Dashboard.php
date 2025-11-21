@@ -43,10 +43,14 @@ class Dashboard extends Component
             }
         }
 
-        return view('livewire.dashboard')
-            ->with('activeProductsCount', $activeProductsCount)
-            ->with('activeCategoriesCount', $activeCategoriesCount)
-            ->with('cartCount', $currentCartCount)
-            ->with('orderCount', $orderCount);
+        $data = [
+          'activeProductsCount' => $activeProductsCount,
+          'activeCategoriesCount' => $activeCategoriesCount,
+          'cartCount' => $currentCartCount,
+          'orderCount' => $orderCount,
+
+        ];
+
+        return view('livewire.dashboard', $data);
     }
 }
