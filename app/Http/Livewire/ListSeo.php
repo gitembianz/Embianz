@@ -59,8 +59,17 @@ class ListSeo extends Component
           "{$this->column} as name",
           DB::raw("LENGTH($this->column) as value_length")
         )
+        ->when(
+          DB::getSchemaBuilder()->hasColumn($table, 'active'),
+          fn($q) => $q->where('active', 1)
+        )
+        ->when(
+          $table === 'products',
+          fn($q) => $q->whereIn('type', ['standard', 'variant'])
+        )
         ->whereRaw("LENGTH($this->column) {$this->operator} ?", [$this->caracters_count])
         ->get();
+
 
       foreach ($rows as $row) {
         $results[] = [
