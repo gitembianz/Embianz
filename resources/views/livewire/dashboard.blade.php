@@ -231,6 +231,45 @@
             key('seo-dashboard-10')
         )
 
+        {{-- relations --}}
+        {{-- Product image few < 3 --}}
+        @livewire(
+            'list-relation',
+            [
+                'title' => 'Product image few',
+                'model' => 'product',
+                'relation' => 'media',
+                'operator' => '<',
+                'relation_count' => '3',
+            ],
+            key('relation-dashboard-1')
+        )
+
+        {{-- Product image many > 8 --}}
+        @livewire(
+            'list-relation',
+            [
+                'title' => 'Product image many',
+                'model' => 'product',
+                'relation' => 'media',
+                'operator' => '>',
+                'relation_count' => '8',
+            ],
+            key('relation-dashboard-2')
+        )
+
+        {{-- Product reviews few <3 --}}
+        @livewire(
+            'list-relation',
+            [
+                'title' => 'Product reviews few',
+                'model' => 'product',
+                'relation' => 'reviews',
+                'operator' => '<',
+                'relation_count' => '3',
+            ],
+            key('relation-dashboard-3')
+        )
 
     </div>
 
