@@ -6,10 +6,10 @@ use Livewire\Component;
 class ListRelation extends Component
 {
   public string $title;
-  public string $model;          // product, category
-  public string $relation;       // media, images, etc.
-  public string $operator;       // <, >, >= ...
-  public int    $relation_count; // number
+  public string $model;
+  public string $relation;
+  public string $operator;
+  public int    $relation_count;
   public bool   $showrelated = false;
 
   public int $loadAmount;
@@ -31,9 +31,9 @@ class ListRelation extends Component
       ? app('global_dashboard_limit_load') ?? 50
       : 50;
 
-    $this->model          = $model;    // "product"
-    $this->relation       = $relation; // "media"
-    $this->operator       = $operator; // "<"
+    $this->model          = $model;
+    $this->relation       = $relation;
+    $this->operator       = $operator;
     $this->relation_count = (int) $relation_count;
 
     $this->loadResults();
@@ -51,7 +51,6 @@ class ListRelation extends Component
       return;
     }
 
-    /** @var \Illuminate\Database\Eloquent\Model $model */
     $model = new $modelClass;
 
     if (!method_exists($model, $this->relation)) {
@@ -68,7 +67,7 @@ class ListRelation extends Component
     foreach ($items as $item) {
       $results[] = [
         'id'              => $item->id,
-        'object'          => $item->name ?? $item->title ?? '[no name]',
+        'object'          => $item->name,
         'relation'        => $this->relation,
         'relations_count' => $item->{$this->relation . '_count'},
       ];

@@ -56,7 +56,7 @@ class ListSeo extends Component
       $rows = DB::table($table)
         ->select(
           'id',
-          "{$this->column} as name",
+          'name',
           DB::raw("LENGTH($this->column) as value_length")
         )
         ->when(
