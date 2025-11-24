@@ -96,7 +96,7 @@
           @endif
          @elseif ($column === 'cart_id')
           @if ($order->cart_id)
-           <a href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ $order->cart->name }}</a>
+           <a href="{{ route('show_cart', ['id' => $order->cart_id]) }}">{{ optional($order->cart)->name }}</a>
           @endif
          @else
           {{ $order->$column }}
