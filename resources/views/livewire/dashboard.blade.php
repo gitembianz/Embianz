@@ -271,6 +271,26 @@
             key('relation-dashboard-3')
         )
 
+        {{-- files/media --}}
+        {{-- Missing Images on Server --}}
+
+        @livewire(
+            'missing-images-server',
+            [
+                'title' => 'Missing Images on Server',
+            ],
+            key('files-media-dashboard-1')
+        )
+        {{-- Missing Images on Database --}}
+
+        @livewire(
+            'missing-images-database',
+            [
+                'title' => 'Missing Images on Database',
+            ],
+            key('files-media-dashboard-2')
+        )
+
     </div>
 
 
