@@ -119,121 +119,98 @@ class ShowProduct extends Component
   }
 
   public function saveproduct()
-  {
-    $product_new = $this->prod ?? NULL;
-    if (!is_null($product_new)) {
-      $new = Product::find($this->productId);
-      if (array_key_exists('product_name', $product_new)) {
-        $new->name = $product_new['product_name'];
-      }
-      if (array_key_exists('supplier_name', $product_new)) {
-        $new->supplier_name = $product_new['supplier_name'];
-      }
-      if (array_key_exists('seo_id', $product_new)) {
-        if ($product_new['seo_id'] == "") {
-          $new->seo_id = null;
-        } elseif ($new->seo_id != $product_new['seo_id']) {
-          $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
-        }
-      }
-      if (array_key_exists('type', $product_new)) {
-        $new->type = $product_new['type'];
-      }
-      if (array_key_exists('brand', $product_new)) {
-        $new->brand = $product_new['brand'];
-      }
-      if (array_key_exists('start_date', $product_new)) {
-        $new->start_date = $product_new['start_date'];
-      }
-      if (array_key_exists('active', $product_new)) {
-        $new->active = $product_new['active'];
-      }
-      if (array_key_exists('is_digital', $product_new)) {
-        $new->is_digital = $product_new['is_digital'];
-      }
-      if (array_key_exists('preorder', $product_new)) {
-        $new->preorder = $product_new['preorder'];
-      }
-      if (array_key_exists('is_new', $product_new)) {
-        $new->is_new = $product_new['is_new'];
-      }
-      if (array_key_exists('low_stock', $product_new)) {
-        $new->low_stock = $product_new['low_stock'];
-      }
-      if (array_key_exists('end_date', $product_new)) {
-        $new->end_date = $product_new['end_date'];
-      }
-      if (array_key_exists('quantity', $product_new)) {
-        $new->quantity = $product_new['quantity'];
-      }
-      if (array_key_exists('low_stock_quantity', $product_new)) {
-        $new->low_stock_quantity = $product_new['low_stock_quantity'];
-      }
-      if (array_key_exists('short_description', $product_new)) {
-        $new->short_description = $product_new['short_description'];
-      }
-      if (array_key_exists('comments', $product_new)) {
-        $new->comments = $product_new['comments'];
-      }
-      if (array_key_exists('meta_description', $product_new)) {
-        $new->meta_description = $product_new['meta_description'];
-      }
-      if (array_key_exists('google_category', $product_new)) {
-        $new->google_category = $product_new['google_category'];
-      }
-      if (array_key_exists('popularity', $product_new)) {
-        $new->popularity = $product_new['popularity'];
-        Cache::forget('max_popularity');
-
-        $maxPopularity = app('max_popularity');
-        if ($new->popularity > 0 && $maxPopularity > 0) {
-          $value = (100 / ($maxPopularity / $new->popularity)) / 20;
-        } else {
-          $value = 0;
-        }
-
-        if (!$new->reviews->first()) {
-          ModelsProductReviews::create([
-            'product_id' => $new->id,
-            'count' => 1,
-            'value' => $value
-          ]);
-        } else {
-          ModelsProductReviews::where('product_id', $new->id)->update([
-            'value' => $value,
-          ]);
-        }
-      }
-
-      if (array_key_exists('long_description', $product_new)) {
-        $new->long_description = $product_new['long_description'];
-      }
-      if (array_key_exists('seo_title', $product_new)) {
-        $new->seo_title = $product_new['seo_title'];
-      }
-      if (array_key_exists('sku', $product_new)) {
-        $new->sku = $product_new['sku'];
-      }
-      if (array_key_exists('ean', $product_new)) {
-        $new->ean = $product_new['ean'];
-      }
-      $new->last_modified_by = Auth::user()->name;
-      $new->updated_at = now(config('app.timezone'));
-      $new->save();
-      $this->emit('itemSaved');
-      session()->flash('notification', [
-        'message' => 'Record edited successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
+{
+    if (empty($this->prod)) {
+        $this->editproduct = null;
+        return;
     }
-    $this->prod = [];
-    $this->editproduct = null;
-  }
+
+    try {
+
+        $product = Product::find($this->productId);
+
+        if (!$product) {
+            $this->editproduct = null;
+            return;
+        }
+
+        $input = $this->prod;
+
+        $allowedFields = [
+            'product_name'        => 'name',
+            'supplier_name'       => 'supplier_name',
+            'type'                => 'type',
+            'brand'               => 'brand',
+            'start_date'          => 'start_date',
+            'active'              => 'active',
+            'is_digital'          => 'is_digital',
+            'preorder'            => 'preorder',
+            'is_new'              => 'is_new',
+            'low_stock'           => 'low_stock',
+            'end_date'            => 'end_date',
+            'quantity'            => 'quantity',
+            'low_stock_quantity'  => 'low_stock_quantity',
+            'short_description'   => 'short_description',
+            'comments'            => 'comments',
+            'meta_description'    => 'meta_description',
+            'google_category'     => 'google_category',
+            'popularity'          => 'popularity',
+            'long_description'    => 'long_description',
+            'seo_title'           => 'seo_title',
+            'sku'                 => 'sku',
+            'ean'                 => 'ean',
+        ];
+
+        // normal fields
+        foreach ($allowedFields as $inputKey => $columnKey) {
+            if (array_key_exists($inputKey, $input)) {
+                $product->{$columnKey} = $input[$inputKey];
+            }
+        }
+
+        // SEO logic
+        if (array_key_exists('seo_id', $input)) {
+            if ($input['seo_id'] === "") {
+                $product->seo_id = null;
+            } elseif ($product->seo_id !== $input['seo_id']) {
+                $product->seo_id = $this->generateUniqueSeoId($input['seo_id']);
+            }
+        }
+
+        $product->last_modified_by = Auth::user()->name;
+
+        $product->save();
+
+        $this->emit('itemSaved');
+
+        session()->flash('notification', [
+            'message' => 'Record edited successfully!',
+            'type'    => 'success',
+            'title'   => 'Success'
+        ]);
+
+        $this->prod = [];
+        $this->editproduct = null;
+
+    } catch (\Throwable $e) {
+
+        $this->addError('database', $e->getMessage());
+
+        session()->flash('notification', [
+            'message' => 'Database error: ' . $e->getMessage(),
+            'type'    => 'error',
+            'title'   => 'Error'
+        ]);
+    }
+}
+
+
+
   public function updated()
   {
     $this->dispatchBrowserEvent('tabNavigation');
   }
+
   public function cancelproduct()
   {
     $this->editproduct = null;

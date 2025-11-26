@@ -5,13 +5,11 @@ namespace App\Providers;
 use App\Models\Status;
 use App\Models\Country;
 use App\Models\Payment;
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\PriceList;
 use App\Models\Promotion;
 use App\Models\TextLabel;
 use App\Models\Static_Page;
-use Illuminate\Support\Str;
 use App\Models\CustomScript;
 use App\Models\Product_Spec;
 use App\Models\Store_Settings;
@@ -43,53 +41,32 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadGlobalPayments();
     $this->loadGlobalCustomScripts();
     $this->loadGlobalCurrencies();
-    $this->loadHighestPopularity();
     $this->loadAllSpecificationsIntoCache();
     $this->loadActiveCountries();
 
     if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
-
       $this->loadCategoryOneProduct();
     }
 
-
     if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
-
       $this->loadAllPromotionsIntoCache();
     }
-    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
-
-      $this->loadAllProductsIntoCache();
-      $this->loadAllCategoriesIntoCache();
-    }
   }
-  private function loadHighestPopularity()
-  {
-    if (Schema::hasTable('products')) {
 
-      $highestPopularity = Cache::rememberForever('max_popularity', function () {
-        return Product::max('popularity');
-      });
 
-      $this->app->instance('max_popularity', $highestPopularity);
-    }
-  }
   private function loadActivePages()
   {
-    if (Schema::hasTable('static__pages')) {
-
+    try {
       $pages = Cache::rememberForever('static_pages', function () {
         return Static_Page::where('active', true)->get();
       });
-      $this->app->instance('static_pages', $pages);
 
-      foreach ($pages as $page) {
-        Route::get($page->route, function () use ($page) {
-          return view('store.page', ['page' => $page]);
-        })->name($page->route);
-      }
+      $this->app->instance('static_pages', $pages);
+    } catch (\Exception $e) {
+      return;
     }
   }
+
 
   private function loadGlobalVariables()
   {
@@ -165,88 +142,88 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
 
   private function loadActiveCountries()
-{
+  {
     if (
-        Schema::hasTable('countries') &&
-        Schema::hasTable('counties') &&
-        Schema::hasTable('cities')
+      Schema::hasTable('countries') &&
+      Schema::hasTable('counties') &&
+      Schema::hasTable('cities')
     ) {
 
-        $activeCountries = Cache::rememberForever('active_countries', function () {
-            $countries = Country::where('status', true)
-                ->select(['id', 'name', 'iso_code'])
-                ->with(['counties' => function ($query) {
-                    $query->where('status', true)
-                        ->select(['id', 'country_id', 'name', 'iso_code'])
-                        ->orderBy('name')
-                        ->with(['cities' => function ($query) {
-                            $query->where('status', true)
-                                ->select(['id', 'county_id', 'name'])
-                                ->orderBy('name');
-                        }]);
-                }])
-                ->orderBy('name')
-                ->get();
+      $activeCountries = Cache::rememberForever('active_countries', function () {
+        $countries = Country::where('status', true)
+          ->select(['id', 'name', 'iso_code'])
+          ->with(['counties' => function ($query) {
+            $query->where('status', true)
+              ->select(['id', 'country_id', 'name', 'iso_code'])
+              ->orderBy('name')
+              ->with(['cities' => function ($query) {
+                $query->where('status', true)
+                  ->select(['id', 'county_id', 'name'])
+                  ->orderBy('name');
+              }]);
+          }])
+          ->orderBy('name')
+          ->get();
 
-            $folder = 'js/countries';
+        $folder = 'js/countries';
 
-            Storage::disk('public_upload')->deleteDirectory($folder);
-            Storage::disk('public_upload')->makeDirectory($folder);
+        Storage::disk('public_upload')->deleteDirectory($folder);
+        Storage::disk('public_upload')->makeDirectory($folder);
 
-            $final = [];
+        $final = [];
 
-            foreach ($countries as $country) {
-                if ($country->counties->isEmpty()) {
-                    continue;
-                }
+        foreach ($countries as $country) {
+          if ($country->counties->isEmpty()) {
+            continue;
+          }
 
-                $countryData = [
-                    'id' => $country->id,
-                    'name' => $country->name,
-                    'iso_code' => $country->iso_code,
-                    'counties' => $country->counties->map(function ($county) {
-                        return [
-                            'id' => $county->id,
-                            'country_id' => $county->country_id,
-                            'name' => $county->name,
-                            'iso_code' => $county->iso_code,
-                            'cities' => $county->cities->map(function ($city) {
-                                return [
-                                    'id' => $city->id,
-                                    'county_id' => $city->county_id,
-                                    'name' => $city->name,
-                                ];
-                            })->toArray(),
-                        ];
-                    })->toArray(),
-                ];
+          $countryData = [
+            'id' => $country->id,
+            'name' => $country->name,
+            'iso_code' => $country->iso_code,
+            'counties' => $country->counties->map(function ($county) {
+              return [
+                'id' => $county->id,
+                'country_id' => $county->country_id,
+                'name' => $county->name,
+                'iso_code' => $county->iso_code,
+                'cities' => $county->cities->map(function ($city) {
+                  return [
+                    'id' => $city->id,
+                    'county_id' => $city->county_id,
+                    'name' => $city->name,
+                  ];
+                })->toArray(),
+              ];
+            })->toArray(),
+          ];
 
-                $fileName = str_replace(' ', '_', $country->name) . '.json';
-                $filePath = $folder . '/' . $fileName;
+          $fileName = str_replace(' ', '_', $country->name) . '.json';
+          $filePath = $folder . '/' . $fileName;
 
-                Storage::disk('public_upload')->put(
-                    $filePath,
-                    json_encode($countryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-                );
+          Storage::disk('public_upload')->put(
+            $filePath,
+            json_encode($countryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+          );
 
-                $final[] = $countryData;
-            }
+          $final[] = $countryData;
+        }
 
-            // ✅ Generate version only when cache is built
-            $version = now(config('app.timezone'))->format('YmdHi');
-            Cache::forever('countries_version', $version);
+        // ✅ Generate version only when cache is built
+        $version = now(config('app.timezone'))->format('YmdHi');
+        Cache::forever('countries_version', $version);
 
-            return $final;
-        });
+        return $final;
+      });
 
-        // ✅ Retrieve the version from cache, not regenerate it
-        $version = Cache::get('countries_version', now(config('app.timezone'))->format('YmdHi'));
+      // ✅ Retrieve the version from cache, not regenerate it
+      $version = Cache::get('countries_version', now(config('app.timezone'))->format('YmdHi'));
 
-        // Make both instances available globally
-        $this->app->instance('countries_version', $version);
-        $this->app->instance('active_countries', $activeCountries);
+      // Make both instances available globally
+      $this->app->instance('countries_version', $version);
+      $this->app->instance('active_countries', $activeCountries);
     }
-}
+  }
 
 
 
@@ -324,156 +301,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->app->instance('global_currency_' . strtolower($priceListName) . '_symbol', $currency['currency_symbol']);
       }
     }
-  }
-
-  private function loadAllProductsIntoCache()
-  {
-
-    $products = Cache::rememberForever('cached_products', function () {
-
-      return Product::where('active', true)
-        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-        ->with([
-          'product_categories' => function ($query) {
-            $query->select('product_id', 'category_id', 'primary_category');
-            $query->with(['category' => function ($query) {
-              $query->select('id', 'short_description', 'seo_id');
-            }]);
-          },
-          'reviews' => function ($query) {
-            $query->select('product_id', 'count', 'value');
-          },
-          'product_specs' => function ($query) {
-            $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
-          },
-          'related_product' => function ($query) {
-            $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
-              'product' => function ($query) {
-                $query->where('active', 1)->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
-                  ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
-                    'media' => function ($query) {
-                      $query->select('path', 'name', 'type')->where('type', 'main');
-                    },
-                    'reviews' => function ($query) {
-                      $query->select('product_id', 'count', 'value');
-                    },
-                    'product_prices' => function ($query) {
-                      $query->select('product_id', 'value', 'discount', 'value_no_discount');
-                    },
-                    'product_categories' => function ($query) {
-                      $query->select('product_id', 'category_id', 'primary_category');
-                      $query->with(['category' => function ($query) {
-                        $query->select('id', 'short_description', 'seo_id');
-                      }]);
-                    }
-                  ]);
-              }
-            ]);
-          },
-          'variants',
-          'parent' => function ($query) {
-            $query->with(['variants' => function ($query) {
-              $query->distinct('variant_id')->with(['product' => function ($query) {
-                $query->where('active', true)
-                  ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-                  ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-                  ->with([
-                    'media' => function ($query) {
-                      $query->select('path', 'name')->where('type', 'min');
-                    },
-                    'beeingvariants'
-                  ]);
-              }]);
-            }]);
-          },
-          'beeingvariants',
-          'product_prices' => function ($query) {
-            $query->select('product_id', 'value', 'discount', 'value_no_discount');
-          },
-          'wishlists',
-          'media',
-        ])->get();
-    });
-
-    $this->app->instance('cached_products', $products);
-  }
-
-  private function loadAllCategoriesIntoCache()
-  {
-    $defaultCategoryId = app('global_default_category');
-    $defaultCategory = Category::with([
-      'media' => function ($query) {
-        $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
-      },
-      'parent',
-      'subcategory' => function ($query) {
-        $query->with([
-          'category' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'sequence')->with([
-              'media' => function ($query) {
-                $query->select('media_id', 'path', 'name');
-              }
-            ]);
-          }
-        ]);
-      }
-    ])->find($defaultCategoryId);
-    $categories = Cache::rememberForever('cached_categories', function () {
-      return Category::with([
-        'media' => function ($query) {
-          $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
-        },
-        'parent',
-        'subcategory' => function ($query) {
-          $query->whereHas('category', function ($query) {
-            $this->applySubcategoryConditions($query);
-          })->with([
-            'category' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'sequence');
-              $this->applySubcategoryConditions($query);
-              $query->with([
-                'media' => function ($query) {
-                  $query->where('type', 'min')->select('media_id', 'path', 'name');
-                },
-                'subcategory' => function ($query) {
-                  $query->whereHas('category', function ($query) {
-                    $this->applySubcategoryConditions($query);
-                  })->with([
-                    'category' => function ($query) {
-                      $query->select('id', 'name', 'seo_id', 'sequence');
-                      $this->applySubcategoryConditions($query);
-                      $query->with([
-                        'media' => function ($query) {
-                          $query->where('type', 'min')->select('media_id', 'path', 'name');
-                        }
-                      ]);
-                    }
-                  ]);
-                }
-              ]);
-            }
-          ]);
-        }
-      ])
-        ->where('active', 1)
-        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-        ->get();
-    });
-    if ($defaultCategory && !$categories->contains('id', $defaultCategoryId)) {
-      $categories->push($defaultCategory);
-    }
-
-    $this->app->instance('cached_categories', $categories);
-  }
-  protected function applySubcategoryConditions($query)
-  {
-    $query->where('active', 1)
-      ->where('store_tab', 1)
-      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-      ->orderBy('sequence');
   }
   private function loadAllSpecificationsIntoCache()
   {

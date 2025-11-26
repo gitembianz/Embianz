@@ -122,11 +122,11 @@ class DynamicCsvImportJob implements ShouldQueue
             'finished_at' => now(config('app.timezone')),
             'errors' => "Missing required column: {$required}.",
           ]);
-           $allJobRecord?->update([
-          'status' => 'failed',
-          'finished_at' => now(config('app.timezone')),
-          'error' => "Missing required column: {$required}."
-        ]);
+          $allJobRecord?->update([
+            'status' => 'failed',
+            'finished_at' => now(config('app.timezone')),
+            'error' => "Missing required column: {$required}."
+          ]);
           return;
         }
       }
@@ -167,11 +167,11 @@ class DynamicCsvImportJob implements ShouldQueue
           'errors' => null,
         ]);
       }
-       $allJobRecord?->update([
-          'status' => 'finished',
-          'finished_at' => now(config('app.timezone')),
-          'errors' => null,
-        ]);
+      $allJobRecord?->update([
+        'status' => 'finished',
+        'finished_at' => now(config('app.timezone')),
+        'errors' => null,
+      ]);
     } catch (\Throwable $e) {
       $jobRecord = CsvImportJob::find($this->jobId);
       if ($jobRecord) {
@@ -252,27 +252,67 @@ class DynamicCsvImportJob implements ShouldQueue
       } else {
         unset($data['id']);
         $insertedId = DB::table($this->table)->insertGetId($data);
+        // Special handling for products table
         if ($this->table === 'products') {
-          Cache::forget('max_popularity');
-          $insertedProduct = DB::table($this->table)->where('id', $insertedId)->first();
+
+          // Assign default category if set
           if (app('global_default_category') != 0) {
             $defaultcategory = new Products_categories();
             $defaultcategory->product_id = $insertedId;
             $defaultcategory->category_id = app('global_default_category');
             $defaultcategory->save();
           }
-          if ($insertedProduct && $insertedProduct->popularity > app('max_popularity')) {
-            $value = (100 / ($insertedProduct->popularity / $insertedProduct->popularity)) / 20;
-          } else if ($insertedProduct) {
-            $value = (100 / (app('max_popularity') / $insertedProduct->popularity)) / 20;
-          } else {
-            $value = 0;
-          }
+          // Calculate and insert default review
+          $acronims = [
+            'JD',
+            'AM',
+            'CR',
+            'LS',
+            'MK',
+            'PT',
+            'RB',
+            'SN',
+            'VL',
+            'XT',
+            'AN',
+            'BG',
+            'CZ',
+            'DK',
+            'EV',
+            'FP',
+            'GH',
+            'HK',
+            'IL',
+            'JM'
+          ];
 
+          $comments = [
+            'Produs excelent, foarte mulțumit!',
+            'Exact ce aveam nevoie, funcționează perfect.',
+            'Calitate foarte bună și livrare rapidă.',
+            'Raport calitate-preț foarte bun.',
+            'A depășit așteptările mele.',
+            'Produs bun, îl recomand.',
+            'Sunt foarte încântat de această achiziție.',
+            'Construcție solidă, se simte premium.',
+            'Livrare rapidă și ambalaj de calitate.',
+            'Merită cumpărat din nou.',
+            'Funcționează impecabil, recomand cu încredere.',
+            'Servicii excelente, produsul conform descrierii.',
+            'Preț corect pentru ceea ce oferă.',
+            'Foarte practic și ușor de folosit.',
+            'Un produs de încredere, recomand oricui.'
+          ];
+
+          $acronim = $acronims[array_rand($acronims)];
+          $slug = strtolower($acronim) . '-' . rand(1000, 9999);
+          $comm = $comments[array_rand($comments)];
           ModelsProductReviews::create([
             'product_id' => $insertedId,
-            'count' => 1,
-            'value' => $value
+            'acronim'    => $slug,
+            'score'      => rand(4, 5),
+            'comment'    => $comm,
+            'approved'   => true
           ]);
         }
       }

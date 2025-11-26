@@ -967,7 +967,7 @@ class Storesettingstable extends Component
           'product_id' => $product->id,
           'acronim'    => $slug,
           'score'      => rand(4, 5),
-          'comment'    => 'Produs excelent, foarte mulțumit!',
+          'comment'    => $comm,
           'approved'   => true
         ]);
       }

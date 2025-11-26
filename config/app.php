@@ -202,6 +202,8 @@ return [
     App\Providers\GlobalVariablesServiceProvider::class,
     Barryvdh\DomPDF\ServiceProvider::class,
     App\Providers\PromotionServiceProvider::class,
+    App\Providers\StaticPageRouteServiceProvider::class,
+
 
   ],
 
