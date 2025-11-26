@@ -203,26 +203,10 @@
     route::view('/cart', 'store.cart')->name('cart');
     route::view('/wishlist', 'store.wislist')->name('wislist');
     route::view('/order', 'store.order')->name('order');
-    route::view('/faq', 'store.faq')->name('faq');
-    route::view('/cookie', 'store.cookie')->name('cookie');
-    route::view('/privacy', 'store.privacy')->name('privacy');
-    route::view('/contact', 'store.contact')->name('contact');
-    route::view('/about', 'store.about')->name('about');
     route::view('/confirm', 'store.confirm')->name('confirm');
-    route::view('/terms', 'store.terms')->name('terms');
     route::view('/redirect', 'store.redirect')->name('redirect');
     Route::view('/404', 'store.404')->name('404');
 
-    $pages = Cache::get('static_pages');
-
-    if ($pages) {
-
-      foreach ($pages as $page) {
-        Route::get($page->route, function () use ($page) {
-          return view('store.page', ['page' => $page]);
-        })->name($page->route);
-      }
-    }
 
     //Functionality page routes
     route::get('/product/{product}', [StoreController::class, 'show'])->name('product');

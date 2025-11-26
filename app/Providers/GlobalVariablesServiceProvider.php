@@ -51,26 +51,22 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
       $this->loadAllPromotionsIntoCache();
     }
-
   }
 
 
   private function loadActivePages()
   {
-    if (Schema::hasTable('static__pages')) {
-
+    try {
       $pages = Cache::rememberForever('static_pages', function () {
         return Static_Page::where('active', true)->get();
       });
-      $this->app->instance('static_pages', $pages);
 
-      foreach ($pages as $page) {
-        Route::get($page->route, function () use ($page) {
-          return view('store.page', ['page' => $page]);
-        })->name($page->route);
-      }
+      $this->app->instance('static_pages', $pages);
+    } catch (\Exception $e) {
+      return;
     }
   }
+
 
   private function loadGlobalVariables()
   {
@@ -146,88 +142,88 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
 
   private function loadActiveCountries()
-{
+  {
     if (
-        Schema::hasTable('countries') &&
-        Schema::hasTable('counties') &&
-        Schema::hasTable('cities')
+      Schema::hasTable('countries') &&
+      Schema::hasTable('counties') &&
+      Schema::hasTable('cities')
     ) {
 
-        $activeCountries = Cache::rememberForever('active_countries', function () {
-            $countries = Country::where('status', true)
-                ->select(['id', 'name', 'iso_code'])
-                ->with(['counties' => function ($query) {
-                    $query->where('status', true)
-                        ->select(['id', 'country_id', 'name', 'iso_code'])
-                        ->orderBy('name')
-                        ->with(['cities' => function ($query) {
-                            $query->where('status', true)
-                                ->select(['id', 'county_id', 'name'])
-                                ->orderBy('name');
-                        }]);
-                }])
-                ->orderBy('name')
-                ->get();
+      $activeCountries = Cache::rememberForever('active_countries', function () {
+        $countries = Country::where('status', true)
+          ->select(['id', 'name', 'iso_code'])
+          ->with(['counties' => function ($query) {
+            $query->where('status', true)
+              ->select(['id', 'country_id', 'name', 'iso_code'])
+              ->orderBy('name')
+              ->with(['cities' => function ($query) {
+                $query->where('status', true)
+                  ->select(['id', 'county_id', 'name'])
+                  ->orderBy('name');
+              }]);
+          }])
+          ->orderBy('name')
+          ->get();
 
-            $folder = 'js/countries';
+        $folder = 'js/countries';
 
-            Storage::disk('public_upload')->deleteDirectory($folder);
-            Storage::disk('public_upload')->makeDirectory($folder);
+        Storage::disk('public_upload')->deleteDirectory($folder);
+        Storage::disk('public_upload')->makeDirectory($folder);
 
-            $final = [];
+        $final = [];
 
-            foreach ($countries as $country) {
-                if ($country->counties->isEmpty()) {
-                    continue;
-                }
+        foreach ($countries as $country) {
+          if ($country->counties->isEmpty()) {
+            continue;
+          }
 
-                $countryData = [
-                    'id' => $country->id,
-                    'name' => $country->name,
-                    'iso_code' => $country->iso_code,
-                    'counties' => $country->counties->map(function ($county) {
-                        return [
-                            'id' => $county->id,
-                            'country_id' => $county->country_id,
-                            'name' => $county->name,
-                            'iso_code' => $county->iso_code,
-                            'cities' => $county->cities->map(function ($city) {
-                                return [
-                                    'id' => $city->id,
-                                    'county_id' => $city->county_id,
-                                    'name' => $city->name,
-                                ];
-                            })->toArray(),
-                        ];
-                    })->toArray(),
-                ];
+          $countryData = [
+            'id' => $country->id,
+            'name' => $country->name,
+            'iso_code' => $country->iso_code,
+            'counties' => $country->counties->map(function ($county) {
+              return [
+                'id' => $county->id,
+                'country_id' => $county->country_id,
+                'name' => $county->name,
+                'iso_code' => $county->iso_code,
+                'cities' => $county->cities->map(function ($city) {
+                  return [
+                    'id' => $city->id,
+                    'county_id' => $city->county_id,
+                    'name' => $city->name,
+                  ];
+                })->toArray(),
+              ];
+            })->toArray(),
+          ];
 
-                $fileName = str_replace(' ', '_', $country->name) . '.json';
-                $filePath = $folder . '/' . $fileName;
+          $fileName = str_replace(' ', '_', $country->name) . '.json';
+          $filePath = $folder . '/' . $fileName;
 
-                Storage::disk('public_upload')->put(
-                    $filePath,
-                    json_encode($countryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-                );
+          Storage::disk('public_upload')->put(
+            $filePath,
+            json_encode($countryData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+          );
 
-                $final[] = $countryData;
-            }
+          $final[] = $countryData;
+        }
 
-            // ✅ Generate version only when cache is built
-            $version = now(config('app.timezone'))->format('YmdHi');
-            Cache::forever('countries_version', $version);
+        // ✅ Generate version only when cache is built
+        $version = now(config('app.timezone'))->format('YmdHi');
+        Cache::forever('countries_version', $version);
 
-            return $final;
-        });
+        return $final;
+      });
 
-        // ✅ Retrieve the version from cache, not regenerate it
-        $version = Cache::get('countries_version', now(config('app.timezone'))->format('YmdHi'));
+      // ✅ Retrieve the version from cache, not regenerate it
+      $version = Cache::get('countries_version', now(config('app.timezone'))->format('YmdHi'));
 
-        // Make both instances available globally
-        $this->app->instance('countries_version', $version);
-        $this->app->instance('active_countries', $activeCountries);
+      // Make both instances available globally
+      $this->app->instance('countries_version', $version);
+      $this->app->instance('active_countries', $activeCountries);
     }
-}
+  }
 
 
 
