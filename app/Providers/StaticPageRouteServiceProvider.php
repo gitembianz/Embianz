@@ -10,26 +10,27 @@ use App\Models\Static_Page;
 
 class StaticPageRouteServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        try {
-            $pages = Cache::get('static_pages');
+  public function boot()
+  {
+    try {
+      $pages = Cache::get('static_pages');
 
-            if (!$pages) {
-                return;
-            }
+      if (!$pages) {
+        return;
+      }
 
-            Route::middleware('web')->group(function () use ($pages) {
-                foreach ($pages as $page) {
-                    Route::get($page->route, function () use ($page) {
-                        return view('store.page', ['page' => $page]);
-                    })->name($page->route);
-                }
-            });
+      Route::group([
+        'middleware' => ['web', 'site.off']
+      ], function () use ($pages) {
 
-        } catch (\Exception $e) {
-            return;
+        foreach ($pages as $page) {
+          Route::get($page->route, function () use ($page) {
+            return view('store.page', ['page' => $page]);
+          })->name($page->route);
         }
+      });
+    } catch (\Exception $e) {
+      return;
     }
+  }
 }
-
