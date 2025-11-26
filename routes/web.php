@@ -12,8 +12,6 @@
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-  use App\Models\Static_Page;
-  use Illuminate\Support\Facades\Schema;
 
   /*
 |--------------------------------------------------------------------------
@@ -184,8 +182,6 @@
         Artisan::call('db:seed');
         echo 'Database seeded';
       });
-      route::get('/seedreviews', [AdminController::class, 'seedreviews']);
-      route::get('/updatereviews', [AdminController::class, 'updatereviews']);
 
       route::get('/checkorders', [AdminController::class, 'checkorders'])->name('checkorders');
       route::get('/updatecosts', [AdminController::class, 'updatecosts']);

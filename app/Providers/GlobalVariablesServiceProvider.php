@@ -11,7 +11,6 @@ use App\Models\PriceList;
 use App\Models\Promotion;
 use App\Models\TextLabel;
 use App\Models\Static_Page;
-use Illuminate\Support\Str;
 use App\Models\CustomScript;
 use App\Models\Product_Spec;
 use App\Models\Store_Settings;
@@ -43,37 +42,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadGlobalPayments();
     $this->loadGlobalCustomScripts();
     $this->loadGlobalCurrencies();
-    $this->loadHighestPopularity();
     $this->loadAllSpecificationsIntoCache();
     $this->loadActiveCountries();
 
     if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
-
       $this->loadCategoryOneProduct();
     }
 
-
     if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
-
       $this->loadAllPromotionsIntoCache();
     }
-    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
-      $this->loadAllProductsIntoCache();
-      $this->loadAllCategoriesIntoCache();
-    }
   }
-  private function loadHighestPopularity()
-  {
-    if (Schema::hasTable('products')) {
 
-      $highestPopularity = Cache::rememberForever('max_popularity', function () {
-        return Product::max('popularity');
-      });
 
-      $this->app->instance('max_popularity', $highestPopularity);
-    }
-  }
   private function loadActivePages()
   {
     if (Schema::hasTable('static__pages')) {
@@ -324,156 +306,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->app->instance('global_currency_' . strtolower($priceListName) . '_symbol', $currency['currency_symbol']);
       }
     }
-  }
-
-  private function loadAllProductsIntoCache()
-  {
-
-    $products = Cache::rememberForever('cached_products', function () {
-
-      return Product::where('active', true)
-        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-        ->with([
-          'product_categories' => function ($query) {
-            $query->select('product_id', 'category_id', 'primary_category');
-            $query->with(['category' => function ($query) {
-              $query->select('id', 'short_description', 'seo_id');
-            }]);
-          },
-          'reviews' => function ($query) {
-            $query->select('product_id', 'count', 'value');
-          },
-          'product_specs' => function ($query) {
-            $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
-          },
-          'related_product' => function ($query) {
-            $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
-              'product' => function ($query) {
-                $query->where('active', 1)->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
-                  ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
-                    'media' => function ($query) {
-                      $query->select('path', 'name', 'type')->where('type', 'main');
-                    },
-                    'reviews' => function ($query) {
-                      $query->select('product_id', 'count', 'value');
-                    },
-                    'product_prices' => function ($query) {
-                      $query->select('product_id', 'value', 'discount', 'value_no_discount');
-                    },
-                    'product_categories' => function ($query) {
-                      $query->select('product_id', 'category_id', 'primary_category');
-                      $query->with(['category' => function ($query) {
-                        $query->select('id', 'short_description', 'seo_id');
-                      }]);
-                    }
-                  ]);
-              }
-            ]);
-          },
-          'variants',
-          'parent' => function ($query) {
-            $query->with(['variants' => function ($query) {
-              $query->distinct('variant_id')->with(['product' => function ($query) {
-                $query->where('active', true)
-                  ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-                  ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-                  ->with([
-                    'media' => function ($query) {
-                      $query->select('path', 'name')->where('type', 'min');
-                    },
-                    'beeingvariants'
-                  ]);
-              }]);
-            }]);
-          },
-          'beeingvariants',
-          'product_prices' => function ($query) {
-            $query->select('product_id', 'value', 'discount', 'value_no_discount');
-          },
-          'wishlists',
-          'media',
-        ])->get();
-    });
-
-    $this->app->instance('cached_products', $products);
-  }
-
-  private function loadAllCategoriesIntoCache()
-  {
-    $defaultCategoryId = app('global_default_category');
-    $defaultCategory = Category::with([
-      'media' => function ($query) {
-        $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
-      },
-      'parent',
-      'subcategory' => function ($query) {
-        $query->with([
-          'category' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'sequence')->with([
-              'media' => function ($query) {
-                $query->select('media_id', 'path', 'name');
-              }
-            ]);
-          }
-        ]);
-      }
-    ])->find($defaultCategoryId);
-    $categories = Cache::rememberForever('cached_categories', function () {
-      return Category::with([
-        'media' => function ($query) {
-          $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
-        },
-        'parent',
-        'subcategory' => function ($query) {
-          $query->whereHas('category', function ($query) {
-            $this->applySubcategoryConditions($query);
-          })->with([
-            'category' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'sequence');
-              $this->applySubcategoryConditions($query);
-              $query->with([
-                'media' => function ($query) {
-                  $query->where('type', 'min')->select('media_id', 'path', 'name');
-                },
-                'subcategory' => function ($query) {
-                  $query->whereHas('category', function ($query) {
-                    $this->applySubcategoryConditions($query);
-                  })->with([
-                    'category' => function ($query) {
-                      $query->select('id', 'name', 'seo_id', 'sequence');
-                      $this->applySubcategoryConditions($query);
-                      $query->with([
-                        'media' => function ($query) {
-                          $query->where('type', 'min')->select('media_id', 'path', 'name');
-                        }
-                      ]);
-                    }
-                  ]);
-                }
-              ]);
-            }
-          ]);
-        }
-      ])
-        ->where('active', 1)
-        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-        ->get();
-    });
-    if ($defaultCategory && !$categories->contains('id', $defaultCategoryId)) {
-      $categories->push($defaultCategory);
-    }
-
-    $this->app->instance('cached_categories', $categories);
-  }
-  protected function applySubcategoryConditions($query)
-  {
-    $query->where('active', 1)
-      ->where('store_tab', 1)
-      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-      ->orderBy('sequence');
   }
   private function loadAllSpecificationsIntoCache()
   {

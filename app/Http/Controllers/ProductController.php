@@ -85,26 +85,65 @@ class ProductController extends Controller
       'created_by' => Auth::user()->name,
       'last_modified_by' => Auth::user()->name,
     ]);
-    Cache::forget('max_popularity');
+
     if (app('global_default_category') != 0) {
       $defaultcategory = new Products_categories();
       $defaultcategory->product_id = $newproduct->id;
       $defaultcategory->category_id = app('global_default_category');
       $defaultcategory->save();
     }
-    if ($newproduct->popularity > app('max_popularity')) {
-      $value = (100 / ($newproduct->popularity / $newproduct->popularity)) / 20;
-    } else {
 
-      $value = (100 / (app('max_popularity') / $newproduct->popularity)) / 20;
-    }
+    $acronims = [
+      'JD',
+      'AM',
+      'CR',
+      'LS',
+      'MK',
+      'PT',
+      'RB',
+      'SN',
+      'VL',
+      'XT',
+      'AN',
+      'BG',
+      'CZ',
+      'DK',
+      'EV',
+      'FP',
+      'GH',
+      'HK',
+      'IL',
+      'JM'
+    ];
 
+    $comments = [
+      'Produs excelent, foarte mulțumit!',
+      'Exact ce aveam nevoie, funcționează perfect.',
+      'Calitate foarte bună și livrare rapidă.',
+      'Raport calitate-preț foarte bun.',
+      'A depășit așteptările mele.',
+      'Produs bun, îl recomand.',
+      'Sunt foarte încântat de această achiziție.',
+      'Construcție solidă, se simte premium.',
+      'Livrare rapidă și ambalaj de calitate.',
+      'Merită cumpărat din nou.',
+      'Funcționează impecabil, recomand cu încredere.',
+      'Servicii excelente, produsul conform descrierii.',
+      'Preț corect pentru ceea ce oferă.',
+      'Foarte practic și ușor de folosit.',
+      'Un produs de încredere, recomand oricui.'
+    ];
+
+    $acronim = $acronims[array_rand($acronims)];
+    $slug = strtolower($acronim) . '-' . rand(1000, 9999);
+    $comm = $comments[array_rand($comments)];
     ModelsProductReviews::create([
       'product_id' => $newproduct->id,
-      'count' => 1,
-      'value' => $value
+      'acronim'    => $slug,
+      'score'      => rand(4, 5),
+      'comment'    => $comm,
+      'approved'   => true
     ]);
-
 
     return redirect()->back()->with([
       'notification' => [
@@ -128,7 +167,7 @@ class ProductController extends Controller
       ->leftJoin('media', function ($join) {
         $join->on('item_media.media_id', '=', 'media.id')
           ->where('media.type', '=', 'full')
-          ->where('media.sequence','=','1');
+          ->where('media.sequence', '=', '1');
       })
       ->leftJoin('products_categories', function ($join) {
         $join->on('products.id', '=', 'products_categories.product_id')

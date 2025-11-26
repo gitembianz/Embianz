@@ -689,40 +689,7 @@ class AdminController extends Controller
     return view('admin.show_order', compact('data'));
   }
 
-  // seed reviews
-  public function seedreviews()
-  {
-    $prods = Product::where('active', true)
-      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))->get();
 
-    foreach ($prods as $product) {
-      if (!$product->reviews->first()) {
-        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
-
-        ModelsProductReviews::create([
-          'product_id' => $product->id,
-          'count' => 1,
-          'value' => $value
-        ]);
-      }
-    }
-    return Redirect::to('/');
-  }
-  public function updatereviews()
-  {
-    $prods = Product::where('active', true)
-      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))->get();
-
-    foreach ($prods as $product) {
-      $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
-      ModelsProductReviews::where('product_id', $product->id)->update([
-        'value' => $value,
-      ]);
-    }
-    return Redirect::to('/');
-  }
   public function updateCosts()
   {
     $products = Product::where('active', true)
