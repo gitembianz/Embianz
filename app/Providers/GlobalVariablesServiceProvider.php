@@ -35,6 +35,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   {
     $this->loadActivePages();
     $this->loadGlobalVariables();
+
     $this->loadLabelVariables();
     $this->loadGlobalStatuses();
     $this->loadGlobalPayments();
@@ -52,7 +53,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
-
+  // static pages
   private function loadActivePages()
   {
     try {
@@ -66,21 +67,22 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
-
+  // global settings
   private function loadGlobalVariables()
   {
-    if (Schema::hasTable('store__settings')) {
-
+    try {
       $globalVariables = Cache::rememberForever('global_variables', function () {
-        $storeSettings = Store_Settings::all()->pluck('value', 'parameter')->toArray();
-        return $storeSettings;
+        return Store_Settings::pluck('value', 'parameter')->toArray();
       });
 
       foreach ($globalVariables as $key => $value) {
-        $this->app->instance('global_' . $key, $value);
+        $this->app->singleton("global_$key", fn() => $value);
       }
+    } catch (\Exception $e) {
+      return;
     }
   }
+
   private function loadLabelVariables()
   {
     if (Schema::hasTable('text_labels')) {

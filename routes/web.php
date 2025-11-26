@@ -9,7 +9,6 @@
   use App\Http\Controllers\PriceListController;
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
-  use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
