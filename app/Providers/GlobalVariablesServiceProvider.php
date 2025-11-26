@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Status;
 use App\Models\Country;
 use App\Models\Payment;
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\PriceList;
 use App\Models\Promotion;
