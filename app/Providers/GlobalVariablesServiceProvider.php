@@ -14,7 +14,6 @@ use App\Models\CustomScript;
 use App\Models\Product_Spec;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
