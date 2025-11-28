@@ -250,7 +250,7 @@
 
     {{-- Navigation --}}
     <nav class="nav--controls">
-        @if ($order->status_id === app('global_order_processing'))
+        @if ($order->status_id === app('global_statuses')['order_processing'])
             <div class="circle" style="background: {{ $circle }}"></div>
         @endif
         <h1 class="table--name">Order: {{ $order->name }}</h1>

@@ -556,7 +556,7 @@
                         $i = 0;
                     @endphp
                     @foreach ($orders as $nr => $order)
-                        @if ($order->status_id === app('global_order_processing'))
+                        @if ($order->status_id === app('global_statuses')['order_processing'])
                             @php
                                 $class = 'process';
                                 $productDetails = [];

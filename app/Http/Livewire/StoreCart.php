@@ -43,7 +43,7 @@ class StoreCart extends Component
 
       $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
         ->where('session_id', $this->session_id)
-        ->where('status_id', '!=', app('global_cart_closed'))
+        ->where('status_id', '!=', app('global_statuses')['cart_closed'])
         ->with([
           'voucher' => function ($query) {
             $query->select('code', 'id', 'percent', 'value');
@@ -67,7 +67,7 @@ class StoreCart extends Component
     } else {
       return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
         ->where('session_id', $this->session_id)
-        ->where('status_id', '!=', app('global_cart_closed'))
+        ->where('status_id', '!=', app('global_statuses')['cart_closed'])
         ->with([
           'voucher' => function ($query) {
             $query->select('code', 'id', 'percent', 'value');
@@ -119,7 +119,7 @@ class StoreCart extends Component
           'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
           'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
           'updated_at' => now(config('app.timezone')),
-          'status_id' => app('global_cart_new')
+          'status_id' => app('global_statuses')['cart_new']
         ]);
         $cartItem->delete();
         $this->emit('cartUpdated');
@@ -152,7 +152,7 @@ class StoreCart extends Component
         }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
-        $this->cart->status_id = app('global_cart_new');
+        $this->cart->status_id = app('global_statuses')['cart_new'];
         $this->cart->save();
         $this->emit('cartUpdated');
       }
@@ -176,7 +176,7 @@ class StoreCart extends Component
         }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
-        $this->cart->status_id = app('global_cart_new');
+        $this->cart->status_id = app('global_statuses')['cart_new'];
         $this->cart->save();
         $this->emit('cartUpdated');
       } else {
@@ -195,7 +195,7 @@ class StoreCart extends Component
       'voucher_id' => null,
       'voucher_value' => 0,
       'updated_at' => now(config('app.timezone')),
-      'status_id' => app('global_cart_new')
+      'status_id' => app('global_statuses')['cart_new']
     ]);
     $this->message = null;
     $this->voucher = "";
@@ -205,7 +205,7 @@ class StoreCart extends Component
   {
     if ($this->cart) {
       $voucher = Voucher::where('code', $this->voucher)
-        ->where('status_id', app('global_voucher_active'))
+        ->where('status_id', app('global_statuses')['voucher_active'])
         ->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
         ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))
         ->first();
@@ -298,7 +298,7 @@ class StoreCart extends Component
 
     if ($validateQuantity) {
       Cart::where('id', $this->cart->id)->update([
-        'status_id' => app('global_cart_checkout'),
+        'status_id' => app('global_statuses')['cart_checkout'],
       ]);
       return redirect()->route('order');
     }

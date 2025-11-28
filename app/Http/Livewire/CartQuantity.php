@@ -28,7 +28,7 @@ class CartQuantity extends Component
  public function getQuantityProperty()
 {
     $quantity = Cart::where('session_id', $this->session_id)
-        ->where('status_id', '!=', app('global_cart_closed'))
+        ->where('status_id', '!=', app('global_statuses')['cart_closed'])
         ->sum('quantity_amount');
 
     return $quantity > 0 ? $quantity : null;

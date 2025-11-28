@@ -102,28 +102,25 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   // statuses
   private function loadGlobalStatuses()
   {
-    if (Schema::hasTable('statuses')) {
-
+    try {
       $globalStatuses = Cache::rememberForever('global_statuses', function () {
-        $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
-        $statusesByType = $statuses->groupBy('type');
-
-        $globalStatuses = [];
-
-        foreach ($statusesByType as $type => $typeStatuses) {
-          foreach ($typeStatuses as $status) {
-            $globalStatuses[$type . '_' . $status->name] = $status->id;
-          }
-        }
-
-        return $globalStatuses;
+        return Status::whereIn('type', ['cart', 'order', 'voucher'])
+          ->get()
+          ->groupBy('type')
+          ->flatMap(function ($typeStatuses, $type) {
+            return $typeStatuses->mapWithKeys(function ($status) use ($type) {
+              return [$type . '_' . $status->name => $status->id];
+            });
+          })
+          ->toArray();
       });
 
-      foreach ($globalStatuses as $key => $value) {
-        $this->app->instance('global_' . $key, $value);
-      }
+      $this->app->instance('global_statuses', $globalStatuses);
+    } catch (\Exception $e) {
+      return;
     }
   }
+
 
 
 
