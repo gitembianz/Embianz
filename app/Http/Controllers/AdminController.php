@@ -666,7 +666,7 @@ class AdminController extends Controller
     $voucher->code = $request->code;
     $voucher->percent = $request->percent;
     $voucher->value = $request->value;
-    $voucher->status_id = app('global_voucher_active');
+    $voucher->status_id = app('global_statuses')['voucher_active'];
     $voucher->start_date = $request->start_date;
     $voucher->end_date = $request->end_date;
     $voucher->single_use = $request->has('single_use');

@@ -50,13 +50,13 @@ class OrderSimilarity extends Component
       return collect();
     }
 
-    $allOrders = Order::where('status_id', app('global_order_processing'))
+    $allOrders = Order::where('status_id', app('global_statuses')['order_processing'])
       ->with([
         'orders.product' => function ($query) {
           $query->withCount([
             'orders_item as interim_quantity' => function ($q) {
               $q->whereHas('order', function ($orderQ) {
-                $orderQ->where('status_id', app('global_order_processing'));
+                $orderQ->where('status_id', app('global_statuses')['order_processing']);
               })
                 ->select(DB::raw('coalesce(sum(quantity), 0)'));
             },

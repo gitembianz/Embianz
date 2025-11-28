@@ -1640,7 +1640,7 @@ class ShowOrder extends Component
       'orders.product' => function ($query) {
         $query->withCount(['orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', app('global_order_processing'));
+            $q->where('status_id', app('global_statuses')['order_processing']);
           })->select(DB::raw('sum(quantity)'));
         }]);
       },

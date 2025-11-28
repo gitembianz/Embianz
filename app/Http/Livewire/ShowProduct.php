@@ -88,7 +88,7 @@ class ShowProduct extends Component
       ->leftJoin('order__items as oi', 'products.id', '=', 'oi.product_id')
       ->leftJoin('orders as o', 'oi.order_id', '=', 'o.id')
       ->where('products.id', $this->productId)
-      ->where('o.status_id', app('global_order_processing'))
+      ->where('o.status_id', app('global_statuses')['order_processing'])
       ->selectRaw('products.quantity + COALESCE(SUM(oi.quantity), 0) as interim_quantity')
       ->groupBy('products.id', 'products.quantity')
       ->value('interim_quantity') ?? $this->product->quantity;

@@ -173,7 +173,7 @@ class ProductDetails extends Component
 
   public function addToCart($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_statuses')['cart_closed'])->latest()->first();
 
     if (!$cart) {
       $baseName = class_basename(Cart::class);
@@ -190,7 +190,7 @@ class ProductDetails extends Component
         'name' => $uniqueName,
         'delivery_price' => app('global_delivery_price'),
         'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
-        'status_id' => app('global_cart_new'),
+        'status_id' => app('global_statuses')['cart_new'],
         'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
       ]);
       $this->emit('newcart');
@@ -254,7 +254,7 @@ class ProductDetails extends Component
         return;
       }
     }
-    $cart->status_id = app('global_cart_new');
+    $cart->status_id = app('global_statuses')['cart_new'];
     $cart->save();
     $this->quantity = 1;
     foreach ($this->promotions as $promo) {

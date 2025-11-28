@@ -127,14 +127,14 @@ class StoreOrder extends Component
 
         if ($this->cart->voucher && $this->cart->voucher->single_use) {
           Voucher::where('id', $this->cart->voucher_id)->update([
-            'status_id' => app('global_voucher_closed')
+            'status_id' => app('global_statuses')['voucher_closed']
           ]);
         }
         $this->cart->update([
-          'status_id' => app('global_cart_closed')
+          'status_id' => app('global_statuses')['cart_closed']
         ]);
-        $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
-        $order->status_id = app('global_order_processing');
+        $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_statuses')['order_check_payment'])->first();
+        $order->status_id = app('global_statuses')['order_processing'];
         $this->orderNumber = $order->order_number;
         $order->save();
         $this->new_order = $order;
@@ -242,7 +242,7 @@ class StoreOrder extends Component
 
     if ($this->step == 2) {
       $this->cart->update([
-        'status_id' => app('global_cart_checkoutdetails')
+        'status_id' => app('global_statuses')['cart_checkoutdetails']
       ]);
       $this->validatequantity = true;
     }
@@ -275,7 +275,7 @@ class StoreOrder extends Component
           $value += $this->cart->sum_amount * ($counterpromotion->promotion_percent / 100);
         }
       }
-      if ($this->cart->status_id === app('global_cart_new')) {
+      if ($this->cart->status_id === app('global_statuses')['cart_new']) {
 
         $this->cart->update([
           'promotion_value' => $value
@@ -299,7 +299,7 @@ class StoreOrder extends Component
     }
 
     return Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
+      ->where('status_id', '!=', app('global_statuses')['cart_closed'])
       ->has('cartItems')
       ->exists();
   }
@@ -308,7 +308,7 @@ class StoreOrder extends Component
   {
     return Cart::select('id', 'quantity_amount', 'currency_id', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'status_id', 'promotion_value')
       ->where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
+      ->where('status_id', '!=', app('global_statuses')['cart_closed'])
       ->with([
         'voucher' => function ($query) {
           $query->select('code', 'id', 'percent', 'single_use', 'value', 'start_date', 'end_date');
@@ -368,7 +368,7 @@ class StoreOrder extends Component
       $this->step = 2;
 
       $this->cart->update([
-        'status_id' => app('global_cart_checkoutdetails')
+        'status_id' => app('global_statuses')['cart_checkoutdetails']
       ]);
 
       if ($this->is_identic && $this->step == 2) {
@@ -501,11 +501,11 @@ class StoreOrder extends Component
       return;
     }
 
-    if ($this->cart->cartItems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
+    if ($this->cart->cartItems && ($this->cart->status_id == app('global_statuses')['cart_checkoutdetails'])) {
       if ($this->cart->voucher) {
         $voucher = $this->cart->voucher;
         $currentDate = now(config('app.timezone'))->format('Y-m-d');
-        if ($voucher->status_id == app('global_voucher_closed') || $voucher->start_date > $currentDate || $voucher->end_date < $currentDate) {
+        if ($voucher->status_id == app('global_statuses')['voucher_closed'] || $voucher->start_date > $currentDate || $voucher->end_date < $currentDate) {
           $message = app('label_order_error_voucher') ?? "";
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           $this->cart->update([
@@ -517,7 +517,7 @@ class StoreOrder extends Component
           return;
         }
         if ($voucher->single_use) {
-          $voucher->update(['status_id' => app('global_voucher_closed')]);
+          $voucher->update(['status_id' => app('global_statuses')['voucher_closed']]);
         }
       }
 
@@ -625,7 +625,7 @@ class StoreOrder extends Component
       $lastOrder = Order::latest('id')->first();
       $orderNumber = $lastOrder ? ((int)str_replace("{$baseName}_", '', $lastOrder->name) + 1) : 1;
       $uniqueName = "{$baseName}_" . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
-      $status = $this->payment['type'] != 'card' ? app('global_order_processing') : app('global_order_check_payment');
+      $status = $this->payment['type'] != 'card' ? app('global_statuses')['order_processing'] : app('global_statuses')['order_check_payment'];
 
       $prefix = app('global_order_prefix') . now(config('app.timezone'))->format('Ymd');
 
@@ -718,7 +718,7 @@ class StoreOrder extends Component
       }
 
       if ($this->payment['type'] != 'card') {
-        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_cart_closed')]);
+        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_statuses')['cart_closed']]);
         $this->step = 3;
         $this->new_order = $order->load([
           'orders.product' => function ($query) {
@@ -755,7 +755,7 @@ class StoreOrder extends Component
         }
         $this->dispatchBrowserEvent('goup');
       } else {
-        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_cart_check_payment')]);
+        $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_statuses')['cart_check_payment']]);
         Stripe::setApiKey(app('global_stripe_key'));
 
         $session = Session::create([
