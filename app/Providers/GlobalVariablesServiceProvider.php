@@ -36,10 +36,10 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadActivePages();
     $this->loadGlobalVariables();
     $this->loadLabelVariables();
-
     $this->loadGlobalStatuses();
-    $this->loadGlobalPayments();
     $this->loadGlobalCustomScripts();
+
+    $this->loadGlobalPayments();
     $this->loadGlobalCurrencies();
     $this->loadAllSpecificationsIntoCache();
     $this->loadActiveCountries();
@@ -120,6 +120,51 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       return;
     }
   }
+
+  // scripts
+  private function loadGlobalCustomScripts()
+  {
+    try {
+      $globalScripts = Cache::rememberForever('global_scripts', function () {
+        return CustomScript::select(['type', 'content'])
+          ->where('active', true)
+          ->get()
+          ->groupBy('type')
+          ->map(fn($items) => $items->pluck('content')->implode(PHP_EOL));
+      });
+
+      foreach ($globalScripts as $type => $content) {
+        $this->app->instance("global_script_$type", $content);
+      }
+
+      $this->app->instance("global_scripts", $globalScripts);
+    } catch (\Exception $e) {
+      return;
+    }
+  }
+
+  // promotions
+  private function loadAllPromotionsIntoCache()
+  {
+    try {
+      $promotions = Cache::rememberForever('promotions', function () {
+        $today = now()->toDateString();
+
+        return Promotion::where('active', true)
+          ->whereDate('start_date', '<=', $today)
+          ->whereDate('end_date', '>=', $today)
+          ->get()
+          ->toArray();
+      });
+
+      $this->app->singleton('promotions', function () use ($promotions) {
+        return $promotions;
+      });
+    } catch (\Exception $e) {
+      return;
+    }
+  }
+
 
 
 
@@ -256,22 +301,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
 
 
-  private function loadGlobalCustomScripts()
-  {
-    if (Schema::hasTable('custom_scripts')) {
 
-      $globalScripts = Cache::rememberForever('global_scripts', function () {
-        $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
-        return $scripts->map(function ($group) {
-          return $group->pluck('content')->implode(PHP_EOL);
-        });
-      });
-
-      foreach ($globalScripts as $type => $content) {
-        $this->app->instance('global_script_' . $type, $content);
-      }
-    }
-  }
 
   private function loadGlobalPayments()
   {
@@ -370,21 +400,5 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     });
 
     $this->app->instance('cached_specifications', $productSpecs);
-  }
-
-  private function loadAllPromotionsIntoCache()
-  {
-    if (Schema::hasTable('promotions')) {
-      $promotions = Cache::rememberForever('promotions', function () {
-        $promotions = Promotion::where('active', true)
-          ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-          ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-          ->get();
-
-        return $promotions->toArray();
-      });
-
-      $this->app->instance('promotions', $promotions);
-    }
   }
 }
