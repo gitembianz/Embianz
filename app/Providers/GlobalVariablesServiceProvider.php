@@ -38,18 +38,16 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadLabelVariables();
     $this->loadGlobalStatuses();
     $this->loadGlobalCustomScripts();
+    $this->loadAllPromotionsIntoCache();
 
-    $this->loadGlobalPayments();
-    $this->loadGlobalCurrencies();
-    $this->loadAllSpecificationsIntoCache();
-    $this->loadActiveCountries();
+
+    // $this->loadGlobalPayments();
+    // $this->loadGlobalCurrencies();
+    // $this->loadAllSpecificationsIntoCache();
+    // $this->loadActiveCountries();
 
     if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
       $this->loadCategoryOneProduct();
-    }
-
-    if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
-      $this->loadAllPromotionsIntoCache();
     }
   }
 
@@ -147,6 +145,10 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   private function loadAllPromotionsIntoCache()
   {
     try {
+      if (!app()->has('global_promotion_on') || app('global_promotion_on') !== 'true') {
+        return;
+      }
+
       $promotions = Cache::rememberForever('promotions', function () {
         $today = now()->toDateString();
 
@@ -164,6 +166,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       return;
     }
   }
+
 
 
 
@@ -338,6 +341,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       }
     }
   }
+
   private function loadAllSpecificationsIntoCache()
   {
     $productSpecs = Cache::rememberForever('cached_specifications', function () {
