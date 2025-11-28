@@ -35,8 +35,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   {
     $this->loadActivePages();
     $this->loadGlobalVariables();
-
     $this->loadLabelVariables();
+
     $this->loadGlobalStatuses();
     $this->loadGlobalPayments();
     $this->loadGlobalCustomScripts();
@@ -83,20 +83,51 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
+  // label variables
   private function loadLabelVariables()
   {
-    if (Schema::hasTable('text_labels')) {
-
+    try {
       $labelVariables = Cache::rememberForever('label_variables', function () {
-        $labels = TextLabel::all()->pluck('value', 'parameter')->toArray();
-        return $labels;
+        return TextLabel::pluck('value', 'parameter')->toArray();
       });
 
       foreach ($labelVariables as $key => $value) {
-        $this->app->instance('label_' . $key, $value);
+        $this->app->singleton("label_$key", fn() => $value);
+      }
+    } catch (\Exception $e) {
+      return;
+    }
+  }
+
+  // statuses
+  private function loadGlobalStatuses()
+  {
+    if (Schema::hasTable('statuses')) {
+
+      $globalStatuses = Cache::rememberForever('global_statuses', function () {
+        $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
+        $statusesByType = $statuses->groupBy('type');
+
+        $globalStatuses = [];
+
+        foreach ($statusesByType as $type => $typeStatuses) {
+          foreach ($typeStatuses as $status) {
+            $globalStatuses[$type . '_' . $status->name] = $status->id;
+          }
+        }
+
+        return $globalStatuses;
+      });
+
+      foreach ($globalStatuses as $key => $value) {
+        $this->app->instance('global_' . $key, $value);
       }
     }
   }
+
+
+
+
 
   private function loadCategoryOneProduct()
   {
@@ -260,30 +291,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
-  private function loadGlobalStatuses()
-  {
-    if (Schema::hasTable('statuses')) {
 
-      $globalStatuses = Cache::rememberForever('global_statuses', function () {
-        $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
-        $statusesByType = $statuses->groupBy('type');
-
-        $globalStatuses = [];
-
-        foreach ($statusesByType as $type => $typeStatuses) {
-          foreach ($typeStatuses as $status) {
-            $globalStatuses[$type . '_' . $status->name] = $status->id;
-          }
-        }
-
-        return $globalStatuses;
-      });
-
-      foreach ($globalStatuses as $key => $value) {
-        $this->app->instance('global_' . $key, $value);
-      }
-    }
-  }
 
   private function loadGlobalCurrencies()
   {
