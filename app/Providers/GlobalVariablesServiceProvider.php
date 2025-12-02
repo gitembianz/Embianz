@@ -38,19 +38,16 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadLabelVariables();
     $this->loadGlobalStatuses();
     $this->loadGlobalCustomScripts();
+    $this->loadAllPromotionsIntoCache();
+    $this->loadCategoryOneProduct();
 
-    $this->loadGlobalPayments();
-    $this->loadGlobalCurrencies();
-    $this->loadAllSpecificationsIntoCache();
-    $this->loadActiveCountries();
 
-    if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') === 'true') {
-      $this->loadCategoryOneProduct();
-    }
+    // $this->loadGlobalPayments();
+    // $this->loadGlobalCurrencies();
+    // $this->loadAllSpecificationsIntoCache();
+    // $this->loadActiveCountries();
 
-    if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
-      $this->loadAllPromotionsIntoCache();
-    }
+
   }
 
   // static pages
@@ -147,6 +144,10 @@ class GlobalVariablesServiceProvider extends ServiceProvider
   private function loadAllPromotionsIntoCache()
   {
     try {
+      if (!app()->has('global_promotion_on') || app('global_promotion_on') !== 'true') {
+        return;
+      }
+
       $promotions = Cache::rememberForever('promotions', function () {
         $today = now()->toDateString();
 
@@ -165,19 +166,14 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
-
-
-
-
-
-
+  // one product page system
   private function loadCategoryOneProduct()
   {
-    if (
-      Schema::hasTable('categories') &&
-      app()->has('global_one_product_page_system') &&
-      app('global_one_product_page_system') === "true"
-    ) {
+    try {
+      if (!app()->has('global_one_product_page_system') || app('global_one_product_page_system') !== 'true') {
+        return;
+      }
+
       $category = Cache::rememberForever('category_one_product', function () {
         return Category::where('one_product_page_category', true)
           ->with([
@@ -211,6 +207,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->app->instance('one_product_ids', []);
         $this->app->instance('one_product_category', null);
       }
+    } catch (\Exception $e) {
+      return;
     }
   }
 
@@ -338,6 +336,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       }
     }
   }
+
   private function loadAllSpecificationsIntoCache()
   {
     $productSpecs = Cache::rememberForever('cached_specifications', function () {

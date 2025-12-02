@@ -53,21 +53,25 @@ class TrackUserSession
         $cookieid,
       ]);
     } else {
-      $sessionId = Session::getId();
+      try {
+        $sessionId = Session::getId();
 
-      DB::statement("
+        DB::statement("
         INSERT INTO user_sessions
         (sessions, created_at, updated_at, ip_address, user_agent, http_referer, visited_url)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ", [
-        $sessionId,
-        $now,
-        $now,
-        ServerRequest::ip(),
-        $userAgent,
-        $request->headers->get('referer'),
-        $request->fullUrl(),
-      ]);
+          $sessionId,
+          $now,
+          $now,
+          ServerRequest::ip(),
+          $userAgent,
+          $request->headers->get('referer'),
+          $request->fullUrl(),
+        ]);
+      } catch (\Exception $e) {
+        return $next($request);
+      }
     }
 
     return $next($request);
