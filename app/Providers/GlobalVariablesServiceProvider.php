@@ -40,11 +40,11 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadGlobalCustomScripts();
     $this->loadAllPromotionsIntoCache();
     $this->loadCategoryOneProduct();
+    $this->loadGlobalCurrencies();
 
+    // $this->loadAllSpecificationsIntoCache();
 
     // $this->loadGlobalPayments();
-    // $this->loadGlobalCurrencies();
-    // $this->loadAllSpecificationsIntoCache();
     // $this->loadActiveCountries();
 
 
@@ -212,6 +212,47 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
   }
 
+  // currencies
+  private function loadGlobalCurrencies()
+  {
+    try {
+      $globalCurrencies = Cache::rememberForever('global_currencies', function () {
+        return PriceList::join('currencies', 'price_lists.currency_id', '=', 'currencies.id')
+          ->where('price_lists.active', true)
+          ->select(
+            'price_lists.name as price_list_name',
+            'currencies.name as currency_name',
+            'currencies.symbol as currency_symbol'
+          )
+          ->orderBy('price_lists.name')
+          ->get()
+          ->mapWithKeys(function ($row) {
+            $key = strtolower($row->price_list_name);
+
+            return [
+              $key => [
+                'name'   => $row->currency_name,
+                'symbol' => $row->currency_symbol,
+              ],
+            ];
+          })
+          ->toArray();
+      });
+
+      foreach ($globalCurrencies as $key => $currency) {
+        $this->app->instance("global_currency_{$key}_name",   $currency['name']);
+        $this->app->instance("global_currency_{$key}_symbol", $currency['symbol']);
+      }
+    } catch (\Exception $e) {
+      return;
+    }
+  }
+
+
+
+
+
+
 
   private function loadActiveCountries()
   {
@@ -318,24 +359,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
 
 
-  private function loadGlobalCurrencies()
-  {
-    if (Schema::hasTable('price_lists') && Schema::hasTable('currencies')) {
-
-      $globalCurrencies = Cache::rememberForever('global_currencies', function () {
-        return PriceList::join('currencies', 'price_lists.currency_id', '=', 'currencies.id')
-          ->where('price_lists.active', true)
-          ->get(['price_lists.name as price_list_name', 'currencies.name as currency_name', 'currencies.symbol as currency_symbol'])
-          ->keyBy('price_list_name')
-          ->toArray();
-      });
-
-      foreach ($globalCurrencies as $priceListName => $currency) {
-        $this->app->instance('global_currency_' . strtolower($priceListName) . '_name', $currency['currency_name']);
-        $this->app->instance('global_currency_' . strtolower($priceListName) . '_symbol', $currency['currency_symbol']);
-      }
-    }
-  }
 
   private function loadAllSpecificationsIntoCache()
   {
