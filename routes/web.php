@@ -211,7 +211,7 @@
     route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
     Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
       ->name('products')
-      ->middleware('categorycheck');
+      ->middleware(['categorycheck', 'load.specs']);
     route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
     route::get('/blog/{categorySlug?}', [StoreController::class, 'blog'])->name('blog');
     route::get('/article/{article}', [StoreController::class, 'article'])->name('article');
