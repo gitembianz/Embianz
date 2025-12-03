@@ -11,7 +11,6 @@ use App\Models\Promotion;
 use App\Models\TextLabel;
 use App\Models\Static_Page;
 use App\Models\CustomScript;
-use App\Models\Product_Spec;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -42,7 +41,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadCategoryOneProduct();
     $this->loadGlobalCurrencies();
 
-    // $this->loadAllSpecificationsIntoCache();
 
     // $this->loadGlobalPayments();
     // $this->loadActiveCountries();
@@ -360,67 +358,5 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
 
 
-  private function loadAllSpecificationsIntoCache()
-  {
-    $productSpecs = Cache::rememberForever('cached_specifications', function () {
-      $productSpecs = Product_Spec::select('value', 'spec_id', 'product_id')
-        ->with([
-          'spec' => function ($query) {
-            $query->select('id', 'name', 'sequence');
-          },
-          'product' => function ($query) {
-            $query->select('id', 'type', 'parent_id')->whereHas('product_categories');
-          }
-        ])
-        ->whereHas('spec', function ($query) {
-          $query->where('mark_as_filter', true);
-        })
-        ->whereHas('product', function ($query) {
-          $query->where('active', true)
-            ->where('type', '!=', 'parent')
-            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-            ->whereHas('product_categories');
-        })
-        ->get();
 
-      $formattedSpecs = $productSpecs->groupBy('spec_id')->map(function ($specs) {
-        $firstSpec = $specs->first();
-
-        $uniqueValues = $specs->groupBy('value')->map(function ($items) {
-
-          $productsWithCategories = $items->map(function ($item) {
-            $categoryIds = $item->product->product_categories->pluck('category_id')->toArray();
-            $parentId = $item->product->type === 'variant' ? $item->product->parent_id : null;
-
-            return [
-              'product_id' => $item->product_id,
-              'categories' => $categoryIds,
-              'parent_id' => $parentId,
-              'type' => $item->product->type,
-            ];
-          });
-
-          $uniqueCategories = $items->flatMap(function ($item) {
-            return $item->product->product_categories->pluck('category_id');
-          })->unique();
-
-          return [
-            'products' => $productsWithCategories->toArray(),
-            'categories' => $uniqueCategories->toArray(),
-          ];
-        });
-
-        return [
-          'spec' => $firstSpec->spec->name,
-          'sequence' => $firstSpec->spec->sequence,
-          'values' => $uniqueValues,
-        ];
-      })->sortBy('sequence')->values();
-
-      return $formattedSpecs->toArray();
-    });
-
-    $this->app->instance('cached_specifications', $productSpecs);
-  }
 }
