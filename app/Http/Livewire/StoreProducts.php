@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
 
 class StoreProducts extends Component
 {
@@ -169,7 +170,8 @@ class StoreProducts extends Component
   // filters fro cache
   public function getFilterValuesProperty()
   {
-    $query = app('cached_specifications');
+    $query = Cache::get('cached_specifications', []);
+
 
     if ($this->category != null) {
       $query = collect($query)->map(function ($spec) {
