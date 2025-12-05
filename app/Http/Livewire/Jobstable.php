@@ -55,6 +55,8 @@ class Jobstable extends Component
   public bool $filter = false;
   public bool $filterlogic = false;
   public array $availableFields = [];
+
+
   public array $listview = [
     'name' => null,
     'logic' => null,
@@ -71,6 +73,23 @@ class Jobstable extends Component
     'operator' => null,
     'value' => null,
   ];
+
+  // jobs
+  public array $jobslist = [
+    'IPGeolocation',
+  ];
+  public $frequency;
+  public $service;
+  public array $frequencies = [
+    '1'    => 'Every 1 minute',
+    '5'    => 'Every 5 minutes',
+    '10'   => 'Every 10 minutes',
+    '30'   => 'Every 30 minutes',
+    '60'   => 'Every hour',
+    '1440' => 'Every day',
+  ];
+  public bool $addjob = false;
+
 
   public function render()
   {
@@ -174,28 +193,28 @@ class Jobstable extends Component
   }
 
   public function getJobsProperty()
-{
+  {
     if (Schema::hasTable($this->tableName)) {
-        $query = DB::table($this->tableName);
+      $query = DB::table($this->tableName);
 
-        $query = $this->applyFilters($query);
+      $query = $this->applyFilters($query);
 
-        if (!empty($this->search)) {
-            $search = $this->search;
-            $query->where(function ($q) use ($search) {
-                foreach (Schema::getColumnListing($this->tableName) as $column) {
-                    $q->orWhere($column, 'like', '%' . $search . '%');
-                }
-            });
-        }
+      if (!empty($this->search)) {
+        $search = $this->search;
+        $query->where(function ($q) use ($search) {
+          foreach (Schema::getColumnListing($this->tableName) as $column) {
+            $q->orWhere($column, 'like', '%' . $search . '%');
+          }
+        });
+      }
 
-        return $query
-            ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')
-            ->paginate($this->loadAmount);
+      return $query
+        ->orderBy($this->listview['sort']['column'] ?? 'created_at', $this->listview['sort']['direction'] ?? 'desc')
+        ->paginate($this->loadAmount);
     } else {
-        return collect();
+      return collect();
     }
-}
+  }
 
 
   // listview functions
@@ -552,8 +571,8 @@ class Jobstable extends Component
   }
   public function getListviewsProperty()
   {
-     if (!Schema::hasTable('listviews')) {
-        Artisan::call('ensure:listviews-table');
+    if (!Schema::hasTable('listviews')) {
+      Artisan::call('ensure:listviews-table');
     }
 
     return Listview::where('user_id', Auth::id())
@@ -643,7 +662,7 @@ class Jobstable extends Component
     }
 
     $this->activelistview->update([
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
 
     $this->listview = [
@@ -966,5 +985,52 @@ class Jobstable extends Component
       fputcsv($handle, $row);
     }
     fclose($handle);
+  }
+  // add job
+  public function add_job()
+  {
+    $this->validate([
+      'service' => 'required|string',
+      'frequency' => 'required|integer|min:1',
+    ], [
+      'service.required' => 'Selectează un job.',
+      'frequency.required' => 'Selectează frecvența de rulare.',
+    ]);
+
+    try {
+      $job = AllJob::create([
+        'name' => $this->service,
+        'type' => 'scheduled',
+        'status' => 'pending',
+        'is_recurring' => true,
+        'recurrence_rule' => "every_{$this->frequency}_minutes",
+        'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($this->frequency),
+        'active' => true,
+      ]);
+
+      if (class_exists($this->service)) {
+        dispatch(new $this->service());
+      } else {
+        session()->flash('notification', [
+          'message' => "Dynamic job class not found: {$this->service}",
+          'type' => 'error',
+          'title' => 'Succes'
+        ]);
+       }
+
+      // Reset UI
+      $this->reset(['service', 'frequency', 'addjob']);
+      session()->flash('notification', [
+        'message' => 'Job adăugat și programat cu succes.',
+        'type' => 'success',
+        'title' => 'Succes'
+      ]);
+    } catch (\Exception $e) {
+      session()->flash('notification', [
+        'message' => 'A apărut o eroare la salvarea jobului.',
+        'type' => 'error',
+        'title' => 'Import Queued'
+      ]);
+    }
   }
 }

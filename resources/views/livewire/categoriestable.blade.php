@@ -473,7 +473,7 @@
                                 </td>
                             @endforeach
                             <td style="border-right: none">
-                                <button wire:click.prevent="confirmItemRemoval({{ $category->id }})"
+                                <button tooltip="Delete item" tooltip-left wire:click.prevent="confirmItemRemoval({{ $category->id }})"
                                     class="button button--secondary button--sm">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>

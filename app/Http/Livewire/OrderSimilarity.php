@@ -12,179 +12,282 @@ use Illuminate\Support\Facades\Response;
 
 class OrderSimilarity extends Component
 {
-    use WithPagination;
-    public $columns = ['Reference', 'Orders', 'Products', 'Similarity'];
-    public $selectedColumns = [];
-    public $order;
-    public $orderId;
-    public $showrelated = false;
-    public $checked = [];
+  use WithPagination;
+  public $columns = ['Order', 'Products', 'Similarity'];
+  public $selectedColumns = [];
+  public $order;
+  public $orderId;
+  public $showrelated = false;
+  public $checked = [];
+  public $limitselect;
+  public $orderIds = [];
+  public $notprocesabbleorderIds = [];
+  public $reachmaxselect = false;
+  public $message = '';
 
 
-    public function mount($order)
-    {
-        $this->orderId = $order->id;
-        $this->order = $order;
-        $this->selectedColumns = $this->columns;
+  public function mount($order)
+  {
+    $this->orderId = $order->id;
+    $this->order = $order;
+    $this->selectedColumns = $this->columns;
+    $this->limitselect = config('global.order_similarity_limit', 5);
+  }
+
+  public function getSimilaritiesProperty()
+  {
+    if (!$this->order || !$this->order->orders) {
+      $this->orderIds = [];
+      return collect();
     }
-    public function isChecked($ids)
-    {
-        return in_array($ids, $this->checked);
+
+    $referenceOrder = $this->order;
+    $referenceProductIds = $referenceOrder->orders->pluck('product_id')->unique();
+    $referenceProductCount = $referenceProductIds->count();
+
+    if ($referenceProductCount === 0) {
+      $this->orderIds = [];
+      return collect();
     }
-    public function dowlandproducts()
-    {
-        $orderIds = collect($this->checked)
-            ->flatMap(fn($idString) => explode(',', $idString))
-            ->push($this->orderId)
-            ->unique()
-            ->toArray();
 
-        $products = Order_Item::whereIn('order_id', $orderIds)
-            ->with(['product'])
-            ->get()
-            ->groupBy(fn($item) => $item->product->name . '|' . $item->product->sku)
-            ->map(function ($items) {
-                return [
-                    'name' => $items->first()->product->name,
-                    'sku' => $items->first()->product->sku,
-                    'quantity' => $items->sum('quantity'),
-                ];
-            })
-            ->values();
+    $allOrders = Order::where('status_id', app('global_statuses')['order_processing'])
+      ->with([
+        'orders.product' => function ($query) {
+          $query->withCount([
+            'orders_item as interim_quantity' => function ($q) {
+              $q->whereHas('order', function ($orderQ) {
+                $orderQ->where('status_id', app('global_statuses')['order_processing']);
+              })
+                ->select(DB::raw('coalesce(sum(quantity), 0)'));
+            },
+          ]);
+        },
+      ])->get();
 
-        $bom = "\xEF\xBB\xBF";
+    $similarOrders = collect();
+    $collectedIds = [];
 
-        $csvData = "Name,SKU,Quantity\n";
+    foreach ($allOrders as $order) {
+      $orderProducts = $order->orders;
+      if ($orderProducts->isEmpty()) {
+        continue;
+      }
 
-        foreach ($products as $product) {
-            $csvData .= '"' . addslashes($product['name']) . '",'
-                . '"' . $product['sku'] . '",'
-                . $product['quantity'] . "\n";
-        }
-        $this->checked = [];
-        session()->flash('notification', [
-            'message' => 'Record downland successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
-        return Response::streamDownload(function () use ($bom, $csvData) {
-            echo $bom . $csvData;
-        }, 'orders_products.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
-    }
-    public function showColumn($column)
-    {
-        return in_array($column, $this->selectedColumns);
-    }
-    public function getSimilaritiesProperty()
-    {
-        if (!$this->order || !$this->order->orders) {
-            return collect();
-        }
+      $orderProductIds = $orderProducts->pluck('product_id')->unique();
+      $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
 
-        $referenceOrder = $this->order;
-        $referenceProductIds = $referenceOrder->orders->pluck('product_id')->unique();
-        $referenceProductCount = $referenceProductIds->count();
+      if ($matchingCount === 0) {
+        continue;
+      }
 
-        if ($referenceProductCount === 0) {
-            return collect();
-        }
+      $minProductCount = min($referenceProductCount, $orderProductIds->count());
+      $similarityPercentage = ($matchingCount / $minProductCount) * 100;
 
-        $allOrders = Order::where('id', '!=', $referenceOrder->id)
-            ->where('status_id', app('global_order_processing'))
-            ->with([
-                'orders.product' => function ($query) {
-                    $query->withCount([
-                        'orders_item as interim_quantity' => function ($query) {
-                            $query->whereHas('order', function ($q) {
-                                $q->where('status_id', app('global_order_processing'));
-                            })->select(DB::raw('sum(quantity)'));
-                        }
-                    ]);
-                }
-            ])
-            ->get();
+      $allProductsValid = $orderProducts->every(function ($orderItem) {
+        $product = $orderItem->product;
+        if (!$product) return false;
 
-        $similarOrders = collect();
-        $allProducts = collect();
+        $totalAvailable = ($product->quantity ?? 0) + ($product->interim_quantity ?? 0);
+        return $totalAvailable >= $orderItem->quantity;
+      });
 
-        foreach ($allOrders as $order) {
-            $orderProducts = $order->orders;
-            $orderProductIds = $orderProducts->pluck('product_id')->unique();
-            $matchingCount = $orderProductIds->intersect($referenceProductIds)->count();
-            $orderProductCount = $orderProductIds->count();
-
-            if ($orderProductCount === 0) {
-                continue;
-            }
-
-
-            $minProductCount = min($referenceProductCount, $orderProductCount);
-            $similarityPercentage = ($matchingCount / $minProductCount) * 100;
-
-            $allProductsValid = $orderProducts->every(function ($product) {
-                $pr = $product->product;
-                $interimQuantity = ($pr->quantity ?? 0) + ($pr->interim_quantity ?? 0);
-                return $interimQuantity >= $product->quantity;
-            });
-
-            if ($similarityPercentage >= 50 && $allProductsValid) {
-                foreach ($orderProducts as $product) {
-                    $allProducts->push([
-                        'id' => $product->product_id,
-                        'sku' => $product->product->sku,
-                        'name' => $product->product->name ?? 'Unknown Product',
-                        'quantity' => $product->quantity,
-                    ]);
-                }
-
-                $similarOrders->push([
-                    'order' => $order,
-                    'similarity' => $similarityPercentage,
-                ]);
-            }
-        }
-
-
-        $groupedProducts = $allProducts->groupBy('id')->map(function ($products) {
-            return [
-                'name' => $products->first()['name'],
-                'sku' => $products->first()['sku'],
-                'total_quantity' => $products->sum('quantity'),
-            ];
+      if ($similarityPercentage >= 50) {
+        $products = $orderProducts->map(function ($item) {
+          $product = $item->product;
+          return [
+            'id' => $item->product_id,
+            'sku' => $product->sku ?? null,
+            'name' => $product->name ?? 'Unknown Product',
+            'quantity' => $item->quantity,
+            'available' => ($product->quantity ?? 0) + ($product->interim_quantity ?? 0),
+          ];
         })->values();
 
-        $referenceProductCounts = $referenceOrder->orders->groupBy('product_id')->map(function ($products) {
-            $firstProduct = $products->first()->product;
-            return [
-                'name' => $firstProduct->name ?? 'Unknown Product',
-                'sku' => $firstProduct->sku ?? 'Unknown Product',
-                'total_quantity' => $products->sum('quantity'),
-            ];
-        })->values();
-
-        return [
-            'reference' => [
-                'order' => $referenceOrder,
-                'products' => $referenceProductCounts,
-            ],
-            'similar' => $similarOrders->groupBy('similarity')->map(function ($orders, $similarityPercentage) use ($groupedProducts) {
-                return [
-                    'orders' => $orders,
-                    'products' => $groupedProducts,
-                ];
-            })->sortKeysDesc(),
-        ];
-    }
-
-
-
-
-
-
-    public function render()
-    {
-        return view('livewire.order-similarity', [
-            'similarities' => $this->similarities
+        $similarOrders->push([
+          'order' => $order,
+          'similarity' => round($similarityPercentage, 2),
+          'products' => $products,
+          'valid' => $allProductsValid,
         ]);
+
+        $collectedIds[] = $order->id;
+      }
     }
+
+    $this->orderIds = $collectedIds;
+
+    return $similarOrders->sortByDesc('similarity')->values();
+  }
+
+  public function isChecked($ids)
+  {
+    $this->checked = is_array($this->checked) ? $this->checked : [];
+
+    if (count($this->checked) > $this->limitselect) {
+      $this->reachmaxselect = true;
+      $this->message = "You can select a maximum of {$this->limitselect} items.";
+
+      return false;
+    }
+    if (in_array($ids, $this->checked)) {
+      return true;
+    }
+    return false;
+  }
+
+  public function dowlandproducts()
+  {
+    $orderIds = collect($this->checked)
+      ->flatMap(fn($idString) => explode(',', $idString))
+      ->unique()
+      ->toArray();
+
+    $orderNames = Order::whereIn('id', $orderIds)
+      ->pluck('name', 'id')
+      ->map(fn($name, $id) => $name ?: 'Order #' . $id);
+
+    $items = Order_Item::whereIn('order_id', $orderIds)
+      ->with('product')
+      ->get();
+
+    if ($items->isEmpty()) {
+      session()->flash('notification', [
+        'message' => 'No products found for selected orders.',
+        'type' => 'warning',
+        'title' => 'Notice'
+      ]);
+      return;
+    }
+
+    $products = $items
+      ->map(fn($i) => [
+        'id' => $i->product_id,
+        'key' => trim(($i->product->name ?? 'Unknown') . ' ' . ($i->product->sku ?? '')),
+        'order_id' => $i->order_id,
+        'quantity' => $i->quantity,
+      ])
+      ->groupBy('key');
+
+    $orderColumns = collect($orderIds)->map(fn($id) => $orderNames[$id] ?? 'Order #' . $id);
+    $header = collect(['Product (Name + SKU)'])
+      ->merge($orderColumns)
+      ->push('Total')
+      ->toArray();
+
+    $rows = [];
+
+    foreach ($products as $key => $entries) {
+      $row = [$key];
+      $total = 0;
+
+      foreach ($orderIds as $orderId) {
+        $qty = $entries
+          ->where('order_id', $orderId)
+          ->sum('quantity');
+        $row[] = $qty ?: 0;
+        $total += $qty;
+      }
+
+      $row[] = $total;
+      $rows[] = $row;
+    }
+
+    $bom = "\xEF\xBB\xBF";
+    $csvData = implode(',', $header) . "\n";
+
+    foreach ($rows as $row) {
+      $csvData .= implode(',', array_map(
+        fn($v) => '"' . str_replace('"', '""', $v) . '"',
+        $row
+      )) . "\n";
+    }
+
+    $this->checked = [];
+    session()->flash('notification', [
+      'message' => 'Orders downloaded successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+
+    return Response::streamDownload(function () use ($bom, $csvData) {
+      echo $bom . $csvData;
+    }, 'orders_products.csv', [
+      'Content-Type' => 'text/csv; charset=UTF-8'
+    ]);
+  }
+
+
+  public function showColumn($column)
+  {
+    return in_array($column, $this->selectedColumns);
+  }
+
+  public function updatedChecked()
+  {
+    $this->notprocesabbleorderIds = [];
+
+    $diffids = array_values(array_diff(
+      $this->orderIds,
+      collect($this->checked)
+        ->flatMap(fn($idString) => explode(',', $idString))
+        ->push($this->orderId)
+        ->unique()
+        ->toArray()
+    ));
+
+    $productAvailability = [];
+
+    foreach ($this->similarities as $item) {
+      foreach ($item['products'] as $product) {
+        $productId = $product['id'];
+        $productAvailability[$productId] = $product['available'];
+      }
+    }
+
+    foreach ($this->similarities as $item) {
+      $orderId = $item['order']->id;
+
+      if (in_array($orderId, $this->checked)) {
+        foreach ($item['products'] as $product) {
+          $productId = $product['id'];
+          $productAvailability[$productId] -= $product['quantity'];
+
+          if ($productAvailability[$productId] < 0) {
+            $productAvailability[$productId] = 0;
+          }
+        }
+      }
+    }
+
+    foreach ($this->similarities as $item) {
+      $orderId = $item['order']->id;
+
+      if (in_array($orderId, $diffids)) {
+        $canProcess = true;
+
+        foreach ($item['products'] as $product) {
+          $productId = $product['id'];
+          $needed = $product['quantity'];
+          $available = $productAvailability[$productId] ?? 0;
+
+          if ($available < $needed) {
+            $canProcess = false;
+            break;
+          }
+        }
+
+        if (!$canProcess) {
+          $this->notprocesabbleorderIds[] = $orderId;
+        }
+      }
+    }
+  }
+
+
+  public function render()
+  {
+    return view('livewire.order-similarity', [
+      'similarities' => $this->similarities
+    ]);
+  }
 }

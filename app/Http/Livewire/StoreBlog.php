@@ -60,8 +60,8 @@ class StoreBlog extends Component
   {
     $query = Article::search($this->search)
       ->where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->with([
         'article_categories' => function ($query) {
           $query->select('article_id', 'category_id', 'primary_category')

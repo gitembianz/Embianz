@@ -77,7 +77,7 @@ class StoreWishlist extends Component
   public function addToCart($productId, $index)
   {
     $cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
+      ->where('status_id', '!=', app('global_statuses')['cart_closed'])
       ->with('voucher')
       ->latest()
       ->first();
@@ -102,7 +102,7 @@ class StoreWishlist extends Component
         'name' => $uniqueName,
         'delivery_price' => app('global_delivery_price'),
         'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
-        'status_id' => app('global_cart_new'),
+        'status_id' => app('global_statuses')['cart_new'],
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
       $this->emit('newcart');
@@ -156,7 +156,7 @@ class StoreWishlist extends Component
         $this->message = $index;
       }
     }
-    $cart->status_id = app('global_cart_new');
+    $cart->status_id = app('global_statuses')['cart_new'];
     $cart->save();
     $this->emit('cartUpdated');
   }

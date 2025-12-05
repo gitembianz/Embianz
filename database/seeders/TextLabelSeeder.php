@@ -10,7 +10,7 @@ class TextLabelSeeder extends Seeder
 {
   public static function labels()
   {
-    $currentTime = now();
+    $currentTime = now(config('app.timezone'));
     return [
       ['parameter' => 'support_title', 'value' => 'La noi te bucuri de:', 'description' => 'Support title - h2', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'support_livechat_title', 'value' => 'Live Chat', 'description' => 'Support livechat title - h3', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
@@ -283,6 +283,21 @@ Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'cr
       ['parameter' => 'blog_page_title', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'blog_page_description', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'add_review_button', 'value' => 'Adauga un review', 'description' => 'Add review button', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_section_title', 'value' => 'Reviews', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_out_of', 'value' => 'din', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_customers_recommended', 'value' => 'Clienti recomanda acest produs', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_no_reviews', 'value' => 'Acest produs nu are revi', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_description', 'value' => 'Opiniile clienților noștri — experiențe reale, rezultate autentice.', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_button', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_title', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_description', 'value' => 'Adauga un review', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_acronim', 'value' => 'Acronim', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_mesage', 'value' => 'Comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_mesage_placeholder', 'value' => 'Lasa un comentariu', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_add_review_modal_description', 'value' => 'Selectează stelele, introdu acronimul tău și lasă un mesaj scurt', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'pdp_reviews_list', 'value' => 'Vezi ce au spus alti cleinti despre acest produs', 'description' => 'Add review button text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'redirect_title', 'value' => 'Mulțumim pentru completarea formularului.', 'description' => 'Redirect page title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'redirect_description', 'value' => 'Veți fi redirecționat la pagina principală în câteva secunde...', 'description' => 'Redirect page description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 

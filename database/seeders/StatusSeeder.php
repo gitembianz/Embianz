@@ -12,7 +12,7 @@ class StatusSeeder extends Seeder
      */
     public function run()
     {
-        $currentTime = now();
+        $currentTime = now(config('app.timezone'));
 
         DB::table('statuses')->insert([
             ['name' => 'new', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],

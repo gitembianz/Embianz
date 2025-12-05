@@ -1,6 +1,6 @@
 <div>
     <section id="cookie-banner" style="display: none">
-        <div class="container cookie__container">
+        <div wire:ignore class="container cookie__container">
             @if ($timer > 0)
                 <div class="cookie__description">
                     <span style="border: none">
@@ -102,11 +102,14 @@
                 body.classList.remove('no-scroll');
             }
         });
+        window.addEventListener('refresh-page', () => {
+            window.location.reload();
+        });
     </script>
     @if ($timer > 0)
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const cooldownPeriod = {{ $timer }}; // Cooldown period in seconds from the server
+                const cooldownPeriod = {{ $timer }};
                 let ticker;
 
                 function startTimer(endTime) {

@@ -10,9 +10,7 @@ use App\Models\AllJob;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Exchange;
 use App\Models\Listview;
-use App\Models\Static_Page;
 use Illuminate\Support\Str;
 use App\Models\CsvImportJob;
 use Livewire\WithPagination;
@@ -21,7 +19,6 @@ use App\Models\Store_Settings;
 use App\Jobs\RefreshPricesChunkJob;
 
 use Illuminate\Validation\Rule;
-use App\Models\PricelistEntries;
 
 use App\Jobs\DynamicCsvImportJob;
 use App\Models\Article;
@@ -37,8 +34,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Response;
-use App\Models\ProductReviews as ModelsProductReviews;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Models\ProductReviews;
 
 class Storesettingstable extends Component
 {
@@ -655,7 +651,7 @@ class Storesettingstable extends Component
     }
 
     $this->activelistview->update([
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
 
     $this->listview = [
@@ -915,27 +911,75 @@ class Storesettingstable extends Component
   }
   public function seedreviews()
   {
+    $acronims = [
+      'JD',
+      'AM',
+      'CR',
+      'LS',
+      'MK',
+      'PT',
+      'RB',
+      'SN',
+      'VL',
+      'XT',
+      'AN',
+      'BG',
+      'CZ',
+      'DK',
+      'EV',
+      'FP',
+      'GH',
+      'HK',
+      'IL',
+      'JM'
+    ];
+
+    $comments = [
+      'Produs excelent, foarte mulțumit!',
+      'Exact ce aveam nevoie, funcționează perfect.',
+      'Calitate foarte bună și livrare rapidă.',
+      'Raport calitate-preț foarte bun.',
+      'A depășit așteptările mele.',
+      'Produs bun, îl recomand.',
+      'Sunt foarte încântat de această achiziție.',
+      'Construcție solidă, se simte premium.',
+      'Livrare rapidă și ambalaj de calitate.',
+      'Merită cumpărat din nou.',
+      'Funcționează impecabil, recomand cu încredere.',
+      'Servicii excelente, produsul conform descrierii.',
+      'Preț corect pentru ceea ce oferă.',
+      'Foarte practic și ușor de folosit.',
+      'Un produs de încredere, recomand oricui.'
+    ];
+
     $prods = Product::where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
+      ->get();
 
     foreach ($prods as $product) {
       if (!$product->reviews->first()) {
-        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+        $acronim = $acronims[array_rand($acronims)];
+        $comm = $comments[array_rand($comments)];
+        $slug = strtolower($acronim) . '-' . rand(1000, 9999);
 
-        ModelsProductReviews::create([
+        ProductReviews::create([
           'product_id' => $product->id,
-          'count' => 1,
-          'value' => $value
+          'acronim'    => $slug,
+          'score'      => rand(4, 5),
+          'comment'    => $comm,
+          'approved'   => true
         ]);
       }
     }
+
     session()->flash('notification', [
       'message' => 'Reviews added successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+      'type'    => 'success',
+      'title'   => 'Success'
     ]);
   }
+
   public function actualizeaza()
   {
     Artisan::call('cache:clear');
@@ -1192,12 +1236,12 @@ class Storesettingstable extends Component
     // Homepage
     $url = $xml->addChild('url');
     $url->addChild('loc', url('/'));
-    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
     $url->addChild('priority', '1.0');
     // search
     $url = $xml->addChild('url');
     $url->addChild('loc', url('/search'));
-    $url->addChild('lastmod', now()->toAtomString());
+    $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
     $url->addChild('priority', '0.9');
     $staticpages = collect(app('static_pages'))->values();
 
@@ -1210,42 +1254,42 @@ class Storesettingstable extends Component
     foreach ($pages as $page => $priority) {
       $url = $xml->addChild('url');
       $url->addChild('loc', url($page));
-      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
       $url->addChild('priority', $priority);
     }
 
     // Active Articles
     $articles = Article::where('active', true)
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')))
       ->get();
 
     foreach ($articles as $article) {
       $url = $xml->addChild('url');
       $articleUrl = route('article', ['article' => $article->seo_id ?? $article->id]);
       $url->addChild('loc', htmlspecialchars($articleUrl));
-      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
       $url->addChild('priority', '0.8');
     }
 
     // Active Products
     $products = Product::where('active', true)
       ->where('type', '!=', 'parent')
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')))
       ->get();
 
     foreach ($products as $product) {
       $url = $xml->addChild('url');
       $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
       $url->addChild('loc', htmlspecialchars($productUrl));
-      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
       $url->addChild('priority', '0.8');
     }
 
     // Blog main page and categories
-      $this->generateBlogCategoryPages($xml, null);
-       // All other categories
+    $this->generateBlogCategoryPages($xml, null);
+    // All other categories
     $blogcategories = ArticleCategory::where('active', true)
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')))
       ->get();
 
     foreach ($blogcategories as $category) {
@@ -1264,7 +1308,7 @@ class Storesettingstable extends Component
 
     // All other categories
     $categories = Category::where('active', true)
-      ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+      ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')))
       ->get();
 
     foreach ($categories as $category) {
@@ -1317,7 +1361,7 @@ class Storesettingstable extends Component
     $productsCount = $category->product_categories()
       ->whereHas('product', function ($query) {
         $query->where('active', true)
-          ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
+          ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')));
       })
       ->count();
 
@@ -1345,7 +1389,7 @@ class Storesettingstable extends Component
       }
 
       $url->addChild('loc', htmlspecialchars($categoryUrl));
-      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
       $url->addChild('priority', $isDefaultCategory ? '0.9' : '0.8');
     }
   }
@@ -1356,12 +1400,12 @@ class Storesettingstable extends Component
       $articlesCount = $category->article_categories()
         ->whereHas('article', function ($query) {
           $query->where('active', true)
-            ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now());
+            ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')));
         })
         ->count();
     } else {
       $articlesCount = Article::where('active', true)
-        ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())->count();
+        ->where('start_date', '<=', Carbon::now(config('app.timezone')))->where('end_date', '>=', Carbon::now(config('app.timezone')))->count();
     }
 
     $limit = app('global_articles_limit_load');
@@ -1387,7 +1431,7 @@ class Storesettingstable extends Component
       }
 
       $url->addChild('loc', htmlspecialchars($categoryUrl));
-      $url->addChild('lastmod', now()->toAtomString());
+      $url->addChild('lastmod', now(config('app.timezone'))->toAtomString());
       $url->addChild('priority', $category ? '0.9' : '0.8');
     }
   }

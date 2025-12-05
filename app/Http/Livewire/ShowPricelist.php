@@ -108,7 +108,7 @@ class ShowPricelist extends Component
         $new->active = $rec['active'];
       }
       $new->lastmodifiedby = Auth::user()->name;
-      $new->updated_at = now();
+      $new->updated_at = now(config('app.timezone'));
       $new->save();
       $this->emit('itemSaved');
       session()->flash('notification', [

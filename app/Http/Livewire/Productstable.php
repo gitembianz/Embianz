@@ -335,7 +335,7 @@ class Productstable extends Component
       ->withCount([
         'orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', app('global_order_processing'));
+            $q->where('status_id', app('global_statuses')['order_processing']);
           })
             ->select(DB::raw('
                     CASE
@@ -700,6 +700,7 @@ class Productstable extends Component
         File::makeDirectory($filespath . $product->id, 0755, true);
       }
       $path = $filespath . $product->id . "/";
+
       $mediaLink = strtok($mediaLink, '?');
       $mediaLink = preg_replace('/(_\d+x\d+)?(\.\w+)$/', '$2', $mediaLink);
 
@@ -718,6 +719,7 @@ class Productstable extends Component
         $image = Image::make($fileContent);
         $webpContent = $image->encode('webp')->__toString();
         $fileExtension = 'webp';
+
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-');
 
 
@@ -728,7 +730,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
+        Storage::disk('media')->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
@@ -739,7 +741,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
+        Storage::disk('media')->put($path . $name, $fileContent);
       }
 
       $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
@@ -761,7 +763,7 @@ class Productstable extends Component
       $product->media()->attach($media->id);
 
       $filePath = $path . $name;
-      $file = Storage::disk('public_upload')->get($filePath);
+      $file = Storage::disk('media')->get($filePath);
 
       $ismin = $product->media()->where('type', 'min')->first();
 
@@ -899,7 +901,7 @@ class Productstable extends Component
     }
 
     $this->activelistview->update([
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
 
     $this->listview = [
@@ -1277,7 +1279,7 @@ class Productstable extends Component
         ->withCount([
           'orders_item as interim_quantity' => function ($query) {
             $query->whereHas('order', function ($q) {
-              $q->where('status_id', app('global_order_processing'));
+              $q->where('status_id', app('global_statuses')['order_processing']);
             })->select(DB::raw('
                         CASE
                             WHEN COUNT(*) = 0 THEN products.quantity

@@ -99,16 +99,7 @@ class RelatedSession extends Component
     }
     public function getRelatedsProperty()
     {
-        if ($this->relatedby === 'sessions') {
-            return DB::table($this->relatedby)
-                ->where('innersession', $this->session_id)
-                ->where(function ($query) {
-                    $query->where('user_agent', 'like', '%' . $this->search . '%')
-                        ->orWhere('last_activity', 'like', '%' . $this->search . '%');
-                })
-                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-                ->paginate($this->loadAmount);
-        } elseif ($this->relatedby === 'carts') {
+        if ($this->relatedby === 'carts') {
             return Cart::search($this->search)->where('session_id', $this->session_id)
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount) ?? collect();
         } elseif ($this->relatedby === 'orders') {

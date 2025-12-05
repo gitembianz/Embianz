@@ -53,7 +53,7 @@ class ShowCart extends Component
             $cart = Cart::find($this->cartId);
             if (array_key_exists('status_id', $new_status)) {
                 $cart->status_id = $new_status['status_id'];
-                $cart->updated_at = now();
+                $cart->updated_at = now(config('app.timezone'));
                 $cart->save();
                 $this->emit('itemSaved');
                 session()->flash('notification', [

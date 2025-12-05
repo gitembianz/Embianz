@@ -228,7 +228,7 @@ class ShowOrder extends Component
         $path = 'documents/awbfancourier_' . $this->order->order_number . '.pdf';
         Awbs::create([
           'order_id' => $this->order->id,
-          'date' => now(),
+          'date' => now(config('app.timezone')),
           'type' => 'fancourier',
           'path' => $path
         ]);
@@ -526,7 +526,7 @@ class ShowOrder extends Component
 
         Awbs::create([
           'order_id' => $this->order->id,
-          'date' => now(),
+          'date' => now(config('app.timezone')),
           'type' => 'sameday',
           'path' => $path
         ]);
@@ -660,7 +660,7 @@ class ShowOrder extends Component
       if ($parameter) {
         $parameter->update([
           'value' => $token,
-          'updated_at' => now()
+          'updated_at' => now(config('app.timezone'))
         ]);
       }
       $services = $this->get_services_sameday();
@@ -684,7 +684,7 @@ class ShowOrder extends Component
   public function instant_invoice()
   {
     $number = $this->generate_invoice_number(true);
-    $this->order->invoice_date = Carbon::now()->format('Y-m-d');
+    $this->order->invoice_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
     $this->order->save();
     $this->generate_invoice();
   }
@@ -692,7 +692,7 @@ class ShowOrder extends Component
   public function instant_storno()
   {
     $number = $this->generate_storno_number(true);
-    $this->order->storno_date = Carbon::now()->format('Y-m-d');
+    $this->order->storno_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
     $this->order->save();
     $this->generate_storno();
   }
@@ -1640,7 +1640,7 @@ class ShowOrder extends Component
       'orders.product' => function ($query) {
         $query->withCount(['orders_item as interim_quantity' => function ($query) {
           $query->whereHas('order', function ($q) {
-            $q->where('status_id', app('global_order_processing'));
+            $q->where('status_id', app('global_statuses')['order_processing']);
           })->select(DB::raw('sum(quantity)'));
         }]);
       },
@@ -1743,7 +1743,7 @@ class ShowOrder extends Component
       // Handle status change logic
       if (isset($new['status_id']) && $oldStatus !== $new['status_id']) {
         $order->status_id = $new['status_id'];
-        $order->updated_at = now();
+        $order->updated_at = now(config('app.timezone'));
 
         $shouldIncreaseStock = false;
         $shouldDecreaseStock = false;

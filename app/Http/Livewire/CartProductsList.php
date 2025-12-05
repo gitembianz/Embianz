@@ -55,8 +55,8 @@ class CartProductsList extends Component
       return $user->promotions()
         ->whereHas('promotion', function ($query) {
           $query->where('active', true)
-            ->where('start_date', '<=', now()->format('Y-m-d'))
-            ->where('end_date', '>=', now()->format('Y-m-d'));
+            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'));
         })
         ->with('promotion')
         ->get();
@@ -71,8 +71,8 @@ class CartProductsList extends Component
       return collect(app()->make('promotions'))
         ->filter(function ($promotion) {
           return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now()->format('Y-m-d') &&
-            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
             $promotion['type'] === 'amount';
         });
     } else {
@@ -88,7 +88,7 @@ class CartProductsList extends Component
 
       $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
         ->where('session_id', $this->session_id)
-        ->where('status_id', '!=', app('global_cart_closed'))
+        ->where('status_id', '!=', app('global_statuses')['cart_closed'])
         ->with([
           'voucher' => function ($query) {
             $query->select('code', 'id', 'percent', 'value', 'start_date', 'end_date');
@@ -112,7 +112,7 @@ class CartProductsList extends Component
     } else {
       return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'promotion_value')
         ->where('session_id', $this->session_id)
-        ->where('status_id', '!=', app('global_cart_closed'))
+        ->where('status_id', '!=', app('global_statuses')['cart_closed'])
         ->with([
           'voucher' => function ($query) {
             $query->select('code', 'id', 'percent', 'value', 'start_date', 'end_date');
@@ -148,8 +148,8 @@ class CartProductsList extends Component
       'voucher_id' => null,
       'voucher_value' => 0,
       'final_amount' => $sumAmount + $this->cart->delivery_price - $this->cart->promotion_value,
-      'status_id' => app('global_cart_new'),
-      'updated_at' => now(),
+      'status_id' => app('global_statuses')['cart_new'],
+      'updated_at' => now(config('app.timezone')),
     ]);
     $this->message = null;
     $this->voucher = "";
@@ -171,9 +171,9 @@ class CartProductsList extends Component
       return;
     }
     $voucher = Voucher::where('code', $this->voucher)
-      ->where('status_id', app('global_voucher_active'))
-      ->whereDate('start_date', '<=', now())
-      ->whereDate('end_date', '>=', now())
+      ->where('status_id', app('global_statuses')['voucher_active'])
+      ->whereDate('start_date', '<=', now(config('app.timezone')))
+      ->whereDate('end_date', '>=', now(config('app.timezone')))
       ->first();
     if (!$voucher) {
       $this->message = "Voucher-ul '" . $this->voucher . "' nu a fost găsit!";
@@ -188,7 +188,7 @@ class CartProductsList extends Component
       'voucher_id' => $voucher->id,
       'voucher_value' => $discount,
       'final_amount' => $sumAmount + $this->cart->delivery_price - $discount - $this->cart->promotion_value,
-      'updated_at' => now(),
+      'updated_at' => now(config('app.timezone')),
     ]);
     $this->message = null;
     $this->voucher = "";
@@ -219,7 +219,7 @@ class CartProductsList extends Component
     $counter = optional($this->promotions)->firstWhere('promotion_type', 'counter');
     if ($counter && Carbon::parse($counter->promotion_expiration_date)->isFuture()) {
       $expiration = Carbon::parse($counter->promotion_expiration_date);
-      $this->timer = $expiration->diffInSeconds(now());
+      $this->timer = $expiration->diffInSeconds(now(config('app.timezone')));
 
       $promotionValue += $this->calculatePromoValue($counter, $sumAmount);
     }
@@ -277,8 +277,8 @@ class CartProductsList extends Component
       $voucherValue = 0;
       if (
         $this->cart->voucher &&
-        $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
-        $this->cart->voucher->end_date >= now()->format('Y-m-d')
+        $this->cart->voucher->start_date <= now(config('app.timezone'))->format('Y-m-d') &&
+        $this->cart->voucher->end_date >= now(config('app.timezone'))->format('Y-m-d')
       ) {
 
         if ($this->cart->voucher->percent !== null) {
@@ -340,8 +340,8 @@ class CartProductsList extends Component
     $voucherValue = 0;
     if (
       $this->cart->voucher &&
-      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
-      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+      $this->cart->voucher->start_date <= now(config('app.timezone'))->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now(config('app.timezone'))->format('Y-m-d')
     ) {
 
       if ($this->cart->voucher->percent !== null) {
@@ -363,8 +363,8 @@ class CartProductsList extends Component
     $this->cart->sum_amount = $sumAmount;
     $this->cart->voucher_value = $voucherValue;
     $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
-    $this->cart->status_id = app('global_cart_new');
-    $this->cart->updated_at = now();
+    $this->cart->status_id = app('global_statuses')['cart_new'];
+    $this->cart->updated_at = now(config('app.timezone'));
     $this->cart->save();
 
     $this->emit('cartUpdated');
@@ -399,7 +399,7 @@ class CartProductsList extends Component
 
     $this->cart->load('cartItems.product');
 
-    $today = now()->toDateString();
+    $today = now(config('app.timezone'))->toDateString();
     $errorMessage = app()->has('global_order_error_quantity')
       ? app('global_order_error_quantity')
       : "Vă rog verificați detaliile comenzii!";
@@ -423,7 +423,7 @@ class CartProductsList extends Component
     }
 
     $this->cart->update([
-      'status_id' => app('global_cart_checkout'),
+      'status_id' => app('global_statuses')['cart_checkout'],
     ]);
 
     return redirect()->route('order');
@@ -469,8 +469,8 @@ class CartProductsList extends Component
     $voucherValue = 0;
     if (
       $this->cart->voucher &&
-      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
-      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+      $this->cart->voucher->start_date <= now(config('app.timezone'))->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now(config('app.timezone'))->format('Y-m-d')
     ) {
 
       if ($this->cart->voucher->percent !== null) {
@@ -486,7 +486,7 @@ class CartProductsList extends Component
     $this->cart->voucher_value = $voucherValue;
     $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
 
-    $this->cart->status_id = app('global_cart_new');
+    $this->cart->status_id = app('global_statuses')['cart_new'];
     $this->cart->save();
 
     $this->emit('cartUpdated');
@@ -542,8 +542,8 @@ class CartProductsList extends Component
     $voucherValue = 0;
     if (
       $this->cart->voucher &&
-      $this->cart->voucher->start_date <= now()->format('Y-m-d') &&
-      $this->cart->voucher->end_date >= now()->format('Y-m-d')
+      $this->cart->voucher->start_date <= now(config('app.timezone'))->format('Y-m-d') &&
+      $this->cart->voucher->end_date >= now(config('app.timezone'))->format('Y-m-d')
     ) {
 
       if ($this->cart->voucher->percent !== null) {
@@ -559,7 +559,7 @@ class CartProductsList extends Component
     $this->cart->voucher_value = $voucherValue;
     $this->cart->final_amount = $sumAmount + $this->cart->delivery_price - $voucherValue - $this->cart->promotion_value;
 
-    $this->cart->status_id = app('global_cart_new');
+    $this->cart->status_id = app('global_statuses')['cart_new'];
     $this->cart->save();
 
     $this->emit('cartUpdated');

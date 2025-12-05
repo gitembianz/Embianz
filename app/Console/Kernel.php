@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
   {
     // $schedule->command('wishlist:clean')->daily();
     // $schedule->command('cart:clean')->daily();
+    $schedule->command('jobs:run-scheduled')->everyMinute();
   }
 
   /**

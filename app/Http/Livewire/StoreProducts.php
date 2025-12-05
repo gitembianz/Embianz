@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
 
 class StoreProducts extends Component
 {
@@ -87,8 +88,8 @@ class StoreProducts extends Component
   {
     $query = Product::search($this->search)
       ->where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
       ->with([
         'variants' => function ($query) {
           $query->with(['product' => function ($query) {
@@ -160,14 +161,17 @@ class StoreProducts extends Component
       $query->whereIn('id', $this->selectedKeys);
     }
 
-    return $query->orderBy('popularity', 'DESC')
-      ->orderBy('innerid', 'ASC')->paginate($this->loadAmount);
+    return $query
+      ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
+      ->orderBy('innerid', 'ASC')
+      ->paginate($this->loadAmount);
   }
 
   // filters fro cache
   public function getFilterValuesProperty()
   {
-    $query = app('cached_specifications');
+    $query = Cache::get('cached_specifications', []);
+
 
     if ($this->category != null) {
       $query = collect($query)->map(function ($spec) {

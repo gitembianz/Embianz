@@ -31,8 +31,8 @@ class AddToCartButton extends Component
       return collect(app()->make('promotions'))
         ->filter(function ($promotion) {
           return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now()->format('Y-m-d') &&
-            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
             $promotion['type'] === 'amount';
         });
     } else {
@@ -74,7 +74,7 @@ class AddToCartButton extends Component
   public function addToCart($productId)
   {
     $cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
+      ->where('status_id', '!=', app('global_statuses')['cart_closed'])
       ->with('voucher')
       ->latest()
       ->first();
@@ -90,7 +90,7 @@ class AddToCartButton extends Component
         'name' => $uniqueName,
         'delivery_price' => app('global_delivery_price'),
         'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
-        'status_id' => app('global_cart_new'),
+        'status_id' => app('global_statuses')['cart_new'],
         'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
       ]);
 
@@ -136,7 +136,7 @@ class AddToCartButton extends Component
 
     $cart->quantity_amount += 1;
     $cart->final_amount = $cart->sum_amount + $cart->delivery_price - $cart->voucher_value - $cart->promotion_value;
-    $cart->status_id = app('global_cart_new');
+    $cart->status_id = app('global_statuses')['cart_new'];
     $cart->seen_by_customer = true;
     $cart->save();
 

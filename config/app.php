@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -15,9 +15,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Embianz-project'),
+  'name' => env('APP_NAME', 'Embianz-project'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
@@ -28,9 +28,9 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+  'env' => env('APP_ENV', 'production'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
@@ -41,9 +41,9 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+  'debug' => (bool) env('APP_DEBUG', false),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
@@ -54,11 +54,11 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://www.dev.embianz.com'),
+  'url' => env('APP_URL', 'https://www.dev.embianz.com'),
 
-    'asset_url' => env('ASSET_URL'),
+  'asset_url' => env('ASSET_URL'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
@@ -69,9 +69,9 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE'),
+  'timezone' => env('APP_TIMEZONE'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
@@ -82,10 +82,10 @@ return [
     |
     */
 
-    'locale' => env('APP_LANG'),
+  'locale' => env('APP_LANG'),
 
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
     |--------------------------------------------------------------------------
@@ -96,9 +96,9 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+  'fallback_locale' => 'en',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Faker Locale
     |--------------------------------------------------------------------------
@@ -109,9 +109,9 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+  'faker_locale' => 'en_US',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
@@ -123,10 +123,10 @@ return [
     */
 
 
-    'cipher' => 'AES-256-CBC',
-    'key' => env('APP_KEY'),
+  'cipher' => 'AES-256-CBC',
+  'key' => env('APP_KEY'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
@@ -139,12 +139,12 @@ return [
     |
     */
 
-    'maintenance' => [
-        'driver' => 'file',
-        // 'store'  => 'redis',
-    ],
+  'maintenance' => [
+    'driver' => 'file',
+    // 'store'  => 'redis',
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
@@ -155,57 +155,59 @@ return [
     |
     */
 
-    'providers' => [
+  'providers' => [
 
-        /*
+    /*
          * Laravel Framework Service Providers...
          */
-        Illuminate\Auth\AuthServiceProvider::class,
-        // Illuminate\Broadcasting\BroadcastServiceProvider::class,
-        Illuminate\Bus\BusServiceProvider::class,
-        Illuminate\Cache\CacheServiceProvider::class,
-        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
-        Illuminate\Cookie\CookieServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
-        Illuminate\Hashing\HashServiceProvider::class,
-        Illuminate\Mail\MailServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
-        Illuminate\Pagination\PaginationServiceProvider::class,
-        Illuminate\Pipeline\PipelineServiceProvider::class,
-        Illuminate\Queue\QueueServiceProvider::class,
-        Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
+    Illuminate\Auth\AuthServiceProvider::class,
+    // Illuminate\Broadcasting\BroadcastServiceProvider::class,
+    Illuminate\Bus\BusServiceProvider::class,
+    Illuminate\Cache\CacheServiceProvider::class,
+    Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
+    Illuminate\Cookie\CookieServiceProvider::class,
+    Illuminate\Database\DatabaseServiceProvider::class,
+    Illuminate\Encryption\EncryptionServiceProvider::class,
+    Illuminate\Filesystem\FilesystemServiceProvider::class,
+    Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+    Illuminate\Hashing\HashServiceProvider::class,
+    Illuminate\Mail\MailServiceProvider::class,
+    Illuminate\Notifications\NotificationServiceProvider::class,
+    Illuminate\Pagination\PaginationServiceProvider::class,
+    Illuminate\Pipeline\PipelineServiceProvider::class,
+    Illuminate\Queue\QueueServiceProvider::class,
+    Illuminate\Redis\RedisServiceProvider::class,
+    Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+    Illuminate\Session\SessionServiceProvider::class,
+    Illuminate\Translation\TranslationServiceProvider::class,
+    Illuminate\Validation\ValidationServiceProvider::class,
+    Illuminate\View\ViewServiceProvider::class,
 
-        /*
+    /*
          * Package Service Providers...
          */
 
 
 
-        /*
+    /*
          * Application Service Providers...
          */
-        // App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
-        App\Providers\FortifyServiceProvider::class,
-        App\Providers\JetstreamServiceProvider::class,
-        App\Providers\GlobalVariablesServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
+    // App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    // App\Providers\EventServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
+    App\Providers\TelescopeServiceProvider::class,
+    App\Providers\FortifyServiceProvider::class,
+    App\Providers\JetstreamServiceProvider::class,
+    App\Providers\GlobalVariablesServiceProvider::class,
+    Barryvdh\DomPDF\ServiceProvider::class,
+    App\Providers\PromotionServiceProvider::class,
+    App\Providers\StaticPageRouteServiceProvider::class,
 
 
-    ],
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Class Aliases
     |--------------------------------------------------------------------------
@@ -216,10 +218,10 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        'PDF' => Barryvdh\DomPDF\Facade\PDF::class,
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+  'aliases' => Facade::defaultAliases()->merge([
+    'PDF' => Barryvdh\DomPDF\Facade\PDF::class,
+    // 'ExampleClass' => App\Example\ExampleClass::class,
 
-    ])->toArray(),
+  ])->toArray(),
 
 ];

@@ -220,7 +220,7 @@ class ShowAccount extends Component
                     return;
                 }
             }
-            $new->updated_at = now();
+            $new->updated_at = now(config('app.timezone'));
             $new->save();
             $this->emit('itemSaved');
             session()->flash('notification', [

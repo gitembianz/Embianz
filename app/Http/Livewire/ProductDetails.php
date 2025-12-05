@@ -47,8 +47,8 @@ class ProductDetails extends Component
           $query->with(['variants' => function ($query) {
             $query->distinct('variant_id')->with(['product' => function ($query) {
               $query->where('active', true)
-                ->where('start_date', '<=', now()->format('Y-m-d'))
-                ->where('end_date', '>=', now()->format('Y-m-d'))
+                ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+                ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
                 ->with([
                   'media' => function ($query) {
                     $query->select('path', 'name')->where('type', 'min');
@@ -75,8 +75,8 @@ class ProductDetails extends Component
             $query->with(['variants' => function ($query) {
               $query->distinct('variant_id')->with(['product' => function ($query) {
                 $query->where('active', true)
-                  ->where('start_date', '<=', now()->format('Y-m-d'))
-                  ->where('end_date', '>=', now()->format('Y-m-d'))
+                  ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+                  ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
                   ->with([
                     'media' => function ($query) {
                       $query->select('path', 'name')->where('type', 'min');
@@ -111,8 +111,8 @@ class ProductDetails extends Component
     }
 
     $allVariants = $parentProduct->variants->map->product->where('active', true)
-      ->where('start_date', '<=', now()->format('Y-m-d'))
-      ->where('end_date', '>=', now()->format('Y-m-d'))->unique();
+      ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+      ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))->unique();
 
     $filterVariants = function ($variants, $currentProduct, $variantIdToExclude) {
       return $variants->filter(function ($variant) use ($currentProduct, $variantIdToExclude) {
@@ -173,7 +173,7 @@ class ProductDetails extends Component
 
   public function addToCart($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_statuses')['cart_closed'])->latest()->first();
 
     if (!$cart) {
       $baseName = class_basename(Cart::class);
@@ -190,7 +190,7 @@ class ProductDetails extends Component
         'name' => $uniqueName,
         'delivery_price' => app('global_delivery_price'),
         'delivery_price_vat' => app()->bound('global_delivery_price_vat') ? app('global_delivery_price_vat') : 19,
-        'status_id' => app('global_cart_new'),
+        'status_id' => app('global_statuses')['cart_new'],
         'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
       ]);
       $this->emit('newcart');
@@ -254,7 +254,7 @@ class ProductDetails extends Component
         return;
       }
     }
-    $cart->status_id = app('global_cart_new');
+    $cart->status_id = app('global_statuses')['cart_new'];
     $cart->save();
     $this->quantity = 1;
     foreach ($this->promotions as $promo) {
@@ -273,8 +273,8 @@ class ProductDetails extends Component
       return collect(app()->make('promotions'))
         ->filter(function ($promotion) {
           return isset($promotion['start_date'], $promotion['end_date'], $promotion['type']) && // Ensure keys exist
-            $promotion['start_date'] <= now()->format('Y-m-d') &&
-            $promotion['end_date'] >= now()->format('Y-m-d') &&
+            $promotion['start_date'] <= now(config('app.timezone'))->format('Y-m-d') &&
+            $promotion['end_date'] >= now(config('app.timezone'))->format('Y-m-d') &&
             $promotion['type'] === 'amount';
         });
     } else {

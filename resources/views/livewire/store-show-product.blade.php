@@ -169,7 +169,6 @@
         <!------------------------------------------------------>
     </section>
 
-
     <section class="tab container">
         <div class="tab__top">
             <button class="tab__button active" onclick="switchTab(0)">
@@ -178,7 +177,6 @@
                 @endif
             </button>
             @if ($product->product_specs->isNotEmpty())
-
                 <button class="tab__button" onclick="switchTab(1)">
                     @if (app()->has('label_pdp_details_tag'))
                         {!! app('label_pdp_details_tag') !!}
@@ -190,7 +188,6 @@
             <p class="tab__info">{!! $product->long_description !!}</p>
         </div>
         @if ($product->product_specs->isNotEmpty())
-
             <div class="tab__content">
                 <table class="tab__table">
                     <thead>
@@ -228,11 +225,6 @@
                 </table>
             </div>
         @endif
-        <!----------------- End Product details ---------------->
-        <!------------------------------------------------------>
-        <!--------------------- End Section --------------------->
-        <!------------------------------------------------------>
-        <!------------------ End Section Description ------------>
     </section>
 
     <script>
@@ -251,10 +243,141 @@
             });
         }
     </script>
-    <h2></h2>
-    {{-- Display all categories --}}
-    @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
 
+    {{-- modal add review --}}
+    <div class="alertorder @if ($showaddreview) active @elseif($sendreview) out @endif"
+        id="review__modal">
+        <div class="alertorder__content">
+            <div>
+                <h2 style="text-align: center">
+                    @if (app()->has('label_pdp_add_review_title'))
+                        {!! app('label_pdp_add_review_title') !!}
+                    @endif
+                </h2>
+                <p class="subtitle" style="margin-top: 10px; text-align:center">
+                    @if (app()->has('label_pdp_add_review_modal_description'))
+                        {!! app('label_pdp_add_review_modal_description') !!}
+                    @endif
+                </p>
+
+                <form wire:submit.prevent="saveReview">
+                    {{-- Rating --}}
+                    <div class="stars" wire:ignore>
+                        @for ($i = 5; $i >= 1; $i--)
+                            <input type="radio" id="rating-{{ $i }}" name="addrating"
+                                value="{{ $i }}" wire:model.live="addrating" />
+                            <label for="rating-{{ $i }}" title="{{ $i }} stars">★</label>
+                        @endfor
+                    </div>
+
+
+                    {{-- Acronym --}}
+                    <div class="checkout__item checkout__item--required">
+                        <input type="text" wire:model.defer="acronym"
+                            placeholder="@if (app()->has('label_order_email')) {!! app('label_order_email') !!} @endif" required
+                            id="acroniminput">
+                        <label for="acroniminput">
+                            @if (app()->has('label_pdp_add_review_acronim'))
+                                {!! app('label_pdp_add_review_acronim') !!}
+                            @endif
+                        </label>
+                    </div>
+
+                    {{-- Message --}}
+                    <div class="checkout__item checkout__item--required" id="message">
+                        <textarea wire:model.defer="message" style="height: 150px; padding: 10px 20px;" maxlength="5000" required
+                            placeholder="Spune-ne mai multe. Incepe să scrii aici..."></textarea>
+                        <label>Mesaj</label>
+                    </div>
+                    @if ($errors->any())
+                        <div class="error-list">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li class="error">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    {{-- Submit --}}
+                    <button type="submit" class="leftbar__button" style="margin-top: 10px">
+                        @if (app()->has('label_add_review_button'))
+                            {!! app('label_add_review_button') !!}
+                        @endif
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .stars {
+            direction: rtl;
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stars input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .stars label {
+            cursor: pointer;
+            font-size: 50px;
+            color: #d1d5db;
+            transition: color .2s ease;
+        }
+
+        .stars label:hover,
+        .stars label:hover~label {
+            color: #fbbf24;
+        }
+
+        .stars input:checked~label {
+            color: #f59e0b;
+        }
+
+        .error-list {
+            margin-bottom: 15px;
+            background: #ffe5e5;
+            border: 1px solid #ffb3b3;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+
+        .error-list li {
+            color: #d60000;
+            font-size: 0.9rem;
+            list-style: none;
+            margin: 4px 0;
+        }
+
+        .circle-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 32px;
+            text-transform: uppercase;
+        }
+    </style>
+
+    <h2></h2>
+    @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
         <section class="container">
             <div class="related__cat">
                 @if (app()->has('label_pdp_category_tag'))
@@ -271,14 +394,10 @@
                 @endif
             </div>
         </section>
-
     @endif
-    <!---------------------------------------------------------->
-    <!------------------- Section Description ------------------>
     @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
         <section>
-            <div class="section__header
-      container">
+            <div class="section__header container">
                 <h2 class="section__title">
                     @if (app()->has('label_pdp_relatedproducts_slider_title'))
                         {!! app('label_pdp_relatedproducts_slider_title') !!}
@@ -291,11 +410,7 @@
                 </p>
             </div>
         </section>
-        <!----------------- End Section Description ---------------->
-        <!---------------------------------------------------------->
-        <!---------------------- Slider Cards ---------------------->
         <section id="relatedSlider" class="related__slider container section__margin">
-            {{-- <div class="related__navigation"> --}}
             <button class="related__btn prev" aria-label="Previous related slider">
                 <svg>
                     <polyline points="15 18 9 12 15 6"></polyline>
@@ -306,19 +421,17 @@
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </button>
-            {{--
-    </div> --}}
+
             <div class="related__wrapper">
-                @foreach ($product->related_product as $product)
+                @foreach ($product->related_product as $index => $product)
                     @if (
                         $product->product &&
                             $product->product->active == true &&
-                            $product->product->end_date >= now()->format('Y-m-d') &&
-                            $product->product->start_date <= now()->format('Y-m-d'))
+                            $product->product->end_date >= now(config('app.timezone'))->format('Y-m-d') &&
+                            $product->product->start_date <= now(config('app.timezone'))->format('Y-m-d'))
                         <div class="card product" style="width: 100%;">
                             <a style="width: 100%"
                                 href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
-
                                 @if ($product->product->media->first() != null)
                                     <img loading="eager" width="300" height="300" class="card-image"
                                         src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
@@ -328,23 +441,29 @@
                                         src="/images/store/default/default300.webp" alt="something wrong">
                                 @endif
                             </a>
-                            @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key($product->product->id))
-                            <?php if ($product->product->product_prices->count() != 0) {
-                                $price = number_format($product->product->product_prices->first()->value, 2, $decimal, $mill);
-                                $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
-                            } else {
-                                $price = null;
-                                $discount = false;
-                            }
-                            ?>
+                            @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key('relw' . $index))
+                            @php
+                                if ($product->product->product_prices->count() != 0) {
+                                    $price = number_format(
+                                        $product->product->product_prices->first()->value,
+                                        2,
+                                        $decimal,
+                                        $mill,
+                                    );
+                                    $discount =
+                                        $product->product->product_prices->first()->discount != 0 ? true : false;
+                                } else {
+                                    $price = null;
+                                    $discount = false;
+                                }
+                            @endphp
+
                             @if ($price)
                                 @if (
                                     ($product->product->quantity < app('global_low_stock') && $product->product->quantity > 0) ||
                                         $product->product->low_stock)
                                     <p
-                                        class="card-status @if ($discount) save-secondary
-          @else
-             save @endif ">
+                                        class="card-status @if ($discount) save-secondary @else save @endif ">
                                         @if (app()->has('label_product_status_stock'))
                                             {!! app('label_product_status_stock') !!}
                                         @endif
@@ -367,7 +486,6 @@
                                         </p>
                                     @endif
                                 @endif
-                                {{-- tagul de discount --}}
                             @else
                                 <p class="card-status save">
                                     @if (app()->has('label_product_status_coming_soon'))
@@ -377,7 +495,8 @@
                             @endif
                             <div class="card-info">
                                 <div class="card-text">
-                                    <h2><a style="text-decoration: none; font-weight:500"
+                                    <h2>
+                                        <a style="text-decoration: none; font-weight:500"
                                             href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->name }}</a>
                                     </h2>
                                     @php
@@ -427,7 +546,7 @@
                                     </p>
                                 </div>
                                 @if ($price)
-                                    @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
+                                    @livewire('add-to-cart-button', ['product' => $product->product], key('rel' . $index))
                                 @else
                                     <button class="card-button-disabled" aria-label="Disabled Add to cart button">
                                         @if (app()->has('label_add_to_cart_button_indisponibil'))
@@ -446,7 +565,8 @@
                                 </span>
                             </div>
                             <div style="display: none" class="json-ld-data"
-                                data-product-json='@json($product->product)'></div>
+                                data-product-json='@json($product->product)'>
+                            </div>
                         </div>
                     @endif
                 @endforeach
@@ -456,8 +576,7 @@
 
     @if ($last_visited_products->count() > 0)
         <section>
-            <div class="section__header
-      container">
+            <div class="section__header container">
                 <h2 class="section__title">
                     @if (app()->has('label_pdp_lastviewproducts_slider_title'))
                         {!! app('label_pdp_lastviewproducts_slider_title') !!}
@@ -485,7 +604,7 @@
 
             </div>
             <div class="related__wrapperlast">
-                @foreach ($last_visited_products as $product)
+                @foreach ($last_visited_products as $key => $product)
                     <div class="card product" style="width: 100%;">
                         <a style="width: 100%"
                             href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
@@ -499,7 +618,7 @@
                                     src="/images/store/default/default300.webp" alt="something wrong">
                             @endif
                         </a>
-                        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $product->id))
+                        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $key))
                         <?php if ($product->product_prices->count() != 0) {
                             $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -596,7 +715,7 @@
                                 </p>
                             </div>
                             @if ($price)
-                                @livewire('add-to-cart-button', ['product' => $product], key('last' . $product->id))
+                                @livewire('add-to-cart-button', ['product' => $product], key('adlast' . $key))
                             @else
                                 <button class="card-button-disabled" aria-label="Disabled Add to cart button">
                                     @if (app()->has('label_add_to_cart_button_indisponibil'))
@@ -621,8 +740,194 @@
             </div>
         </section>
     @endif
+
+    @if (app()->has('global_review_system') && app('global_review_system') === 'true')
+        <section>
+            <div class="section__header container">
+                <h2 class="section__title">
+                    @if (app()->has('label_pdp_reviews_section_title'))
+                        {!! app('label_pdp_reviews_section_title') !!}
+                    @endif
+                </h2>
+            </div>
+            @if ($product->reviews)
+                <input type="hidden" name="total_reviews" id="total_reviews"
+                    value="{{ $product->reviews->count() }}">
+                <p class="section__text" style="padding: 15px">
+                    @if (app()->has('label_pdp_reviews_description'))
+                        {!! app('label_pdp_reviews_description') !!}
+                    @endif
+                </p>
+                <div class="container grid-product-reviews">
+
+                    <div wire:ignore class="product-reviews__info reviews-info">
+                        <h2 class="product__title">{{ $product->reviews->count() }} reviews</h2>
+
+
+                        <div class="ratingscore">
+                            <div class="rating" style="--rating: {{ $score * 20 }}%;"></div>
+                            @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+                                ({{ number_format($score, 2) }})
+                            @endif
+                        </div>
+                        <div>
+                        </div>
+
+                        @if ($reviews45 > 0)
+                            <div class="reviews-info__percentage">
+                                {{ $reviews45 }}
+                                @if (app()->has('label_pdp_reviews_out_of'))
+                                    {!! app('label_pdp_reviews_out_of') !!}
+                                @endif
+                                {{ $product->reviews->count() }}
+                                ({{ round($avrage) }}%)
+                            </div>
+                            <span class="reviews-info__caption">
+                                @if (app()->has('label_pdp_reviews_customers_recommended'))
+                                    {!! app('label_pdp_reviews_customers_recommended') !!}
+                                @endif
+                            </span>
+                        @endif
+                    </div>
+
+                    <div wire:ignore class="product-reviews__bar reviews-bar">
+                        <ul class="list-reset reviews-bar__list">
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">5</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating5 }}">
+                                        <span
+                                            class="progress-bar__inner-line progress-bar__inner-line--excellent"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating5 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">4</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating4 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--good"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating4 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">3</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating3 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--normal"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating3 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">2</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating2 }}">
+                                        <span
+                                            class="progress-bar__inner-line progress-bar__inner-line--not-bad"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating2 }}</span>
+                                </div>
+                            </li>
+                            <li class="reviews-bar__item">
+                                <div class="progress-bar">
+                                    <span class="progress-bar__star">1</span>
+                                    <div class="progress-bar__outter-line" data-rating="{{ $rating1 }}">
+                                        <span class="progress-bar__inner-line progress-bar__inner-line--bad"></span>
+                                    </div>
+                                    <span id="value" class="progress-bar__quantity">{{ $rating1 }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="product-reviews__info">
+                        <h2 class="product__title">
+                            @if (app()->has('label_pdp_add_review_title'))
+                                {!! app('label_pdp_add_review_title') !!}
+                            @endif
+                        </h2>
+                        <p class="subtitle">
+                            @if (app()->has('label_pdp_add_review_description'))
+                                {!! app('label_pdp_add_review_description') !!}
+                            @endif
+                        </p>
+                        <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                            @if (app()->has('label_add_review_button'))
+                                {!! app('label_add_review_button') !!}
+                            @endif
+                        </button>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 15px">
+                    <p class="section__text">
+                        @if (app()->has('label_pdp_reviews_list'))
+                            {!! app('label_pdp_reviews_list') !!}
+                        @endif
+                    </p>
+                </div>
+                @foreach ($product_reviews as $review)
+                    @php
+                        $initial = strtoupper(mb_substr($review->acronim, 0, 1));
+                        $colors = [
+                            '#E57373',
+                            '#81C784',
+                            '#64B5F6',
+                            '#FFD54F',
+                            '#BA68C8',
+                            '#4DB6AC',
+                            '#FF8A65',
+                            '#A1887F',
+                        ];
+                        $color = $colors[crc32($review->acronim) % count($colors)];
+                    @endphp
+
+                    <div style="padding-top: 15px" class="container">
+                        <div class="article-card">
+                            <div class="article-image">
+                                <div class="circle-avatar" style="background-color: {{ $color }};">
+                                    {{ $initial }}
+                                </div>
+                            </div>
+
+                            <div class="article-content">
+                                <h2 class="article-title">{{ $review->acronim }}</h2>
+                                <div class="ratingscore">
+                                    <div class="rating" style="--rating: {{ $review->score * 20 }}%;"></div>
+                                    ({{ number_format($review->score, 2) }})
+                                </div>
+                                <p class="article-date">
+                                    {{ \Carbon\Carbon::parse($review->created_at)->format('M. j, Y') }}
+                                </p>
+
+                                <p class="article-description">{{ $review->comment }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                @if (app()->has('global_pagination') && app('global_pagination') === 'links')
+                    <section class="container">
+                        {{ $product_reviews->links() }}
+                    </section>
+                @else
+                    <x-lazy />
+                @endif
+            @else
+                <div class="container">
+                    <p class="section__text">
+                        @if (app()->has('label_pdp_reviews_no_reviews'))
+                            {!! app('label_pdp_reviews_no_reviews') !!}
+                        @endif
+                    </p>
+                </div>
+            @endif
+        </section>
+    @endif
+
     <!---------------------- Support Center -------------------->
     <x-support />
+
     <script>
         document.addEventListener("livewire:load", function() {
             injectJsonLd();
