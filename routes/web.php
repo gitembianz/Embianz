@@ -201,7 +201,7 @@
     route::get('/', [HomeController::class, 'home'])->name('home');
     route::view('/cart', 'store.cart')->name('cart');
     route::view('/wishlist', 'store.wislist')->name('wislist');
-    route::view('/order', 'store.order')->name('order');
+    route::view('/order', 'store.order')->middleware(\App\Http\Middleware\OrderCacheMiddleware::class)->name('order');
     route::view('/confirm', 'store.confirm')->name('confirm');
     route::view('/redirect', 'store.redirect')->name('redirect');
     Route::view('/404', 'store.404')->name('404');
