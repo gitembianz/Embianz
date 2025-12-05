@@ -110,7 +110,8 @@ class StoreOrder extends Component
     if (app()->has("global_check_terms_order") && app('global_check_terms_order') === 'true') {
       $this->terms = true;
     }
-    $this->countries = app('active_countries');
+    $this->countries = Cache::get('active_countries', []);
+
 
     if (session()->has('paymentcancel')) {
       $this->payment_cancel = true;
