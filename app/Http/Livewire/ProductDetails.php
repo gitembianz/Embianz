@@ -86,11 +86,9 @@ class ProductDetails extends Component
               }]);
             }]);
           },
-          'beeingvariants',
-          'reviews' => function ($query) {
-            $query->select('product_id', 'count', 'value');
-          }
+          'beeingvariants'
         ])
+        ->withAvg('reviews as score', 'score')
         ->findOrFail($prodid);
     }
 
