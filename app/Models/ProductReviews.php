@@ -19,18 +19,25 @@ class ProductReviews extends Model
     'comment',
     'approved',
   ];
-  public static function search($search)
-  {
+public static function search($search)
+{
     $query = static::query();
 
     if (!empty($search)) {
-      $query->where(function ($q) use ($search) {
-        foreach ((new static)->getFillable() as $field) {
-          $q->orWhere($field, 'like', '%' . $search . '%');
-        }
-      });
+        $query->where(function ($q) use ($search) {
+
+            foreach ((new static)->getFillable() as $field) {
+                $q->orWhere($field, 'like', '%' . $search . '%');
+            }
+
+            $q->orWhereHas('product', function ($subQuery) use ($search) {
+                $subQuery->where('name', 'LIKE', '%' . $search . '%');
+            });
+
+        });
     }
 
     return $query;
-  }
+}
+
 }
