@@ -24,6 +24,7 @@ class OrderSimilarity extends Component
   public $notprocesabbleorderIds = [];
   public $reachmaxselect = false;
   public $message = '';
+  public $minlimitsimilarity;
 
 
   public function mount($order)
@@ -31,7 +32,13 @@ class OrderSimilarity extends Component
     $this->orderId = $order->id;
     $this->order = $order;
     $this->selectedColumns = $this->columns;
-    $this->limitselect = config('global.order_similarity_limit', 5);
+    $this->limitselect = app()->has('global_order_similarity_limit')
+      ? app('global_order_similarity_limit')
+      : 5;
+
+    $this->minlimitsimilarity = app()->has('global_min_limit_similarity')
+      ? app('global_min_limit_similarity')
+      : 50;
   }
 
   public function getSimilaritiesProperty()
@@ -91,7 +98,7 @@ class OrderSimilarity extends Component
         return $totalAvailable >= $orderItem->quantity;
       });
 
-      if ($similarityPercentage >= 50) {
+      if ($similarityPercentage >= $this->minlimitsimilarity) {
         $products = $orderProducts->map(function ($item) {
           $product = $item->product;
           return [
