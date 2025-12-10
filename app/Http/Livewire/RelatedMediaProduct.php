@@ -299,8 +299,8 @@ class RelatedMediaProduct extends Component
       $file = Storage::disk('public_upload')->get($filePath);
 
       // Handle resized versions
-      if (!empty($this->file_resize[$this->i])) {
-        if ($this->file_sequences[$this->i] == '1') {
+      if (!empty($this->file_resize[$i])) {
+        if ($this->file_sequences[$i] == '1') {
           foreach (['min' => 70, 'main' => 300, 'full' => 640] as $typeKey => $resize) {
             $existing = $this->product->media()->where('type', $typeKey)->first();
             if ($existing) {
@@ -310,10 +310,10 @@ class RelatedMediaProduct extends Component
               }
               $existing->delete();
             }
-            $this->resizeImage($file, $path, $resize, $typeKey, $name, $fileExtension, false, $this->file_sequences[$this->i]);
+            $this->resizeImage($fileContent, $path, $resize, $typeKey, $name, $fileExtension, false, $this->file_sequences[$i]);
           }
         } else {
-          $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, false, $this->file_sequences[$this->i]);
+          $this->resizeImage($fileContent, $path, 640, 'full', $name, $fileExtension, false, $this->file_sequences[$i]);
         }
       }
 
@@ -330,6 +330,35 @@ class RelatedMediaProduct extends Component
     $this->chose = false;
     $this->mount($this->product);
   }
+  private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence)
+  {
+    $resizedImage = Image::make($file)
+      ->resize($size, $size, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+      });
+
+    $resizedName = "resized{$size}_" . $name;
+    $resizedImage->encode('webp');
+
+    Storage::disk('media')->put($path . $resizedName, (string) $resizedImage);
+
+    $resizedMedia = new Media();
+    $resizedMedia->path = $path;
+    $resizedMedia->name = $resizedName;
+    $resizedMedia->sequence = $sequence;
+    $resizedMedia->extension = $extension;
+    $resizedMedia->type = $type;
+    $resizedMedia->width = $resizedImage->width();
+    $resizedMedia->height = $resizedImage->height();
+    $resizedMedia->size = Storage::disk('media')->size($path . $resizedName);
+    $resizedMedia->createdby = Auth::user()->name;
+    $resizedMedia->lastmodifiedby = Auth::user()->name;
+    $resizedMedia->save();
+
+    $this->product->media()->attach($resizedMedia->id);
+  }
+
 
   public function save()
   {
@@ -388,7 +417,6 @@ class RelatedMediaProduct extends Component
 
       $this->product->media()->attach($media->id);
 
-      // Handle resized versions
       if (!empty($this->file_resize[$this->i])) {
         if ($this->file_sequences[$this->i] == '1') {
           foreach (['min' => 70, 'main' => 300, 'full' => 640] as $typeKey => $resize) {
@@ -409,7 +437,6 @@ class RelatedMediaProduct extends Component
       $this->i++;
     }
 
-    // Reset state
     $this->medias = [];
     $this->initiate = false;
     $this->file_sequences = [];
@@ -423,34 +450,6 @@ class RelatedMediaProduct extends Component
     ]);
   }
 
-  private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence)
-  {
-    $resizedImage = Image::make($external ? $file : $file->getRealPath())
-      ->resize($size, $size, function ($constraint) {
-        $constraint->aspectRatio();
-        $constraint->upsize();
-      });
-
-    $resizedName = "resized{$size}_" . $name;
-    $resizedImage->encode('webp');
-
-    Storage::disk('media')->put($path . $resizedName, (string) $resizedImage);
-
-    $resizedMedia = new Media();
-    $resizedMedia->path = $path;
-    $resizedMedia->name = $resizedName;
-    $resizedMedia->sequence = $sequence;
-    $resizedMedia->extension = $extension;
-    $resizedMedia->type = $type;
-    $resizedMedia->width = $resizedImage->width();
-    $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = Storage::disk('media')->size($path . $resizedName);
-    $resizedMedia->createdby = Auth::user()->name;
-    $resizedMedia->lastmodifiedby = Auth::user()->name;
-    $resizedMedia->save();
-
-    $this->product->media()->attach($resizedMedia->id);
-  }
 
   public function updatingMedias($value)
   {
