@@ -154,7 +154,7 @@ class OrderSimilarity extends Component
       ->map(fn($name, $id) => $name ?: 'Order #' . $id);
 
     $items = Order_Item::whereIn('order_id', $orderIds)
-    ->join('products', 'order_items.product_id', '=', 'products.id')
+    ->join('products', 'order__items.product_id', '=', 'products.id')
     ->leftJoin('products_categories', 'products.id', '=', 'products_categories.product_id')
 
     ->orderByRaw("
@@ -168,7 +168,7 @@ class OrderSimilarity extends Component
     ->orderBy('products_categories.category_id')
 
     ->with('product')
-    ->select('order_items.*')
+    ->select('order__items.*')
     ->get();
 
 
