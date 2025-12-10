@@ -287,7 +287,7 @@ class RelatedMediaProduct extends Component
       $media->height =  $imageInfo[1];
       $media->size = strlen($fileContent);
       $media->type = 'original';
-      $media->sequence = 1;
+      $media->sequence = $this->file_sequences[$i];
       $media->path = $path;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
@@ -310,10 +310,10 @@ class RelatedMediaProduct extends Component
               }
               $existing->delete();
             }
-            $this->resizeImage($fileContent, $path, $resize, $typeKey, $name, $fileExtension, false, $this->file_sequences[$i]);
+            $this->resizeImage($file, $path, $resize, $typeKey, $name, $fileExtension,$this->file_sequences[$i]);
           }
         } else {
-          $this->resizeImage($fileContent, $path, 640, 'full', $name, $fileExtension, false, $this->file_sequences[$i]);
+          $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension,$this->file_sequences[$i]);
         }
       }
 
@@ -330,7 +330,7 @@ class RelatedMediaProduct extends Component
     $this->chose = false;
     $this->mount($this->product);
   }
-  private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence)
+  private function resizeImage($file, $path, $size, $type, $name, $extension,$sequence)
   {
     $resizedImage = Image::make($file)
       ->resize($size, $size, function ($constraint) {
@@ -509,6 +509,7 @@ class RelatedMediaProduct extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+    $this->mount($this->product);
   }
   public function cancel_chose()
   {
@@ -536,6 +537,8 @@ class RelatedMediaProduct extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+
+    $this->mount($this->product);
   }
   public function selectAll()
   {
