@@ -761,7 +761,11 @@
                 <div class="container grid-product-reviews">
 
                     <div wire:ignore class="product-reviews__info reviews-info">
-                        <h2 class="product__title">{{ $product->reviews->count() }} reviews</h2>
+                        <h2 class="product__title">{{ $product->reviews->count() }}
+                           @if (app()->has('label_pdp_review_count_text'))
+                                    {!! app('label_pdp_review_count_text') !!}
+                                @endif
+                          </h2>
 
 
                         <div class="ratingscore">
