@@ -741,7 +741,7 @@
         </section>
     @endif
 
-    @if ((app()->has('global_review_system') && app('global_review_system') === 'true') )
+    @if (app()->has('global_review_system') && app('global_review_system') === 'true')
         <section>
             <div class="section__header container">
                 <h2 class="section__title">
@@ -750,22 +750,23 @@
                     @endif
                 </h2>
             </div>
-            @if ($product->reviews)
-                <input type="hidden" name="total_reviews" id="total_reviews"
-                    value="{{ $product->totalreview }}">
-                <p class="section__text" style="padding: 15px">
-                    @if (app()->has('label_pdp_reviews_description'))
-                        {!! app('label_pdp_reviews_description') !!}
-                    @endif
-                </p>
+            <input type="hidden" name="total_reviews" id="total_reviews" value="{{ $product->totalreview }}">
+            <p class="section__text" style="padding: 15px">
+                @if (app()->has('label_pdp_reviews_description'))
+                    {!! app('label_pdp_reviews_description') !!}
+                @endif
+            </p>
+            @if ($product->totalreview > 0)
+
                 <div class="container grid-product-reviews">
+
 
                     <div wire:ignore class="product-reviews__info reviews-info">
                         <h2 class="product__title">
                             @if (app()->has('label_pdp_review_count_text'))
                                 {!! app('label_pdp_review_count_text') !!}
                             @endif
-                            {{ $product->totalreview}}
+                            {{ $product->totalreview }}
                         </h2>
 
 
@@ -865,6 +866,31 @@
                         </button>
                     </div>
                 </div>
+            @else
+                <div class="container">
+
+                <div class="product-reviews__info">
+                    <h2 class="product__title">
+                        @if (app()->has('label_pdp_add_review_title'))
+                            {!! app('label_pdp_add_review_title') !!}
+                        @endif
+                    </h2>
+                    <p class="subtitle">
+                        @if (app()->has('label_pdp_add_review_description'))
+                            {!! app('label_pdp_add_review_description') !!}
+                        @endif
+                    </p>
+                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                        @if (app()->has('label_add_review_button'))
+                            {!! app('label_add_review_button') !!}
+                        @endif
+                    </button>
+                </div>
+                </div>
+            @endif
+
+            @if ($product->totalreview > 0)
+
                 <div class="container" style="margin-top: 15px">
                     <p class="section__text">
                         @if (app()->has('label_pdp_reviews_list'))
@@ -872,6 +898,7 @@
                         @endif
                     </p>
                 </div>
+
                 @foreach ($product_reviews as $review)
                     @php
                         $initial = strtoupper(mb_substr($review->acronim, 0, 1));
