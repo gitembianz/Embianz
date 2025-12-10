@@ -277,8 +277,20 @@
         {{-- Category Long Description --}}
 <div class="textarea__tabs details__long">
   @if ($editcategory === null)
-    <div class="disabled">{!! $category->long_description !!}</div>
+    <span class="disabled">{!! $category->long_description !!}</span>
   @else
+@if ($editls === null)
+  <button class="button button--primary button--centered" tooltip="Edit Long Description" tooltip-left
+                wire:click.prevent="editls()">
+                <svg>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                    <path d="M16 5l3 3" />
+                </svg>
+            </button>
+@else
+    
     {{-- Editor host (ignored by Livewire) --}}
     <div id="ck-host" wire:ignore></div>
 
@@ -449,9 +461,10 @@
       });
     })();
     </script>
+    @endif
   @endif
 
-  <label style="top:-25px; transform:none; color:#bbfcde;">Long Description</label>
+  <label for="Long Description" style="top:-25px; transform:none; color:#bbfcde;">Long Description</label>
 </div>
         {{-- Category Long Description Bottom--}}
       
@@ -459,7 +472,18 @@
         <div class="textarea__tabs details__long">
   @if ($editcategory === null)
     <span class="disabled">{!! $category->long_description_bottom !!}</span>
-  @else
+    @else
+@if ($editlsbt === null)
+  <button class="button button--primary button--centered" tooltip="Edit Long Description Bottom" tooltip-left
+                wire:click.prevent="editlsbt()">
+                <svg>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                    <path d="M16 5l3 3" />
+                </svg>
+            </button>
+@else
     {{-- Editor host (ignored by Livewire) --}}
     <div id="ck-host-bottom" wire:ignore></div>
 
@@ -631,18 +655,10 @@
     })();
     </script>
   @endif
+  @endif
 
   <label style="top:-25px; transform:none; color:#bbfcde;">Long Description Bottom</label>
 </div>
-        {{-- Category Long Description --}}
-        <div class="textarea__tabs details__long">
-            @if ($editcategory === null)
-                <span class="disabled">{{ $category->long_description_bottom }}</span>
-            @else
-                <textarea type="text" wire:model.defer="cat.long_description_bottom" required></textarea>
-            @endif
-            <label for="category__name">Long Description Bottom</label>
-        </div>
 
         {{-- Category Seo Title --}}
         <div class="input__tabs">

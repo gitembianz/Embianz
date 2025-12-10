@@ -23,6 +23,7 @@ class ShowProduct extends Component
 {
   public $productId;
   public $editproduct = null;
+  public $editls = null;
   public $delete = false;
   public $prod;
   public $interimQuantity;
@@ -76,6 +77,12 @@ class ShowProduct extends Component
 
     ];
     $this->editproduct = true;
+  }
+
+    public function editls()
+  {
+  
+    $this->editls = true;
   }
 
   public function getProductProperty()
@@ -214,6 +221,7 @@ class ShowProduct extends Component
   public function cancelproduct()
   {
     $this->editproduct = null;
+    $this->editls = null;
     $this->prod = [];
   }
 

@@ -18,6 +18,8 @@ class ShowCategory extends Component
 {
   public $categoryId;
   public $editcategory = null;
+  public $editls = null;
+  public $editlsbt = null;
   public $delete = false;
   public $cat;
 
@@ -63,10 +65,20 @@ class ShowCategory extends Component
     ];
     $this->editcategory = true;
   }
+  public function editls(){
+    $this->editls = true;
+  }
+
+   public function editlsbt(){
+    $this->editlsbt = true;
+  }
+
   public function cancelcategory()
   {
     $this->editcategory = null;
     $this->cat = [];
+    $this->editls = null;
+    $this->editlsbt = null;
   }
   private function generateUniqueSeoId($name)
   {
