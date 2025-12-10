@@ -30,15 +30,14 @@
             @if ($discount)
                 <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
             @endif
-            @if (app()->has('global_display_rating') && app('global_display_rating') === 'true')
+            @if ((  app()->has('global_review_system') && app('global_review_system') === 'true') && $product->reviews->count() > 0)
                 @php
-                    $rating = $product->reviews->first()->value * 20;
-                    $ratingvalue = $product->reviews->first()->value;
+                    $rating = $product->score * 20;
                 @endphp
                 <div class="ratingscore">
                     <div class="rating" style="--rating: {{ $rating }}%;"></div>
                     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                        ({{ number_format($ratingvalue, 2) }})
+                        ({{ number_format($product->score, 2) }})
                     @endif
                 </div>
             @endif

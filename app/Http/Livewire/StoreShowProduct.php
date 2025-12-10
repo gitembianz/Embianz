@@ -79,14 +79,23 @@ class StoreShowProduct extends Component
     cookie()->queue(cookie()->make('last_visited_products', json_encode($this->lastVisited), 60 * 24 * 30));
 
     $this->score = $this->product->reviews->avg('score') ?? 0;
-    $this->reviews45 = $this->product->reviews->whereIn('score', [4, 5])->count() ?? 0;
-    $this->avrage = round(($this->reviews45 / $this->product->reviews->count()) * 100);
-    if ($this->product->reviews->count() > 0) {
-      $this->rating5 = $this->product->reviews->where('score', 5)->count() ?? 0;
-      $this->rating4 = $this->product->reviews->where('score', 4)->count() ?? 0;
-      $this->rating3 = $this->product->reviews->where('score', 3)->count() ?? 0;
-      $this->rating2 = $this->product->reviews->where('score', 2)->count() ?? 0;
-      $this->rating1 = $this->product->reviews->where('score', 1)->count() ?? 0;
+
+    $this->reviews45 = $this->product->reviews()
+      ->whereIn('score', [4, 5])
+      ->where('approved', true)
+      ->count();
+
+    $this->avrage = $this->product->reviews->count() > 0
+      ? round(($this->reviews45 / $this->product->reviews->count()) * 100)
+      : 0;
+
+    if ($this->product->reviews->where('approved', true)
+      ->count() > 0) {
+      $this->rating5 = $this->product->reviews->where('score', 5)->where('approved', true)->count() ?? 0;
+      $this->rating4 = $this->product->reviews->where('score', 4)->where('approved', true)->count() ?? 0;
+      $this->rating3 = $this->product->reviews->where('score', 3)->where('approved', true)->count() ?? 0;
+      $this->rating2 = $this->product->reviews->where('score', 2)->where('approved', true)->count() ?? 0;
+      $this->rating1 = $this->product->reviews->where('score', 1)->where('approved', true)->count() ?? 0;
     }
   }
 
