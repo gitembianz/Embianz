@@ -154,8 +154,23 @@ class OrderSimilarity extends Component
       ->map(fn($name, $id) => $name ?: 'Order #' . $id);
 
     $items = Order_Item::whereIn('order_id', $orderIds)
-      ->with('product')
-      ->get();
+    ->join('products', 'order_items.product_id', '=', 'products.id')
+    ->leftJoin('products_categories', 'products.id', '=', 'products_categories.product_id')
+
+    ->orderByRaw("
+        CASE
+            WHEN products_categories.primary_category = 1 THEN 0
+            WHEN products_categories.category_id IS NOT NULL THEN 1
+            ELSE 2
+        END
+    ")
+
+    ->orderBy('products_categories.category_id')
+
+    ->with('product')
+    ->select('order_items.*')
+    ->get();
+
 
     if ($items->isEmpty()) {
       session()->flash('notification', [
