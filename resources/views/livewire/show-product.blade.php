@@ -374,7 +374,18 @@
         {{-- Product Long Description --}}
         <div class="textarea__tabs details__long">
             @if ($editproduct === null)
-                <div class="disabled">{!! $product->long_description !!}</div>
+                <span class="disabled">{!! $product->long_description !!}</span>
+            @else
+            @if ($editls ===null)
+            <button class="button" tooltip="Edit Long Description" tooltip-left
+                wire:click.prevent="editls()">
+                <svg>
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                    <path d="M16 5l3 3" />
+                </svg>
+            </button>
             @else
                 {{-- Editor host (ignored by Livewire) --}}
                 <div id="ck-host" wire:ignore></div>
@@ -560,9 +571,10 @@
                         });
                     })();
                 </script>
+                @endif
             @endif
 
-            <label style="top:-25px; transform:none; color:#bbfcde;">Long Description</label>
+            <label for="Long Description" style="top:-25px; transform:none; color:#bbfcde;">Long Description</label>
         </div>
 
         {{-- Product Seo Title --}}
