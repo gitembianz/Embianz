@@ -741,7 +741,7 @@
         </section>
     @endif
 
-    @if (app()->has('global_review_system') && app('global_review_system') === 'true')
+    @if ((app()->has('global_review_system') && app('global_review_system') === 'true') )
         <section>
             <div class="section__header container">
                 <h2 class="section__title">
@@ -752,7 +752,7 @@
             </div>
             @if ($product->reviews)
                 <input type="hidden" name="total_reviews" id="total_reviews"
-                    value="{{ $product->reviews->count() }}">
+                    value="{{ $product->totalreview }}">
                 <p class="section__text" style="padding: 15px">
                     @if (app()->has('label_pdp_reviews_description'))
                         {!! app('label_pdp_reviews_description') !!}
@@ -765,7 +765,7 @@
                             @if (app()->has('label_pdp_review_count_text'))
                                 {!! app('label_pdp_review_count_text') !!}
                             @endif
-                            {{ $product->reviews->count() }}
+                            {{ $product->totalreview}}
                         </h2>
 
 
@@ -784,7 +784,7 @@
                                 @if (app()->has('label_pdp_reviews_out_of'))
                                     {!! app('label_pdp_reviews_out_of') !!}
                                 @endif
-                                {{ $product->reviews->count() }}
+                                {{ $product->totalreview }}
                                 ({{ round($avrage) }}%)
                             </div>
                             <span class="reviews-info__caption">
