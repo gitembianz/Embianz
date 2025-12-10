@@ -90,7 +90,8 @@ class StoreShowProduct extends Component
       : 0;
 
     if ($this->product->reviews->where('approved', true)
-      ->count() > 0) {
+      ->count() > 0
+    ) {
       $this->rating5 = $this->product->reviews->where('score', 5)->where('approved', true)->count() ?? 0;
       $this->rating4 = $this->product->reviews->where('score', 4)->where('approved', true)->count() ?? 0;
       $this->rating3 = $this->product->reviews->where('score', 3)->where('approved', true)->count() ?? 0;
@@ -216,6 +217,11 @@ class StoreShowProduct extends Component
           }
         ])
         ->where('id', $this->productId)
+        ->withCount([
+          'reviews as totalreview' => function ($q) {
+            $q->where('approved', true);
+          }
+        ])
         ->first();
     }
   }
