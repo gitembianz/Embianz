@@ -10,7 +10,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -132,16 +131,16 @@ class RelatedMediaCategory extends Component
 {
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
-    
+
     // ✅ FIX: Add public_path()
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
         File::makeDirectory(public_path($filespath), 0755, true);
     }
-    
+
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->category->id)) {
         File::makeDirectory(public_path($filespath . $this->category->id), 0755, true);
     }
-    
+
     $path = $filespath . $this->category->id . "/";
 
     for ($this->i = 0; $this->i <= $this->row; $this->i++) {
@@ -151,7 +150,7 @@ class RelatedMediaCategory extends Component
             'file_link.*' => 'required|url',
             'file_name.*' => 'required'
         ]);
-        
+
         $urlComponents = parse_url($this->file_link[$this->i]);
         $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
         $this->file_link[$this->i] = $urlWithoutParams;
@@ -161,12 +160,12 @@ class RelatedMediaCategory extends Component
         if (!in_array($fileExtension, $allowedExtensions)) {
             continue;
         }
-        
+
         $fileContent = file_get_contents($this->file_link[$this->i]);
         if ($fileContent == false) {
             continue;
         }
-        
+
         $imageInfo = getimagesizefromstring($fileContent);
 
         if (app()->has('global_auto_webp') && app('global_auto_webp') == 'true') {
@@ -174,7 +173,7 @@ class RelatedMediaCategory extends Component
             $webpContent = $image->encode('webp')->__toString();
             $fileExtension = 'webp';
             $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '.' . $fileExtension;
-            
+
             // ✅ FIX: Use MediaHelper::exists()
             if (\App\Helpers\MediaHelper::exists($path . $name)) {
                 $this->j = 1;
@@ -187,7 +186,7 @@ class RelatedMediaCategory extends Component
         } else {
             $fileExtension = image_type_to_extension($imageInfo[2], false);
             $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '.' . $fileExtension;
-            
+
             // ✅ FIX: Use MediaHelper::exists()
             if (\App\Helpers\MediaHelper::exists($path . $name)) {
                 $this->j = 1;
@@ -201,7 +200,7 @@ class RelatedMediaCategory extends Component
 
         $filePath = $path . $name;
         $file = \App\Helpers\MediaHelper::get($filePath);
-        
+
         if ($this->file_sequences[$this->i] == '1') {
             $ismin = $this->category->media()->where('type', 'min')->first();
 
@@ -214,7 +213,7 @@ class RelatedMediaCategory extends Component
 
                 // ✅ FIX: Add public_path()
                 $resizedImage->encode('webp')->save(public_path($path . "resized70_" . $name));
-                
+
                 $media = new Media();
                 $media->path = $path;
                 $media->name = "resized70_" . $name;
@@ -241,10 +240,10 @@ class RelatedMediaCategory extends Component
                     });
 
                 $newPath = $ismin->path . "resized70_" . $name;
-                
+
                 // ✅ FIX: Add public_path()
                 $resizedImage->encode('webp')->save(public_path($newPath));
-                
+
                 $ismin->name = "resized70_" . $name;
                 $ismin->sequence = $this->file_sequences[$this->i];
                 $ismin->extension = $fileExtension;
@@ -254,7 +253,7 @@ class RelatedMediaCategory extends Component
                 $ismin->lastmodifiedby = Auth::user()->name;
                 $ismin->save();
             }
-            
+
             $oldPath = $path . $name;
             \App\Helpers\MediaHelper::delete($oldPath);
         } else {
@@ -276,13 +275,13 @@ class RelatedMediaCategory extends Component
             $this->category->media()->attach($media->id);
         }
     }
-    
+
     session()->flash('notification', [
         'message' => 'Record related successfully!',
         'type' => 'success',
         'title' => 'Success'
     ]);
-    
+
     $this->row = 0;
     $this->externalmedia = false;
     $this->file_sequences = [];
@@ -371,26 +370,26 @@ class RelatedMediaCategory extends Component
 {
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
-    
+
     // ✅ FIX: Wrap with public_path()
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
         File::makeDirectory(public_path($filespath), 0755, true);
     }
-    
+
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->category->id)) {
         File::makeDirectory(public_path($filespath . $this->category->id), 0755, true);
     }
-    
+
     $path = $filespath . $this->category->id . "/";
-    
+
     foreach ($this->medias as $index => $file) {
         $type = (app()->has('global_auto_webp') && app('global_auto_webp') == 'true')
             ? 'webp'
             : $file->getClientOriginalExtension();
-        
+
         $filename = strtolower(preg_replace('/\s+/', '-', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)));
         $name = $filename . '.' . $type;
-        
+
         if (\App\Helpers\MediaHelper::exists($path . $name)) {
             $this->j = 1;
             while (\App\Helpers\MediaHelper::exists($path . $filename . '(' . $this->j . ').' . $type)) {
@@ -398,20 +397,20 @@ class RelatedMediaCategory extends Component
             }
             $name = $filename . '(' . $this->j . ').' . $type;
         }
-        
+
         if ($this->file_sequences[$index] == '1') {
             $ismin = $this->category->media()->where('type', 'min')->first();
-            
+
             if (!$ismin) {
                 $resizedImage = Image::make($file)
                     ->resize(70, 70, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
-                
+
                 // ✅ FIX: Add public_path()
                 $resizedImage->encode('webp')->save(public_path($path . "resized70_" . $name));
-                
+
                 $media = new Media();
                 $media->path = $path;
                 $media->name = "resized70_" . $name;
@@ -430,17 +429,17 @@ class RelatedMediaCategory extends Component
                 if (\App\Helpers\MediaHelper::exists($oldPath)) {
                     \App\Helpers\MediaHelper::delete($oldPath);
                 }
-                
+
                 $resizedImage = Image::make($file->getRealPath())
                     ->resize(70, 70, function ($constraint) {
                         $constraint->aspectRatio();
                         $constraint->upsize();
                     });
-                
+
                 // ✅ FIX: Add public_path()
                 $newPath = $ismin->path . "resized70_" . $name;
                 $resizedImage->encode('webp')->save(public_path($newPath));
-                
+
                 $ismin->name = "resized70_" . $name;
                 $ismin->sequence = $this->file_sequences[$index];
                 $ismin->extension = $type;
@@ -452,7 +451,7 @@ class RelatedMediaCategory extends Component
             }
         } else {
             $file->storeAs($path, $name, 'public_upload');
-            
+
             $media = new Media();
             $image = Image::make($file);
             $media->path = $path;
@@ -469,11 +468,11 @@ class RelatedMediaCategory extends Component
             $this->category->media()->attach($media->id);
         }
     }
-    
+
     $this->medias = [];
     $this->file_sequences = [];
     $this->chose = false;
-    
+
     session()->flash('notification', [
         'message' => 'Record related successfully!',
         'type' => 'success',
@@ -506,9 +505,9 @@ class RelatedMediaCategory extends Component
     if (\App\Helpers\MediaHelper::exists($path)) {
         \App\Helpers\MediaHelper::delete($path);
     }
-    
+
     $media->delete();
-    
+
     $folder = public_path($media->path);
     if (is_dir($folder)) {
         $files = array_diff(scandir($folder), ['.', '..']);
@@ -516,7 +515,7 @@ class RelatedMediaCategory extends Component
             @rmdir($folder);
         }
     }
-    
+
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
     session()->flash('notification', [
@@ -534,9 +533,9 @@ public function deleteRecords()
         if (\App\Helpers\MediaHelper::exists($path)) {
             \App\Helpers\MediaHelper::delete($path);
         }
-        
+
         $media->delete();
-        
+
         $folder = public_path($media->path);
         if (is_dir($folder)) {
             $files = array_diff(scandir($folder), ['.', '..']);
@@ -545,7 +544,7 @@ public function deleteRecords()
             }
         }
     }
-    
+
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
