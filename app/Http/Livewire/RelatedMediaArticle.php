@@ -211,29 +211,63 @@ class RelatedMediaArticle extends Component
   }
 
   public function deleteRecords()
-  {
+{
     $medias = Media::whereKey($this->checked)->get();
     foreach ($medias as $media) {
-      $path = $media->path . $media->name;
-      if (\App\Helpers\MediaHelper::exists($path)) {
-        \App\Helpers\MediaHelper::delete($path);
-      }
-      $media->delete();
-      $folder = $media->path;
-      if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        File::deleteDirectory($folder);
-      }
+        $path = $media->path . $media->name;
+        if (\App\Helpers\MediaHelper::exists($path)) {
+            \App\Helpers\MediaHelper::delete($path);
+        }
+        
+        $media->delete();
+        
+        $folder = public_path($media->path);
+        if (is_dir($folder)) {
+            $files = array_diff(scandir($folder), ['.', '..']);
+            if (empty($files)) {
+                @rmdir($folder);
+            }
+        }
     }
+    
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
+    
     session()->flash('notification', [
-      'message' => 'Records related successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+        'message' => 'Records deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
     ]);
-  }
+}
 
+  public function deleteSingleRecord()
+{
+    $media = Media::findOrFail($this->idbeingremoved);
+    $path = $media->path . $media->name;
+    if (\App\Helpers\MediaHelper::exists($path)) {
+        \App\Helpers\MediaHelper::delete($path);
+    }
+    
+    $media->delete();
+    
+    $folder = public_path($media->path);
+    if (is_dir($folder)) {
+        $files = array_diff(scandir($folder), ['.', '..']);
+        if (empty($files)) {
+            @rmdir($folder);
+        }
+    }
+    
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
+    
+    session()->flash('notification', [
+        'message' => 'Record deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
   public function selectAll()
   {
     $this->selectAll = true;
@@ -271,24 +305,24 @@ class RelatedMediaArticle extends Component
     $this->externalmedia = false;
   }
 
-  private function resizeImage($file, $path, $size, $type, $name, $extension, $external)
-  {
+private function resizeImage($file, $path, $size, $type, $name, $extension, $external)
+{
     if ($external) {
-      $resizedImage = Image::make($file)
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
+        $resizedImage = Image::make($file)
+            ->resize($size, $size, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
     } else {
-      $resizedImage = Image::make($file->getRealPath())
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
+        $resizedImage = Image::make($file->getRealPath())
+            ->resize($size, $size, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
     }
 
-    $resizedImage->encode('webp')->save($path . "resized{$size}_" . $name);
-
+    $resizedImage->encode('webp')->save(public_path($path . "resized{$size}_" . $name));
+    
     $resizedMedia = new Media();
     $resizedMedia->path = $path;
     $resizedMedia->name = "resized{$size}_" . $name;
@@ -300,19 +334,21 @@ class RelatedMediaArticle extends Component
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
-
     $this->article->media()->attach($resizedMedia->id);
-  }
+}
 
-  public function saveexternal()
-  {
+
+public function saveexternal()
+{
     $itemType = class_basename(get_class($this->article));
     $filespath = 'media/' . $itemType . '/';
+    
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+        File::makeDirectory(public_path($filespath), 0755, true);
     }
+    
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
-      File::makeDirectory($filespath . $this->article->id, 0755, true);
+        File::makeDirectory(public_path($filespath . $this->article->id), 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
 
@@ -444,17 +480,15 @@ class RelatedMediaArticle extends Component
     $this->mount($this->article);
   }
 
-  public function save()
-  {
+ public function save()
+{
     $itemType = class_basename(get_class($this->article));
-
-    //check for directory
     $filespath = 'media/' . $itemType . '/';
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+        File::makeDirectory(public_path($filespath), 0755, true);
     }
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
-      File::makeDirectory($filespath . $this->article->id, 0755, true);
+        File::makeDirectory(public_path($filespath . $this->article->id), 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
 
