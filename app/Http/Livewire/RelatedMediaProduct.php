@@ -270,33 +270,39 @@ if (\App\Helpers\MediaHelper::exists($oldFilePath)) {
         return;
       }
       $imageInfo = getimagesizefromstring($fileContent);
-      if (app()->has('global_auto_webp') &&  app('global_auto_webp') === 'true') {
-        $image = Image::make($fileContent);
-        $webpContent = $image->encode('webp')->__toString();
-        $fileExtension = 'webp';
+    if (app()->has('global_auto_webp') && app('global_auto_webp') === 'true') {
+    $image = Image::make($fileContent);
+    $webpContent = $image->encode('webp')->__toString();
+    $fileExtension = 'webp';
 
-        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '.' . $fileExtension;
-if (file_exists($path . $name)) {
-    $j = 1;
-    while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
-        $j++;
-    }
-    $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
-}
-\App\Helpers\MediaHelper::put($path . $name, $webpContent);
+    $originalName = basename(parse_url($mediaLink, PHP_URL_PATH), '.' . $fileExtension);
+    $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $originalName)), '-');
+    $name = $nameBase . '--seq-' . $this->file_sequences[$i] . '.' . $fileExtension;
 
-      } else {
-        $fileExtension = image_type_to_extension($imageInfo[2], false);
-        $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '.' . $fileExtension;
-        if (file_exists($path . $name)) {
-          $j = 1;
-          while (file_exists($path . trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension)) {
+    if (file_exists($path . $name)) {
+        $j = 1;
+        while (file_exists($path . $nameBase . '--seq-' . $this->file_sequences[$i] . '(' . $j . ').' . $fileExtension)) {
             $j++;
-          }
-          $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        \App\Helpers\MediaHelper::put($path . $name, $fileContent);
-      }
+        $name = $nameBase . '--seq-' . $this->file_sequences[$i] . '(' . $j . ').' . $fileExtension;
+    }
+    \App\Helpers\MediaHelper::put($path . $name, $webpContent);
+} else {
+    $fileExtension = image_type_to_extension($imageInfo[2], false);
+    
+    $originalName = basename(parse_url($mediaLink, PHP_URL_PATH), '.' . $fileExtension);
+    $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $originalName)), '-');
+    $name = $nameBase . '--seq-' . $this->file_sequences[$i] . '.' . $fileExtension;
+
+    if (file_exists($path . $name)) {
+        $j = 1;
+        while (file_exists($path . $nameBase . '--seq-' . $this->file_sequences[$i] . '(' . $j . ').' . $fileExtension)) {
+            $j++;
+        }
+        $name = $nameBase . '--seq-' . $this->file_sequences[$i] . '(' . $j . ').' . $fileExtension;
+    }
+    \App\Helpers\MediaHelper::put($path . $name, $fileContent);
+}
 
 
       $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', $this->file_sequences[$i])->first();
@@ -413,13 +419,8 @@ foreach ($oldFiles as $oldMedia) {
       $height = $image->height();
 
       $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-');
-      $fileName = $nameBase . '.' . $type;
-
+      $fileName = $nameBase . '--seq-' . $this->file_sequences[$this->i] . '.' . $type;
       $counter = 1;
-      while (\App\Helpers\MediaHelper::exists($path . $fileName)) {
-        $fileName = "{$nameBase}({$counter}).{$type}";
-        $counter++;
-      }
 
 $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', $this->file_sequences[$this->i])->first();
 if ($isOriginal) {
