@@ -255,9 +255,9 @@ for ($i = 0; $i <= $this->row; $i++) {
 $oldFiles = $this->product->media()->where('sequence', $this->file_sequences[$i])->get();
 foreach ($oldFiles as $oldMedia) {
     $oldFilePath = $oldMedia->path . $oldMedia->name;
-    if (Storage::disk('media')->exists($oldFilePath)) {
-        Storage::disk('media')->delete($oldFilePath);
-    }
+if (\App\Helpers\MediaHelper::exists($oldFilePath)) {
+    \App\Helpers\MediaHelper::delete($oldFilePath);
+}
     $oldMedia->delete();
 }
 
@@ -283,7 +283,7 @@ if (file_exists($path . $name)) {
     }
     $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
 }
-Storage::disk('media')->put($path . $name, $webpContent);
+\App\Helpers\MediaHelper::put($path . $name, $webpContent);
 
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
@@ -295,15 +295,15 @@ Storage::disk('media')->put($path . $name, $webpContent);
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('media')->put($path . $name, $fileContent);
+        \App\Helpers\MediaHelper::put($path . $name, $fileContent);
       }
 
 
       $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', $this->file_sequences[$i])->first();
 if ($isOriginal) {
     $oldFile = $isOriginal->path . $isOriginal->name;
-    if (Storage::disk('media')->exists($oldFile)) {
-        Storage::disk('media')->delete($oldFile);
+    if (\App\Helpers\MediaHelper::exists($oldFile)) {
+        \App\Helpers\MediaHelper::delete($oldFile);
     }
     $isOriginal->delete();
 }
@@ -322,7 +322,7 @@ if ($isOriginal) {
       $this->product->media()->attach($media->id);
 
       $filePath = $path . $name;
-      $file = Storage::disk('media')->get($filePath);
+      $file = \App\Helpers\MediaHelper::get($filePath);
 
 if (!empty($this->file_resize[$i])) {
     if ($this->file_sequences[$i] == '1') {
@@ -360,7 +360,7 @@ if (!empty($this->file_resize[$i])) {
     $resizedName = "resized{$size}_" . $name;
     $resizedImage->encode('webp');
 
-    Storage::disk('media')->put($path . $resizedName, (string) $resizedImage);
+    \App\Helpers\MediaHelper::put($path . $resizedName, (string) $resizedImage);
 
     $resizedMedia = new Media();
     $resizedMedia->path = $path;
@@ -397,8 +397,8 @@ if (!empty($this->file_resize[$i])) {
 $oldFiles = $this->product->media()->where('sequence', $this->file_sequences[$this->i])->get();
 foreach ($oldFiles as $oldMedia) {
     $oldFilePath = $oldMedia->path . $oldMedia->name;
-    if (Storage::disk('media')->exists($oldFilePath)) {
-        Storage::disk('media')->delete($oldFilePath);
+    if (\App\Helpers\MediaHelper::exists($oldFilePath)) {
+        \App\Helpers\MediaHelper::delete($oldFilePath);
     }
     $oldMedia->delete();
 }
@@ -416,7 +416,7 @@ foreach ($oldFiles as $oldMedia) {
       $fileName = $nameBase . '.' . $type;
 
       $counter = 1;
-      while (Storage::disk('media')->exists($path . $fileName)) {
+      while (\App\Helpers\MediaHelper::exists($path . $fileName)) {
         $fileName = "{$nameBase}({$counter}).{$type}";
         $counter++;
       }
@@ -424,8 +424,8 @@ foreach ($oldFiles as $oldMedia) {
 $isOriginal = $this->product->media()->where('type', 'original')->where('sequence', $this->file_sequences[$this->i])->first();
 if ($isOriginal) {
     $oldFile = $isOriginal->path . $isOriginal->name;
-    if (Storage::disk('media')->exists($oldFile)) {
-        Storage::disk('media')->delete($oldFile);
+    if (\App\Helpers\MediaHelper::exists($oldFile)) {
+        \App\Helpers\MediaHelper::delete($oldFile);
     }
     $isOriginal->delete();
 }
