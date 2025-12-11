@@ -347,8 +347,8 @@ class ShowProduct extends Component
     }
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;
-    if (File::exists($filespath)) {
-      File::deleteDirectory($filespath);
+    if (\App\Helpers\MediaHelper::exists($filespath)) {
+      \App\Helpers\MediaHelper::deleteDirectory($filespath);
     }
 
 

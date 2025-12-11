@@ -831,7 +831,7 @@ class ShowOrder extends Component
     $invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date); // Parse the invoice_date
     $invoicePath = 'invoices/';
     $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
-    if (!File::exists($yearMonthPath)) {
+    if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
       File::makeDirectory($yearMonthPath, 0755, true);
     }
 
@@ -1032,7 +1032,7 @@ class ShowOrder extends Component
         <p>" . (app()->has('label_invoice_cf') ? app('label_invoice_cf') : 'Cf. Comanda') . $this->order->order_number . "<br>" . (app()->has('label_invoice_footer') ? app('label_invoice_footer') : 'Please check invoice footer label') . "</p></body></html>";
 
     $pdf = PDF::loadHTML($htmlContent);
-    Storage::disk('public_upload')->put($filePath, $pdf->output());
+    \App\Helpers\MediaHelper::put($filePath, $pdf->output());
 
 
     Invoice::create([
@@ -1318,7 +1318,7 @@ class ShowOrder extends Component
     $invoicePath = 'invoices/';
     $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
 
-    if (!File::exists($yearMonthPath)) {
+    if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
       File::makeDirectory($yearMonthPath, 0755, true);
     }
 
@@ -1342,7 +1342,7 @@ class ShowOrder extends Component
     } else {
       $data = $this->order->storno_date;
     }
-    Storage::disk('public_upload')->put($xmlPath, $xml->asXML());
+    \App\Helpers\MediaHelper::put($xmlPath, $xml->asXML());
     Invoice::create([
       'account_id' => $this->order->account_id,
       'order_id' => $this->order->id,
@@ -1377,7 +1377,7 @@ class ShowOrder extends Component
     $stornoDate = Carbon::createFromFormat('Y-m-d', $this->order->storno_date); // Parse the invoice_date
     $yearMonthPath = $StornoPath . $stornoDate->year . '/' . $stornoDate->format('F');
 
-    if (!File::exists($yearMonthPath)) {
+    if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
       File::makeDirectory($yearMonthPath, 0755, true);
     }
 
@@ -1601,7 +1601,7 @@ class ShowOrder extends Component
       </html>";
 
     $pdf = PDF::loadHTML($htmlContent);
-    Storage::disk('public_upload')->put($filePath, $pdf->output());
+    \App\Helpers\MediaHelper::put($filePath, $pdf->output());
 
     Invoice::create([
       'account_id' => $this->order->account_id,
@@ -1809,8 +1809,8 @@ class ShowOrder extends Component
     $invoices = Invoice::where('order_id', $this->orderId)->get();
     foreach ($invoices as $invoice) {
       $del = Invoice::find($invoice->id);
-      if (File::exists($del->path)) {
-        File::delete($del->path);
+      if (\App\Helpers\MediaHelper::exists($del->path)) {
+        \App\Helpers\MediaHelper::delete($del->path);
       }
       $del->delete();
     }

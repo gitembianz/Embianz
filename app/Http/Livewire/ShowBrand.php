@@ -80,8 +80,8 @@ class ShowBrand extends Component
         }
         $productType = class_basename(get_class($item));
         $filespath = 'media/' . $productType . '/' . $item->id;
-        if (File::exists($filespath)) {
-            File::deleteDirectory($filespath);
+        if (\App\Helpers\MediaHelper::exists($filespath)) {
+            \App\Helpers\MediaHelper::deleteDirectory($filespath);
         }
         $item->delete();
         $this->delete = false;
