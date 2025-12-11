@@ -722,7 +722,7 @@ class Categoriestable extends Component
       $productType = class_basename(get_class($cattodel));
       $filespath = 'media/' . $productType . '/' . $cattodel->id;
       if (\App\Helpers\MediaHelper::exists($filespath)) {
-        \App\Helpers\MediaHelper::deleteDirectory($filespath);
+        File::deleteDirectory($filespath);
       }
       $cattodel->delete();
     }
@@ -757,7 +757,7 @@ class Categoriestable extends Component
     $productType = class_basename(get_class($category));
     $filespath = 'media/' . $productType . '/' . $category->id;
     if (\App\Helpers\MediaHelper::exists($filespath)) {
-      \App\Helpers\MediaHelper::deleteDirectory($filespath);
+      File::deleteDirectory($filespath);
     }
     $medias = $category->media()->get();
     foreach ($medias as $media) {

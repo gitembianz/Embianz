@@ -192,7 +192,7 @@ class RelatedMediaCategory extends Component
       }
 
       $filePath = $path . $name;
-      $file = \App\Helpers\MediaHelper::('public_upload')->get($filePath);
+      $file = \App\Helpers\MediaHelper::get($filePath);
       if ($this->file_sequences[$this->i] == '1') {
         $ismin = $this->category->media()->where('type', 'min')->first();
 
@@ -483,7 +483,7 @@ class RelatedMediaCategory extends Component
     $media->delete();
     $folder = $media->path;
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      \App\Helpers\MediaHelper::deleteDirectory($folder);
+      File::deleteDirectory($folder);
     }
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
@@ -511,7 +511,7 @@ class RelatedMediaCategory extends Component
       $media->delete();
       $folder = $media->path;
       if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        \App\Helpers\MediaHelper::deleteDirectory($folder);
+        File::deleteDirectory($folder);
       }
     }
     $this->checked = [];

@@ -221,7 +221,7 @@ class RelatedMediaArticle extends Component
       $media->delete();
       $folder = $media->path;
       if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        \App\Helpers\MediaHelper::deleteDirectory($folder);
+        File::deleteDirectory($folder);
       }
     }
     $this->checked = [];
@@ -399,7 +399,7 @@ class RelatedMediaArticle extends Component
 
     //Resize system
     $filePath = $path . $name;
-    $file = \App\Helpers\MediaHelper::('public_upload')->get($filePath);
+    $file = \App\Helpers\MediaHelper::get($filePath);
     // min image(70x70)
     $ismin = $this->article->media()->where('type', 'min')->first();
     if ($ismin) {

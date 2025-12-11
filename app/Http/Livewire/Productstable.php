@@ -1031,7 +1031,7 @@ class Productstable extends Component
       $productType = class_basename(get_class($producttodel));
       $filespath = 'media/' . $productType . '/' . $producttodel->id;
       if (\App\Helpers\MediaHelper::exists($filespath)) {
-        \App\Helpers\MediaHelper::deleteDirectory($filespath);
+        File::deleteDirectory($filespath);
       }
       $producttodel->delete();
     }
@@ -1113,7 +1113,7 @@ class Productstable extends Component
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;
     if (\App\Helpers\MediaHelper::exists($filespath)) {
-      \App\Helpers\MediaHelper::deleteDirectory($filespath);
+      File::deleteDirectory($filespath);
     }
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);

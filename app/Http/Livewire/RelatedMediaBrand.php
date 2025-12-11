@@ -188,7 +188,7 @@ class RelatedMediaBrand extends Component
       }
 
       $filePath = $path . $name;
-      $file = \App\Helpers\MediaHelper::('public_upload')->get($filePath);
+      $file = \App\Helpers\MediaHelper::get($filePath);
 
       if (app()->has('global_brand_media_dimension')) {
         $dimension = (int) app('global_brand_media_dimension');
@@ -403,7 +403,7 @@ class RelatedMediaBrand extends Component
     $media->delete();
     $folder = $media->path;
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      \App\Helpers\MediaHelper::deleteDirectory($folder);
+      File::deleteDirectory($folder);
     }
     $this->delete = false;
     session()->flash('notification', [

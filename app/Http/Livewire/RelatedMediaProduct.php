@@ -525,7 +525,7 @@ if (!empty($this->file_resize[$this->i])) {
     $media->delete();
     $folder = $media->path;
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      \App\Helpers\MediaHelper::deleteDirectory($folder);
+      File::deleteDirectory($folder);
     }
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
@@ -551,7 +551,7 @@ if (!empty($this->file_resize[$this->i])) {
         $media->delete();
       $folder = $media->path;
       if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        \App\Helpers\MediaHelper::deleteDirectory($folder);
+        File::deleteDirectory($folder);
       }
     }
     $this->checked = [];

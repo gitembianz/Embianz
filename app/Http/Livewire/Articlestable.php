@@ -714,7 +714,7 @@ class Articlestable extends Component
       $productType = class_basename(get_class($item));
       $filespath = 'media/' . $productType . '/' . $item->id;
       if (\App\Helpers\MediaHelper::exists($filespath)) {
-        \App\Helpers\MediaHelper::deleteDirectory($filespath);
+        File::deleteDirectory($filespath);
       }
       $del->delete();
     }
@@ -737,7 +737,7 @@ class Articlestable extends Component
     $productType = class_basename(get_class($item));
     $filespath = 'media/' . $productType . '/' . $item->id;
     if (\App\Helpers\MediaHelper::exists($filespath)) {
-      \App\Helpers\MediaHelper::deleteDirectory($filespath);
+      File::deleteDirectory($filespath);
     }
     $item->delete();
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
