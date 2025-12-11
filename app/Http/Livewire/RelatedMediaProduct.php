@@ -515,11 +515,11 @@ if (!empty($this->file_resize[$this->i])) {
     return $this->orderAsc === '1' ? '0' : '1';
   }
   public function deleteSingleRecord()
-  {
+{
     $media = Media::findOrFail($this->idbeingremoved);
     $path = $media->path . $media->name;
-    if (File::exists($path)) {
-      File::delete($path);
+    if (\App\Helpers\MediaHelper::exists($path)) {
+        \App\Helpers\MediaHelper::delete($path);
     }
     $media->delete();
     $folder = $media->path;
@@ -540,14 +540,14 @@ if (!empty($this->file_resize[$this->i])) {
     $this->chose = false;
   }
   public function deleteRecords()
-  {
+{
     $medias = Media::whereKey($this->checked)->get();
     foreach ($medias as $media) {
-      $path = $media->path . $media->name;
-      if (File::exists($path)) {
-        File::delete($path);
-      }
-      $media->delete();
+        $path = $media->path . $media->name;
+        if (\App\Helpers\MediaHelper::exists($path)) {
+            \App\Helpers\MediaHelper::delete($path);
+        }
+        $media->delete();
       $folder = $media->path;
       if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
         File::deleteDirectory($folder);
