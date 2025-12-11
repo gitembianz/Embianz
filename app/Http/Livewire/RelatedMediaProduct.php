@@ -10,7 +10,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Schema;
 
 
@@ -232,16 +231,16 @@ class RelatedMediaProduct extends Component
 
 for ($i = 0; $i <= $this->row; $i++) {
     $this->resetErrorBag();
-    
+
     if (!isset($this->file_sequences[$i]) || !isset($this->file_link[$i])) {
         continue;
     }
-    
+
     $this->validate([
         "file_sequences.{$i}" => 'required',
         "file_link.{$i}" => 'required|url'
     ]);
-    
+
     $mediaLink = strtok($this->file_link[$i], '?');
 
 
@@ -289,7 +288,7 @@ if (\App\Helpers\MediaHelper::exists($oldFilePath)) {
     \App\Helpers\MediaHelper::put($path . $name, $webpContent);
 } else {
     $fileExtension = image_type_to_extension($imageInfo[2], false);
-    
+
     $originalName = basename(parse_url($mediaLink, PHP_URL_PATH), '.' . $fileExtension);
     $nameBase = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $originalName)), '-');
     $name = $nameBase . '--seq-' . $this->file_sequences[$i] . '.' . $fileExtension;

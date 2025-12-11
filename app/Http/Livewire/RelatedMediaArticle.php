@@ -10,7 +10,6 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -218,9 +217,9 @@ class RelatedMediaArticle extends Component
         if (\App\Helpers\MediaHelper::exists($path)) {
             \App\Helpers\MediaHelper::delete($path);
         }
-        
+
         $media->delete();
-        
+
         $folder = public_path($media->path);
         if (is_dir($folder)) {
             $files = array_diff(scandir($folder), ['.', '..']);
@@ -229,11 +228,11 @@ class RelatedMediaArticle extends Component
             }
         }
     }
-    
+
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
-    
+
     session()->flash('notification', [
         'message' => 'Records deleted successfully!',
         'type' => 'success',
@@ -248,9 +247,9 @@ class RelatedMediaArticle extends Component
     if (\App\Helpers\MediaHelper::exists($path)) {
         \App\Helpers\MediaHelper::delete($path);
     }
-    
+
     $media->delete();
-    
+
     $folder = public_path($media->path);
     if (is_dir($folder)) {
         $files = array_diff(scandir($folder), ['.', '..']);
@@ -258,10 +257,10 @@ class RelatedMediaArticle extends Component
             @rmdir($folder);
         }
     }
-    
+
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
-    
+
     session()->flash('notification', [
         'message' => 'Record deleted successfully!',
         'type' => 'success',
@@ -322,7 +321,7 @@ private function resizeImage($file, $path, $size, $type, $name, $extension, $ext
     }
 
     $resizedImage->encode('webp')->save(public_path($path . "resized{$size}_" . $name));
-    
+
     $resizedMedia = new Media();
     $resizedMedia->path = $path;
     $resizedMedia->name = "resized{$size}_" . $name;
@@ -342,11 +341,11 @@ public function saveexternal()
 {
     $itemType = class_basename(get_class($this->article));
     $filespath = 'media/' . $itemType . '/';
-    
+
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
         File::makeDirectory(public_path($filespath), 0755, true);
     }
-    
+
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
         File::makeDirectory(public_path($filespath . $this->article->id), 0755, true);
     }
