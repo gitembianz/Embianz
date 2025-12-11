@@ -731,7 +731,7 @@ class Storesettingstable extends Component
             $svgCopy = clone $svg;
             $svgCopy['width'] = $width;
             $svgCopy['height'] = $height;
-            Storage::disk('public_upload')->put($filespath . $filename, $svgCopy->asXML());
+            \App\Helpers\MediaHelper::put($filespath . $filename, $svgCopy->asXML());
           } else {
             try {
               $imagick = new Imagick();
@@ -740,7 +740,7 @@ class Storesettingstable extends Component
               $imagick->setImageFormat($extension === 'ico' ? 'ico' : 'png');
               $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
 
-              Storage::disk('public_upload')->put($filespath . $filename, $imagick->getImageBlob());
+              \App\Helpers\MediaHelper::put($filespath . $filename, $imagick->getImageBlob());
 
               $imagick->clear();
               $imagick->destroy();
@@ -761,7 +761,7 @@ class Storesettingstable extends Component
           ? 'logo-dark.svg'
           : ($this->changelogolight ? 'logo-light.svg' : 'logo.svg');
 
-        Storage::disk('public_upload')->put($filespath . $name, $svg->asXML());
+        \App\Helpers\MediaHelper::put($filespath . $name, $svg->asXML());
       }
     }
 
@@ -829,7 +829,7 @@ class Storesettingstable extends Component
           $svgCopy = clone $svg;
           $svgCopy['width'] = $width;
           $svgCopy['height'] = $height;
-          Storage::disk('public_upload')->put($filespath . $filename, $svgCopy->asXML());
+          \App\Helpers\MediaHelper::put($filespath . $filename, $svgCopy->asXML());
         } else {
           try {
             $imagick = new Imagick();
@@ -841,7 +841,7 @@ class Storesettingstable extends Component
             $imagick->setImageFormat(pathinfo($filename, PATHINFO_EXTENSION));
             $imagick->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1);
 
-            Storage::disk('public_upload')->put($filespath . $filename, $imagick->getImageBlob());
+            \App\Helpers\MediaHelper::put($filespath . $filename, $imagick->getImageBlob());
 
             $imagick->clear();
             $imagick->destroy();
@@ -871,7 +871,7 @@ class Storesettingstable extends Component
       $svg['width'] = '300';
       unset($svg['height']);
 
-      Storage::disk('public_upload')->put($filespath . $name, $svg->asXML());
+      \App\Helpers\MediaHelper::put($filespath . $name, $svg->asXML());
 
       session()->flash('notification', [
         'message' => 'Logo updated successfully!',

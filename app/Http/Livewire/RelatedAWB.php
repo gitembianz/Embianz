@@ -123,8 +123,8 @@ class RelatedAWB extends Component
   public function deleteSingleRecord()
   {
     $item = AWB::findOrFail($this->idbeingremoved);
-    if (File::exists($item->path)) {
-      File::delete($item->path);
+    if (\App\Helpers\MediaHelper::exists($item->path)) {
+      \App\Helpers\MediaHelper::delete($item->path);
     }
     $item->delete();
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
@@ -140,8 +140,8 @@ class RelatedAWB extends Component
     $items = AWB::whereKey($this->checked)->get();
     foreach ($items as $item) {
       $del = AWB::find($item->id);
-      if (File::exists($del->path)) {
-        File::delete($del->path);
+      if (\App\Helpers\MediaHelper::exists($del->path)) {
+        \App\Helpers\MediaHelper::delete($del->path);
       }
       $del->delete();
     }

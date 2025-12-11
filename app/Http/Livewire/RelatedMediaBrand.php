@@ -132,10 +132,10 @@ class RelatedMediaBrand extends Component
   {
     $productType = class_basename(get_class($this->brand));
     $filespath = 'media/' . $productType . '/';
-    if (!File::exists($filespath)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . $this->brand->id)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->brand->id)) {
       File::makeDirectory($filespath . $this->brand->id, 0755, true);
     }
     $path = $filespath . $this->brand->id . "/";
@@ -173,7 +173,7 @@ class RelatedMediaBrand extends Component
           }
           $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $webpContent);
+        \App\Helpers\MediaHelper::put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
         $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '.' . $fileExtension;
@@ -184,11 +184,11 @@ class RelatedMediaBrand extends Component
           }
           $name = strtolower(preg_replace('/\s+/', '-', $this->file_name[$this->i])) . '(' . $this->j . ').' . $fileExtension;
         }
-        Storage::disk('public_upload')->put($path . $name, $fileContent);
+        \App\Helpers\MediaHelper::put($path . $name, $fileContent);
       }
 
       $filePath = $path . $name;
-      $file = Storage::disk('public_upload')->get($filePath);
+      $file = \App\Helpers\MediaHelper::get($filePath);
 
       if (app()->has('global_brand_media_dimension')) {
         $dimension = (int) app('global_brand_media_dimension');
@@ -197,8 +197,8 @@ class RelatedMediaBrand extends Component
       }
       $ismedia = $this->brand->media()->first();
       if ($ismedia) {
-        if (File::exists($ismedia->path . $ismedia->name)) {
-          File::delete($ismedia->path . $ismedia->name);
+        if (\App\Helpers\MediaHelper::exists($ismedia->path . $ismedia->name)) {
+          \App\Helpers\MediaHelper::delete($ismedia->path . $ismedia->name);
         }
         $resizedImage = Image::make($file)
           ->resize($dimension, $dimension, function ($constraint) {
@@ -212,7 +212,7 @@ class RelatedMediaBrand extends Component
         $ismedia->extension = $fileExtension;
         $ismedia->width = $resizedImage->width();
         $ismedia->height = $resizedImage->height();
-        $ismedia->size = File::size($newPath);
+        $ismedia->size = \App\Helpers\MediaHelper::size($newPath);
         $ismedia->lastmodifiedby = Auth::user()->name;
         $ismedia->save();
       } else {
@@ -312,10 +312,10 @@ class RelatedMediaBrand extends Component
   {
     $productType = class_basename(get_class($this->brand));
     $filespath = 'media/' . $productType . '/';
-    if (!File::exists($filespath)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . $this->brand->id)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->brand->id)) {
       File::makeDirectory($filespath . $this->brand->id, 0755, true);
     }
     $path = $filespath . $this->brand->id . "/";
@@ -342,8 +342,8 @@ class RelatedMediaBrand extends Component
       }
       $ismedia = $this->brand->media()->first();
       if ($ismedia) {
-        if (File::exists($ismedia->path . $ismedia->name)) {
-          File::delete($ismedia->path . $ismedia->name);
+        if (\App\Helpers\MediaHelper::exists($ismedia->path . $ismedia->name)) {
+          \App\Helpers\MediaHelper::delete($ismedia->path . $ismedia->name);
         }
 
         $resizedImage = Image::make($file->getRealPath())
@@ -360,7 +360,7 @@ class RelatedMediaBrand extends Component
         $ismedia->extension = $type;
         $ismedia->width = $resizedImage->width();
         $ismedia->height = $resizedImage->height();
-        $ismedia->size = File::size($newPath);
+        $ismedia->size = \App\Helpers\MediaHelper::size($newPath);
         $ismedia->lastmodifiedby = Auth::user()->name;
         $ismedia->save();
       } else {
@@ -397,8 +397,8 @@ class RelatedMediaBrand extends Component
   {
     $media = Media::findOrFail($this->idbeingremoved);
     $path = $media->path . $media->name;
-    if (File::exists($path)) {
-      File::delete($path);
+    if (\App\Helpers\MediaHelper::exists($path)) {
+      \App\Helpers\MediaHelper::delete($path);
     }
     $media->delete();
     $folder = $media->path;

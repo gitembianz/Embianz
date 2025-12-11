@@ -211,29 +211,63 @@ class RelatedMediaArticle extends Component
   }
 
   public function deleteRecords()
-  {
+{
     $medias = Media::whereKey($this->checked)->get();
     foreach ($medias as $media) {
-      $path = $media->path . $media->name;
-      if (File::exists($path)) {
-        File::delete($path);
-      }
-      $media->delete();
-      $folder = $media->path;
-      if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        File::deleteDirectory($folder);
-      }
+        $path = $media->path . $media->name;
+        if (\App\Helpers\MediaHelper::exists($path)) {
+            \App\Helpers\MediaHelper::delete($path);
+        }
+        
+        $media->delete();
+        
+        $folder = public_path($media->path);
+        if (is_dir($folder)) {
+            $files = array_diff(scandir($folder), ['.', '..']);
+            if (empty($files)) {
+                @rmdir($folder);
+            }
+        }
     }
+    
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
+    
     session()->flash('notification', [
-      'message' => 'Records related successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+        'message' => 'Records deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
     ]);
-  }
+}
 
+  public function deleteSingleRecord()
+{
+    $media = Media::findOrFail($this->idbeingremoved);
+    $path = $media->path . $media->name;
+    if (\App\Helpers\MediaHelper::exists($path)) {
+        \App\Helpers\MediaHelper::delete($path);
+    }
+    
+    $media->delete();
+    
+    $folder = public_path($media->path);
+    if (is_dir($folder)) {
+        $files = array_diff(scandir($folder), ['.', '..']);
+        if (empty($files)) {
+            @rmdir($folder);
+        }
+    }
+    
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
+    
+    session()->flash('notification', [
+        'message' => 'Record deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+    ]);
+}
   public function selectAll()
   {
     $this->selectAll = true;
@@ -271,24 +305,24 @@ class RelatedMediaArticle extends Component
     $this->externalmedia = false;
   }
 
-  private function resizeImage($file, $path, $size, $type, $name, $extension, $external)
-  {
+private function resizeImage($file, $path, $size, $type, $name, $extension, $external)
+{
     if ($external) {
-      $resizedImage = Image::make($file)
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
+        $resizedImage = Image::make($file)
+            ->resize($size, $size, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
     } else {
-      $resizedImage = Image::make($file->getRealPath())
-        ->resize($size, $size, function ($constraint) {
-          $constraint->aspectRatio();
-          $constraint->upsize();
-        });
+        $resizedImage = Image::make($file->getRealPath())
+            ->resize($size, $size, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
     }
 
-    $resizedImage->encode('webp')->save($path . "resized{$size}_" . $name);
-
+    $resizedImage->encode('webp')->save(public_path($path . "resized{$size}_" . $name));
+    
     $resizedMedia = new Media();
     $resizedMedia->path = $path;
     $resizedMedia->name = "resized{$size}_" . $name;
@@ -296,23 +330,25 @@ class RelatedMediaArticle extends Component
     $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = File::size($path . "resized{$size}_" . $name);
+    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . "resized{$size}_" . $name);
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
-
     $this->article->media()->attach($resizedMedia->id);
-  }
+}
 
-  public function saveexternal()
-  {
+
+public function saveexternal()
+{
     $itemType = class_basename(get_class($this->article));
     $filespath = 'media/' . $itemType . '/';
-    if (!File::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+    
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
+        File::makeDirectory(public_path($filespath), 0755, true);
     }
-    if (!File::exists($filespath . $this->article->id)) {
-      File::makeDirectory($filespath . $this->article->id, 0755, true);
+    
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
+        File::makeDirectory(public_path($filespath . $this->article->id), 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
 
@@ -363,7 +399,7 @@ class RelatedMediaArticle extends Component
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->article->name)), '-') . '(' . $j . ').' . $fileExtension;
       }
 
-      Storage::disk('public_upload')->put($path . $name, $webpContent);
+      \App\Helpers\MediaHelper::put($path . $name, $webpContent);
     } else {
 
       $fileExtension = image_type_to_extension($imageInfo[2], false);
@@ -377,7 +413,7 @@ class RelatedMediaArticle extends Component
         }
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->article->name)), '-') . '(' . $j . ').' . $fileExtension;
       }
-      Storage::disk('public_upload')->put($path . $name, $fileContent);
+      \App\Helpers\MediaHelper::put($path . $name, $fileContent);
     }
     $isoriginal = $this->article->media()->where('type', 'original')->first();
     if ($isoriginal) {
@@ -399,13 +435,13 @@ class RelatedMediaArticle extends Component
 
     //Resize system
     $filePath = $path . $name;
-    $file = Storage::disk('public_upload')->get($filePath);
+    $file = \App\Helpers\MediaHelper::get($filePath);
     // min image(70x70)
     $ismin = $this->article->media()->where('type', 'min')->first();
     if ($ismin) {
       $oldPath = $ismin->path . $ismin->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismin->delete();
     }
@@ -415,8 +451,8 @@ class RelatedMediaArticle extends Component
     $ismain = $this->article->media()->where('type', 'main')->first();
     if ($ismain) {
       $oldPath = $ismain->path . $ismain->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismain->delete();
     }
@@ -426,8 +462,8 @@ class RelatedMediaArticle extends Component
     $isfull = $this->article->media()->where('type', 'full')->first();
     if ($isfull) {
       $oldPath = $isfull->path . $isfull->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isfull->delete();
     }
@@ -444,17 +480,15 @@ class RelatedMediaArticle extends Component
     $this->mount($this->article);
   }
 
-  public function save()
-  {
+ public function save()
+{
     $itemType = class_basename(get_class($this->article));
-
-    //check for directory
     $filespath = 'media/' . $itemType . '/';
-    if (!File::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
+        File::makeDirectory(public_path($filespath), 0755, true);
     }
-    if (!File::exists($filespath . $this->article->id)) {
-      File::makeDirectory($filespath . $this->article->id, 0755, true);
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
+        File::makeDirectory(public_path($filespath . $this->article->id), 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
 
@@ -490,8 +524,8 @@ class RelatedMediaArticle extends Component
     $isoriginal = $this->article->media()->where('type', 'original')->first();
     if ($isoriginal) {
       $oldPath = $isoriginal->path . $isoriginal->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isoriginal->delete();
     }
@@ -510,8 +544,8 @@ class RelatedMediaArticle extends Component
     $ismin = $this->article->media()->where('type', 'min')->first();
     if ($ismin) {
       $oldPath = $ismin->path . $ismin->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismin->delete();
     }
@@ -520,8 +554,8 @@ class RelatedMediaArticle extends Component
     $ismain = $this->article->media()->where('type', 'main')->first();
     if ($ismain) {
       $oldPath = $ismain->path . $ismain->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismain->delete();
     }
@@ -531,8 +565,8 @@ class RelatedMediaArticle extends Component
     $isfull = $this->article->media()->where('type', 'full')->first();
     if ($isfull) {
       $oldPath = $isfull->path . $isfull->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isfull->delete();
     }
