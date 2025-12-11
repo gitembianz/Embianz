@@ -203,7 +203,7 @@ class ShowCategory extends Component
     }
     $productType = class_basename(get_class($category));
     $filespath = 'media/' . $productType . '/' . $category->id;
-    if (File::exists($filespath)) {
+    if (\App\Helpers\MediaHelper::exists($filespath)) {
       File::deleteDirectory($filespath);
     }
     $category->delete();

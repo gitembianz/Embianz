@@ -29,4 +29,10 @@ class MediaHelper
     {
         return file_get_contents(public_path($path));
     }
+    
+     public static function size($path)
+    {
+        $fullPath = public_path($path);
+        return file_exists($fullPath) ? filesize($fullPath) : 0;
+    }
 }

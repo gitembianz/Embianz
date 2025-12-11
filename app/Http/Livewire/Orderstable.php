@@ -970,11 +970,11 @@ class Orderstable extends Component
     $fileName = (app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669') . '_' . $pref .
       "_{$this->start_date}_to_{$this->end_date}.xml";
 
-    if (!File::exists($invoicePath)) {
+    if (!\App\Helpers\MediaHelper::exists($invoicePath)) {
       File::makeDirectory($invoicePath, 0755, true);
     }
 
-    Storage::disk('public_upload')->put($invoicePath . $fileName, $xml->asXML());
+    \App\Helpers\MediaHelper::put($invoicePath . $fileName, $xml->asXML());
 
     session()->flash('notification', [
       'message' => "Invoices XML successfully generated at: $fileName",

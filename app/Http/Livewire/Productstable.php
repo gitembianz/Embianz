@@ -693,10 +693,10 @@ class Productstable extends Component
     if ($product) {
       $productType = class_basename(get_class($product));
       $filespath = 'media/' . $productType . '/';
-      if (!File::exists($filespath)) {
+      if (!\App\Helpers\MediaHelper::exists($filespath)) {
         File::makeDirectory($filespath, 0755, true);
       }
-      if (!File::exists($filespath . $product->id)) {
+      if (!\App\Helpers\MediaHelper::exists($filespath . $product->id)) {
         File::makeDirectory($filespath . $product->id, 0755, true);
       }
       $path = $filespath . $product->id . "/";
@@ -730,7 +730,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('media')->put($path . $name, $webpContent);
+        \App\Helpers\MediaHelper::->put($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
@@ -741,7 +741,7 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        Storage::disk('media')->put($path . $name, $fileContent);
+        \App\Helpers\MediaHelper::->put($path . $name, $fileContent);
       }
 
       $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
@@ -763,7 +763,7 @@ class Productstable extends Component
       $product->media()->attach($media->id);
 
       $filePath = $path . $name;
-      $file = Storage::disk('media')->get($filePath);
+      $file = \App\Helpers\MediaHelper::->get($filePath);
 
       $ismin = $product->media()->where('type', 'min')->first();
 
@@ -781,8 +781,8 @@ class Productstable extends Component
         );
       } else {
         $oldPath = $ismin->path . $ismin->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
+        if (\App\Helpers\MediaHelper::exists($oldPath)) {
+          \App\Helpers\MediaHelper::delete($oldPath);
         }
 
         $resizedImage = Image::make($file)
@@ -799,7 +799,7 @@ class Productstable extends Component
         $ismin->extension = $fileExtension;
         $ismin->width = $resizedImage->width();
         $ismin->height = $resizedImage->height();
-        $ismin->size = File::size($newPath);
+        $ismin->size = \App\Helpers\MediaHelper::size($newPath);
         $ismin->lastmodifiedby = Auth::user()->name;
         $ismin->save();
       }
@@ -809,8 +809,8 @@ class Productstable extends Component
         $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, 1, $product);
       } else {
         $oldPath = $ismaim->path . $ismaim->name;
-        if (File::exists($oldPath)) {
-          File::delete($oldPath);
+        if (\App\Helpers\MediaHelper::exists($oldPath)) {
+          \App\Helpers\MediaHelper::delete($oldPath);
         }
 
         $resizedImage = Image::make($file)
@@ -827,7 +827,7 @@ class Productstable extends Component
         $ismaim->extension = $fileExtension;
         $ismaim->width = $resizedImage->width();
         $ismaim->height = $resizedImage->height();
-        $ismaim->size = File::size($newPath);
+        $ismaim->size = \App\Helpers\MediaHelper::size($newPath);
         $ismaim->lastmodifiedby = Auth::user()->name;
         $ismaim->save();
       }
@@ -869,7 +869,7 @@ class Productstable extends Component
     $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = File::size($path . "resized{$size}_" . $name);
+    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . "resized{$size}_" . $name);
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
@@ -1030,7 +1030,7 @@ class Productstable extends Component
       }
       $productType = class_basename(get_class($producttodel));
       $filespath = 'media/' . $productType . '/' . $producttodel->id;
-      if (File::exists($filespath)) {
+      if (\App\Helpers\MediaHelper::exists($filespath)) {
         File::deleteDirectory($filespath);
       }
       $producttodel->delete();
@@ -1112,7 +1112,7 @@ class Productstable extends Component
     }
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;
-    if (File::exists($filespath)) {
+    if (\App\Helpers\MediaHelper::exists($filespath)) {
       File::deleteDirectory($filespath);
     }
     $product->delete();

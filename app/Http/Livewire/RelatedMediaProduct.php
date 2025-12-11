@@ -222,10 +222,10 @@ class RelatedMediaProduct extends Component
     $path = $filespath . $this->product->id . "/";
 
 
-    if (!File::exists($filespath)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . $this->product->id)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->product->id)) {
       File::makeDirectory($filespath . $this->product->id, 0755, true);
     }
 
@@ -376,7 +376,7 @@ if (!empty($this->file_resize[$i])) {
     $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = Storage::disk('media')->size($path . $resizedName);
+    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . $resizedName)($path . $resizedName);
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
@@ -389,10 +389,10 @@ if (!empty($this->file_resize[$i])) {
   {
     $productType = class_basename(get_class($this->product));
     $path = 'media/' . $productType . '/' . $this->product->id . '/';
-    if (!File::exists($path)) {
+    if (!\App\Helpers\MediaHelper::exists($path)) {
       File::makeDirectory($path, 0755, true);
     }
-    if (!File::exists($path . $this->product->id)) {
+    if (!\App\Helpers\MediaHelper::exists($path . $this->product->id)) {
       File::makeDirectory($path . $this->product->id, 0755, true);
     }
 

@@ -215,8 +215,8 @@ class RelatedMediaArticle extends Component
     $medias = Media::whereKey($this->checked)->get();
     foreach ($medias as $media) {
       $path = $media->path . $media->name;
-      if (File::exists($path)) {
-        File::delete($path);
+      if (\App\Helpers\MediaHelper::exists($path)) {
+        \App\Helpers\MediaHelper::delete($path);
       }
       $media->delete();
       $folder = $media->path;
@@ -296,7 +296,7 @@ class RelatedMediaArticle extends Component
     $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = File::size($path . "resized{$size}_" . $name);
+    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . "resized{$size}_" . $name);
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
@@ -308,10 +308,10 @@ class RelatedMediaArticle extends Component
   {
     $itemType = class_basename(get_class($this->article));
     $filespath = 'media/' . $itemType . '/';
-    if (!File::exists($filespath)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . $this->article->id)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
       File::makeDirectory($filespath . $this->article->id, 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
@@ -363,7 +363,7 @@ class RelatedMediaArticle extends Component
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->article->name)), '-') . '(' . $j . ').' . $fileExtension;
       }
 
-      Storage::disk('public_upload')->put($path . $name, $webpContent);
+      \App\Helpers\MediaHelper::put($path . $name, $webpContent);
     } else {
 
       $fileExtension = image_type_to_extension($imageInfo[2], false);
@@ -377,7 +377,7 @@ class RelatedMediaArticle extends Component
         }
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $this->article->name)), '-') . '(' . $j . ').' . $fileExtension;
       }
-      Storage::disk('public_upload')->put($path . $name, $fileContent);
+      \App\Helpers\MediaHelper::put($path . $name, $fileContent);
     }
     $isoriginal = $this->article->media()->where('type', 'original')->first();
     if ($isoriginal) {
@@ -399,13 +399,13 @@ class RelatedMediaArticle extends Component
 
     //Resize system
     $filePath = $path . $name;
-    $file = Storage::disk('public_upload')->get($filePath);
+    $file = \App\Helpers\MediaHelper::get($filePath);
     // min image(70x70)
     $ismin = $this->article->media()->where('type', 'min')->first();
     if ($ismin) {
       $oldPath = $ismin->path . $ismin->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismin->delete();
     }
@@ -415,8 +415,8 @@ class RelatedMediaArticle extends Component
     $ismain = $this->article->media()->where('type', 'main')->first();
     if ($ismain) {
       $oldPath = $ismain->path . $ismain->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismain->delete();
     }
@@ -426,8 +426,8 @@ class RelatedMediaArticle extends Component
     $isfull = $this->article->media()->where('type', 'full')->first();
     if ($isfull) {
       $oldPath = $isfull->path . $isfull->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isfull->delete();
     }
@@ -450,10 +450,10 @@ class RelatedMediaArticle extends Component
 
     //check for directory
     $filespath = 'media/' . $itemType . '/';
-    if (!File::exists($filespath)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . $this->article->id)) {
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->article->id)) {
       File::makeDirectory($filespath . $this->article->id, 0755, true);
     }
     $path = $filespath . $this->article->id . "/";
@@ -490,8 +490,8 @@ class RelatedMediaArticle extends Component
     $isoriginal = $this->article->media()->where('type', 'original')->first();
     if ($isoriginal) {
       $oldPath = $isoriginal->path . $isoriginal->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isoriginal->delete();
     }
@@ -510,8 +510,8 @@ class RelatedMediaArticle extends Component
     $ismin = $this->article->media()->where('type', 'min')->first();
     if ($ismin) {
       $oldPath = $ismin->path . $ismin->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismin->delete();
     }
@@ -520,8 +520,8 @@ class RelatedMediaArticle extends Component
     $ismain = $this->article->media()->where('type', 'main')->first();
     if ($ismain) {
       $oldPath = $ismain->path . $ismain->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $ismain->delete();
     }
@@ -531,8 +531,8 @@ class RelatedMediaArticle extends Component
     $isfull = $this->article->media()->where('type', 'full')->first();
     if ($isfull) {
       $oldPath = $isfull->path . $isfull->name;
-      if (File::exists($oldPath)) {
-        File::delete($oldPath);
+      if (\App\Helpers\MediaHelper::exists($oldPath)) {
+        \App\Helpers\MediaHelper::delete($oldPath);
       }
       $isfull->delete();
     }
