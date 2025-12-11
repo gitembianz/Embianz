@@ -376,7 +376,7 @@ if (!empty($this->file_resize[$i])) {
     $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
-    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . $resizedName)($path . $resizedName);
+    $resizedMedia->size = \App\Helpers\MediaHelper::size($path . $resizedName);
     $resizedMedia->createdby = Auth::user()->name;
     $resizedMedia->lastmodifiedby = Auth::user()->name;
     $resizedMedia->save();
@@ -385,15 +385,12 @@ if (!empty($this->file_resize[$i])) {
   }
 
 
-  public function save()
-  {
+public function save()
+{
     $productType = class_basename(get_class($this->product));
     $path = 'media/' . $productType . '/' . $this->product->id . '/';
     if (!\App\Helpers\MediaHelper::exists($path)) {
-      File::makeDirectory($path, 0755, true);
-    }
-    if (!\App\Helpers\MediaHelper::exists($path . $this->product->id)) {
-      File::makeDirectory($path . $this->product->id, 0755, true);
+        File::makeDirectory($path, 0755, true);
     }
 
     $this->i = 0;

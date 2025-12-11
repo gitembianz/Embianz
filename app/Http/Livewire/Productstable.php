@@ -730,7 +730,8 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        \App\Helpers\MediaHelper::->put($path . $name, $webpContent);
+        \App\Helpers\MediaHelper::put
+($path . $name, $webpContent);
       } else {
         $fileExtension = image_type_to_extension($imageInfo[2], false);
         $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '.' . $fileExtension;
@@ -741,7 +742,8 @@ class Productstable extends Component
           }
           $name = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '--', $product->name)), '-') . '(' . $j . ').' . $fileExtension;
         }
-        \App\Helpers\MediaHelper::->put($path . $name, $fileContent);
+        \App\Helpers\MediaHelper::put
+($path . $name, $fileContent);
       }
 
       $isoriginal = $product->media()->where('type', 'original')->where('sequence', '1')->first();
@@ -763,7 +765,7 @@ class Productstable extends Component
       $product->media()->attach($media->id);
 
       $filePath = $path . $name;
-      $file = \App\Helpers\MediaHelper::->get($filePath);
+      $file = \App\Helpers\MediaHelper::get($filePath);
 
       $ismin = $product->media()->where('type', 'min')->first();
 
