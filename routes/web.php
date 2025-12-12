@@ -218,6 +218,7 @@
     //payments routes
     Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
     Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+    Route::get('/api/search', [App\Http\Controllers\Api\SearchController::class, 'search']);
   });
 
   Route::get('/maintenance', function () {
@@ -245,3 +246,5 @@
   Route::get('/sapi', function () {
     return php_sapi_name();
   });
+
+
