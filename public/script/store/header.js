@@ -1,5 +1,28 @@
 //<--------------------------------------------------------------------->
 //<---------------------------- ScrollEvent ---------------------------->
+function startHeaderScripts() {
+    searchBar();
+    leftbar(
+        "basketOpen",
+        "basketClose",
+        "basketList",
+        "basketContent",
+        "basketHidden",
+    );
+    leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
+    leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
+    dropmenus(".dropmenu", false);
+    dropmenus(".submenu", false);
+    scrollEvent();
+    window.addEventListener("scroll", scrollEvent);
+    window.addEventListener("resize", scrollEvent);
+}
+
+// expose globally
+window.initHeaderJs = function () {
+    startHeaderScripts();
+};
+
 function scrollEvent() {
   const header = document.querySelector("header");
   const banner = document.querySelector(".banner");
@@ -116,48 +139,54 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
 //<--------------------------------------------------------------------->
 //<----------------------------- SearchBar ----------------------------->
 function searchBar() {
-  const searchBtn = document.getElementById("searchOpen");
-  const closeBtn = document.getElementById("searchClose");
-  const input = document.getElementById("searchInput");
-  const modalClose = document.getElementById("modalClose");
-  const searching = document.getElementById("searching");
+    const searchBtn = document.getElementById("searchOpen");
+    const closeBtn = document.getElementById("searchClose");
+    const input = document.getElementById("searchInput");
+    const modalClose = document.getElementById("modalClose");
+    const searching = document.getElementById("searching");
+    const searchList = document.getElementById("searchList");
 
-  if(searchBtn){
+    if (!searchBtn || !closeBtn || !input || !modalClose || !searching || !searchList) {
+        return;
+    }
 
-  searchBtn.addEventListener("click", function () {
-    new Promise((resolve) => {
-      document.body.style.overflow = "hidden";
-      resolve();
-    }).then(() => {
-      input.focus();
+    searchBtn.addEventListener("click", function () {
+        searchList.classList.add("active");
+        document.body.style.overflow = "hidden";
+        setTimeout(() => input.focus(), 50);
     });
-  });
-  }
 
+    closeBtn.addEventListener("click", function () {
+        searchList.classList.remove("active");
+        document.body.style.overflow = "auto";
+    });
 
-  closeBtn.addEventListener("click", function () {
-    document.body.style.overflow = "auto";
-  });
-  modalClose.addEventListener("click", function () {
-    document.body.style.overflow = "auto";
-  });
-  function handleKeyPress(event) {
-    if (event.keyCode === 27) {
-      document.getElementById("searchList").classList.remove("active");
-      document.body.style.overflow = "auto";
+    modalClose.addEventListener("click", function () {
+        searchList.classList.remove("active");
+        document.body.style.overflow = "auto";
+    });
+
+    function handleKeyPress(event) {
+        if (event.keyCode === 27) {
+            searchList.classList.remove("active");
+            document.body.style.overflow = "auto";
+        }
     }
-  }
 
-  input.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      window.location.href = "/search/" + encodeURIComponent(input.value);
-    }
-  });
-  searching.addEventListener("click", function () {
-    window.location.href = "/search/" + encodeURIComponent(input.value);
-  });
+    document.addEventListener("keydown", handleKeyPress);
+
+    input.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            window.location.href = "/search/" + encodeURIComponent(input.value);
+        }
+    });
+
+    searching.addEventListener("click", function () {
+        window.location.href = "/search/" + encodeURIComponent(input.value);
+    });
 }
+
 
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
@@ -173,23 +202,3 @@ function DoubleTapRedirect(link) {
     window.location.href = link;
   }
 }
-//<---------------------- End Double Tap Redirect ---------------------->
-//<--------------------------------------------------------------------->
-//<------------------------ Start Functions IOS ------------------------>
-searchBar();
-leftbar(
-  "basketOpen",
-  "basketClose",
-  "basketList",
-  "basketContent",
-  "basketHidden",
-);
-leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
-leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
-dropmenus(".dropmenu", false);
-dropmenus(".submenu", false);
-scrollEvent();
-window.addEventListener("scroll", scrollEvent);
-window.addEventListener("resize", scrollEvent);
-//<---------------------- End Start Functions IOS ---------------------->
-//<--------------------------------------------------------------------->
