@@ -125,9 +125,9 @@
         </div>
     </header>
 
-    <!-------------------------Searchbar------------------------>
-    {{-- Livewire search replaced by static container --}}
-    <div id="general-search-container"></div>
+{{-- Static replacement for Livewire general-search --}}
+
+
 
     {{-- Cart products list placeholder --}}
     <div id="cart-products-list-container"></div>
@@ -194,6 +194,7 @@
     </nav>
     <!--------------------END-Menu (Leftbar)-------------------->
     <!---------------------------------------------------------->
-    <script src="/script/store/header-api.js" defer></script>
+<script src="/script/store/header-api.js" defer></script>
+<script src="/script/store/header.js" defer></script>
 
 </div>
