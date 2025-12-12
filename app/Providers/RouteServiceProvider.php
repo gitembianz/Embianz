@@ -30,6 +30,10 @@ class RouteServiceProvider extends ServiceProvider
 
     $this->routes(function () {
 
+        // CACHEABLE routes (NO web middleware)
+        Route::middleware(['cacheable'])
+            ->group(base_path('routes/cacheable.php'));
+
       // Route::middleware('api')
       //   ->prefix('api')
       //   ->group(base_path('routes/api.php'));
