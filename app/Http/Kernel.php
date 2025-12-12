@@ -33,13 +33,11 @@ class Kernel extends HttpKernel
       // \App\Http\Middleware\EncryptCookies::class,
       \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
       \Illuminate\Session\Middleware\StartSession::class,
-
       \Illuminate\View\Middleware\ShareErrorsFromSession::class,
       // \App\Http\Middleware\VerifyCsrfToken::class,
       \Illuminate\Routing\Middleware\SubstituteBindings::class,
       \App\Http\Middleware\TrackUserSession::class, // Add this line
       \App\Http\Middleware\PromotionInit::class, // Add this line for PromotionInit middleware
-
     ],
 
     'api' => [
@@ -47,6 +45,8 @@ class Kernel extends HttpKernel
       'throttle:api',
       \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ],
+
+
   ];
 
   /**
@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
     'categorycheck' => \App\Http\Middleware\CategoryCheck::class,
     'site.off' => \App\Http\Middleware\SiteOff::class, // Add this line for the SiteOff middleware
     'load.specs' => \App\Http\Middleware\LoadSpecificationsCache::class,
+    'cacheable' => \App\Http\Middleware\CacheableResponse::class,
   ];
 }
