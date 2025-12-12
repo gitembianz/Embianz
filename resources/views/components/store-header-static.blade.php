@@ -125,8 +125,35 @@
         </div>
     </header>
 
-{{-- Static replacement for Livewire general-search --}}
-
+{{-- Search Overlay (static, API-powered) --}}
+<div class="search" id="searchList">
+    <div class="search__container container" id="searchContent">
+        <div class="search__top">
+            <div class="search__input">
+                <button class="search__button" id="searching" aria-label="go to search page">
+                    <svg>
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+                <input id="searchInput" 
+                       name="search" 
+                       maxlength="100"
+                       type="text" 
+                       autocomplete="off"
+                       placeholder="@if (app()->has('label_breadcrumbs_search')) {!! app('label_breadcrumbs_search') !!} @endif">
+            </div>
+            <button class="search__close" type="button" id="searchClose" aria-label="close search component">
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        {{-- JS will insert <ul class="search__list"> here when results come --}}
+    </div>
+    <button class="search__close--hidden" id="modalClose" type="button" aria-label="Close hidden general searchbar"></button>
+</div>
 
 
     {{-- Cart products list placeholder --}}
