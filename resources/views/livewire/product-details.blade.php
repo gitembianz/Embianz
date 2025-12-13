@@ -30,7 +30,7 @@
             @if ($discount)
                 <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
             @endif
-            @if ((  app()->has('global_review_system') && app('global_review_system') === 'true') && $product->reviews->count() > 0)
+            @if ((  app()->has('global_review_system') && app('global_review_system') === 'true') && $product->totalreview > 0)
                 @php
                     $rating = $product->score * 20;
                 @endphp
