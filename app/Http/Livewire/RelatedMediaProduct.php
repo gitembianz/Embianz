@@ -511,32 +511,38 @@ if (!empty($this->file_resize[$this->i])) {
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
-  public function deleteSingleRecord()
+public function deleteSingleRecord()
 {
     $media = Media::findOrFail($this->idbeingremoved);
     $path = $media->path . $media->name;
     if (\App\Helpers\MediaHelper::exists($path)) {
         \App\Helpers\MediaHelper::delete($path);
     }
+    
     $media->delete();
-    $folder = $media->path;
-    if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      File::deleteDirectory($folder);
+    
+    $folder = public_path($media->path);
+    if (is_dir($folder)) {
+        $files = array_diff(scandir($folder), ['.', '..']);
+        if (empty($files)) {
+            @rmdir($folder);
+        }
     }
+    
     $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     $this->single = false;
     session()->flash('notification', [
-      'message' => 'Record related successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+        'message' => 'Record deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
     ]);
     $this->mount($this->product);
-  }
+}
   public function cancel_chose()
   {
     $this->chose = false;
   }
-  public function deleteRecords()
+public function deleteRecords()
 {
     $medias = Media::whereKey($this->checked)->get();
     foreach ($medias as $media) {
@@ -544,23 +550,29 @@ if (!empty($this->file_resize[$this->i])) {
         if (\App\Helpers\MediaHelper::exists($path)) {
             \App\Helpers\MediaHelper::delete($path);
         }
+        
         $media->delete();
-      $folder = $media->path;
-      if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-        File::deleteDirectory($folder);
-      }
+        
+        $folder = public_path($media->path);
+        if (is_dir($folder)) {
+            $files = array_diff(scandir($folder), ['.', '..']);
+            if (empty($files)) {
+                @rmdir($folder);
+            }
+        }
     }
+    
     $this->checked = [];
     $this->selectPage = false;
     $this->multiple = false;
     session()->flash('notification', [
-      'message' => 'Records related successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+        'message' => 'Records deleted successfully!',
+        'type' => 'success',
+        'title' => 'Success'
     ]);
-
+    
     $this->mount($this->product);
-  }
+}
   public function selectAll()
   {
     $this->selectAll = true;

@@ -17,7 +17,7 @@ class IPGeolocation implements ShouldQueue
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
   protected int $allJobId;
-  protected ?AllJob $jobRecord = null;
+  //protected ?AllJob $jobRecord = null;
 
   public function __construct(int $allJobId)
   {
@@ -81,6 +81,8 @@ class IPGeolocation implements ShouldQueue
             'status' => 'success',
             'country' => $geo['country'] ?? null,
             'countryCode' => $geo['countryCode'] ?? null,
+            'county' => $geo['country'] ?? null,      // For backward compatibility
+            'countyCode' => $geo['countryCode'] ?? null,
             'region' => $geo['region'] ?? null,
             'regionName' => $geo['regionName'] ?? null,
             'city' => $geo['city'] ?? null,
@@ -116,15 +118,15 @@ class IPGeolocation implements ShouldQueue
     $this->finish('finished', $messages);
   }
 
-  protected function finish(string $status, array $messages)
-  {
+protected function finish(string $status, array $messages)
+{
     $log = implode("\n", $messages);
 
-    $this->jobRecord = AllJob::find($this->allJobId);
-    $this->jobRecord?->update([
+    $jobRecord = AllJob::find($this->allJobId);
+    $jobRecord?->update([
       'status' => $status,
       'finished_at' => now(config('app.timezone')),
-      'log' => ($this->jobRecord->log ?? '') . "\n" . $log,
+      'log' => ($jobRecord->log ?? '') . "\n" . $log,
     ]);
 
     ScheduleJob::create([
@@ -135,5 +137,6 @@ class IPGeolocation implements ShouldQueue
       'details' => $log,
       'finished_at' => now(config('app.timezone')),
     ]);
-  }
+}
+
 }

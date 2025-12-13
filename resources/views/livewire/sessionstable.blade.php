@@ -458,7 +458,7 @@
                                     @foreach ($selectedColumns as $index => $column)
                                         @if ($index > 1)
                                             <p>
-                                                <bold>{{ $column }}:</bold>{{ $item->$column }}
+                                                <bold>{{ $column }}:</bold>{{ $item->$column ?? '' }}
                                             </p>
                                         @endif
                                     @endforeach

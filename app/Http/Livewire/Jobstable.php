@@ -76,7 +76,7 @@ class Jobstable extends Component
 
   // jobs
   public array $jobslist = [
-    'IPGeolocation',
+    'App\Jobs\IPGeolocation',
   ];
   public $frequency;
   public $service;
