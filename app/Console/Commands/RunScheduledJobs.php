@@ -23,28 +23,41 @@ class RunScheduledJobs extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-        $jobs = AllJob::where('is_recurring', true)
-            ->where('active', true)
-            ->where('next_run_at', '<=', Carbon::now(config('app.timezone')))
-            ->get();
+public function handle()
+{
+    try {
+        \Log::info('Job starting', ['allJobId' => $this->allJobId]);
+        
+        $messages = [];
+        $messages[] = "Starting IP Geolocation job with AllJob ID: {$this->allJobId}";
 
-        foreach ($jobs as $job) {
-            if (class_exists($job->name)) {
-                dispatch(new $job->name());
-                $this->info("✅ Executed: {$job->name}");
+        $lastRun = AllJob::where('type', 'session_geolocation')
+          ->where('status', 'finished')
+          ->latest('finished_at')
+          ->value('finished_at');
 
-                // Update next run time
-                $interval = (int) filter_var($job->recurrence_rule, FILTER_SANITIZE_NUMBER_INT) ?: 5;
-                $job->update([
-                    'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($interval),
-                    'status' => 'running',
-                ]);
-            } else {
-                $this->error("❌ Class not found: {$job->name}");
-                $job->update(['status' => 'error']);
-            }
+        $query = UserSessions::whereNull('status');
+        if ($lastRun) {
+          $query->where('created_at', '>', $lastRun);
         }
+
+        $total = $query->count();
+        $messages[] = "Found {$total} sessions to process.";
+        \Log::info('Found sessions', ['total' => $total]);
+
+        // ... rest of your code ...
+        
+        $this->finish('finished', $messages);
+        
+    } catch (\Exception $e) {
+        \Log::error('Job failed', [
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        $this->finish('error', ['Error: ' . $e->getMessage()]);
+        throw $e;
     }
+}
 }
