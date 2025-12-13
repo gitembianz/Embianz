@@ -81,6 +81,8 @@ class IPGeolocation implements ShouldQueue
             'status' => 'success',
             'country' => $geo['country'] ?? null,
             'countryCode' => $geo['countryCode'] ?? null,
+            'county' => $geo['country'] ?? null,      // For backward compatibility
+            'countyCode' => $geo['countryCode'] ?? null,
             'region' => $geo['region'] ?? null,
             'regionName' => $geo['regionName'] ?? null,
             'city' => $geo['city'] ?? null,
