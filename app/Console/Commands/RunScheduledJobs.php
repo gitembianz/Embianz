@@ -14,6 +14,7 @@ class RunScheduledJobs extends Command
     public function handle()
     {
         $job = AllJob::create([
+            'name' => 'IP Geolocation Job',  // ✅ Add this line
             'type' => 'session_geolocation',
             'status' => 'running',
             'started_at' => now(config('app.timezone')),
