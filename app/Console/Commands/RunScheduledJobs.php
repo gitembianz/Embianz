@@ -30,25 +30,41 @@ public function handle()
         ->where('next_run_at', '<=', Carbon::now(config('app.timezone')))
         ->get();
 
-    foreach ($jobs as $job) {
-        if (class_exists($job->name)) {
-            // Create execution record
-            $executionJob = AllJob::create([
-                'name' => $job->name,
-                'type' => $job->type ?? 'unknown',
-                'status' => 'running',
-                'started_at' => now(config('app.timezone')),
-            ]);
-            
-            // Dispatch with the execution ID
-            dispatch(new $job->name($executionJob->id));
-            $this->info("✅ Executed: {$job->name} with ID: {$executionJob->id}");
+    \Log::info('Found jobs to run', ['count' => $jobs->count()]);
 
-            // Update next run time
-            $interval = (int) filter_var($job->recurrence_rule, FILTER_SANITIZE_NUMBER_INT) ?: 5;
-            $job->update([
-                'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($interval),
-            ]);
+    foreach ($jobs as $job) {
+        \Log::info('Processing job', ['name' => $job->name, 'id' => $job->id]);
+        
+        if (class_exists($job->name)) {
+            try {
+                // Create execution record
+                $executionJob = AllJob::create([
+                    'name' => $job->name,
+                    'type' => $job->type ?? 'unknown',
+                    'status' => 'running',
+                    'started_at' => now(config('app.timezone')),
+                ]);
+                
+                \Log::info('Created execution job', ['execution_id' => $executionJob->id]);
+                
+                // Dispatch with the execution ID
+                dispatch(new $job->name($executionJob->id));
+                $this->info("✅ Executed: {$job->name} with ID: {$executionJob->id}");
+
+                // Update next run time
+                $interval = (int) filter_var($job->recurrence_rule, FILTER_SANITIZE_NUMBER_INT) ?: 5;
+                $job->update([
+                    'next_run_at' => Carbon::now(config('app.timezone'))->addMinutes($interval),
+                ]);
+                
+            } catch (\Exception $e) {
+                \Log::error('Job dispatch failed', [
+                    'job' => $job->name,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+                $job->update(['status' => 'error']);
+            }
         } else {
             $this->error("❌ Class not found: {$job->name}");
             $job->update(['status' => 'error']);
@@ -57,5 +73,6 @@ public function handle()
 
     return 0;
 }
+
 
 }
