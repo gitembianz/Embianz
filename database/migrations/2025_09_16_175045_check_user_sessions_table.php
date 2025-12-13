@@ -23,6 +23,8 @@ return new class extends Migration
         $table->string('status')->nullable();
         $table->string('country')->nullable();
         $table->string('countryCode')->nullable();
+        $table->string('county')->nullable();
+        $table->string('countyCode')->nullable();
         $table->string('region')->nullable();
         $table->string('regionName')->nullable();
         $table->string('city')->nullable();

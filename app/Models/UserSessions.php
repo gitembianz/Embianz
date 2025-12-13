@@ -17,6 +17,8 @@ class UserSessions extends Model
     'status',
     'country',
     'countryCode',
+    'county',
+    'countrCode',
     'region',
     'regionName',
     'city',
