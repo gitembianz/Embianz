@@ -88,7 +88,16 @@ class ProductDetails extends Component
           },
           'beeingvariants'
         ])
-        ->withAvg('reviews as score', 'score')
+        ->withCount([
+          'reviews as totalreview' => function ($query) {
+            $query->where('approved', true);
+          }
+        ])
+        ->withAvg([
+          'reviews as score' => function ($query) {
+            $query->where('approved', true);
+          }
+        ], 'score')
         ->findOrFail($prodid);
     }
 

@@ -155,18 +155,6 @@ class StoreShowProduct extends Component
 
   public function getProductProperty()
   {
-    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
-      $cachedProduct = app()->make('cached_products')->firstWhere('id', $this->productId);
-
-      if ($cachedProduct) {
-        $cachedProduct->media = collect($cachedProduct->media)->filter(function ($media) {
-          return in_array($media['type'], ['full', 'original']);
-        })->sortBy('sequence')->values();
-
-        return $cachedProduct;
-      }
-    } else {
-
       return Product::select('id', 'name', 'seo_id', 'long_description')
         ->with([
           'media' => function ($query) {
@@ -216,14 +204,20 @@ class StoreShowProduct extends Component
               }]);
           }
         ])
-        ->where('id', $this->productId)
         ->withCount([
-          'reviews as totalreview' => function ($q) {
-            $q->where('approved', true);
+          'reviews as cc' => function ($query) {
+            $query->where('approved', true);
           }
         ])
+        ->withAvg([
+          'reviews as score' => function ($query) {
+            $query->where('approved', true);
+          }
+        ], 'score')
+        ->where('id', $this->productId)
+
         ->first();
-    }
+
   }
 
   public function addreview()

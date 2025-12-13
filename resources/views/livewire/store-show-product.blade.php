@@ -750,13 +750,13 @@
                     @endif
                 </h2>
             </div>
-            <input type="hidden" name="total_reviews" id="total_reviews" value="{{ $product->totalreview }}">
+            <input type="hidden" name="total_reviews" id="total_reviews" value="{{ $product->cc }}">
             <p class="section__text" style="padding: 15px">
                 @if (app()->has('label_pdp_reviews_description'))
                     {!! app('label_pdp_reviews_description') !!}
                 @endif
             </p>
-            @if ($product->totalreview > 0)
+            @if ($product->totalreviews)
 
                 <div class="container grid-product-reviews">
 
@@ -766,14 +766,14 @@
                             @if (app()->has('label_pdp_review_count_text'))
                                 {!! app('label_pdp_review_count_text') !!}
                             @endif
-                            {{ $product->totalreview }}
+                            {{ $product->totalreviews }}
                         </h2>
 
 
                         <div class="ratingscore">
-                            <div class="rating" style="--rating: {{ $score * 20 }}%;"></div>
+                            <div class="rating" style="--rating: {{ $product->score * 20 }}%;"></div>
                             @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                                ({{ number_format($score, 2) }})
+                                ({{ number_format($product->score, 2) }})
                             @endif
                         </div>
                         <div>
@@ -785,7 +785,7 @@
                                 @if (app()->has('label_pdp_reviews_out_of'))
                                     {!! app('label_pdp_reviews_out_of') !!}
                                 @endif
-                                {{ $product->totalreview }}
+                                {{ $product->totalreviews }}
                                 ({{ round($avrage) }}%)
                             </div>
                             <span class="reviews-info__caption">
@@ -866,31 +866,6 @@
                         </button>
                     </div>
                 </div>
-            @else
-                <div class="container">
-
-                <div class="product-reviews__info">
-                    <h2 class="product__title">
-                        @if (app()->has('label_pdp_add_review_title'))
-                            {!! app('label_pdp_add_review_title') !!}
-                        @endif
-                    </h2>
-                    <p class="subtitle">
-                        @if (app()->has('label_pdp_add_review_description'))
-                            {!! app('label_pdp_add_review_description') !!}
-                        @endif
-                    </p>
-                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
-                        @if (app()->has('label_add_review_button'))
-                            {!! app('label_add_review_button') !!}
-                        @endif
-                    </button>
-                </div>
-                </div>
-            @endif
-
-            @if ($product->totalreview > 0)
-
                 <div class="container" style="margin-top: 15px">
                     <p class="section__text">
                         @if (app()->has('label_pdp_reviews_list'))
@@ -952,6 +927,11 @@
                             {!! app('label_pdp_reviews_no_reviews') !!}
                         @endif
                     </p>
+                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
+                        @if (app()->has('label_add_review_button'))
+                            {!! app('label_add_review_button') !!}
+                        @endif
+                    </button>
                 </div>
             @endif
         </section>
