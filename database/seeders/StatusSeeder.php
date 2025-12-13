@@ -25,6 +25,7 @@ class StatusSeeder extends Seeder
         DB::table('statuses')->insert([
             ['name' => 'check_payment', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'processing', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'in_delivery', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'delivered', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'canceled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'hold', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
