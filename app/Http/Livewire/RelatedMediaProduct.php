@@ -214,19 +214,25 @@ class RelatedMediaProduct extends Component
       $this->externalmedia = false;
     }
   }
-  public function saveexternal()
-  {
+ public function saveexternal()
+{
     $productType = class_basename(get_class($this->product));
-    $filespath = 'media/' . $productType . '/';
-    $path = $filespath . $this->product->id . "/";
+    $filespath   = 'media/' . $productType . '/';
+    $path        = $filespath . $this->product->id . '/';   // "media/Product/id/"
 
+    $baseDir = public_path($filespath);                     // /var/www/.../public/media/Product/
+    $prodDir = public_path($filespath . $this->product->id);// /var/www/.../public/media/Product/{id}/
 
-    if (!\App\Helpers\MediaHelper::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+    // Create /public/media/Product
+    if (!is_dir($baseDir)) {
+        File::makeDirectory($baseDir, 0755, true);
     }
-    if (!\App\Helpers\MediaHelper::exists($filespath . $this->product->id)) {
-      File::makeDirectory($filespath . $this->product->id, 0755, true);
+
+    // Create /public/media/Product/{id}
+    if (!is_dir($prodDir)) {
+        File::makeDirectory($prodDir, 0755, true);
     }
+
 
 
 for ($i = 0; $i <= $this->row; $i++) {
@@ -387,10 +393,21 @@ if (!empty($this->file_resize[$i])) {
 public function save()
 {
     $productType = class_basename(get_class($this->product));
-    $path = 'media/' . $productType . '/' . $this->product->id . '/';
-    if (!\App\Helpers\MediaHelper::exists($path)) {
-        File::makeDirectory($path, 0755, true);
+    $filespath   = 'media/' . $productType . '/';
+
+    // create /public/media/Product/
+    if (!\App\Helpers\MediaHelper::exists($filespath)) {
+        File::makeDirectory(public_path($filespath), 0755, true);
     }
+
+    // create /public/media/Product/{id}
+    if (!\App\Helpers\MediaHelper::exists($filespath . $this->product->id)) {
+        File::makeDirectory(public_path($filespath . $this->product->id), 0755, true);
+    }
+
+    $path = $filespath . $this->product->id . '/';
+
+
 
     $this->i = 0;
 
