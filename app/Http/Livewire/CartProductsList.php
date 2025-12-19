@@ -259,13 +259,19 @@ class CartProductsList extends Component
 
     foreach ($this->cart->cartItems as $item) {
       $latestPrice = optional($item->product->product_prices->first())->value;
+      $lastVAT = optional($item->product->product_prices->first())->vat;
 
-      if ($latestPrice === null) {
+      if ($latestPrice === null && $lastVAT === null) {
         continue;
       }
 
       if ($item->price != $latestPrice) {
         $item->price = $latestPrice;
+        $item->save();
+        $priceChanged = true;
+      }
+      if ($item->vat != $lastVAT) {
+        $item->vat = $lastVAT;
         $item->save();
         $priceChanged = true;
       }
