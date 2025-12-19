@@ -93,7 +93,6 @@ class TrackUserSession
       'baidu',
       'sogou',
       'mediapartners',
-      'facebookexternalhit',
       'linkedinbot',
       'twitterbot',
       'whatsapp',
