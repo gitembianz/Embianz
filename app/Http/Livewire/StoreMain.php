@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Wishlist;
 
 class StoreMain extends Component
@@ -14,16 +13,10 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+    return collect(resolve(\App\Services\CategoryService::class)->get());
 
-      return app()->make('cached_categories')->where('slider_sequence', '!=', '0')->sortBy('slider_sequence');
-    } else {
-      return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=',  now(config('app.timezone'))->format('Y-m-d'))->with(['media' => function ($query) {
-          $query->select('path', 'name', 'sequence', 'width', 'height')->where('type', 'original');
-        }])->orderby('slider_sequence')->get();
-    }
   }
+
 
   public function isInWishlist($productId)
   {

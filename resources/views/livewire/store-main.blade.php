@@ -3,82 +3,45 @@
 
     <main>
         <!---------------------- Slider Images --------------------->
+
         @if (!$slideritems->isEmpty())
             <div class="main-slider">
                 <div class="main-slider__wrapper">
                     @foreach ($slideritems as $item)
-                        {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
-                        <a class="main-slider__slide"
-                            href="{{ route('products', ['categorySlug' => $item->seo_id !== null && $item->seo_id !== '' ? $item->seo_id : $item->id]) }}"
+                        <a class="main-slider__slide" href="{{ route('products', ['categorySlug' => $item['slug']]) }}"
                             draggable="false">
+
                             <picture>
-                                @if ($item->media != null)
-                                    {{-- Default (Desktop) --}}
-                                    @if ($item->media->where('sequence', 2)->first() != null)
-                                        <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
-                                            srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 2)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 2)->first()->width }}">
-                                    @else
-                                        <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
-                                            srcset="/images/store/default/default.webp" loading="eager"
-                                            fetchpriority="high">
-                                    @endif
-                                    {{-- Tablet Picture --}}
-                                    @if ($item->media->where('sequence', 3)->first() != null)
-                                        <source title="{{ $item->media->where('sequence', 3)->first()->name }}"
-                                            media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
-                                            srcset="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 3)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 3)->first()->width }}">
-                                    @elseif ($item->media->where('sequence', 2)->first() != null)
-                                        <source title="{{ $item->media->where('sequence', 2)->first()->name }}"
-                                            media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
-                                            srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 2)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 2)->first()->width }}">
-                                    @else
-                                        <source title="Default image" media="(min-width: 576px)"
-                                            sizes="(min-width: 576px) 80vw"
-                                            srcset="/images/store/default/default640.webp" loading="eager"
-                                            fetchpriority="high">
-                                    @endif
-                                    {{-- Mobile Picture --}}
-                                    @if ($item->media->where('sequence', 4)->first() != null)
-                                        <img title="{{ $item->name }}" sizes="100vw" alt="{{ $item->name }}"
-                                            src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 4)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 4)->first()->width }}">
-                                    @elseif ($item->media->where('sequence', 3)->first() != null)
-                                        <img title="{{ $item->name }}" sizes="100vw" alt="{{ $item->name }}"
-                                            src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 3)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 3)->first()->width }}">
-                                    @elseif ($item->media->where('sequence', 2)->first() != null)
-                                        <img title="{{ $item->name }}" sizes="100vw" alt="{{ $item->name }}"
-                                            src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-                                            loading="eager" fetchpriority="high"
-                                            height="{{ $item->media->where('sequence', 2)->first()->height }}"
-                                            width="{{ $item->media->where('sequence', 2)->first()->width }}">
-                                    @else
-                                        <img title="Default image" src="/images/store/default/default300.webp"
-                                            alt="something wrong">
-                                    @endif
+                                {{-- Desktop --}}
+                                @if ($item['slider_media'][2])
+                                    <source media="(min-width: 992px)" srcset="{{ $item['slider_media'][2]['src'] }}"
+                                        width="{{ $item['slider_media'][2]['width'] }}"
+                                        height="{{ $item['slider_media'][2]['height'] }}" fetchpriority="high">
                                 @else
-                                    <img title="Default image" src="/images/store/default/default300.webp"
-                                        alt="something wrong">
+                                    <source media="(min-width: 992px)" srcset="/images/store/default/default.webp">
+                                @endif
+
+                                {{-- Tablet --}}
+                                @if ($item['slider_media'][3])
+                                    <source media="(min-width: 576px)" srcset="{{ $item['slider_media'][3]['src'] }}"
+                                        width="{{ $item['slider_media'][3]['width'] }}"
+                                        height="{{ $item['slider_media'][3]['height'] }}">
+                                @endif
+
+                                {{-- Mobile --}}
+                                @if ($item['slider_media'][4])
+                                    <img src="{{ $item['slider_media'][4]['src'] }}" alt="{{ $item['name'] }}"
+                                        width="{{ $item['slider_media'][4]['width'] }}"
+                                        height="{{ $item['slider_media'][4]['height'] }}" fetchpriority="high">
+                                @else
+                                    <img src="/images/store/default/default300.webp" alt="Default image">
                                 @endif
                             </picture>
+
                         </a>
                     @endforeach
                 </div>
-
-                <button class="main-slider__button prev" aria-label="Previous main slider">
+                 <button class="main-slider__button prev" aria-label="Previous main slider">
                     <svg>
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>

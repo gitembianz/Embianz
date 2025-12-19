@@ -34,13 +34,12 @@ class StoreHeader extends Component
     $this->staticpages = collect(app('static_pages'))->where('display_in_footer', true)->values();
   }
 
-  public function getCategoriesProperty()
-  {
-    return collect(
-      app(\App\Services\CategoryService::class)->get($this->session_id)
-    )
-      ->where('store_tab', true)
-      ->values()
-      ->toArray();
-  }
+ public function getCategoriesProperty()
+{
+    return collect(resolve(\App\Services\CategoryService::class)->get())
+    ->where('store_tab', true)
+    ->values()
+    ->toArray();
+}
+
 }
