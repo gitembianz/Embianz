@@ -633,19 +633,18 @@
 
 
     {{-- Tabs Body (Related) --}}
-    <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-        @livewire('related-media-product', ['product' => $product])
-        @livewire('related-variants', ['product' => $product])
-        @livewire('related-category-product', ['product' => $product])
-        @livewire('related-products', ['product' => $product])
-        @livewire('related-spec-product', ['product' => $product])
-        @livewire('related-pricelist', ['product' => $product])
-        @livewire('product-reviews', ['product' => $product, 'tableName' => 'product_reviews'])
-        @livewire('beeing-in-order', ['relatedby' => 'order', 'productid' => $product->id], key(1))
-        @livewire('beeing-in-order', ['relatedby' => 'supplier', 'productid' => $product->id], key(2))
-        @livewire('beeing-in-order', ['relatedby' => 'cart', 'productid' => $product->id], key(3))
-        @livewire('related-cost', ['productid' => $product->id, 'tableName' => 'product_costs'], key('related-cost'))
-        @livewire('related-competitors', ['product' => $product, 'tableName' => 'competitor_products'], key($product->id))
-
-    </div>
+  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
+    @livewire('related-media-product', ['product' => $product], key('media-'.$product->id))
+    @livewire('related-variants', ['product' => $product], key('variants-'.$product->id))
+    @livewire('related-category-product', ['product' => $product], key('category-'.$product->id))
+    @livewire('related-products', ['product' => $product], key('products-'.$product->id))
+    @livewire('related-spec-product', ['product' => $product], key('spec-'.$product->id))
+    @livewire('related-pricelist', ['product' => $product], key('pricelist-'.$product->id))
+    @livewire('product-reviews', ['product' => $product, 'tableName' => 'product_reviews'], key('reviews-'.$product->id))
+    @livewire('beeing-in-order', ['relatedby' => 'order', 'productid' => $product->id], key('order-'.$product->id))
+    @livewire('beeing-in-order', ['relatedby' => 'supplier', 'productid' => $product->id], key('supplier-'.$product->id))
+    @livewire('beeing-in-order', ['relatedby' => 'cart', 'productid' => $product->id], key('cart-'.$product->id))
+    @livewire('related-cost', ['productid' => $product->id, 'tableName' => 'product_costs'], key('cost-'.$product->id))
+    @livewire('related-competitors', ['product' => $product, 'tableName' => 'competitor_products'], key('competitors-'.$product->id))
+</div>
 </section>
