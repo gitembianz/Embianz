@@ -29,33 +29,33 @@ class Category extends Model
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
   }
 
-  public function getCategoryBreadcrumbs()
-  {
-    $breadcrumbs = collect();
+  // public function getCategoryBreadcrumbs()
+  // {
+  //   $breadcrumbs = collect();
 
-    $currentCategory = $this;
+  //   $currentCategory = $this;
 
-    while ($currentCategory) {
-      $breadcrumbs->prepend([
-        'name' => $currentCategory->short_description ?? strip_tags($currentCategory->name),
-        'slug' => $currentCategory->seo_id ?? $currentCategory->id,
-      ]);
+  //   while ($currentCategory) {
+  //     $breadcrumbs->prepend([
+  //       'name' => $currentCategory->short_description ?? strip_tags($currentCategory->name),
+  //       'slug' => $currentCategory->seo_id ?? $currentCategory->id,
+  //     ]);
 
-      if ($currentCategory->parent->isNotEmpty()) {
-        $parentCategory = $currentCategory->parent->first()->category_parent;
+  //     if ($currentCategory->parent->isNotEmpty()) {
+  //       $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parentCategory) {
-          break;
-        }
+  //       if (!$parentCategory) {
+  //         break;
+  //       }
 
-        $currentCategory = $parentCategory;
-      } else {
-        break;
-      }
-    }
+  //       $currentCategory = $parentCategory;
+  //     } else {
+  //       break;
+  //     }
+  //   }
 
-    return $breadcrumbs->toArray();
-  }
+  //   return $breadcrumbs->toArray();
+  // }
 
   protected $fillable = [
     'name',

@@ -4,9 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Wishlist;
 use Livewire\WithPagination;
+use App\Services\CategoryService;
 use Illuminate\Support\Facades\Cache;
 
 class StoreProducts extends Component
@@ -17,7 +17,7 @@ class StoreProducts extends Component
   public $search = "";
   public $session_id;
   public $orderBy = 'best_selling';
-  public $category;
+  public ?array $category = null;
   public $queryfilters = [];
   public $selectedKeys = [];
   public $selectedvariantsKeys = [];
@@ -28,8 +28,18 @@ class StoreProducts extends Component
   {
     return view('livewire.store-products', [
       'products' => $this->products,
-      'filtervalues' => $this->filtervalues
+      'filtervalues' => $this->filtervalues,
+
     ]);
+  }
+  public function getBreadcrumbsProperty()
+  {
+    if (!$this->category || empty($this->category['id'])) {
+      return [];
+    }
+
+    return app(CategoryService::class)
+      ->getBreadcrumbs((int) $this->category['id']);
   }
 
   public function isInWishlist($productId)
@@ -39,26 +49,53 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
+
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
+
+    $categoryId = null;
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
+      ->pluck('product_id')
+      ->all();
+
     if ($category) {
-      $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find($decodedCategory['id']);
+      $categoryId = $category['id'] ?? null;
     } else {
-      if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'long_description_bottom', 'seo_id', 'accepted_items', 'display_variant_price')->find(app('global_default_category')) ?? null;
-      }
+      $categoryId = app()->has('global_default_category')
+        ? app('global_default_category')
+        : null;
     }
+
+    if ($categoryId) {
+
+      $cached = collect(resolve(\App\Services\CategoryService::class)->get())
+        ->firstWhere('id', (int) $categoryId);
+
+      $this->category = $cached
+        ? [
+          'id'                      => $cached['id'],
+          'name'                    => $cached['name'],
+          'seo_id'                  => $cached['slug'],
+          'short_description'       => null,
+          'long_description'        => null,
+          'long_description_bottom' => null,
+          'accepted_items'          => null,
+          'display_variant_price'   => null,
+        ]
+        : null;
+    }
+
+
     $filteredValues = session()->get('filtered_values', []);
 
-    if (isset($filteredValues['loadAmount'])) {
-      $this->loadAmount = $filteredValues['loadAmount'];
-    } else {
-      $this->loadAmount = app('global_limit_load');
-    }
+    $this->loadAmount = $filteredValues['loadAmount']
+      ?? app('global_limit_load');
 
-    if (isset($filteredValues['category_id']) && $this->category != null && $filteredValues['category_id'] == $this->category->id) {
-      if (isset($filteredValues['queryfilters'])) {
+    if (
+      isset($filteredValues['category_id']) &&
+      $this->category &&
+      $filteredValues['category_id'] == $this->category['id']
+    ) {
+      if (!empty($filteredValues['queryfilters'])) {
         $this->queryfilters = $filteredValues['queryfilters'];
         $this->applyFilter();
       }
@@ -73,7 +110,7 @@ class StoreProducts extends Component
     $this->loadAmount += app('global_limit_load');
     if ($this->category != null) {
       session()->put('filtered_values', [
-        'category_id' => $this->category->id,
+        'category_id' => $this->category['id'],
         'loadAmount' =>  $this->loadAmount
       ]);
     } else {
@@ -118,9 +155,9 @@ class StoreProducts extends Component
 
     if ($this->category != null) {
       $query->whereHas('product_categories.category', function ($query) {
-        $query->where('id', $this->category->id);
+        $query->where('id', $this->category['id']);
       });
-      if ($this->category->accepted_items == 'default') {
+      if ($this->category['accepted_items'] == 'default') {
         $query->where('type', '!=', 'parent');
       } else {
         if (empty($this->selectedKeys)) {
@@ -177,11 +214,11 @@ class StoreProducts extends Component
       $query = collect($query)->map(function ($spec) {
         $filteredValues = collect($spec['values'])->map(function ($value) {
           $filteredProducts = collect($value['products'])->filter(function ($product) {
-            return in_array($this->category->id, $product['categories']);
+            return in_array($this->category['id'], $product['categories']);
           });
 
           $productData = $filteredProducts->map(function ($product) {
-            if ($this->category->accepted_items === 'parents') {
+            if ($this->category['accepted_items'] === 'parents') {
               if ($product['parent_id'] != "" && $product['type'] != 'standard') {
                 return [
                   'product_id' => $product['product_id'],
@@ -287,7 +324,7 @@ class StoreProducts extends Component
       $this->selectedKeys = !empty($mergedIds) ? $mergedIds : $this->products->pluck('id')->toArray();
 
       session()->put('filtered_values', [
-        'category_id' => $this->category->id,
+        'category_id' => $this->category['id'],
         'queryfilters' => $this->queryfilters
       ]);
 
@@ -320,7 +357,7 @@ class StoreProducts extends Component
       session()->forget('filtered_values');
     } else {
       session()->put('filtered_values', [
-        'category_id' => $this->category->id,
+        'category_id' => $this->category['id'],
         'queryfilters' => $this->queryfilters
       ]);
     }

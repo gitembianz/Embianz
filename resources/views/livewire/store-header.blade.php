@@ -35,34 +35,37 @@
                             </li>
                         @endif
                         @foreach ($categories as $category)
-                            @if ($category->subcategory->count() != 0)
+                            @if (!empty($category['children']))
                                 <li>
                                     <div class="dropdown">
                                         <a class="dropdown__button"
-                                            href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-                                            {!! $category->name !!}
+                                            href="{{ route('products', ['categorySlug' => $category['slug']]) }}">
+                                            {!! $category['name'] !!}
                                             <svg>
                                                 <polyline points="6 9 12 15 18 9"></polyline>
                                             </svg>
                                         </a>
+
                                         <ul class="dropdown__list">
-                                            @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
+                                            @foreach (collect($category['children'])->sortBy('sequence') as $child)
                                                 <li class="dropdown__item">
                                                     <a class="dropdown__item--button"
-                                                        href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
-                                                        {!! $subcategory->category->name !!}
-                                                        @if ($subcategory->category->subcategory->count() != 0)
+                                                        href="{{ route('products', ['categorySlug' => $child['slug']]) }}">
+                                                        {!! $child['name'] !!}
+
+                                                        @if (!empty($child['children']))
                                                             <svg>
                                                                 <polyline points="9 18 15 12 9 6"></polyline>
                                                             </svg>
                                                         @endif
                                                     </a>
-                                                    @if ($subcategory->category->subcategory->count() != 0)
+
+                                                    @if (!empty($child['children']))
                                                         <div class="dropdown__item--list">
-                                                            @foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {return $subsubCategory->category->sequence;}) as $subsubCategory)
+                                                            @foreach (collect($child['children'])->sortBy('sequence') as $grand)
                                                                 <a class="dropdown__item--link"
-                                                                    href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
-                                                                    {!! $subsubCategory->category->name !!}
+                                                                    href="{{ route('products', ['categorySlug' => $grand['slug']]) }}">
+                                                                    {!! $grand['name'] !!}
                                                                 </a>
                                                             @endforeach
                                                         </div>
@@ -75,12 +78,13 @@
                             @else
                                 <li>
                                     <a class="navbar__link"
-                                        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-                                        {!! $category->name !!}
+                                        href="{{ route('products', ['categorySlug' => $category['slug']]) }}">
+                                        {!! $category['name'] !!}
                                     </a>
                                 </li>
                             @endif
                         @endforeach
+
                         @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
                             <li>
                                 <a class="navbar__link" href="{{ route('blog') }}">
@@ -145,7 +149,7 @@
                     {{-- cart button --}}
                     <button class="header__btn" wire:click="$emit('showcart')" id="basketOpen"
                         aria-label="Open cart button">
-                            @livewire('cart-quantity')
+                        @livewire('cart-quantity')
                         <svg>
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -176,61 +180,59 @@
             </div>
             <ul class="menu__list">
                 @if (app()->has('global_one_product_page_system') && app('global_one_product_page_system') != 'true')
-
                     @foreach ($categories as $category)
-                        @if ($category->subcategory->count() != 0)
+                        @if (!empty($category['children']))
                             <li class="dropmenu">
                                 <div class="dropmenu__button">
                                     <a class="dropmenu__button--link"
-                                        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-                                        @if ($category->media->where('type', 'min')->first())
-                                            <img title="{{ strip_tags($category->name) }}" loading="eager"
-                                                class="cart__list--img"
-                                                src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
-                                                alt="{{ $category->media->where('type', 'min')->first()->name }} {{ strip_tags($category->name) }}">
-                                        @endif
-                                        <h4 style="margin-left: 7px">{!! $category->name !!}</h4>
+                                        href="{{ route('products', ['categorySlug' => $category['slug']]) }}">
+
+                                        <img class="cart__list--img" loading="eager"
+                                            src="{{ $category['min_image'] }}"
+                                            alt="{{ strip_tags($category['name']) }}">
+
+                                        <h4 style="margin-left:7px">{!! $category['name'] !!}</h4>
                                     </a>
-                                    <button class="dropmenu__open" href="#">
+
+                                    <button class="dropmenu__open">
                                         <svg>
                                             <polyline points="6 9 12 15 18 9"></polyline>
                                         </svg>
                                     </button>
                                 </div>
+
                                 <ul class="dropmenu__list">
-                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
+                                    @foreach ($category['children'] as $child)
                                         <li class="submenu">
                                             <div class="submenu__button">
                                                 <a class="submenu__button--link"
-                                                    href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
-                                                    @if ($subcategory->category->media->where('type', 'min')->first() != null)
-                                                        <img loading="eager"
-                                                            title="{{ strip_tags($subcategory->category->name) }}"
-                                                            src="/{{ $subcategory->category->media->where('type', 'min')->first()->path }}{{ $subcategory->category->media->where('type', 'min')->first()->name }}"
-                                                            alt="{{ $subcategory->category->media->where('type', 'min')->first()->name }}{{ strip_tags($subcategory->category->name) }}">
-                                                    @endif
-                                                    <h4>{!! $subcategory->category->name !!}</h4>
+                                                    href="{{ route('products', ['categorySlug' => $child['slug']]) }}">
+
+                                                    <img loading="lazy" src="{{ $child['min_image'] }}"
+                                                        alt="{{ strip_tags($child['name']) }}">
+
+                                                    <h4>{!! $child['name'] !!}</h4>
                                                 </a>
-                                                @if ($subcategory->category->subcategory->count() != 0)
-                                                    <button class="submenu__open" href="#">
+
+                                                @if (!empty($child['children']))
+                                                    <button class="submenu__open">
                                                         <svg>
                                                             <polyline points="6 9 12 15 18 9"></polyline>
                                                         </svg>
                                                     </button>
                                                 @endif
                                             </div>
-                                            @if ($subcategory->category->subcategory->count() != 0)
+
+                                            @if (!empty($child['children']))
                                                 <div class="submenu__list">
-                                                    @foreach ($category->subcategory->sortBy(function ($subcategory) {return $subcategory->category->sequence;}) as $subcategory)
+                                                    @foreach ($child['children'] as $grand)
                                                         <a class="submenu__link"
-                                                            href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
-                                                            @if ($subsubCategory->category->media->where('type', 'min')->first() != null)
-                                                                <img loading="eager"
-                                                                    title="{{ strip_tags($subsubCategory->category->name) }}"
-                                                                    src="/{{ $subsubCategory->category->media->where('type', 'min')->first()->path }}{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}"
-                                                                    alt="{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}{{ strip_tags($subsubCategory->category->name) }}">
-                                                            @endif
-                                                            <h4>{!! $subsubCategory->category->name !!}</h4>
+                                                            href="{{ route('products', ['categorySlug' => $grand['slug']]) }}">
+
+                                                            <img loading="lazy" src="{{ $grand['min_image'] }}"
+                                                                alt="{{ strip_tags($grand['name']) }}">
+
+                                                            <h4>{!! $grand['name'] !!}</h4>
                                                         </a>
                                                     @endforeach
                                                 </div>
@@ -242,17 +244,17 @@
                         @else
                             <li>
                                 <a class="menu__link"
-                                    href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-                                    @if ($category->media->where('type', 'min')->first() != null)
-                                        <img loading="eager" title="{{ strip_tags($category->name) }}"
-                                            src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
-                                            alt="{{ $category->media->where('type', 'min')->first()->name }} {{ strip_tags($category->name) }}">
-                                    @endif
-                                    <h4> {!! $category->name !!}</h4>
+                                    href="{{ route('products', ['categorySlug' => $category['slug']]) }}">
+
+                                    <img loading="eager" src="{{ $category['min_image'] }}"
+                                        alt="{{ strip_tags($category['name']) }}">
+
+                                    <h4>{!! $category['name'] !!}</h4>
                                 </a>
                             </li>
                         @endif
                     @endforeach
+
                 @endif
                 @if (app()->has('global_header_display_blog') && app('global_header_display_blog') === 'true')
                     <li>

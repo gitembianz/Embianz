@@ -34,13 +34,13 @@
                 </li>
             @endif
             <!-------------------If Category is appear---  --------------->
-            @if ($category != null && $category->id != app('global_default_category'))
-                @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
-                    @if ($breadcrumb['name'] === $category->name)
+            @if ($category && $category['id'] != app('global_default_category'))
+                @foreach ($this->breadcrumbs as $breadcrumb)
+                    @if ($breadcrumb['id'] === $category['id'])
                         <li>
                             <a class="breadcrumbs__link"
-                                href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-                                {!! $category->name !!}
+                                href="{{ route('products', ['categorySlug' => $category['seo_id'] ?: $category['id']]) }}">
+                                {!! $category['name'] !!}
                             </a>
                         </li>
                     @else
@@ -53,6 +53,7 @@
                     @endif
                 @endforeach
             @endif
+
         </ol>
     @endif
 
@@ -60,14 +61,14 @@
     @if ($category)
         <section class="section__header container">
             <h1 class="section__title">
-                @if (!empty($category->short_description))
-                    {{ $category->short_description }}
+                @if (!empty($category['short_description']))
+                    {{ $category['short_description'] }}
                 @else
-                    {!! $category->name !!}
+                    {!! $category['name'] !!}
                 @endif
             </h1>
             <p class="section__text">
-                {!! $category->long_description !!}
+                {!! $category['long_description'] !!}
             </p>
         </section>
     @endif
@@ -222,7 +223,7 @@
                             <div class="card-text">
                                 <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
                                         href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
-                                        @if ($element->type === 'variant' && $category->accepted_items === 'parents')
+                                        @if ($element->type === 'variant' && $category['accepted_items'] === 'parents')
                                             {{ $element->parent->name }}
                                         @else
                                             {{ $element->name }}
@@ -230,7 +231,7 @@
                                     </a>
                                 </h2>
                                 @php
-                                    if ($element->type === 'variant' && $category->accepted_items === 'parents') {
+                                    if ($element->type === 'variant' && $category['accepted_items'] === 'parents') {
                                         $corectproduct = $element->parent;
                                     } else {
                                         $corectproduct = $element;
@@ -253,8 +254,8 @@
                                 <p class="card-price">
                                     {{-- label price from --}}
                                     @if (
-                                        $category->display_variant_price == true &&
-                                            ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
+                                        $category['display_variant_price'] == true &&
+                                            ($element->type == 'parent' || ($element->type === 'variant' && $category['accepted_items'] === 'parents')) &&
                                             app()->has('global_variant_price_from') &&
                                             app()->has('global_variant_add_to_cart') &&
                                             app('global_variant_add_to_cart') === 'true' &&
@@ -263,9 +264,9 @@
                                         {!! app('label_product_price_from') !!}
                                     @endif
                                     {{-- price --}}
-                                    @if ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents'))
+                                    @if ($element->type == 'parent' || ($element->type === 'variant' && $category['accepted_items'] === 'parents'))
                                         @if (
-                                            $category->display_variant_price == true &&
+                                            $category['display_variant_price'] == true &&
                                                 app()->has('global_variant_add_to_cart') &&
                                                 app('global_variant_add_to_cart') === 'true')
                                             @if ($discount)
@@ -333,13 +334,13 @@
                                 </div>
                             </div>
                             @if (
-                                ($element->type == 'parent' || ($element->type === 'variant' && $category->accepted_items === 'parents')) &&
+                                ($element->type == 'parent' || ($element->type === 'variant' && $category['accepted_items'] === 'parents')) &&
                                     app()->has('global_variant_add_to_cart') &&
                                     app('global_variant_add_to_cart') === 'true' &&
                                     $price &&
-                                    $category->display_variant_price == true)
+                                    $category['display_variant_price'] == true)
                                 @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
-                            @elseif(($price && $element->type == 'parent') || ($element->type === 'variant' && $category->accepted_items === 'parents'))
+                            @elseif(($price && $element->type == 'parent') || ($element->type === 'variant' && $category['accepted_items'] === 'parents'))
                                 <div class="card__button--wrapper">
                                     <button class="card__button">
 
@@ -389,7 +390,7 @@
     @if ($category)
         <section class="section__header container">
             <p class="section__text">
-                {!! $category->long_description_bottom !!}
+                {!! $category['long_description_bottom'] !!}
             </p>
         </section>
     @endif
