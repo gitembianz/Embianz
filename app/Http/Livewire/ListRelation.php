@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
+
 use Livewire\Component;
 
 class ListRelation extends Component
@@ -57,12 +58,24 @@ class ListRelation extends Component
       $this->results = [];
       return;
     }
-
-    $items = $modelClass::withCount($this->relation)
+    $query = $modelClass::query()
       ->where('active', 1)
-      ->whereIn('type', ['standard', 'variant'])
+      ->whereIn('type', ['standard', 'variant']);
+
+    if ($this->relation === 'media') {
+      $query->withCount([
+        'media as media_count' => function ($q) {
+          $q->where('type', 'main');
+        }
+      ]);
+    } else {
+      $query->withCount($this->relation);
+    }
+
+    $items = $query
       ->having("{$this->relation}_count", $this->operator, $this->relation_count)
       ->get();
+
 
     foreach ($items as $item) {
       $results[] = [
