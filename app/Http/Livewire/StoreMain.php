@@ -13,7 +13,7 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    return collect(resolve(\App\Services\CategoryService::class)->get());
+    return collect(resolve(\App\Services\CategoryService::class)->getSliderItems());
 
   }
 
