@@ -67,7 +67,7 @@ class StoreProducts extends Component
 
     if ($categoryId) {
 
-      $cached = collect(resolve(\App\Services\CategoryService::class)->get())
+      $cached = collect(resolve(\App\Services\CategoryService::class)->getAll())
         ->firstWhere('id', (int) $categoryId);
 
       $this->category = $cached
@@ -75,11 +75,11 @@ class StoreProducts extends Component
           'id'                      => $cached['id'],
           'name'                    => $cached['name'],
           'seo_id'                  => $cached['slug'],
-          'short_description'       => null,
-          'long_description'        => null,
-          'long_description_bottom' => null,
-          'accepted_items'          => null,
-          'display_variant_price'   => null,
+          'short_description'       => $cached['short_description'],
+          'long_description'        => $cached['long_description'],
+          'long_description_bottom' => $cached['long_description_bottom'],
+          'accepted_items'          => $cached['accepted_items'],
+          'display_variant_price'   => $cached['display_variant_price'],
         ]
         : null;
     }

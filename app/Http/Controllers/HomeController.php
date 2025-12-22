@@ -45,7 +45,7 @@ class HomeController extends Controller
 
     protected function resolveHomePreload(CategoryService $categoryService): string
     {
-        $first = collect($categoryService->get())
+        $first = collect($categoryService->getSliderItems())
             ->filter(fn ($c) => !empty($c['slider_sequence']))
             ->sortBy('slider_sequence')
             ->first();

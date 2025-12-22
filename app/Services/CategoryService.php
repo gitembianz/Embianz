@@ -154,7 +154,12 @@ class CategoryService
         ->map(fn($s) => $this->mapCategory($s->category, $category->id))
         ->values()
         ->all(),
-      parentId: $parentId
+      parentId: $parentId,
+      short_description: $category->short_description,
+      long_description: $category->long_description,
+      long_description_bottom: $category->long_description_bottom,
+      accepted_items: $category->accepted_items,
+      display_variant_price: (bool) $category->display_variant_price,
     );
   }
 
