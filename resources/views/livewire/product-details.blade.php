@@ -32,12 +32,12 @@
             @endif
             @if ((  app()->has('global_review_system') && app('global_review_system') === 'true') && $product->reviews->count() > 0)
                 @php
-                    $rating = $product->score * 20;
+                    $rating = $product->reviews_avg_score * 20;
                 @endphp
                 <div class="ratingscore">
                     <div class="rating" style="--rating: {{ $rating }}%;"></div>
                     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                        ({{ number_format($product->score, 2) }})
+                        ({{ number_format($product->reviews_avg_score, 2) }})
                     @endif
                 </div>
             @endif

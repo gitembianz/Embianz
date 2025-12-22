@@ -802,17 +802,54 @@ miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
 
-// Progress Bar Rating
-const bars = document.querySelectorAll('.progress-bar__outter-line');
-const COUNT_STARS = document.getElementById('total_reviews') ? parseInt(document.getElementById('total_reviews').value) : 0;
+// // Progress Bar Rating
+// const bars = document.querySelectorAll('.progress-bar__outter-line');
+// const COUNT_STARS = document.getElementById('total_reviews') ? parseInt(document.getElementById('total_reviews').value) : 0;
 
-if(bars.length > 0){
-  bars.forEach(el => {
-    let rating = el.dataset.rating;
+// if(bars.length > 0){
+//   bars.forEach(el => {
+//     let rating = el.dataset.rating;
 
-    let percent = (100 * rating) / COUNT_STARS;
-    el.querySelector('.progress-bar__inner-line').style.width = `${percent}%`;
+//     let percent = (100 * rating) / COUNT_STARS;
+//     el.querySelector('.progress-bar__inner-line').style.width = `${percent}%`;
+//   });
+// }
+
+function animateReviewBars() {
+  const totalInput = document.getElementById('total_reviews');
+  const COUNT_STARS = totalInput ? parseInt(totalInput.value) : 0;
+  if (!COUNT_STARS) return;
+
+  // Map colors to % ranges
+  const colors = {
+    'excellent': '#4CAF50', // 75-100%
+    'good': '#8BC34A', // 50-74%
+    'normal': '#FFC107', // 25-49%
+    'not-bad': '#FF9800', // 10-24%
+    'bad': '#F44336'  // 0-9%
+  };
+
+  document.querySelectorAll('.progress-bar__outter-line').forEach(el => {
+    const ratingCount = parseInt(el.dataset.rating || 0);
+    const percent = Math.min((ratingCount / COUNT_STARS) * 100, 100);
+
+    const inner = el.querySelector('.progress-bar__inner-line');
+    if (!inner) return;
+
+    inner.style.width = percent + '%';
+
+    // Assign color based on % of total
+    let color = colors['bad']; // default
+    if (percent >= 75) color = colors['excellent'];
+    else if (percent >= 50) color = colors['good'];
+    else if (percent >= 25) color = colors['normal'];
+    else if (percent >= 10) color = colors['not-bad'];
+
+    inner.style.backgroundColor = color;
   });
 }
 
+document.addEventListener('DOMContentLoaded', animateReviewBars);
+document.addEventListener('livewire:load', animateReviewBars);
+document.addEventListener('livewire:update', animateReviewBars);
 

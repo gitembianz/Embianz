@@ -4,9 +4,10 @@ namespace App\Http\Livewire;
 
 
 use App\Models\Product;
-use App\Models\ProductReviews;
 use Livewire\Component;
 use App\Models\Wishlist;
+use App\Models\ProductReviews;
+use Illuminate\Support\Facades\Cache;
 
 
 class StoreShowProduct extends Component
@@ -16,16 +17,8 @@ class StoreShowProduct extends Component
   public $back = false;
   public $wishlistItems;
   public $lastVisited;
-  public $reviews45;
-  public $score;
-  public $avrage;
-  public $rating5;
-  public $rating4;
-  public $rating3;
-  public $rating2;
-  public $rating1;
   public $limitload;
-
+  public int $page = 1;
   public $addrating = null;
   public bool $showaddreview = false;
   public bool $sendreview = false;
@@ -65,40 +58,95 @@ class StoreShowProduct extends Component
   }
   public function mount($productId)
   {
-    $this->limitload = app()->has('global_review_limit_load') ? (int)app('global_review_limit_load') : 8;
+    $this->limitload = (int) (app('global_review_limit_load') ?? 8);
     $this->productId = $productId;
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
 
-    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
+      ->pluck('product_id')
+      ->toArray();
 
-    $this->lastVisited = json_decode(request()->cookie('last_visited_products', '[]'), true);
+    $this->lastVisited = json_decode(
+      request()->cookie('last_visited_products', '[]'),
+      true
+    );
+
     if (($key = array_search($productId, $this->lastVisited)) !== false) {
       unset($this->lastVisited[$key]);
     }
+
     array_unshift($this->lastVisited, $productId);
-    cookie()->queue(cookie()->make('last_visited_products', json_encode($this->lastVisited), 60 * 24 * 30));
 
-    $this->score = $this->product->reviews->avg('score') ?? 0;
-
-    $this->reviews45 = $this->product->reviews()
-      ->whereIn('score', [4, 5])
-      ->where('approved', true)
-      ->count();
-
-    $this->avrage = $this->product->reviews->count() > 0
-      ? round(($this->reviews45 / $this->product->reviews->count()) * 100)
-      : 0;
-
-    if ($this->product->reviews->where('approved', true)
-      ->count() > 0
-    ) {
-      $this->rating5 = $this->product->reviews->where('score', 5)->where('approved', true)->count() ?? 0;
-      $this->rating4 = $this->product->reviews->where('score', 4)->where('approved', true)->count() ?? 0;
-      $this->rating3 = $this->product->reviews->where('score', 3)->where('approved', true)->count() ?? 0;
-      $this->rating2 = $this->product->reviews->where('score', 2)->where('approved', true)->count() ?? 0;
-      $this->rating1 = $this->product->reviews->where('score', 1)->where('approved', true)->count() ?? 0;
-    }
+    cookie()->queue(
+      cookie()->make(
+        'last_visited_products',
+        json_encode(array_slice($this->lastVisited, 0, 20)),
+        60 * 24 * 30
+      )
+    );
   }
+
+
+
+
+  public function getProductReviewsProperty()
+  {
+    if (app('global_review_system') !== 'true') {
+      return collect();
+    }
+
+    return ProductReviews::where('product_id', $this->productId)
+      ->where('approved', true)
+      ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id', 'created_at')
+      ->orderBy('created_at', 'desc')
+      ->paginate($this->limitload, ['*'], 'page', $this->page);
+  }
+
+  public function getProductReviewStatsProperty()
+  {
+    if (app('global_review_system') !== 'true') {
+      return (object) ['count' => 0, 'avg' => 0];
+    }
+
+    return Cache::remember(
+      "product:{$this->productId}:review_stats",
+      now()->addMinutes(30),
+      fn() => ProductReviews::where('product_id', $this->productId)
+        ->where('approved', true)
+        ->selectRaw('COUNT(*) as count, AVG(score) as avg')
+        ->first()
+    );
+  }
+  public function getProductRatingBreakdownProperty()
+  {
+    if (app('global_review_system') !== 'true') {
+      return collect();
+    }
+
+    return Cache::remember(
+      "product:{$this->productId}:rating_breakdown",
+      now()->addMinutes(30),
+      function () {
+        $data = ProductReviews::where('product_id', $this->productId)
+          ->where('approved', true)
+          ->selectRaw('score, COUNT(*) as total')
+          ->groupBy('score')
+          ->pluck('total', 'score')
+          ->toArray();
+
+        return collect([
+          1 => $data[1] ?? 0,
+          2 => $data[2] ?? 0,
+          3 => $data[3] ?? 0,
+          4 => $data[4] ?? 0,
+          5 => $data[5] ?? 0,
+        ]);
+      }
+    );
+  }
+
+
+
 
   public function getLastProductProperty()
   {
@@ -133,18 +181,6 @@ class StoreShowProduct extends Component
     } else {
       return collect();
     }
-  }
-
-  public function getProductReviewsProperty()
-  {
-    if (app('global_review_system') === 'true') {
-      return ProductReviews::where('product_id', $this->productId)
-        ->where('approved', 1)
-        ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id')
-        ->paginate($this->limitload);
-    }
-
-    return collect();
   }
 
 

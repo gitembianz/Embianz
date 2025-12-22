@@ -246,8 +246,12 @@
 
     {{-- modal add review --}}
     <div class="alertorder @if ($showaddreview) active @elseif($sendreview) out @endif"
-        id="review__modal">
+        id="review__modal" wire:click.self="$set('showaddreview', false)">
         <div class="alertorder__content">
+            <button type="button" wire:click="$set('showaddreview', false)" class="modal-close"
+                aria-label="Close review modal">
+                &times;
+            </button>
             <div>
                 <h2 style="text-align: center">
                     @if (app()->has('label_pdp_add_review_title'))
@@ -312,6 +316,24 @@
 
 
     <style>
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #ff4242;
+        }
+
         form {
             display: grid;
             gap: 14px;
@@ -742,164 +764,137 @@
     @endif
 
     @if (app()->has('global_review_system') && app('global_review_system') === 'true')
+        @php
+            $stats = $this->productReviewStats;
+            $ratings = $this->productRatingBreakdown;
+
+            $totalReviews = $stats->count ?? 0;
+            $avgScore = $stats->avg ?? 0;
+
+            $reviews45 = ($ratings[4] ?? 0) + ($ratings[5] ?? 0);
+            $recommendedPercent = $totalReviews > 0 ? round(($reviews45 / $totalReviews) * 100) : 0;
+        @endphp
+
         <section>
             <div class="section__header container">
                 <h2 class="section__title">
-                    @if (app()->has('label_pdp_reviews_section_title'))
-                        {!! app('label_pdp_reviews_section_title') !!}
-                    @endif
+                    {!! app('label_pdp_reviews_section_title') ?? '' !!}
                 </h2>
             </div>
-            <input type="hidden" name="total_reviews" id="total_reviews" value="{{ $product->totalreview }}">
+
+            <input type="hidden" name="total_reviews" id="total_reviews" value="{{ $totalReviews }}">
+
             <p class="section__text" style="padding: 15px">
-                @if (app()->has('label_pdp_reviews_description'))
-                    {!! app('label_pdp_reviews_description') !!}
-                @endif
+                {!! app('label_pdp_reviews_description') ?? '' !!}
             </p>
-            @if ($product->totalreview > 0)
+
+            @if ($totalReviews > 0)
 
                 <div class="container grid-product-reviews">
 
-
                     <div wire:ignore class="product-reviews__info reviews-info">
                         <h2 class="product__title">
-                            @if (app()->has('label_pdp_review_count_text'))
-                                {!! app('label_pdp_review_count_text') !!}
-                            @endif
-                            {{ $product->totalreview }}
+                            {!! app('label_pdp_review_count_text') ?? '' !!}
+                            {{ $totalReviews }}
                         </h2>
 
-
                         <div class="ratingscore">
-                            <div class="rating" style="--rating: {{ $score * 20 }}%;"></div>
-                            @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-                                ({{ number_format($score, 2) }})
+                            <div class="rating" style="--rating: {{ $avgScore * 20 }}%;"></div>
+                            @if (app('global_display_rating_value') === 'true')
+                                ({{ number_format($avgScore, 2) }})
                             @endif
-                        </div>
-                        <div>
                         </div>
 
                         @if ($reviews45 > 0)
                             <div class="reviews-info__percentage">
                                 {{ $reviews45 }}
-                                @if (app()->has('label_pdp_reviews_out_of'))
-                                    {!! app('label_pdp_reviews_out_of') !!}
-                                @endif
-                                {{ $product->totalreview }}
-                                ({{ round($avrage) }}%)
+                                {!! app('label_pdp_reviews_out_of') ?? '' !!}
+                                {{ $totalReviews }}
+                                ({{ $recommendedPercent }}%)
                             </div>
+
                             <span class="reviews-info__caption">
-                                @if (app()->has('label_pdp_reviews_customers_recommended'))
-                                    {!! app('label_pdp_reviews_customers_recommended') !!}
-                                @endif
+                                {!! app('label_pdp_reviews_customers_recommended') ?? '' !!}
                             </span>
                         @endif
                     </div>
 
                     <div wire:ignore class="product-reviews__bar reviews-bar">
                         <ul class="list-reset reviews-bar__list">
-                            <li class="reviews-bar__item">
-                                <div class="progress-bar">
-                                    <span class="progress-bar__star">5</span>
-                                    <div class="progress-bar__outter-line" data-rating="{{ $rating5 }}">
-                                        <span
-                                            class="progress-bar__inner-line progress-bar__inner-line--excellent"></span>
+                            @for ($i = 5; $i >= 1; $i--)
+                                <li class="reviews-bar__item">
+                                    <div class="progress-bar">
+                                        <span class="progress-bar__star">{{ $i }}</span>
+                                        <div class="progress-bar__outter-line" data-rating="{{ $ratings[$i] }}">
+                                            <span class="progress-bar__inner-line"></span>
+                                        </div>
+                                        <span class="progress-bar__quantity">
+                                            {{ $ratings[$i] }}
+                                        </span>
                                     </div>
-                                    <span id="value" class="progress-bar__quantity">{{ $rating5 }}</span>
-                                </div>
-                            </li>
-                            <li class="reviews-bar__item">
-                                <div class="progress-bar">
-                                    <span class="progress-bar__star">4</span>
-                                    <div class="progress-bar__outter-line" data-rating="{{ $rating4 }}">
-                                        <span class="progress-bar__inner-line progress-bar__inner-line--good"></span>
-                                    </div>
-                                    <span id="value" class="progress-bar__quantity">{{ $rating4 }}</span>
-                                </div>
-                            </li>
-                            <li class="reviews-bar__item">
-                                <div class="progress-bar">
-                                    <span class="progress-bar__star">3</span>
-                                    <div class="progress-bar__outter-line" data-rating="{{ $rating3 }}">
-                                        <span class="progress-bar__inner-line progress-bar__inner-line--normal"></span>
-                                    </div>
-                                    <span id="value" class="progress-bar__quantity">{{ $rating3 }}</span>
-                                </div>
-                            </li>
-                            <li class="reviews-bar__item">
-                                <div class="progress-bar">
-                                    <span class="progress-bar__star">2</span>
-                                    <div class="progress-bar__outter-line" data-rating="{{ $rating2 }}">
-                                        <span
-                                            class="progress-bar__inner-line progress-bar__inner-line--not-bad"></span>
-                                    </div>
-                                    <span id="value" class="progress-bar__quantity">{{ $rating2 }}</span>
-                                </div>
-                            </li>
-                            <li class="reviews-bar__item">
-                                <div class="progress-bar">
-                                    <span class="progress-bar__star">1</span>
-                                    <div class="progress-bar__outter-line" data-rating="{{ $rating1 }}">
-                                        <span class="progress-bar__inner-line progress-bar__inner-line--bad"></span>
-                                    </div>
-                                    <span id="value" class="progress-bar__quantity">{{ $rating1 }}</span>
-                                </div>
-                            </li>
+                                </li>
+                            @endfor
                         </ul>
                     </div>
 
                     <div class="product-reviews__info">
                         <h2 class="product__title">
-                            @if (app()->has('label_pdp_add_review_title'))
-                                {!! app('label_pdp_add_review_title') !!}
-                            @endif
+                            {!! app('label_pdp_add_review_title') ?? '' !!}
                         </h2>
                         <p class="subtitle">
-                            @if (app()->has('label_pdp_add_review_description'))
-                                {!! app('label_pdp_add_review_description') !!}
-                            @endif
+                            {!! app('label_pdp_add_review_description') ?? '' !!}
                         </p>
-                        <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
-                            @if (app()->has('label_add_review_button'))
-                                {!! app('label_add_review_button') !!}
-                            @endif
+                        <button wire:click="addreview" class="leftbar__button" style="margin-top:10px">
+                            {!! app('label_add_review_button') ?? '' !!}
                         </button>
                     </div>
                 </div>
             @else
-                <div class="container">
-
-                <div class="product-reviews__info">
+                <div class="container product-reviews__info">
                     <h2 class="product__title">
-                        @if (app()->has('label_pdp_add_review_title'))
-                            {!! app('label_pdp_add_review_title') !!}
-                        @endif
+                        {!! app('label_pdp_add_review_title') ?? '' !!}
                     </h2>
                     <p class="subtitle">
-                        @if (app()->has('label_pdp_add_review_description'))
-                            {!! app('label_pdp_add_review_description') !!}
-                        @endif
+                        {!! app('label_pdp_add_review_description') ?? '' !!}
                     </p>
-                    <button wire:click="addreview" class="leftbar__button" style="margin-top: 10px">
-                        @if (app()->has('label_add_review_button'))
-                            {!! app('label_add_review_button') !!}
-                        @endif
+                    <button wire:click="addreview" class="leftbar__button" style="margin-top:10px">
+                        {!! app('label_add_review_button') ?? '' !!}
                     </button>
-                </div>
                 </div>
             @endif
 
-            @if ($product->totalreview > 0)
+            @if ($totalReviews > 0)
 
                 <div class="container" style="margin-top: 15px">
                     <p class="section__text">
-                        @if (app()->has('label_pdp_reviews_list'))
-                            {!! app('label_pdp_reviews_list') !!}
-                        @endif
+                        {!! app('label_pdp_reviews_list') ?? '' !!}
                     </p>
                 </div>
 
-                @foreach ($product_reviews as $review)
+                <script>
+                    document.addEventListener('livewire:load', function() {
+                        let observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    Livewire.emit('loadMoreReviews');
+                                }
+                            });
+                        }, {
+                            rootMargin: '100px'
+                        });
+
+                        let lastRecord = document.getElementById('last_record');
+                        if (lastRecord) observer.observe(lastRecord);
+
+                        Livewire.hook('message.processed', (message, component) => {
+                            lastRecord = document.getElementById('last_record');
+                            if (lastRecord) observer.observe(lastRecord);
+                        });
+                    });
+                </script>
+
+
+                @foreach ($product_reviews as $index => $review)
                     @php
                         $initial = strtoupper(mb_substr($review->acronim, 0, 1));
                         $colors = [
@@ -915,10 +910,10 @@
                         $color = $colors[crc32($review->acronim) % count($colors)];
                     @endphp
 
-                    <div style="padding-top: 15px" class="container">
-                        <div class="article-card">
+                    <div class="container" style="padding-top: 15px">
+                        <div @if ($loop->last) id="last_record" @endif class="article-card">
                             <div class="article-image">
-                                <div class="circle-avatar" style="background-color: {{ $color }};">
+                                <div class="circle-avatar" style="background-color: {{ $color }}">
                                     {{ $initial }}
                                 </div>
                             </div>
@@ -932,30 +927,30 @@
                                 <p class="article-date">
                                     {{ \Carbon\Carbon::parse($review->created_at)->format('M. j, Y') }}
                                 </p>
-
                                 <p class="article-description">{{ $review->comment }}</p>
                             </div>
                         </div>
                     </div>
                 @endforeach
-                @if (app()->has('global_pagination') && app('global_pagination') === 'links')
+
+                @if (app('global_pagination') === 'links')
                     <section class="container">
                         {{ $product_reviews->links() }}
                     </section>
                 @else
-                    <x-lazy />
+                    <div wire:loading>
+                    </div>
                 @endif
             @else
                 <div class="container">
                     <p class="section__text">
-                        @if (app()->has('label_pdp_reviews_no_reviews'))
-                            {!! app('label_pdp_reviews_no_reviews') !!}
-                        @endif
+                        {!! app('label_pdp_reviews_no_reviews') ?? '' !!}
                     </p>
                 </div>
             @endif
         </section>
     @endif
+
 
     <!---------------------- Support Center -------------------->
     <x-support />
