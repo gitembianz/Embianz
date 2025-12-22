@@ -15,7 +15,12 @@ class CategoryDTO
         public string $minImage,
         public array $sliderMedia,
         public array $children = [],
-        public ?int $parentId = null
+        public ?int $parentId = null,
+        public ?string $short_description = null,
+        public ?string $long_description = null,
+        public ?string $long_description_bottom = null,
+        public ?string $accepted_items = null,
+        public bool $display_variant_price = false,
     ) {}
 
     public function toArray(): array
@@ -32,6 +37,11 @@ class CategoryDTO
             'slider_media'    => $this->sliderMedia,
             'children'        => array_map(fn ($c) => $c->toArray(), $this->children),
             'parent_id'       => $this->parentId,
+            'short_description'       => $this->short_description,
+            'long_description'        => $this->long_description,
+            'long_description_bottom' => $this->long_description_bottom,
+            'accepted_items'          => $this->accepted_items,
+            'display_variant_price'   => $this->display_variant_price,
         ];
     }
 }
