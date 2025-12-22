@@ -933,14 +933,14 @@
                     </div>
                 @endforeach
 
-                @if (app('global_pagination') === 'links')
+                {{-- @if (app('global_pagination') === 'links')
                     <section class="container">
                         {{ $product_reviews->links() }}
                     </section>
                 @else
                     <div wire:loading>
                     </div>
-                @endif
+                @endif --}}
             @else
                 <div class="container">
                     <p class="section__text">
