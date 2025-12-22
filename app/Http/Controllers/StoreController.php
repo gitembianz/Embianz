@@ -30,7 +30,7 @@ class StoreController extends Controller
     $useCache = app()->has('global_cache_data') && app('global_cache_data') === 'true';
 
 
-    $categories = collect(resolve(\App\Services\CategoryService::class)->get());
+    $categories = collect(resolve(\App\Services\CategoryService::class)->getAll());
 
 
     if ($categorySlug) {
