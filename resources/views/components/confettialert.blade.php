@@ -52,10 +52,10 @@
   }
 
   function startConfetti() {
-   const animationEnd = Date.now(config('app.timezone')) + duration;
+   const animationEnd = Date.now() + duration;
 
    const interval = setInterval(function() {
-    const timeLeft = animationEnd - Date.now(config('app.timezone'));
+    const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {
      clearInterval(interval);
