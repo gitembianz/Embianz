@@ -460,7 +460,7 @@
                     }
 
                     function setEndTime(serverTimer) {
-                        const now = Math.floor(Date.now(config('app.timezone')) / 1000);
+                        const now = Math.floor(Date.now() / 1000);
                         localStorage.setItem(storageKey, now + serverTimer);
                     }
 
@@ -470,7 +470,7 @@
                         const endTime = parseInt(localStorage.getItem(storageKey));
 
                         ticker = setInterval(() => {
-                            const now = Math.floor(Date.now(config('app.timezone')) / 1000);
+                            const now = Math.floor(Date.now() / 1000);
                             const timeLeft = Math.max(endTime - now, 0);
 
                             if (timeLeft > 0) {
