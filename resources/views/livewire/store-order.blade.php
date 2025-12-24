@@ -1133,7 +1133,8 @@
                     </div>
 
                     <!-------------- cash -------------->
-                    @if ($cash['active'] != 0)
+                    @if (is_array($cash) && ($cash['active'] ?? 0) != 0)
+
                         <div class="payment">
                             <label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
                                 <input class="payment__checkbox" type="checkbox" wire:model.defer="rtc"
@@ -1161,7 +1162,8 @@
                         </div>
                     @endif
                     <!-------------- card -------------->
-                    @if ($card['active'] != 0)
+                    @if (is_array($card) && ($card['active'] ?? 0) != 0)
+
                         <div class="payment">
                             <label class="payment__wrapper" for="crd" wire:click="togglepayment('crd')">
                                 <input class="payment__checkbox" type="checkbox" wire:model.defer="crd"
@@ -1182,7 +1184,8 @@
                         </div>
                     @endif
                     <!-------------- ordin -------------->
-                    @if ($ordin['active'] != 0)
+                    @if (is_array($ordin) && ($ordin['active'] ?? 0) != 0)
+
                         @if ($juridic)
                             <div x-data x-show="!$store.checkout.juridic" x-cloak class="payment">
                                 <label class="payment__wrapper" for="invoice" wire:click="togglepayment('invoice')">
