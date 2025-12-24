@@ -22,15 +22,19 @@ class StoreFooter extends Component
   }
   public function mount($page = "")
   {
-    $this->staticpages = collect(app('static_pages'))->where('display_in_footer', true)->values();
+    $this->staticpages = collect(app('static_pages'))
+      ->where('display_in_footer', true)
+      ->values();
+
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-
-
     $this->page = $page;
+
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
-     $this->timer = app('promotionService')->getRemainingTime($this->session_id);
+      app('promotionService')->initializePromotionForSession($this->session_id);
+      $this->timer = app('promotionService')->getRemainingTime($this->session_id);
     }
   }
+
 
   public function timmerexpired()
   {
@@ -48,7 +52,7 @@ class StoreFooter extends Component
         'email' => 'required|email',
       ]);
 
-      $sucscriber = Subscribers::create($validatedData);
+      Subscribers::create($validatedData);
 
       $this->reset();
       $this->dispatchBrowserEvent('newsletterToggle');
