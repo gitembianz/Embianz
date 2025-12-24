@@ -3,32 +3,16 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Schema;
 
 class OrderCacheMiddleware
 {
-  public static ?array $payments = null;
   public static ?array $activeCountries = null;
 
   public function handle(Request $request, Closure $next)
   {
-    if (!$request->routeIs('order')) {
-      return $next($request);
-    }
-
-    if (self::$payments === null) {
-      self::$payments = $this->loadGlobalPayments();
-    }
-
-    view()->share('globalPayments', self::$payments);
-
-    foreach (self::$payments as $payment) {
-      app()->instance('global_' . $payment['name'], $payment);
-    }
 
     if (self::$activeCountries === null) {
       self::$activeCountries = $this->loadActiveCountries();
@@ -37,20 +21,6 @@ class OrderCacheMiddleware
     return $next($request);
   }
 
-  private function loadGlobalPayments(): array
-  {
-    if (!Schema::hasTable('payments')) {
-      return [];
-    }
-
-    return Cache::rememberForever('global_payments', function () {
-      return Payment::query()
-        ->select('id', 'active', 'type', 'name')
-        ->get()
-        ->keyBy('id')
-        ->toArray();
-    });
-  }
 
   private function loadActiveCountries(): array
   {

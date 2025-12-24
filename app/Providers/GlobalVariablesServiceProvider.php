@@ -10,6 +10,7 @@ use App\Models\TextLabel;
 use App\Models\Static_Page;
 use App\Models\CustomScript;
 use App\Models\Store_Settings;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     $this->loadAllPromotionsIntoCache();
     $this->loadCategoryOneProduct();
     $this->loadGlobalCurrencies();
+    $this->loadGlobalPayments();
   }
 
   // static pages
@@ -235,4 +237,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
       return;
     }
   }
+  private function loadGlobalPayments()
+  {
+    try {
+      $globalPayments = Cache::rememberForever('global_payments', function () {
+        $payments = Payment::all(['id', 'active', 'type', 'name'])->keyBy('id')->toArray();
+        return $payments;
+      });
+
+      foreach ($globalPayments as $payment) {
+        $this->app->instance('global_' . $payment['name'], $payment);
+      }
+    } catch (\Exception $e) {
+      return;
+    }
+  }
+
 }

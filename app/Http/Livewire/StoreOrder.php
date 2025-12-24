@@ -124,7 +124,7 @@ class StoreOrder extends Component
 
     if (session()->has('paymentsucces')) {
 
-      if($this->cart){
+      if ($this->cart) {
 
         if ($this->cart->voucher && $this->cart->voucher->single_use) {
           Voucher::where('id', $this->cart->voucher_id)->update([
@@ -144,7 +144,7 @@ class StoreOrder extends Component
           $item->product->save();
         }
         $this->step = 3;
-      }else{
+      } else {
         $this->step = 1;
         $this->emit('alert__modal', ['message' => 'Your cart is empty!']);
       }
@@ -226,9 +226,10 @@ class StoreOrder extends Component
       }
     }
 
-    $this->cash = app('global_cash');
-    $this->card = app('global_card_stripe');
-    $this->ordin = app('global_ordin');
+    $this->cash  = app()->has('global_cash') ? app('global_cash') : null;
+    $this->card  = app()->has('global_card_stripe') ? app('global_card_stripe') : null;
+    $this->ordin = app()->has('global_ordin') ? app('global_ordin') : null;
+
     if (app()->has('global_default_payment') && app('global_default_payment') === "card") {
 
       $this->payment = $this->card;
