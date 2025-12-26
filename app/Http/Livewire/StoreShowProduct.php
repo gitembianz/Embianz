@@ -279,6 +279,11 @@ class StoreShowProduct extends Component
       'approved' => false,
     ]);
     $this->showaddreview = false;
+    $this->reset(['addrating', 'acronym', 'message']);
     $this->sendreview = true;
+  }
+  public function updatingShowaddreview()
+  {
+    $this->reset(['addrating', 'acronym', 'message']);
   }
 }
