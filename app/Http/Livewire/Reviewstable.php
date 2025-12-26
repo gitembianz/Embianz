@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use App\Jobs\DynamicCsvImportJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
@@ -684,7 +685,7 @@ class Reviewstable extends Component
   {
     $this->selectPage = false;
   }
-    public function edititem($index, $id)
+  public function edititem($index, $id)
   {
     $this->editindex = $index;
     $this->row = $index;
@@ -696,17 +697,32 @@ class Reviewstable extends Component
       'approved' => $record->approved == 1 ? true : false,
     ];
   }
-    public function approveitem($id)
-    {
-        $record = ProductReviews::find($id);
-        $record->approved = 1;
-        $record->save();
-        session()->flash('notification', [
-            'message' => 'Review approved successfully!',
-            'type' => 'success',
-            'title' => 'Success'
-        ]);
-    }
+  public function approveitem($id)
+  {
+    $record = ProductReviews::find($id);
+    $record->approved = 1;
+    Cache::forget("product:{$record->product_id}:review_stats");
+    Cache::forget("product:{$record->product_id}:rating_breakdown");
+    $record->save();
+    session()->flash('notification', [
+      'message' => 'Review approved successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+  public function dennyitem($id)
+  {
+    $record = ProductReviews::find($id);
+    $record->approved = false;
+    Cache::forget("product:{$record->product_id}:review_stats");
+    Cache::forget("product:{$record->product_id}:rating_breakdown");
+    $record->save();
+    session()->flash('notification', [
+      'message' => 'Review denny successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
 
   public function saveitem($index, $id)
   {
@@ -717,14 +733,14 @@ class Reviewstable extends Component
         $new->acronim = $record['acronim'];
       }
       if (array_key_exists('score', $record)) {
-              if($record['score']<0){
-                $record['score']=0;
-              }
-              if($record['score']>5){
-                $record['score']=5;
-              }
-                $new->score = $record['score'];
-            }
+        if ($record['score'] < 0) {
+          $record['score'] = 0;
+        }
+        if ($record['score'] > 5) {
+          $record['score'] = 5;
+        }
+        $new->score = $record['score'];
+      }
       if (array_key_exists('comment', $record)) {
         $new->comment = $record['comment'];
       }
@@ -747,7 +763,7 @@ class Reviewstable extends Component
     $this->editindex = null;
     $this->item = [];
   }
-   public function canceledit()
+  public function canceledit()
   {
     $this->editindex = null;
     $this->item = [];
@@ -760,7 +776,7 @@ class Reviewstable extends Component
   {
     return in_array($id, $this->checked);
   }
-    public function selectAll()
+  public function selectAll()
   {
     $this->selectAll = true;
     $this->checked = $this->reviewsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
@@ -769,7 +785,7 @@ class Reviewstable extends Component
   {
     $this->loadAmount += 10;
   }
-    public function deleteSingleRecord()
+  public function deleteSingleRecord()
   {
     $id = $this->idbeingremoved;
     $item = ProductReviews::findOrFail($id);
@@ -782,7 +798,7 @@ class Reviewstable extends Component
       'title' => 'Success'
     ]);
   }
-    public function confirmItemRemoval($id)
+  public function confirmItemRemoval($id)
   {
     $this->idbeingremoved = $id;
     $this->single = true;
@@ -811,7 +827,7 @@ class Reviewstable extends Component
       'title' => 'Success'
     ]);
   }
-    // export-import data
+  // export-import data
   public function exportData()
   {
     $selectedColumns = $this->listview['columns'] ?? [];
@@ -968,7 +984,7 @@ class Reviewstable extends Component
       'title' => 'Import Queued'
     ]);
   }
-    protected function writeChunk(string $path, array $header, array $rows): void
+  protected function writeChunk(string $path, array $header, array $rows): void
   {
     $handle = fopen($path, 'w');
     fputcsv($handle, $header);
