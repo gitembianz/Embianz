@@ -30,7 +30,6 @@ class StoreFooter extends Component
     $this->page = $page;
 
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
-      app('promotionService')->initializePromotionForSession($this->session_id);
       $this->timer = app('promotionService')->getRemainingTime($this->session_id);
     }
   }
