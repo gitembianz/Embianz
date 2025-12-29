@@ -927,11 +927,42 @@
                                 <p class="article-date">
                                     {{ \Carbon\Carbon::parse($review->created_at)->format('M. j, Y') }}
                                 </p>
-                                <p class="article-description">{{ $review->comment }}</p>
+                                <p class="review-description" id="desc-{{ $review->id }}">
+                                    {{ $review->comment }}
+                                </p>
+
+                                <button class="see-more-btn" data-target="desc-{{ $review->id }}"
+                                    onclick="toggleDescription({{ $review->id }}, this)">
+                                    See more
+                                </button>
+
                             </div>
                         </div>
                     </div>
                 @endforeach
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        document.querySelectorAll('.review-description').forEach(desc => {
+                            const btn = desc.nextElementSibling;
+
+                            if (!btn || !btn.classList.contains('see-more-btn')) return;
+
+                            // If text does NOT overflow → hide button
+                            if (desc.scrollHeight <= desc.clientHeight + 1) {
+                                btn.style.display = 'none';
+                            }
+                        });
+                    });
+
+                    function toggleDescription(id, btn) {
+                        const el = document.getElementById('desc-' + id);
+
+                        el.classList.toggle('expanded');
+                        btn.innerText = el.classList.contains('expanded') ? 'See less' : 'See more';
+                    }
+                </script>
+
+
 
                 {{-- @if (app('global_pagination') === 'links')
                     <section class="container">
@@ -941,6 +972,18 @@
                     <div wire:loading>
                     </div>
                 @endif --}}
+                @if (app()->has('global_review_pagination') && app('global_review_pagination') === 'links')
+                    <section class="container">
+                        {{ $product_reviews->links() }}
+                    </section>
+                @else
+                    @if ($product_reviews->total() >= $loadAmount)
+                        <section class="container">
+                            <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai
+                                mult!</button>
+                        </section>
+                    @endif
+                @endif
             @else
                 <div class="container">
                     <p class="section__text">
