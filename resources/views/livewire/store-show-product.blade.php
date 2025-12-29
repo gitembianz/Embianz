@@ -940,6 +940,9 @@
                         </div>
                     </div>
                 @endforeach
+                @unless (app()->has('global_review_pagination') && app('global_review_pagination') === 'links')
+                    <x-lazy />
+                @endunless
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
                         document.querySelectorAll('.review-description').forEach(desc => {
@@ -977,7 +980,7 @@
                         {{ $product_reviews->links() }}
                     </section>
                 @else
-                    @if ($product_reviews->total() >= $loadAmount)
+                    @if ($product_reviews->total() >= $limitload)
                         <section class="container">
                             <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai
                                 mult!</button>

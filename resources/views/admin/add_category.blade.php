@@ -120,7 +120,7 @@
 
         <div class="input__tabs">
             <select name="accepted_items" value="{{ old('accepted_items') }}">
-                <option selected value="standard">default</option>
+                <option selected value="default">default</option>
                 <option value="parent">parents</option>
             </select>
             <label>Accepted items</label>
