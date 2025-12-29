@@ -86,6 +86,11 @@ class StoreShowProduct extends Component
     );
   }
 
+  public function loadMore()
+  {
+    $this->limitload += (int) (app('global_review_limit_load') ?? 8);
+  }
+
 
 
 
