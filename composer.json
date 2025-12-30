@@ -13,6 +13,7 @@
     "guzzlehttp/guzzle": "^7.2",
     "intervention/image": "^2.7",
     "james-heinrich/getid3": "^1.9",
+    "laravel-notification-channels/telegram": "^5.0",
     "laravel/framework": "^10.0",
     "laravel/jetstream": "^2.12",
     "laravel/octane": "^2.12",

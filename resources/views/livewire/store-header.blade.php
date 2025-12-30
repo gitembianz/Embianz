@@ -207,9 +207,12 @@
                                             <div class="submenu__button">
                                                 <a class="submenu__button--link"
                                                     href="{{ route('products', ['categorySlug' => $child['slug']]) }}">
+                                                    @if (!empty($child['min_image']) && !str_contains($child['min_image'], 'default300.webp'))
+                                                        <img loading="lazy" src="{{ $child['min_image'] }}"
+                                                            alt="{{ strip_tags($child['name']) }}">
+                                                    @endif
 
-                                                    <img loading="lazy" src="{{ $child['min_image'] }}"
-                                                        alt="{{ strip_tags($child['name']) }}">
+
 
                                                     <h4>{!! $child['name'] !!}</h4>
                                                 </a>
@@ -228,9 +231,11 @@
                                                     @foreach ($child['children'] as $grand)
                                                         <a class="submenu__link"
                                                             href="{{ route('products', ['categorySlug' => $grand['slug']]) }}">
+                                                            @if (!empty($grand['min_image']) && !str_contains($grand['min_image'], 'default300.webp'))
+                                                                <img loading="lazy" src="{{ $grand['min_image'] }}"
+                                                                    alt="{{ strip_tags($grand['name']) }}">
+                                                            @endif
 
-                                                            <img loading="lazy" src="{{ $grand['min_image'] }}"
-                                                                alt="{{ strip_tags($grand['name']) }}">
 
                                                             <h4>{!! $grand['name'] !!}</h4>
                                                         </a>
