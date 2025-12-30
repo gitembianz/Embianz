@@ -99,12 +99,20 @@ class StoreShowProduct extends Component
     if (app('global_review_system') !== 'true') {
       return collect();
     }
+    if (app()->has('global_review_pagination') && app('global_review_pagination') === 'lazy') {
 
-    return ProductReviews::where('product_id', $this->productId)
-      ->where('approved', true)
-      ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id', 'created_at')
-      ->orderBy('created_at', 'desc')
-      ->paginate($this->limitload, ['*'], 'page', $this->page);
+      return ProductReviews::where('product_id', $this->productId)
+        ->where('approved', true)
+        ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id', 'created_at')
+        ->orderBy('created_at', 'desc')
+        ->paginate($this->limitload, ['*'], 'page', $this->page);
+    }else {
+      return ProductReviews::where('product_id', $this->productId)
+        ->where('approved', true)
+        ->select('id', 'acronim', 'score', 'approved', 'comment', 'product_id', 'created_at')
+        ->orderBy('created_at', 'desc')
+        ->get();
+    }
   }
 
   public function getProductReviewStatsProperty()
@@ -112,7 +120,6 @@ class StoreShowProduct extends Component
     if (app('global_review_system') !== 'true') {
       return (object) ['count' => 0, 'avg' => 0];
     }
-
     return Cache::remember(
       "product:{$this->productId}:review_stats",
       now()->addMinutes(30),

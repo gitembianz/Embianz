@@ -853,3 +853,21 @@ document.addEventListener('DOMContentLoaded', animateReviewBars);
 document.addEventListener('livewire:load', animateReviewBars);
 document.addEventListener('livewire:update', animateReviewBars);
 
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.review-description').forEach(desc => {
+    const btn = desc.nextElementSibling;
+
+    if (!btn || !btn.classList.contains('see-more-btn')) return;
+
+    if (desc.scrollHeight <= desc.clientHeight + 1) {
+      btn.style.display = 'none';
+    }
+  });
+});
+
+function toggleDescription(id, btn) {
+  const el = document.getElementById('desc-' + id);
+
+  el.classList.toggle('expanded');
+  btn.innerText = el.classList.contains('expanded') ? 'See less' : 'See more';
+}
