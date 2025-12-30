@@ -34,7 +34,7 @@
                 @php
                     $rating = $product->reviews_avg_score * 20;
                 @endphp
-                <div class="ratingscore">
+                <div class="ratingscore" wire:ignore>
                     <div class="rating" style="--rating: {{ $rating }}%;"></div>
                     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
                         ({{ number_format($product->reviews_avg_score, 2) }})
