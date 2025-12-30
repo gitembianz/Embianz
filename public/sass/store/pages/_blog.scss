@@ -1,5 +1,5 @@
 .article-card {
-  // height: 200px;
+  height: 200px;
   background-color: #fafafa;
   border-radius: 12px;
   overflow: hidden;
@@ -88,12 +88,14 @@
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .review-description.expanded {
   -webkit-line-clamp: unset;
+  line-clamp: unset;
   display: block;
 }
 

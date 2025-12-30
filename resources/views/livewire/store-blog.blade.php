@@ -16,21 +16,6 @@
                     @endif
                 </a>
             </li>
-            {{-- @if ($article->product_categories->isNotEmpty())
-                @foreach ($article->getCategoryHierarchy() as $breadcrumb)
-                    <li>
-                        <a class="breadcrumbs__link"
-                            href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
-                            {{ $breadcrumb['name'] }}
-                        </a>
-                    </li>
-                @endforeach
-            @endif --}}
-            {{-- <li> --}}
-            {{-- <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}"
-                    class="breadcrumbs__link">{{ $article->name }}</a> --}}
-            {{-- de adaugat link cu categoria actuala --}}
-            {{-- </li> --}}
         </ol>
     @endif
 
@@ -64,7 +49,7 @@
             </p>
         </section>
     @endif
-
+<input type="hidden" name="articlestop" id="articlestop" />
     <section class="controls container" id="productlist">
 
         <input class="controls__search" maxlength="100" type="text" name="search" id="search"
@@ -79,9 +64,9 @@
             </svg>
         </button>
     </section>
-    @foreach ($articles as $article)
-        <div style="padding-top: 15px" class="container">
-            <div class="article-card">
+    @foreach ($articles as $index => $article)
+        <div style="padding-top: 15px" class="container" data-article>
+            <div @if ($loop->last) id="last_record" @endif class="article-card">
                 <div class="article-image">
                     @if ($article->media->where('type', 'main')->first())
                         <a href="{{ route('article', ['article' => $article->seo_id !== null && $article->seo_id !== '' ? $article->seo_id : $article->id]) }}">
@@ -133,16 +118,171 @@
     @endunless
     @if (app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links')
         <section class="container">
-            {{ $articles->links() }}
+            <div id="blog-pagination"></div>
         </section>
     @else
-        @if ($articles->total() >= $loadAmount)
+        @if ($articles->total() > $loadAmount)
             <section class="container">
                 <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
             </section>
         @endif
     @endif
     <x-support />
+
+  {{-- javascript pagination --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const articles = Array.from(document.querySelectorAll('[data-article]'));
+            const perPage = {{ $loadAmount }};
+            const storageKey = 'articles_page';
+            const urlKey = 'article_page';
+
+            let currentPage = getInitialPage();
+
+            /* ---------------- INIT ---------------- */
+
+            function getInitialPage() {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get(urlKey)) return parseInt(params.get(urlKey), 10);
+                if (localStorage.getItem(storageKey)) return parseInt(localStorage.getItem(storageKey), 10);
+                return 1;
+            }
+
+            function isMobile() {
+                return window.innerWidth <= 768;
+            }
+
+            /* ---------------- RENDER ---------------- */
+
+            function render(withAnimation = false) {
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
+
+                if (withAnimation) animateOut();
+
+                setTimeout(() => {
+                    articles.forEach((el, index) => {
+                        el.style.display = (index >= start && index < end) ? '' : 'none';
+                    });
+
+                    renderPagination();
+                    syncState();
+
+                    if (withAnimation) animateIn();
+
+                }, withAnimation ? 200 : 0);
+                 document.getElementById('articlestop').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            /* ---------------- PAGINATION ---------------- */
+
+            function renderPagination() {
+                const totalPages = Math.ceil(articles.length / perPage);
+                const container = document.getElementById('blog-pagination');
+
+                if (!container || totalPages <= 1) return;
+
+                container.innerHTML = '';
+                container.className = 'reviews-pagination';
+
+                const ul = document.createElement('ul');
+                ul.className = 'pagination';
+
+                /* PREVIOUS */
+                ul.appendChild(createButton('‹', currentPage - 1, currentPage === 1));
+
+                if (!isMobile()) {
+                    if (currentPage > 2) ul.appendChild(createButton('1', 1));
+                    if (currentPage > 3) ul.appendChild(createEllipsis());
+
+                    for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+                        ul.appendChild(createButton(i, i, false, i === currentPage));
+                    }
+
+                    if (currentPage < totalPages - 2) ul.appendChild(createEllipsis());
+                    if (currentPage < totalPages - 1) ul.appendChild(createButton(totalPages, totalPages));
+                } else {
+                    const li = document.createElement('li');
+                    li.className = 'page-item active';
+                    li.innerHTML = `<span class="page-link">${currentPage} / ${totalPages}</span>`;
+                    ul.appendChild(li);
+                }
+
+                /* NEXT */
+                ul.appendChild(createButton('›', currentPage + 1, currentPage === totalPages));
+
+                container.appendChild(ul);
+            }
+
+            function createButton(label, page, disabled = false, active = false) {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+
+                if (disabled) li.classList.add('disabled');
+                if (active) li.classList.add('active');
+
+                const btn = document.createElement('button');
+                btn.className = 'page-link';
+                btn.innerText = label;
+                btn.disabled = disabled;
+
+                btn.onclick = () => {
+                    if (disabled) return;
+                    currentPage = page;
+                    render(true);
+                    document.getElementById('articles')?.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                };
+
+                li.appendChild(btn);
+                return li;
+            }
+
+            function createEllipsis() {
+                const li = document.createElement('li');
+                li.className = 'page-item disabled';
+                li.innerHTML = `<span class="page-link">…</span>`;
+                return li;
+            }
+
+            /* ---------------- STATE SYNC ---------------- */
+
+            function syncState() {
+                localStorage.setItem(storageKey, currentPage);
+
+                const params = new URLSearchParams(window.location.search);
+                params.set(urlKey, currentPage);
+                history.replaceState({}, '', `${window.location.pathname}?${params}`);
+            }
+
+            /* ---------------- ANIMATIONS ---------------- */
+
+            function animateOut() {
+                articles.forEach(el => {
+                    el.style.opacity = 0;
+                    el.style.transform = 'translateY(10px)';
+                });
+            }
+
+            function animateIn() {
+                articles.forEach(el => {
+                    el.style.transition = 'opacity .3s ease, transform .3s ease';
+                    el.style.opacity = 1;
+                    el.style.transform = 'translateY(0)';
+                });
+            }
+
+            /* ---------------- EVENTS ---------------- */
+
+            window.addEventListener('resize', () => render());
+            render();
+
+        });
+    </script>
+
+
     <div class="filter" id="sortList">
         <div class="filter__content" id="sortContent">
             <div class="filter__top">

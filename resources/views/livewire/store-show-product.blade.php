@@ -888,7 +888,7 @@
                     @endphp
 
                     <div class="container" style="padding-top: 15px" data-review>
-                        <div @if ($loop->last) id="last_record" @endif class="article-card">
+                        <div @if ($loop->last) id="last_record" @endif class="article-card" style="height: auto; !important;">
                             <div class="article-image">
                                 <div class="circle-avatar" style="background-color: {{ $color }}">
                                     {{ $initial }}
@@ -949,6 +949,7 @@
 
     <!---------------------- Support Center -------------------->
     <x-support />
+    {{-- javascript pagination --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
