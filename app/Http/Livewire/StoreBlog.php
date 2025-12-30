@@ -34,16 +34,16 @@ class StoreBlog extends Component
       $this->loadAmount = $filteredValues['loadAmount'];
     } else {
       session()->forget('filtered_values');
-      $this->loadAmount = app()->bound('articles_limit_load')
-    ? app('articles_limit_load')
+      $this->loadAmount = app()->bound('global_articles_limit_load')
+    ? app('global_articles_limit_load')
     : 10;
 
     }
   }
   public function loadMore()
   {
-    $this->loadAmount += app()->bound('articles_limit_load')
-    ? app('articles_limit_load')
+    $this->loadAmount += app()->bound('global_articles_limit_load')
+    ? app('global_articles_limit_load')
     : 10;
     if ($this->category != null) {
       session()->put('filtered_values', [
@@ -95,6 +95,11 @@ class StoreBlog extends Component
         $query->orderBy('created_at', 'desc');
         break;
     }
-    return $query->orderBy('created_at', 'DESC')->paginate($this->loadAmount);
+    if(app()->has('global_blog_pagination') && app('global_blog_pagination') === 'links'){
+      return $query->orderBy('created_at', 'DESC')->get();
+
+    }else{
+      return $query->orderBy('created_at', 'DESC')->paginate($this->loadAmount);
+    }
   }
 }
