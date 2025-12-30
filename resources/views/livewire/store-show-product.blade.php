@@ -776,7 +776,7 @@
         @endphp
 
         <section>
-            <div class="section__header container">
+            <div class="section__header container" id="reviewstop">
                 <h2 class="section__title">
                     {!! app('label_pdp_reviews_section_title') ?? '' !!}
                 </h2>
@@ -871,29 +871,6 @@
                     </p>
                 </div>
 
-                <script>
-                    document.addEventListener('livewire:load', function() {
-                        let observer = new IntersectionObserver((entries) => {
-                            entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    Livewire.emit('loadMoreReviews');
-                                }
-                            });
-                        }, {
-                            rootMargin: '100px'
-                        });
-
-                        let lastRecord = document.getElementById('last_record');
-                        if (lastRecord) observer.observe(lastRecord);
-
-                        Livewire.hook('message.processed', (message, component) => {
-                            lastRecord = document.getElementById('last_record');
-                            if (lastRecord) observer.observe(lastRecord);
-                        });
-                    });
-                </script>
-
-
                 @foreach ($product_reviews as $index => $review)
                     @php
                         $initial = strtoupper(mb_substr($review->acronim, 0, 1));
@@ -910,7 +887,7 @@
                         $color = $colors[crc32($review->acronim) % count($colors)];
                     @endphp
 
-                    <div class="container" style="padding-top: 15px">
+                    <div class="container" style="padding-top: 15px" data-review>
                         <div @if ($loop->last) id="last_record" @endif class="article-card">
                             <div class="article-image">
                                 <div class="circle-avatar" style="background-color: {{ $color }}">
@@ -943,44 +920,13 @@
                 @unless (app()->has('global_review_pagination') && app('global_review_pagination') === 'links')
                     <x-lazy />
                 @endunless
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-                        document.querySelectorAll('.review-description').forEach(desc => {
-                            const btn = desc.nextElementSibling;
 
-                            if (!btn || !btn.classList.contains('see-more-btn')) return;
-
-                            // If text does NOT overflow → hide button
-                            if (desc.scrollHeight <= desc.clientHeight + 1) {
-                                btn.style.display = 'none';
-                            }
-                        });
-                    });
-
-                    function toggleDescription(id, btn) {
-                        const el = document.getElementById('desc-' + id);
-
-                        el.classList.toggle('expanded');
-                        btn.innerText = el.classList.contains('expanded') ? 'See less' : 'See more';
-                    }
-                </script>
-
-
-
-                {{-- @if (app('global_pagination') === 'links')
-                    <section class="container">
-                        {{ $product_reviews->links() }}
-                    </section>
-                @else
-                    <div wire:loading>
-                    </div>
-                @endif --}}
                 @if (app()->has('global_review_pagination') && app('global_review_pagination') === 'links')
                     <section class="container">
-                        {{ $product_reviews->links() }}
+                        <div id="reviews-pagination"></div>
                     </section>
                 @else
-                    @if ($product_reviews->total() >= $limitload)
+                    @if ($product_reviews->total() > $limitload)
                         <section class="container">
                             <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai
                                 mult!</button>
@@ -997,9 +943,165 @@
         </section>
     @endif
 
+    <style>
+
+    </style>
 
     <!---------------------- Support Center -------------------->
     <x-support />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const reviews = Array.from(document.querySelectorAll('[data-review]'));
+            const perPage = {{ $limitload }};
+            const storageKey = 'reviews_page';
+            const urlKey = 'review_page';
+
+            let currentPage = getInitialPage();
+
+            /* ---------------- INIT ---------------- */
+
+            function getInitialPage() {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get(urlKey)) return parseInt(params.get(urlKey), 10);
+                if (localStorage.getItem(storageKey)) return parseInt(localStorage.getItem(storageKey), 10);
+                return 1;
+            }
+
+            function isMobile() {
+                return window.innerWidth <= 768;
+            }
+
+            /* ---------------- RENDER ---------------- */
+
+            function render(withAnimation = false) {
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
+
+                if (withAnimation) animateOut();
+
+                setTimeout(() => {
+                    reviews.forEach((el, index) => {
+                        el.style.display = (index >= start && index < end) ? '' : 'none';
+                    });
+
+                    renderPagination();
+                    syncState();
+
+                    if (withAnimation) animateIn();
+
+                }, withAnimation ? 200 : 0);
+                 document.getElementById('reviewstop').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            /* ---------------- PAGINATION ---------------- */
+
+            function renderPagination() {
+                const totalPages = Math.ceil(reviews.length / perPage);
+                const container = document.getElementById('reviews-pagination');
+
+                if (!container || totalPages <= 1) return;
+
+                container.innerHTML = '';
+                container.className = 'reviews-pagination';
+
+                const ul = document.createElement('ul');
+                ul.className = 'pagination';
+
+                /* PREVIOUS */
+                ul.appendChild(createButton('‹', currentPage - 1, currentPage === 1));
+
+                if (!isMobile()) {
+                    if (currentPage > 2) ul.appendChild(createButton('1', 1));
+                    if (currentPage > 3) ul.appendChild(createEllipsis());
+
+                    for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
+                        ul.appendChild(createButton(i, i, false, i === currentPage));
+                    }
+
+                    if (currentPage < totalPages - 2) ul.appendChild(createEllipsis());
+                    if (currentPage < totalPages - 1) ul.appendChild(createButton(totalPages, totalPages));
+                } else {
+                    const li = document.createElement('li');
+                    li.className = 'page-item active';
+                    li.innerHTML = `<span class="page-link">${currentPage} / ${totalPages}</span>`;
+                    ul.appendChild(li);
+                }
+
+                /* NEXT */
+                ul.appendChild(createButton('›', currentPage + 1, currentPage === totalPages));
+
+                container.appendChild(ul);
+            }
+
+            function createButton(label, page, disabled = false, active = false) {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+
+                if (disabled) li.classList.add('disabled');
+                if (active) li.classList.add('active');
+
+                const btn = document.createElement('button');
+                btn.className = 'page-link';
+                btn.innerText = label;
+                btn.disabled = disabled;
+
+                btn.onclick = () => {
+                    if (disabled) return;
+                    currentPage = page;
+                    render(true);
+                    document.getElementById('reviews')?.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                };
+
+                li.appendChild(btn);
+                return li;
+            }
+
+            function createEllipsis() {
+                const li = document.createElement('li');
+                li.className = 'page-item disabled';
+                li.innerHTML = `<span class="page-link">…</span>`;
+                return li;
+            }
+
+            /* ---------------- STATE SYNC ---------------- */
+
+            function syncState() {
+                localStorage.setItem(storageKey, currentPage);
+
+                const params = new URLSearchParams(window.location.search);
+                params.set(urlKey, currentPage);
+                history.replaceState({}, '', `${window.location.pathname}?${params}`);
+            }
+
+            /* ---------------- ANIMATIONS ---------------- */
+
+            function animateOut() {
+                reviews.forEach(el => {
+                    el.style.opacity = 0;
+                    el.style.transform = 'translateY(10px)';
+                });
+            }
+
+            function animateIn() {
+                reviews.forEach(el => {
+                    el.style.transition = 'opacity .3s ease, transform .3s ease';
+                    el.style.opacity = 1;
+                    el.style.transform = 'translateY(0)';
+                });
+            }
+
+            /* ---------------- EVENTS ---------------- */
+
+            window.addEventListener('resize', () => render());
+            render();
+
+        });
+    </script>
+
+
 
     <script>
         document.addEventListener("livewire:load", function() {

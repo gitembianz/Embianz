@@ -97,6 +97,38 @@
   display: block;
 }
 
+.reviews-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.reviews-pagination .pagination {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+}
+
+.reviews-pagination .page-link {
+  border: 1px solid $lightBlack;
+  background: $secondary;
+  color: $lightBlack;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reviews-pagination .page-item.active .page-link {
+  background: $lightBlack;
+  color: $secondary;
+}
+
+.reviews-pagination .page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .see-more-btn {
   background: none;
   border: none;
