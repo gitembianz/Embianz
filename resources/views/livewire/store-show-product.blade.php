@@ -992,7 +992,7 @@
                     if (withAnimation) animateIn();
 
                 }, withAnimation ? 200 : 0);
-                 document.getElementById('reviewstop').scrollIntoView({ behavior: 'smooth' });
+                // document.getElementById('reviewstop').scrollIntoView({ behavior: 'smooth' });
             }
 
             /* ---------------- PAGINATION ---------------- */
@@ -1051,9 +1051,7 @@
                     if (disabled) return;
                     currentPage = page;
                     render(true);
-                    document.getElementById('reviews')?.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                  //  document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'});
                 };
 
                 li.appendChild(btn);
