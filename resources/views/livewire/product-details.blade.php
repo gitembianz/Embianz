@@ -47,6 +47,7 @@
             'productId' => $product->id,
             'class' => 'product__action',
             'is_in_wishlist' => $this->is_in_wishlist,
+
         ])
     </div>
     @if ($product->type == 'variant')
