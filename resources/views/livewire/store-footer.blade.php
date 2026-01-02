@@ -91,6 +91,9 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const cooldownPeriod = {{ $timer }};
+                const countdownElement = document.getElementById("countdown");
+                if (!countdownElement) return;
+                
                 let ticker;
 
                 function startTimer(endTime) {

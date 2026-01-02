@@ -30,7 +30,7 @@ class ProductDetails extends Component
   {
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
 
-    $prodid = $this->product->id;
+    $prodid = $product->id;
 
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
       $cachedProduct = app()->make('cached_products')->firstWhere('id', $prodid);
@@ -43,6 +43,11 @@ class ProductDetails extends Component
             ->orderBy('sequence');
         },
         'product_prices',
+        'reviews' => function ($query) {
+          $query->where('approved', true)
+                ->select('id', 'product_id', 'acronim', 'score', 'comment', 'created_at')
+                ->orderBy('created_at', 'desc');
+        },
         'parent' => function ($query) {
           $query->with(['variants' => function ($query) {
             $query->distinct('variant_id')->with(['product' => function ($query) {
@@ -68,6 +73,12 @@ class ProductDetails extends Component
           'product_prices' => function ($query) {
             $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
           },
+'reviews' => function ($query) {
+    $query->where('approved', true)
+          ->select('id', 'product_id', 'acronim', 'value', 'comment', 'approved', 'created_at')
+          // ↑ ADD 'approved' here!
+          ->orderBy('created_at', 'desc');
+},
           'wishlists' => function ($query) {
             $query->where('session_id', $this->session_id);
           },
