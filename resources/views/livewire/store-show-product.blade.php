@@ -974,26 +974,31 @@
             }
 
             /* ---------------- RENDER ---------------- */
+let isInitialPageLoad = true;
 
-            function render(withAnimation = false) {
-                const start = (currentPage - 1) * perPage;
-                const end = start + perPage;
+function render(withAnimation = false) {
+    const start = (currentPage - 1) * perPage;
+    const end = start + perPage;
 
-                if (withAnimation) animateOut();
+    if (withAnimation) animateOut();
 
-                setTimeout(() => {
-                    reviews.forEach((el, index) => {
-                        el.style.display = (index >= start && index < end) ? '' : 'none';
-                    });
+    setTimeout(() => {
+        reviews.forEach((el, index) => {
+            el.style.display = (index >= start && index < end) ? '' : 'none';
+        });
 
-                    renderPagination();
-                    syncState();
+        renderPagination();
+        syncState();
 
-                    if (withAnimation) animateIn();
+        if (withAnimation) animateIn();
 
-                }, withAnimation ? 200 : 0);
-                // document.getElementById('reviewstop').scrollIntoView({ behavior: 'smooth' });
-            }
+        if (!isInitialPageLoad) {
+            document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
+        }
+        isInitialPageLoad = false;
+
+    }, withAnimation ? 200 : 0);  
+} 
 
             /* ---------------- PAGINATION ---------------- */
 
