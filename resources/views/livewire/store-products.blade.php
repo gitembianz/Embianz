@@ -147,7 +147,7 @@
                             href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
                             @if ($element->media->first() != null)
                                 <img title="{{ $product->name }}, {{ $product->short_description }}"
-                                    @if ($loop->first) loading="eager"
+                                    @if ($loop->first) loading="eager" fetchpriority="high"
                     @else
                     loading="lazy" @endif
                                     class="card-image"
@@ -155,7 +155,7 @@
                                     alt="{{ $element->name }}">
                             @else
                                 <img title="Default image"
-                                    @if ($loop->first) loading="eager"
+                                    @if ($loop->first) loading="eager" fetchpriority="high"
                     @else
                     loading="lazy" @endif
                                     class="card-image" src="/images/store/default/default300.webp"
