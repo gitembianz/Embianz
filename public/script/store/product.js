@@ -869,5 +869,5 @@ function toggleDescription(id, btn) {
   const el = document.getElementById('desc-' + id);
 
   el.classList.toggle('expanded');
-  btn.innerText = el.classList.contains('expanded') ? 'See less' : 'See more';
+  btn.innerText = el.classList.contains('expanded') ? 'Ascude' : 'Vezi mai mult';
 }
