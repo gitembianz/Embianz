@@ -974,26 +974,31 @@
             }
 
             /* ---------------- RENDER ---------------- */
+let isInitialPageLoad = true;
 
-            function render(withAnimation = false) {
-                const start = (currentPage - 1) * perPage;
-                const end = start + perPage;
+function render(withAnimation = false) {
+    const start = (currentPage - 1) * perPage;
+    const end = start + perPage;
 
-                if (withAnimation) animateOut();
+    if (withAnimation) animateOut();
 
-                setTimeout(() => {
-                    reviews.forEach((el, index) => {
-                        el.style.display = (index >= start && index < end) ? '' : 'none';
-                    });
+    setTimeout(() => {
+        reviews.forEach((el, index) => {
+            el.style.display = (index >= start && index < end) ? '' : 'none';
+        });
 
-                    renderPagination();
-                    syncState();
+        renderPagination();
+        syncState();
 
-                    if (withAnimation) animateIn();
+        if (withAnimation) animateIn();
 
-                }, withAnimation ? 200 : 0);
-                 document.getElementById('reviewstop').scrollIntoView({ behavior: 'smooth' });
-            }
+        if (!isInitialPageLoad) {
+            document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
+        }
+        isInitialPageLoad = false;
+
+    }, withAnimation ? 200 : 0);  
+} 
 
             /* ---------------- PAGINATION ---------------- */
 
@@ -1051,9 +1056,7 @@
                     if (disabled) return;
                     currentPage = page;
                     render(true);
-                    document.getElementById('reviews')?.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                  //  document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'});
                 };
 
                 li.appendChild(btn);
@@ -1099,103 +1102,6 @@
             window.addEventListener('resize', () => render());
             render();
 
-        });
-    </script>
-
-
-
-    <script>
-        document.addEventListener("livewire:load", function() {
-            injectJsonLd();
-
-            Livewire.hook("message.processed", (message, component) => {
-                injectJsonLd();
-            });
-
-            function injectJsonLd() {
-                document.querySelectorAll('.json-ld-data').forEach((element, index) => {
-                    const productData = element.dataset.productJson;
-                    let product;
-
-                    try {
-                        product = JSON.parse(productData);
-                    } catch (e) {
-                        console.warn("Invalid JSON in .json-ld-data", e);
-                        return;
-                    }
-
-                    const currencyElement = document.querySelector('.dlv_currency');
-                    const currency = currencyElement ? currencyElement.textContent.trim() : 'EUR';
-
-                    const price = product.product_prices?.[0]?.value || '0';
-                    const ratingValue = product.reviews?.[0]?.value || '0';
-                    const reviewCount = product.reviews?.[0]?.count || '0';
-
-                    const media = product.media?.[0] ?
-                        `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
-                        `${window.location.origin}/images/store/default/default300.webp`;
-
-                    const description = product.long_description ?
-                        product.long_description.replace(/(<([^>]+)>)/gi, "") :
-                        "";
-
-                    const seoUrl = `${window.location.origin}/product/${product.seo_id || product.id}`;
-
-                    const existingScript = document.getElementById(`jsonld-product-${product.id}`);
-                    if (existingScript) {
-                        existingScript.remove();
-                    }
-
-                    if (price !== '0') {
-                        const jsonLd = {
-                            "@context": "https://schema.org/",
-                            "@type": "Product",
-                            "name": product.name,
-                            "image": media,
-                            "description": description,
-                            "brand": {
-                                "@type": "Brand",
-                                "name": product.brand
-                            },
-                            "sku": product.sku,
-                            "offers": {
-                                "@type": "Offer",
-                                "url": seoUrl,
-                                "priceCurrency": currency,
-                                "price": price,
-                                "availability": "https://schema.org/InStock",
-                                "priceValidUntil": product.end_date || "2030-12-31"
-                            }
-                        };
-
-                        if (ratingValue !== '0' && reviewCount !== '0') {
-                            jsonLd.aggregateRating = {
-                                "@type": "AggregateRating",
-                                "ratingValue": ratingValue,
-                                "reviewCount": reviewCount
-                            };
-                            jsonLd.review = {
-                                "@type": "Review",
-                                "reviewRating": {
-                                    "@type": "Rating",
-                                    "ratingValue": ratingValue,
-                                    "bestRating": "5"
-                                },
-                                "author": {
-                                    "@type": "Person",
-                                    "name": "anonim"
-                                }
-                            };
-                        }
-
-                        const script = document.createElement("script");
-                        script.type = "application/ld+json";
-                        script.id = `jsonld-product-${product.id}`;
-                        script.textContent = JSON.stringify(jsonLd);
-                        document.head.appendChild(script);
-                    }
-                });
-            }
         });
     </script>
 

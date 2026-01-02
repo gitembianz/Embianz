@@ -30,9 +30,9 @@
             @if ($discount)
                 <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
             @endif
-            @if ((  app()->has('global_review_system') && app('global_review_system') === 'true') && $product->reviews->count() > 0)
-                @php
-                    $rating = $product->reviews_avg_score * 20;
+                @if ((app()->has('global_review_system') && app('global_review_system') === 'true') && $product->reviews->count() > 0)
+                    @php
+                        $rating = $product->reviews_avg_score * 20;
                 @endphp
                 <div class="ratingscore" wire:ignore>
                     <div class="rating" style="--rating: {{ $rating }}%;"></div>
@@ -279,84 +279,6 @@
             @endif
         </span>
     </div>
-    <div style="display: none" class="json-ld-data-details" data-product-json='@json($product)'></div>
-    <script>
-        document.addEventListener("livewire:load", function() {
-            injectJsonLd();
+@include('partials.jsonld', ['product' => $product])
 
-            function injectJsonLd() {
-                let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
-                existingScripts.forEach(script => script.remove());
-
-                let jsonLdElements = document.querySelectorAll('.json-ld-data-details');
-                jsonLdElements.forEach(element => {
-                    let productData = element.dataset.productJson;
-                    let product = JSON.parse(productData);
-
-                    let currencyElement = document.querySelector('.dlv_currency');
-                    let price = (product.product_prices && product.product_prices.length > 0) ?
-                        `${product.product_prices[0].value}` : `0`;
-                    let ratingValue = (product.reviews && product.reviews.length > 0) ?
-                        `${product.reviews[0].value}` : `0`;
-                    let reviewCount = (product.reviews && product.reviews.length > 0) ?
-                        `${product.reviews[0].count}` : `0`;
-                    let currency = currencyElement.textContent.trim();
-                    let media = (product.media && product.media.length > 0) ?
-                        `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
-                        `${window.location.origin}/images/store/default/default300.webp`;
-                    if (price != '0' || (ratingValue != '0') && (reviewCount != 0)) {
-                        let jsonLd = {
-                            "@context": "https://schema.org/",
-                            "@type": "Product",
-                            "name": product.name,
-                            "image": media,
-                            "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
-                            "brand": {
-                                "@type": "Brand",
-                                "name": product.brand
-                            },
-                            "sku": product.sku,
-                            "offers": {
-                                "@type": "Offer",
-                                "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
-                                "priceCurrency": currency,
-                                "price": price,
-                                "availability": `https://schema.org/InStock`,
-                                "priceValidUntil": product.end_date,
-                                "hasMerchantReturnPolicy": {
-                                    "value": true
-                                },
-                                "shippingDetails": {
-                                    "type": "FreeShipping",
-                                    "price": "0"
-                                },
-                                "aggregateRating": {
-                                    "@type": "AggregateRating",
-                                    "ratingValue": ratingValue,
-                                    "reviewCount": reviewCount
-                                },
-                                "review": {
-                                    "@type": "Review",
-                                    "reviewRating": {
-                                        "@type": "Rating",
-                                        "ratingValue": ratingValue,
-                                        "bestRating": 5
-                                    },
-                                    "author": {
-                                        "@type": "Person",
-                                        "name": "anonim"
-                                    }
-                                },
-                            }
-                        };
-
-                        let script = document.createElement('script');
-                        script.type = 'application/ld+json';
-                        script.textContent = JSON.stringify(jsonLd);
-                        document.head.appendChild(script);
-                    }
-                });
-            }
-        });
-    </script>
 </div>

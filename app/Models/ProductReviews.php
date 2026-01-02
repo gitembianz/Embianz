@@ -12,6 +12,7 @@ class ProductReviews extends Model
   {
     return $this->belongsTo(Product::class, 'product_id');
   }
+  protected $table = 'product_reviews';
   protected $fillable = [
     'product_id',
     'acronim',
