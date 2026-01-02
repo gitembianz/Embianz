@@ -993,7 +993,7 @@ function render(withAnimation = false) {
         if (withAnimation) animateIn();
 
         if (!isInitialPageLoad) {
-            document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
+          //  document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
         }
         isInitialPageLoad = false;
 
