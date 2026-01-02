@@ -910,7 +910,7 @@
 
                                 <button class="see-more-btn" data-target="desc-{{ $review->id }}"
                                     onclick="toggleDescription({{ $review->id }}, this)">
-                                    See more
+                                    Vezi mai mult
                                 </button>
 
                             </div>
