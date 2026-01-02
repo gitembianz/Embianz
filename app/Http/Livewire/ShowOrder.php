@@ -948,7 +948,8 @@ class ShowOrder extends Component
       $vatGroups = [];
       $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
     }
-    foreach ($this->order->orders as $item) {
+    // dd( $this->order->orderItemsSorted );
+    foreach ($this->order->orderItemsSorted as $item) {
       $vatRate = (int) $item->vat;
       $pu = $item->price / (1 + ($vatRate / 100));
       $totalval += $pu * $item->quantity;
@@ -1139,7 +1140,7 @@ class ShowOrder extends Component
       ];
     }
 
-    foreach ($this->order->orders as $index => $item) {
+    foreach ($this->order->orderItemsSorted as $index => $item) {
       $vatRate = (int) $item->vat;
       $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
 
@@ -1230,7 +1231,7 @@ class ShowOrder extends Component
       $amountNoVoucher = array_sum($vatSubtotals); // Total amount without voucher
       $vatGroups = [];
 
-      foreach ($this->order->orders as $item) {
+      foreach ($this->order->orderItemsSorted as $item) {
         $vatRate = (int) $item->vat;
         $priceWithoutVAT = $item->price / (1 + ($vatRate / 100));
 
@@ -1500,7 +1501,7 @@ class ShowOrder extends Component
       $vatGroups = [];
       $amountnovoucher = $this->order->final_amount + $voucherValue - $this->order->delivery_price;
     }
-    foreach ($this->order->orders as $item) {
+    foreach ($this->order->orderItemsSorted as $item) {
       $vatRate = (int) $item->vat;
       $pu = $item->price / (1 + ($vatRate / 100));
       $totalval += $pu * $item->quantity;
@@ -1637,12 +1638,17 @@ class ShowOrder extends Component
   public function getOrderQueryProperty()
   {
     return Order::with([
-      'orders.product' => function ($query) {
-        $query->withCount(['orders_item as interim_quantity' => function ($query) {
-          $query->whereHas('order', function ($q) {
-            $q->where('status_id', app('global_statuses')['order_processing']);
-          })->select(DB::raw('sum(quantity)'));
-        }]);
+      'orderItemsSorted.product' => function ($query) {
+        $query->withCount([
+          'orders_item as interim_quantity' => function ($query) {
+            $query->whereHas('order', function ($q) {
+              $q->where(
+                'status_id',
+                app('global_statuses')['order_processing']
+              );
+            })->select(DB::raw('SUM(quantity)'));
+          }
+        ]);
       },
       'status',
       'account',
@@ -1652,6 +1658,7 @@ class ShowOrder extends Component
       'payment'
     ])->find($this->orderId);
   }
+
 
   public function mount($orderId)
   {

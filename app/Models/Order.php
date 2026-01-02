@@ -68,4 +68,38 @@ class Order extends Model
 
     return $query;
   }
+  public function orderItemsSorted()
+  {
+    return $this->hasMany(Order_Item::class, 'order_id')
+      ->join('products', 'order__items.product_id', '=', 'products.id')
+
+      ->orderByRaw("
+            CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM products_categories pc
+                    WHERE pc.product_id = products.id
+                    AND pc.primary_category = 1
+                ) THEN 0
+
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM products_categories pc
+                    WHERE pc.product_id = products.id
+                ) THEN 1
+
+                ELSE 2
+            END
+        ")
+
+      ->orderByRaw("
+            (
+                SELECT MIN(pc.category_id)
+                FROM products_categories pc
+                WHERE pc.product_id = products.id
+            )
+        ")
+
+      ->select('order__items.*');
+  }
 }
