@@ -19,7 +19,7 @@ use App\Mail\ConfirmationOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
-
+use App\Models\Store_Settings;
 
 class StoreOrder extends Component
 {
@@ -669,6 +669,24 @@ class StoreOrder extends Component
         ['cart_id' => $orderdata['cart_id']],
         $orderdata
       );
+
+      //TELEGRAM NOTIFICATION
+
+          try {
+              $telegramEnabled = app('global_telegram_notification') ?? 'false';
+              $botToken = app('global_telegram_bot_api') ?? null;
+              $channelId = app('global_telegram_channel') ?? null;
+              
+              if (($telegramEnabled === '1' || $telegramEnabled === 'true') && $botToken && $channelId) {
+                  $order->load(['account', 'shipping', 'currency', 'payment']);
+                  \Illuminate\Support\Facades\Notification::route('telegram', $channelId)
+                      ->notify(new \App\Notifications\TelegramOrderNotification($order));
+              }
+          } catch (\Throwable $th) {
+              \Log::error('Telegram notification error: ' . $th->getMessage());
+          }
+          /////////////////////
+
 
       foreach ($order->orders as $item) {
         $item->delete();
