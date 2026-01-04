@@ -24,7 +24,8 @@
     "phpoffice/phpspreadsheet": "1.21",
     "predis/predis": "^2.2",
     "psr/log": "^3.0",
-    "stripe/stripe-php": "^13.12"
+    "stripe/stripe-php": "^13.12",
+    "symfony/css-selector": "^7.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.8",
