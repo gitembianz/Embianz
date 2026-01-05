@@ -1,5 +1,8 @@
 vendor
-public/media/
+public/media/Article/
+public/media/Category/
+public/media/Product/
+public/media
 public/invoices/
 public/documents/
 

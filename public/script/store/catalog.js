@@ -167,8 +167,18 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product");
 
+  const wireClick = button.getAttribute('wire:click');
+  const productIdMatch = wireClick?.match(/\((\d+)\)/);
+  const dlv_id = productIdMatch ? productIdMatch[1] : null;
+  
+  if (!dlv_id) {
+   // console.warn('No product ID found in wire:click');
+    return;
+  }
+
   // Function
   function add_to_cart(product) {
+    
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
     window.dataLayer.push({
@@ -178,6 +188,7 @@ function flyToCart(button) {
         value: product.price * product.quantity,
         items: [
           {
+            item_id: product.id,
             item_name: product.name,
             price: product.price,
             quantity: product.quantity
@@ -186,15 +197,17 @@ function flyToCart(button) {
       }
     });
 
-    // console.log('Product added to cart:', product);
+    //console.log('Product added to cart:', product);
   }
   // Variables
+  
   const dlv_name = target_parent.querySelector(".dlv_name").innerText.trim();
   const dlv_price = parseFloat(target_parent.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
   const dlv_currency = target_parent.querySelector(".dlv_currency").innerText.trim();
   const dlv_quantity = 1;
   // Product
   const product = {
+    id: dlv_id,
     name: dlv_name,
     price: dlv_price,
     quantity: dlv_quantity,
@@ -260,6 +273,14 @@ function addWishList(button) {
   const wish = document.getElementById("wishlistCount");
 
   const target_parent = button.closest(".card");
+  const wireClick = button.getAttribute('wire:click');
+  const productIdMatch = wireClick.match(/\((\d+)\)/);
+  const dlv_id = productIdMatch ? productIdMatch[1] : null;
+  
+  if (!dlv_id) {
+    console.warn('No product ID found in wire:click');
+    return;
+  }
 
   function add_to_wishlist(product) {
     window.dataLayer = window.dataLayer || [];
@@ -271,6 +292,7 @@ function addWishList(button) {
         value: product.price * product.quantity,
         items: [
           {
+            item_id: product.id,
             item_name: product.name,
             price: product.price,
             quantity: product.quantity
@@ -279,7 +301,7 @@ function addWishList(button) {
       }
     });
 
-    // console.log('Product added to wishlist:', product);
+     console.log('Product added to wishlist:', product);
   }
   // Variables
   const dlv_name = target_parent.querySelector(".dlv_name").innerText.trim();
@@ -288,6 +310,7 @@ function addWishList(button) {
   const dlv_quantity = 1;
   // Product
   const product = {
+    id : dlv_id,
     name: dlv_name,
     price: dlv_price,
     quantity: dlv_quantity,
