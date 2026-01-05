@@ -765,12 +765,6 @@ if (!coupon) {
 
   // Trimite event complet
   if (cartItems.length > 0) {
-    //console.log('✅ Begin Checkout:', {
-      value: totalValue,
-      currency: currency,
-      coupon: coupon || 'none',
-      items: cartItems.length
-    });
     
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
