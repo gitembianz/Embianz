@@ -318,6 +318,97 @@ function addWishList(button) {
   }
 }
 
+//<-------------------- GTM: View Item List Event --------------------->
+function view_item_list() {
+  const products = document.querySelectorAll('.product');
+  
+  if (!products || products.length === 0) {
+    console.warn('⚠️ No products found on page');
+    return;
+  }
+
+  const items = [];
+  let defaultCurrency = 'RON';
+  const MAX_ITEMS = 20;
+  
+  // Extract category name from section title
+  const categoryTitle = document.querySelector('.section__title');
+  const item_list_name = categoryTitle?.innerText?.trim() || 'Uncategorized';
+  
+  // Extract category ID from URL (/storeproducts/CATEGORY-URL)
+  const urlPath = window.location.pathname;
+  const pathSegments = urlPath.split('/').filter(segment => segment.length > 0);
+  const item_list_id = pathSegments[pathSegments.length - 1] || 'uncategorized';
+  
+  products.forEach((product, index) => {
+    if (items.length >= MAX_ITEMS) return;
+    
+    // Extract product ID from button
+    const addToCartBtn = product.querySelector('.card__button[wire\\:click*="addToCart"]');
+    const wireClick = addToCartBtn?.getAttribute('wire:click');
+    const productIdMatch = wireClick?.match(/\((\d+)\)/);
+    const productId = productIdMatch ? productIdMatch[1] : null;
+    
+    if (!productId) return;
+    
+    // Get product name from card title
+    const cardTitle = product.querySelector('.card-title a');
+    const dlv_name = cardTitle?.innerText?.trim();
+    
+    // Get price from card-price span
+    const priceElement = product.querySelector('.card-price');
+    const dlv_price = parseFloat(
+      priceElement?.innerText?.trim().replace(',', '.') || 0
+    );
+    
+    // Get currency from hidden .dlv
+    const dlv = product.querySelector('.dlv');
+    const dlv_currency = dlv?.querySelector('.dlv_currency')?.innerText?.trim() || 'RON';
+    
+    if (items.length === 0) {
+      defaultCurrency = dlv_currency;
+    }
+    
+    if (productId && dlv_name && dlv_price > 0) {
+      items.push({
+        item_id: productId,
+        item_name: dlv_name,
+        price: dlv_price,
+        quantity: 1,
+        index: items.length + 1
+      });
+    }
+  });
+  
+  // Push event only if we have valid items
+  if (items.length > 0) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "view_item_list",
+      ecommerce: {
+        currency: defaultCurrency,
+        item_list_id: item_list_id,
+        item_list_name: item_list_name,
+        items: items
+      }
+    });
+    
+    //console.log(`✅ GTM view_item_list (${item_list_id}):`, items);
+  } else {
+    console.warn('⚠️ No valid items to push');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', view_item_list);
+document.addEventListener('livewire:update', view_item_list);
+document.addEventListener('livewire:load', view_item_list);
+
+
+
+//<----------------- End GTM: View Item List Event -------------------->
+
+
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>

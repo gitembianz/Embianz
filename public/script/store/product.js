@@ -617,6 +617,68 @@ function lastseenSlider() {
   }
 }
 //<--------------------------------------------------------------------->
+
+//<-------------------- GTM: View Item Event (Page Load) --------------------->
+// GTM: view_item event - Push ONLY on page load
+function view_item(product) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ ecommerce: null });
+  window.dataLayer.push({
+    event: "view_item",
+    ecommerce: {
+      currency: product.currency,
+      value: product.price,
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.name,
+          price: product.price,
+          quantity: 1,
+        },
+      ],
+    },
+  });
+
+ // console.log('✅ GTM view_item pushed:', product);
+}
+
+// Execute on DOMContentLoaded - BEFORE any button clicks
+document.addEventListener('DOMContentLoaded', function() {
+  const dlv = document.querySelector(".dlv");
+  
+  if (dlv) {
+    const dlv_name = dlv.querySelector(".dlv_name")?.innerText?.trim();
+    const dlv_price = parseFloat(
+      dlv.querySelector(".dlv_price")?.innerText?.trim().replace(",", "."),
+    );
+    const dlv_currency = dlv.querySelector(".dlv_currency")?.innerText?.trim() || 'RON';
+    
+    // Extract product ID from wire:click button
+    const addToCartBtn = document.querySelector('.card__button[wire\\:click*="addToCart"]');
+    const wireClick = addToCartBtn?.getAttribute('wire:click');
+    const productIdMatch = wireClick?.match(/\((\d+)\)/);
+    const dlv_id = productIdMatch ? productIdMatch[1] : null;
+    
+    // Product object
+    const product = {
+      id: dlv_id,
+      name: dlv_name,
+      price: dlv_price,
+      quantity: 1,
+      currency: dlv_currency,
+    };
+    
+    // Push view_item ONLY if all data exists
+    if (product.id && product.name && product.price > 0) {
+      view_item(product);
+    } else {
+      console.warn('Missing product data for view_item:', product);
+    }
+  }
+});
+
+
+
 //<---------------------------- Fly-To-Cart ---------------------------->
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
@@ -668,6 +730,8 @@ function flyToCart(button) {
     quantity: dlv_quantity,
     currency: dlv_currency,
   };
+
+  
   // Function call
   add_to_cart(product);
 

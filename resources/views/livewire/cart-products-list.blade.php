@@ -304,6 +304,85 @@
                 @endforeach
             </ul>
 
+            <!-- GTM: Push view_minicart event when cart opens -->
+             <script>
+                // GLOBAL flag - nu se resetează
+                window.viewMinicartSent = false;
+                
+                document.addEventListener('livewire:update', function() {
+                    const basketList = document.getElementById('basketList');
+                    
+                    // Verify if mini-cart is open
+                    if (basketList && basketList.classList.contains('active')) {
+                        // Only send once per opening
+                        if (window.viewMinicartSent) return;
+                        window.viewMinicartSent = true;
+                        
+                        setTimeout(() => {
+                            const cartItems = [];
+                            let totalValue = 0;
+                            
+                            // Get all active products (exclude disabled ones)
+                            const products = document.querySelectorAll('#basketList .leftbar__item:not(.item__product--disabled)');
+                            
+                            products.forEach((product, index) => {
+                                const nameEl = product.querySelector('.leftbar__link--title');
+                                const priceEl = product.querySelector('.leftbar__link--price');
+                                const qtyEl = product.querySelector('.product__quantity');
+                                const deleteBtn = product.querySelector('.leftbar__delete[wire\\:click]');
+                                
+                                if (nameEl && priceEl && qtyEl) {
+                                    const productName = nameEl.innerText.trim();
+                                    
+                                    // Extract price (remove "RON" and other characters)
+                                    let priceText = priceEl.innerText.replace(/[^\d.,]/g, '');
+                                    const productPrice = parseFloat(priceText.replace(',', '.')) || 0;
+                                    const quantity = parseInt(qtyEl.innerText) || 1;
+                                    
+                                    // Extract product ID from wire:click attribute
+                                    let productId = `product_${index + 1}`; // Fallback
+                                    if (deleteBtn) {
+                                        const wireClick = deleteBtn.getAttribute('wire:click');
+                                        const match = wireClick.match(/\((\d+)\)/);
+                                        if (match) {
+                                            productId = match[1];
+                                        }
+                                    }
+                                    
+                                    if (productName && productPrice > 0) {
+                                        cartItems.push({
+                                            item_id: productId,
+                                            item_name: productName,
+                                            price: productPrice,
+                                            quantity: quantity
+                                        });
+                                        totalValue += productPrice * quantity;
+                                    }
+                                }
+                            });
+                            
+                            // Push GTM event only if cart has items
+                            if (cartItems.length > 0) {
+                                window.dataLayer = window.dataLayer || [];
+                                window.dataLayer.push({
+                                    ecommerce: null
+                                });
+                                window.dataLayer.push({
+                                    event: "view_cart",
+                                    ecommerce: {
+                                        currency: "RON",
+                                        value: parseFloat(totalValue.toFixed(2)),
+                                        items: cartItems
+                                    }
+                                });
+                            }
+                        }, 50);
+                    } else {
+                        // Reset flag when cart closes
+                        window.viewMinicartSent = false;
+                    }
+                });
+            </script>
             <div class="leftbar__total">
                 <h5 class="leftbar__total--text">
                     @if (app()->has('label_cart_products_tag'))
@@ -553,6 +632,170 @@
                         'event': 'continueToCheckout'
                     });
                 });
+
+                //<---------- GTM Remove from Cart Tracking ---------->
+
+let removeFromCartListenerAttached = false;
+
+function initRemoveFromCartTracking() {
+  // Verifică daca listener-ul e deja atașat
+  if (removeFromCartListenerAttached) return;
+  removeFromCartListenerAttached = true;
+
+  // Event delegation - funcționează pe elemente dinamice din Livewire
+  document.addEventListener("click", function handleRemoveFromCart(e) {
+    const deleteBtn = e.target.closest("button.leftbar__delete");
+    
+    if (!deleteBtn) return;
+
+    // Check daca are wire:click="removeFromCart(..."
+    const wireClick = deleteBtn.getAttribute("wire:click");
+    if (!wireClick || !wireClick.includes("removeFromCart")) return;
+
+    // Găsește container-ul produsului (`.leftbar__item`)
+    const productContainer = deleteBtn.closest(".leftbar__item");
+    if (!productContainer) return;
+
+    // Extrage detalii din DOM
+    const nameEl = productContainer.querySelector(".leftbar__link--title");
+    const priceEl = productContainer.querySelector(".leftbar__link--price");
+    const qtyEl = productContainer.querySelector(".product__quantity");
+
+    if (!nameEl || !priceEl) return;
+
+    const productName = nameEl.innerText.trim();
+    const priceText = priceEl.innerText.replace(/RON|,/g, "").trim();
+    const productPrice = parseFloat(priceText.replace(",", ".")) || 0;
+    const quantity = qtyEl ? parseInt(qtyEl.innerText) || 1 : 1;
+
+    // Extrage product ID din wire:click
+    const match = wireClick.match(/removeFromCart\((\d+)\)/);
+    const productId = match ? match[1] : "unknown";
+
+    console.log("✅ Remove from Cart:", productName, "Price:", productPrice, "Qty:", quantity);
+
+    // Push GTM event - DOAR O SINGURĂ DATĂ
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "remove_from_cart",
+      ecommerce: {
+        items: [{
+          item_id: String(productId),
+          item_name: productName,
+          price: productPrice,
+          quantity: quantity,
+          currency: "RON"
+        }]
+      }
+    });
+  }, false); // Capture phase false = bubble phase
+}
+
+document.getElementById('headerContinue').addEventListener('click', function() {
+  const cartItems = [];
+  const products = document.querySelectorAll('#basketList .leftbar__item:not(.item__product--disabled)');
+  
+  // Extrage items
+  products.forEach(function(product) {
+    const nameEl = product.querySelector('.leftbar__link--title');
+    const priceEl = product.querySelector('.leftbar__link--price span');
+    const qtyEl = product.querySelector('.product__quantity');
+    const deleteBtn = product.querySelector('.leftbar__delete[wire\\:click]');
+    
+    if (nameEl && priceEl && qtyEl) {
+      const productName = nameEl.innerText.trim();
+      const priceText = priceEl.innerText.trim().replace(/lei|,/g, '');
+      const productPrice = parseFloat(priceText.replace('.', '').replace(',', '.')) || 0;
+      const quantity = parseInt(qtyEl.innerText) || 1;
+      
+      let productId = 'unknown';
+      if (deleteBtn) {
+        const wireClick = deleteBtn.getAttribute('wire:click');
+        const match = wireClick.match(/removeFromCart\((\d+)\)/);
+        if (match) productId = match[1];
+      }
+      
+      cartItems.push({
+        item_id: String(productId),
+        item_name: productName,
+        price: productPrice,
+        quantity: quantity
+      });
+    }
+  });
+
+
+ const totalPriceEl = document.getElementById('leftbarTotalPrice');
+let totalValue = 0;
+if (totalPriceEl) {
+  const totalText = totalPriceEl.innerText.trim();
+  totalValue = totalText.replace(/lei/, '').trim(); 
+}
+  // Currency = "lei" din primul span cu lei
+  let currency = 'RON';
+  const currencyEl = document.querySelector('.leftbar__total--text span');
+  if (currencyEl && currencyEl.innerText.includes('lei')) {
+    currency = 'RON'; // lei = RON în context RO
+  }
+
+  // Coupon = din reducere roșie (Reducere: -184.89 lei)
+  let coupon = '';
+const discountH5 = document.querySelector('.leftbar__total--text:has(span[style*="red"])');
+if (discountH5) {
+  // Extrage valoarea din span roșu: "-184.89 lei" → "-184.89"
+  const discountSpan = discountH5.querySelector('span[style*="red"]');
+  if (discountSpan) {
+    const discountValue = discountSpan.innerText.trim(); // "-184.89 lei"
+    coupon = discountValue.replace(/lei/, '').trim(); // "-184.89"
+  }
+}
+
+// Dacă nu e span roșu, încearcă din textul h5
+if (!coupon) {
+  const allH5 = document.querySelectorAll('.leftbar__total--text');
+  allH5.forEach(function(h5) {
+    if (h5.innerText.includes('Reducere') || h5.innerText.includes('-')) {
+      const match = h5.innerText.match(/[-–]\s*[\d,.]+/);
+      if (match) {
+        coupon = match[0].trim();
+      }
+    }
+  });
+}
+
+  // Trimite event complet
+  if (cartItems.length > 0) {
+    //console.log('✅ Begin Checkout:', {
+      value: totalValue,
+      currency: currency,
+      coupon: coupon || 'none',
+      items: cartItems.length
+    });
+    
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'begin_checkout',
+      ecommerce: {
+        currency: currency,
+        value: totalValue,
+        coupon: coupon || undefined,
+        items: cartItems
+      }
+    });
+  }
+});
+
+
+// Inițializează când DOM e ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initRemoveFromCartTracking);
+} else {
+  initRemoveFromCartTracking();
+}
+
+//<------- End GTM Remove from Cart Tracking ------>
+
             </script>
         @endif
     </div>
