@@ -672,7 +672,7 @@ function initRemoveFromCartTracking() {
     const match = wireClick.match(/removeFromCart\((\d+)\)/);
     const productId = match ? match[1] : "unknown";
 
-    console.log("✅ Remove from Cart:", productName, "Price:", productPrice, "Qty:", quantity);
+    //console.log("✅ Remove from Cart:", productName, "Price:", productPrice, "Qty:", quantity);
 
     // Push GTM event - DOAR O SINGURĂ DATĂ
     window.dataLayer = window.dataLayer || [];

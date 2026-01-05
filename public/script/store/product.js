@@ -685,6 +685,15 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
+  const wireClick = button.getAttribute('wire:click');
+  const productIdMatch = wireClick?.match(/\((\d+)\)/);
+  const dlv_id = productIdMatch ? productIdMatch[1] : null;
+  
+  if (!dlv_id) {
+    console.warn('No product ID found in wire:click');
+    return;
+  }
+
   if (!button.classList.contains("in")) {
     button.classList.add("in");
     setTimeout(() => button.classList.remove("in"), 1500);
@@ -705,6 +714,7 @@ function flyToCart(button) {
         value: product.price * product.quantity,
         items: [
           {
+            item_id: product.id,
             item_name: product.name,
             price: product.price,
             quantity: product.quantity,
@@ -725,6 +735,7 @@ function flyToCart(button) {
   const dlv_quantity = 1;
   // Product
   const product = {
+    id: dlv_id, 
     name: dlv_name,
     price: dlv_price,
     quantity: dlv_quantity,
