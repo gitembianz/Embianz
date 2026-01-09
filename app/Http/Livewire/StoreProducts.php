@@ -32,6 +32,7 @@ class StoreProducts extends Component
 
     ]);
   }
+
   public function getBreadcrumbsProperty()
   {
     if (!$this->category || empty($this->category['id'])) {
@@ -51,11 +52,11 @@ class StoreProducts extends Component
   {
 
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-
-    $categoryId = null;
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
       ->pluck('product_id')
       ->all();
+
+    $categoryId = null;
 
     if ($category) {
       $categoryId = $category['id'] ?? null;
@@ -333,9 +334,6 @@ class StoreProducts extends Component
 
     return $this->products->whereIn('id', $this->selectedKeys);
   }
-
-
-
 
   public function clearall()
   {

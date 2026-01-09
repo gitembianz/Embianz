@@ -56,6 +56,7 @@ class StoreShowProduct extends Component
       'product_reviews' => $this->productreviews,
     ]);
   }
+
   public function mount($productId)
   {
     $this->limitload = (int) (app('global_review_limit_load') ?? 8);
@@ -90,9 +91,6 @@ class StoreShowProduct extends Component
   {
     $this->limitload += (int) (app('global_review_limit_load') ?? 8);
   }
-
-
-
 
   public function getProductReviewsProperty()
   {
@@ -129,6 +127,7 @@ class StoreShowProduct extends Component
         ->first()
     );
   }
+
   public function getProductRatingBreakdownProperty()
   {
     if (app('global_review_system') !== 'true') {
@@ -156,9 +155,6 @@ class StoreShowProduct extends Component
       }
     );
   }
-
-
-
 
   public function getLastProductProperty()
   {
@@ -194,7 +190,6 @@ class StoreShowProduct extends Component
       return collect();
     }
   }
-
 
   public function isInWishlist($productId)
   {
