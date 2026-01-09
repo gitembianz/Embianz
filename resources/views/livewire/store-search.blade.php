@@ -1,4 +1,5 @@
 <div>
+
     <!------------------------Breadcrumbs----------------------->
     <ol class="breadcrumbs container">
         <li>
@@ -49,6 +50,24 @@
             </button>
         </div>
     </section>
+
+    {{-- wishlist new system --}}
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data("wishlistButton", e => ({
+                productId: e.productId,
+                isInWishlist: e.initial,
+                loading: !1,
+                toggle() {
+                    this.loading || (this.loading = !0, this.isInWishlist = !this.isInWishlist, Livewire
+                        .emit(this.isInWishlist ? "wishlist:add" : "wishlist:remove", this
+                            .productId), this.loading = !1)
+                }
+            }))
+        });
+    </script>
+    @livewire('wishlist-actions')
+
     @php
         if (app()->has('global_numberformat_element')) {
             if (app('global_numberformat_element') === '.') {
@@ -63,6 +82,7 @@
             $decimal = ',';
         }
     @endphp
+
     @if ($showproducts)
         <section class="catalogue container">
             @if ($products->isEmpty())
@@ -99,9 +119,7 @@
                             @if ($price)
                                 @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
                                     <p
-                                        class="card-status @if ($discount) save-secondary
-          @else
-             save @endif ">
+                                        class="card-status @if ($discount) save-secondary @else save @endif ">
                                         @if (app()->has('label_product_status_stock'))
                                             {!! app('label_product_status_stock') !!}
                                         @endif
@@ -132,15 +150,24 @@
                                     @endif
                                 </p>
                             @endif
-                            @livewire(
-                                'product-wishlist-button',
-                                [
-                                    'productId' => $product->id,
-                                    'class' => 'card__action',
-                                    'is_in_wishlist' => $product->wishlists->isNotEmpty(),
-                                ],
-                                key($product->id)
-                            )
+
+
+                            <div x-data="wishlistButton({
+                                productId: {{ $product->id }},
+                                initial: @js($product->wishlists->isNotEmpty())
+                            })" x-init="window.addEventListener('wishlist-updated', (e) => {
+                                if (e.detail.productId === productId) {
+                                    isInWishlist = e.detail.inWishlist
+                                }
+                            })" class="card__action">
+                                <button class="favorite__btn" :class="{ 'active': isInWishlist }"
+                                    @click.prevent="toggle" aria-label="Add to wishlist">
+                                    <svg viewBox="0 0 512 512" width="20">
+                                        <path
+                                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                                    </svg>
+                                </button>
+                            </div>
 
                             <div class="card-info">
                                 <div class="card-text">
@@ -201,6 +228,7 @@
                                         </span>
                                     </div>
                                 </div>
+
                                 @if ($price)
                                     @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
                                 @else
@@ -210,17 +238,19 @@
                                         @endif
                                     </button>
                                 @endif
+
                             </div>
                         </div>
                     </div>
-                    <div style="display: none" class="json-ld-data"
-                                    data-product-json='@json($product)'></div>
+                    <div style="display: none" class="json-ld-data" data-product-json='@json($product)'>
+                    </div>
                 @endforeach
                 @unless (app()->has('global_pagination') && app('global_pagination') === 'links')
                     <x-lazy />
                 @endunless
             @endif
         </section>
+
         @if (app()->has('global_pagination') && app('global_pagination') === 'links')
             @if (!$products->isEmpty())
                 <section class="container" style="margin-bottom: 20px">
@@ -261,7 +291,7 @@
                                 <div class="card-text">
                                     <h3 class="card-title">{!! $category->name !!}</h2>
                                 </div>
-                                {!! $category->long_description !!}
+                                {!! $category->short_description !!}
                             </div>
                         </a>
                     </div>
