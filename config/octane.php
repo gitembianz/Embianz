@@ -221,4 +221,10 @@ return [
 
     'max_execution_time' => 30,
 
+    'swoole' => [
+    'options' => [
+        'enable_static_handler' => true,
+    ],
+],
+
 ];

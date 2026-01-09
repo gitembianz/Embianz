@@ -82,6 +82,12 @@
       route::view('/add_user', 'admin.add_user')->name('add_user');
       route::post('/new_user', [AdminController::class, 'store_user'])->name('new_user');
       route::get('/show_user/{id}/', [AdminController::class, 'show_user'])->name('show_user');
+      
+      //logs
+      route::view('/logs', 'admin.logs')->name('logs');
+      Route::get('/api/logs/errors', [App\Http\Controllers\LogController::class, 'getLogs'])->name('api.logs.errors');
+      Route::post('/api/logs/delete', [App\Http\Controllers\LogController::class, 'deleteLogs'])->name('api.logs.delete');
+
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');

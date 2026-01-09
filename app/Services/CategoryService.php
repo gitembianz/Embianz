@@ -144,6 +144,8 @@ class CategoryService
       id: $category->id,
       name: $category->name,
       slug: $category->seo_id ?: (string) $category->id,
+      seo_title: $category->seo_title,
+      meta_description: $category->meta_description,
       sequence: $category->sequence,
       sliderSequence: (int) $category->slider_sequence,
       storeTab: (bool) $category->store_tab,

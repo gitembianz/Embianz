@@ -314,6 +314,7 @@
                             <a style="width: 100%"
                                 href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
 
+
                                 @if ($product->media->first() != null)
                                     <img loading="eager" width="300" height="300" class="card-image"
                                         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
