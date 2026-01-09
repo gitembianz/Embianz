@@ -354,6 +354,17 @@
 
                 <span>Users</span>
             </a>
+                <a class="button button--fill button--flexed button--primary @if ($active == 'user') button--active @endif"
+                href="{{ route('users') }}">
+                <svg>
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+
+                <span>Logs</span>
+            </a>
         </div>
     </aside>
     <!-- Desktop Menu -->
@@ -704,6 +715,17 @@
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
             <span>Users</span>
+        </a>
+        <a class="button button--long button--flexed button--primary @if ($active == 'logs') button--secondary @endif"
+            href="{{ route('logs') }}">
+         <svg>
+    <rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect>
+    <line x1="2" y1="9" x2="22" y2="9"></line>
+    <line x1="6" y1="14" x2="14" y2="14"></line>
+    <line x1="6" y1="17" x2="12" y2="17"></line>
+    <circle cx="4" cy="6" r="0.5"></circle>
+</svg>
+            <span>Logs</span>
         </a>
     </div>
     {{-- Script for Leftbar --}}
