@@ -254,7 +254,7 @@ class StoreOrder extends Component
   {
     if (app()->has('global_promotion_on') && app('global_promotion_on') === 'true') {
       $user = UserSessions::where('sessions', $this->session_id)->first();
-      return $user->promotions;
+      return $user ? $user->promotions : collect();
     } else {
       return collect();
     }

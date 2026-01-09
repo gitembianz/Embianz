@@ -253,11 +253,11 @@
                 &times;
             </button>
             <div>
-                <h2 style="text-align: center">
+                <h4 style="text-align: center">
                     @if (app()->has('label_pdp_add_review_title'))
                         {!! app('label_pdp_add_review_title') !!}
                     @endif
-                </h2>
+                </h4>
                 <p class="subtitle" style="margin-top: 10px; text-align:center">
                     @if (app()->has('label_pdp_add_review_modal_description'))
                         {!! app('label_pdp_add_review_modal_description') !!}
@@ -433,12 +433,12 @@
             </div>
         </section>
         <section id="relatedSlider" class="related__slider container section__margin">
-            <button class="related__btn prev" aria-label="Previous related slider">
+            <button class="related__btn card-slider__button prev" aria-label="Previous related slider">
                 <svg>
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
-            <button class="related__btn next" aria-label="Next related slider">
+            <button class="related__btn card-slider__button next" aria-label="Next related slider">
                 <svg>
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -612,19 +612,18 @@
             </div>
         </section>
         <section id="lastseenSlider" class="related__slider container">
-            <div class="related__navigation">
-                <button class="related__btnlast prev" aria-label="Previous related slider">
+
+                <button class="related__btnlast card-slider__button prev" aria-label="Previous related slider">
                     <svg>
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
-                <button class="related__btnlast next" aria-label="Next related slider">
+                <button class="related__btnlast card-slider__button next" aria-label="Next related slider">
                     <svg>
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 </button>
 
-            </div>
             <div class="related__wrapperlast">
                 @foreach ($last_visited_products as $key => $product)
                     <div class="card product" style="width: 100%;">
@@ -775,7 +774,7 @@
             $recommendedPercent = $totalReviews > 0 ? round(($reviews45 / $totalReviews) * 100) : 0;
         @endphp
 
-        <section>
+        <section class="container">
             <div class="section__header container" id="reviewstop">
                 <h2 class="section__title">
                     {!! app('label_pdp_reviews_section_title') ?? '' !!}
@@ -790,7 +789,7 @@
 
             @if ($totalReviews > 0)
 
-                <div class="container grid-product-reviews">
+                <div class="container flex-product-reviews">
 
                     <div wire:ignore class="product-reviews__info reviews-info">
                         <h2 class="product__title">
@@ -889,12 +888,6 @@
 
                     <div class="container" style="padding-top: 15px" data-review>
                         <div @if ($loop->last) id="last_record" @endif class="article-card" style="height: auto; !important;">
-                            <div class="article-image">
-                                <div class="circle-avatar" style="background-color: {{ $color }}">
-                                    {{ $initial }}
-                                </div>
-                            </div>
-
                             <div class="article-content">
                                 <h2 class="article-title">{{ $review->acronim }}</h2>
                                 <div class="ratingscore">

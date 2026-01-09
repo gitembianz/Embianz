@@ -270,19 +270,18 @@
                 </div>
             </section>
             <section id="lastseenSlider" class="related__slider container">
-            <div class="related__navigation">
-                <button class="related__btnlast prev" aria-label="Previous related slider">
+
+                <button class="related__btnlast card-slider__button prev" aria-label="Previous related slider">
                     <svg>
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
-                <button class="related__btnlast next" aria-label="Next related slider">
+                <button class="related__btnlast card-slider__button next" aria-label="Next related slider">
                     <svg>
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 </button>
 
-            </div>
             <div class="related__wrapperlast">
                 @foreach ($newproducts as $product)
                     <div class="card product" style="width: 100%;">
