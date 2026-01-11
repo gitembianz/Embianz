@@ -414,12 +414,12 @@
                     </svg>
                 </button>
             </div>
-            <button class="filter__top filter__top--button" id="closeFilter">
-                @if (app()->has('label_display_filters_results'))
-                    {!! app('label_display_filters_results') !!}
-                @endif
-                <span>{{ $products->total() }}</span>
-            </button>
+<button class="filter__top filter__top--button" id="closeFilter" wire:ignore.self>
+    @if (app()->has('label_display_filters_results'))
+        {!! app('label_display_filters_results') !!}
+    @endif
+    <span id="buttonTotalSpan">{{ $buttonTotal ?? 0 }}</span>
+</button>
             <div class="filter__list">
                 @foreach ($filtervalues as $values)
                     <div class="dropfilter">
@@ -468,6 +468,14 @@
                 });
             });
         </script>
+<script>
+    document.addEventListener('livewire:load', function() {
+        Livewire.on('buttonTotalUpdated', function(buttonTotal) {
+            console.log('Button updated to:', buttonTotal);
+            document.getElementById('buttonTotalSpan').textContent = buttonTotal;
+        });
+    });
+</script>
     </div>
     <!-------------------------Sorting----------------------->
     <div class="filter" id="sortList">
