@@ -1214,9 +1214,6 @@
                 <!------------------------------------------------------>
                 @if ($step === 2)
                     <?php $disables = []; ?>
-                    <div wire:loading wire:target="confirm" class="wire-loading-container">
-                        <div class="spinner"></div>
-                    </div>
                     <div class="section__header">
                         <h2 class="section__title">
                             @if (app()->has('label_order_details_check'))
@@ -1386,8 +1383,7 @@
                                         $nonquantity[$index] = false;
                                         if (
                                             $cartItem->product->active != true ||
-                                            $cartItem->product->start_date >
-                                                now(config('app.timezone'))->format('Y-m-d') ||
+                                            $cartItem->product->start_date > now(config('app.timezone'))->format('Y-m-d') ||
                                             $cartItem->product->end_date < now(config('app.timezone'))->format('Y-m-d')
                                         ) {
                                             $disabled[$index] = true;
