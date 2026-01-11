@@ -79,6 +79,7 @@
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
+            <span>{!! app('label_plp_filter_label') ?? '' !!}</span>
         </button>
         <input class="controls__search" maxlength="100" type="text" name="search" id="search"
             wire:model.live.debounce.500ms="search" autocomplete="off"
@@ -90,6 +91,7 @@
                 <line x1="21" y1="14" x2="3" y2="14"></line>
                 <line x1="21" y1="18" x2="7" y2="18"></line>
             </svg>
+            <span>{!! app('label_plp_sort_label') ?? '' !!}</span>
         </button>
     </section>
     <!---------------------------- Display filters-------------------------->
