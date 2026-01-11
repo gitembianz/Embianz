@@ -196,6 +196,8 @@ class StoreSearch extends Component
     }
   }
 
+
+
   public function getCategoriesProperty()
   {
     if ($this->search != "") {

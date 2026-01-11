@@ -51,11 +51,11 @@ class StoreProducts extends Component
  public function mount($category = null)
 {
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
+    $categoryId = null;
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
       ->pluck('product_id')
       ->all();
-
-    $categoryId = null;
 
     if ($category) {
       $categoryId = $category['id'] ?? null;
@@ -289,78 +289,101 @@ public function applyFilter()
     $specVariantIds = [];
     $this->resetPage();
 
-    if (!empty($this->queryfilters)) {
-      foreach ($this->queryfilters as $specName => $values) {
-        $specProductIds = [];
 
-        foreach ($values as $value => $isfilterselected) {
-          if (array_values($isfilterselected)[0]) {
-            $fullString = array_keys($isfilterselected)[0];
-            $productIdsWithTypes = explode(',', $fullString);
+    $activeFilters = [];
+    foreach ($this->queryfilters as $specName => $values) {
+        $activeValues = array_filter($values, function($filterData) {
+            if (is_array($filterData)) {
+                return array_values($filterData)[0] === true;
+            }
+            return $filterData === true;
+        });
+        
+        if (!empty($activeValues)) {
+            $activeFilters[$specName] = $activeValues;
+        }
+    }
 
-            foreach ($productIdsWithTypes as $item) {
-              $parts = explode('|', $item);
-              if (isset($parts[1])) {
-                $specVariantIds[$parts[1]][] = (string)$parts[0];
-              } else {
-                $specProductIds[] = (string)$parts[0];
-              }
+
+    if (!empty($activeFilters)) {
+        foreach ($activeFilters as $specName => $values) {
+            $specProductIds = [];
+
+            foreach ($values as $value => $isfilterselected) {
+                if (array_values($isfilterselected)[0]) {
+                    $fullString = array_keys($isfilterselected)[0];
+                    $productIdsWithTypes = explode(',', $fullString);
+
+                    foreach ($productIdsWithTypes as $item) {
+                        $parts = explode('|', $item);
+                        if (isset($parts[1])) {
+                            $specVariantIds[$parts[1]][] = (string)$parts[0];
+                        } else {
+                            $specProductIds[] = (string)$parts[0];
+                        }
+                    }
+
+                    $sanitizedValue = str_replace(',', '.', $value);
+                    $this->selectedfilters[$sanitizedValue] = $specName;
+                }
             }
 
-            $sanitizedValue = str_replace(',', '.', $value);
-            $this->selectedfilters[$sanitizedValue] = $specName;
-          }
+            if (!empty($specProductIds)) {
+                $productIdsPerSpec[] = array_unique($specProductIds);
+            }
         }
 
-        if (!empty($specProductIds)) {
-          $productIdsPerSpec[] = array_unique($specProductIds);
+        $ids = [];
+
+        if (!empty($specVariantIds)) {
+            foreach ($specVariantIds as $parentId => $variants) {
+                $variantCount = array_count_values($variants);
+                $maxCount = max($variantCount);
+                $mostFrequentVariant = array_search($maxCount, $variantCount);
+                $ids[] = [(string)$mostFrequentVariant];
+            }
         }
-      }
 
-      $ids = [];
+        if (!empty($productIdsPerSpec)) {
+            $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
 
-      if (!empty($specVariantIds)) {
-        foreach ($specVariantIds as $parentId => $variants) {
-          $variantCount = array_count_values($variants);
-          $maxCount = max($variantCount);
-          $mostFrequentVariant = array_search($maxCount, $variantCount);
-          $ids[] = [(string)$mostFrequentVariant];
+            if (!empty($filteredSpecs)) {
+                $ids[] = array_intersect(...$filteredSpecs);
+            }
         }
-      }
 
-      if (!empty($productIdsPerSpec)) {
-        $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
-
-        if (!empty($filteredSpecs)) {
-          $ids[] = array_intersect(...$filteredSpecs);
+        if (!empty($ids)) {
+            $mergedIds = array_merge(...$ids);
+            $this->selectedKeys = !empty($mergedIds) ? $mergedIds : [];
         }
-      }
 
-      if (!empty($ids)) {
-        $mergedIds = array_merge(...$ids);
-        $this->selectedKeys = !empty($mergedIds) ? $mergedIds : [];
-      }
+        $this->buttonTotal = count($this->selectedKeys);
 
-      $this->buttonTotal = count($this->selectedKeys);
+        session()->put('filtered_values', [
+            'category_id' => $this->category['id'],
+            'queryfilters' => $this->queryfilters
+        ]);
 
-      session()->put('filtered_values', [
-        'category_id' => $this->category['id'],
-        'queryfilters' => $this->queryfilters
-      ]);
-
-      $this->emit('buttonTotalUpdated', $this->buttonTotal);
+        $this->emit('buttonTotalUpdated', $this->buttonTotal);
     } else {
-      $this->buttonTotal = Product::where('active', true)
-        ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
-        ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
-        ->whereHas('product_categories.category', function ($query) {
-            $query->where('id', $this->category['id']);
-        })
-        ->count();
-      
-      $this->emit('buttonTotalUpdated', $this->buttonTotal);
+
+        $this->selectedKeys = [];
+        $this->queryfilters = [];
+        $this->selectedfilters = [];
+        session()->forget('filtered_values');
+        
+        $this->buttonTotal = Product::where('active', true)
+            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
+            ->whereHas('product_categories.category', function ($query) {
+                $query->where('id', $this->category['id']);
+            })
+            ->count();
+        
+        $this->emit('buttonTotalUpdated', $this->buttonTotal);
     }
 }
+
 
 public function clearall()
 {

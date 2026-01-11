@@ -174,11 +174,5 @@ class WishlistProductsList extends Component
     Wishlist::where('session_id', $this->session_id)->where('product_id', $productId)->delete();
     $this->emit('wishlistProductRemoved');
     $this->emit('update-wish-' . $productId);
-
-    //Alpine
-    $this->dispatchBrowserEvent('wishlist-updated', [
-      'productId' => $productId,
-      'inWishlist' => false,
-    ]);
   }
 }
