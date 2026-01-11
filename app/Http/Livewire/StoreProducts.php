@@ -51,11 +51,11 @@ class StoreProducts extends Component
  public function mount($category = null)
 {
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
-
-    $categoryId = null;
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
       ->pluck('product_id')
       ->all();
+
+    $categoryId = null;
 
     if ($category) {
       $categoryId = $category['id'] ?? null;
