@@ -146,11 +146,9 @@
             <div class="product-modal__content"></div>
             <button class="product-modal__close">
                 <svg>
-                    <polyline points="4 14 10 14 10 20"></polyline>
-                    <polyline points="20 10 14 10 14 4"></polyline>
-                    <line x1="14" y1="10" x2="21" y2="3"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
             </button>
 
             @if ($product->media->where('type', 'full')->count() == 1)

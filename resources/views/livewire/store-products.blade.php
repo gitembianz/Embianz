@@ -96,6 +96,7 @@
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
+            <span>{!! app('label_plp_filter_label') ?? '' !!}</span>
         </button>
         <input class="controls__search" maxlength="100" type="text" name="search" id="search"
             wire:model.live.debounce.500ms="search" autocomplete="off"
@@ -107,6 +108,7 @@
                 <line x1="21" y1="14" x2="3" y2="14"></line>
                 <line x1="21" y1="18" x2="7" y2="18"></line>
             </svg>
+            <span>{!! app('label_plp_sort_label') ?? '' !!}</span>
         </button>
     </section>
 
@@ -440,12 +442,12 @@
                     </svg>
                 </button>
             </div>
-            <button class="filter__top filter__top--button" id="closeFilter">
-                @if (app()->has('label_display_filters_results'))
-                    {!! app('label_display_filters_results') !!}
-                @endif
-                <span>{{ $products->total() }}</span>
-            </button>
+<button class="filter__top filter__top--button" id="closeFilter" wire:ignore.self>
+    @if (app()->has('label_display_filters_results'))
+        {!! app('label_display_filters_results') !!}
+    @endif
+    <span id="buttonTotalSpan">{{ $buttonTotal ?? 0 }}</span>
+</button>
             <div class="filter__list">
                 @foreach ($filtervalues as $values)
                     <div class="dropfilter">
@@ -494,6 +496,14 @@
                 });
             });
         </script>
+<script>
+    document.addEventListener('livewire:load', function() {
+        Livewire.on('buttonTotalUpdated', function(buttonTotal) {
+            console.log('Button updated to:', buttonTotal);
+            document.getElementById('buttonTotalSpan').textContent = buttonTotal;
+        });
+    });
+</script>
     </div>
 
     <!-------------------------Sorting----------------------->

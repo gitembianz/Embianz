@@ -299,6 +299,9 @@ Vă mulțumim pentru înțelegere!', 'description' => 'maintenance content', 'cr
       ['parameter' => 'redirect_title', 'value' => 'Mulțumim pentru completarea formularului.', 'description' => 'Redirect page title', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'redirect_description', 'value' => 'Veți fi redirecționat la pagina principală în câteva secunde...', 'description' => 'Redirect page description', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
       ['parameter' => 'pdp_review_count_text', 'value' => 'reviews', 'description' => 'Review count text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'plp_filter_label', 'value' => 'Filtreaza', 'description' => 'Filtreaza', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+      ['parameter' => 'plp_sort_label', 'value' => 'Sorteaza', 'description' => 'Sorteaza', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
 
       // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
