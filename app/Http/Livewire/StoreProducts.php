@@ -216,10 +216,16 @@ class StoreProducts extends Component
       $query->whereIn('id', $this->selectedKeys);
     }
 
-    return $query
-      ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
-      ->orderBy('innerid', 'ASC')
-      ->paginate($this->loadAmount);
+  return $query
+    ->orderByRaw("
+        CASE 
+            WHEN preorder = 1 THEN 0 
+            WHEN quantity > 0 THEN 1 
+            ELSE 2 
+        END
+    ")
+    ->orderBy('innerid', 'ASC')
+    ->paginate($this->loadAmount);
   }
 
   public function getFilterValuesProperty()
