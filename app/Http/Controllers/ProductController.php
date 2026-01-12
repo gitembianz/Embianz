@@ -182,7 +182,8 @@ class ProductController extends Controller
         'products.name',
         DB::raw('MAX(products.long_description) as long_description'),  // Aggregate long_description
         DB::raw('MAX(products.seo_id) as seo_id'),  // Aggregate seo_id
-        DB::raw('MAX(products.ean) as ean'),  // Aggregate ean
+        DB::raw('MAX(products.ean) as ean'),
+        DB::raw('MAX(products.preorder) as preorder'),  // Aggregate ean
         DB::raw('MAX(products.sku) as sku'),  // Aggregate sku
         DB::raw('MAX(products.brand) as brand'),  // Aggregate brand
         DB::raw('MAX(products.active) as active'),  // Aggregate active
@@ -211,7 +212,6 @@ class ProductController extends Controller
 
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products->where('active', '=', 1), 'google');
-    $this->generateCsvFeed($products, 'salesforce');
     $this->generateCsvFeed($products->where('active', '=', 1), 'facebook');
     $this->generateCsvFeed($products->where('active', '=', 1), 'tiktok');
 
@@ -242,6 +242,9 @@ class ProductController extends Controller
           } else {
             $sale_price = '';
           }
+          $availability = ($product->preorder == 1 || $product->quantity > 0) 
+            ? 'in stock' 
+            : 'out of stock';
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->id),
@@ -254,50 +257,10 @@ class ProductController extends Controller
             'new',
             $price,
             $sale_price,
-            'in_stock',
+            $availability,
             $this->sanitizeData($product->brand),
             $this->sanitizeData($product->short_description),
             $this->sanitizeData($product->google_category)
-          ];
-        }
-      ],
-      'salesforce' => [
-        'fileName' => 'salesforce.csv',
-        'headers' => ['id', 'item_group_id', 'title', 'product_type', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand', 'custom_label_0', 'google_product_category'],
-        'columns' => function ($product) {
-          $store = $this->sanitizeData(app('global_site_url'));
-          $producturl = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
-          $image640 = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
-          $image640 = str_replace(' ', '%20', $image640);
-          $image70 = str_replace('resized640', 'resized70', $image640);
-          $category = $this->sanitizeData($product->category_seo_title ?? '');
-          return [
-            $store,
-            $this->sanitizeData($product->name),
-            $this->sanitizeData($product->id),
-            $this->sanitizeData($product->sku),
-            $this->sanitizeData($product->ean),
-            $this->sanitizeData($product->active),
-            $this->sanitizeData($product->is_new),
-            $this->sanitizeData($product->quantity),
-            $this->sanitizeData($product->popularity),
-            $this->sanitizeData($product->start_date),
-            $this->sanitizeData($product->end_date),
-            $this->sanitizeData($product->short_description),
-            $this->sanitizeData($product->long_description),
-            $this->sanitizeData($product->seo_id),
-            $this->sanitizeData($product->seo_title),
-            $producturl,
-            $image640,
-            $image70,
-            $product->price = $product->price ? floatval($product->price) : 0.00,
-            $this->sanitizeData($product->currency_name),
-            floatval($this->sanitizeData($product->vat)),
-            floatval($this->sanitizeData($product->price_no_vat)),
-            floatval($this->sanitizeData($product->discount)),
-            $category,
-            $this->sanitizeData($product->brand),
-            'Store Product'
           ];
         }
       ],
@@ -308,12 +271,15 @@ class ProductController extends Controller
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
           $image = str_replace(' ', '%20', $image);
+          $availability = ($product->preorder == 1 || $product->quantity > 0) 
+            ? 'in stock' 
+            : 'out of stock';
           $category = $this->sanitizeData($product->category_seo_title ?? '');
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->name),
             strip_tags($this->sanitizeData($product->long_description)),
-            'in stock',
+            $availability,
             'new',
             $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name),
             $link,
@@ -330,12 +296,17 @@ class ProductController extends Controller
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
           $image = str_replace(' ', '%20', $image);
+
+           $availability = ($product->preorder == 1 || $product->quantity > 0) 
+            ? 'in stock' 
+            : 'out of stock';
+
           $category = $this->sanitizeData($product->category_seo_title ?? '');
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->name),
             strip_tags($this->sanitizeData($product->long_description)),
-            'in stock',
+            $availability,
             'new',
             $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name),
             $link,

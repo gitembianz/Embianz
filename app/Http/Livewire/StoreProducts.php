@@ -23,13 +23,13 @@ class StoreProducts extends Component
   public $selectedvariantsKeys = [];
   public $selectedfilters = [];
   public $wishlistItems;
+  public $buttonTotal = 0;
 
   public function render()
   {
     return view('livewire.store-products', [
       'products' => $this->products,
       'filtervalues' => $this->filtervalues,
-
     ]);
   }
 
@@ -48,15 +48,14 @@ class StoreProducts extends Component
     return in_array($productId, $this->wishlistItems);
   }
 
-  public function mount($category = null)
-  {
-
+ public function mount($category = null)
+{
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+
+    $categoryId = null;
     $this->wishlistItems = Wishlist::where('session_id', $this->session_id)
       ->pluck('product_id')
       ->all();
-
-    $categoryId = null;
 
     if ($category) {
       $categoryId = $category['id'] ?? null;
@@ -67,7 +66,6 @@ class StoreProducts extends Component
     }
 
     if ($categoryId) {
-
       $cached = collect(resolve(\App\Services\CategoryService::class)->getAll())
         ->firstWhere('id', (int) $categoryId);
 
@@ -85,7 +83,6 @@ class StoreProducts extends Component
         : null;
     }
 
-
     $filteredValues = session()->get('filtered_values', []);
 
     $this->loadAmount = $filteredValues['loadAmount']
@@ -99,12 +96,31 @@ class StoreProducts extends Component
       if (!empty($filteredValues['queryfilters'])) {
         $this->queryfilters = $filteredValues['queryfilters'];
         $this->applyFilter();
+      } else {
+        $this->buttonTotal = Product::where('active', true)
+          ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+          ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
+          ->whereHas('product_categories.category', function ($query) {
+              $query->where('id', $this->category['id']);
+          })
+          ->count();
       }
     } else {
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
+      
+      if ($this->category) {
+        $this->buttonTotal = Product::where('active', true)
+          ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+          ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
+          ->whereHas('product_categories.category', function ($query) {
+              $query->where('id', $this->category['id']);
+          })
+          ->count();
+      }
     }
-  }
+}
+
 
   public function loadMore()
   {
@@ -121,7 +137,6 @@ class StoreProducts extends Component
     }
   }
 
-  // products function only for query, not from cache
   public function getProductsProperty()
   {
     $query = Product::search($this->search)
@@ -166,6 +181,7 @@ class StoreProducts extends Component
         }
       }
     }
+
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', 'desc');
@@ -195,21 +211,26 @@ class StoreProducts extends Component
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    if (!empty($this->selectedKeys)) {
+
+    if (!empty($this->queryfilters)) {
       $query->whereIn('id', $this->selectedKeys);
     }
 
-    return $query
-      ->orderByRaw('CASE WHEN quantity > 0 THEN 0 ELSE 1 END')
-      ->orderBy('innerid', 'ASC')
-      ->paginate($this->loadAmount);
+  return $query
+    ->orderByRaw("
+        CASE 
+            WHEN preorder = 1 THEN 0 
+            WHEN quantity > 0 THEN 1 
+            ELSE 2 
+        END
+    ")
+    ->orderBy('innerid', 'ASC')
+    ->paginate($this->loadAmount);
   }
 
-  // filters fro cache
   public function getFilterValuesProperty()
   {
     $query = Cache::get('cached_specifications', []);
-
 
     if ($this->category != null) {
       $query = collect($query)->map(function ($spec) {
@@ -260,90 +281,120 @@ class StoreProducts extends Component
     return $query;
   }
 
-  public function applyFilter()
-  {
+public function applyFilter()
+{
     $this->selectedKeys = [];
     $this->selectedfilters = [];
     $productIdsPerSpec = [];
     $specVariantIds = [];
-    $totalspecs = 0;
+    $this->resetPage();
 
-    if (!empty($this->queryfilters)) {
-      foreach ($this->queryfilters as $specName => $values) {
-        $specProductIds = [];
 
-        foreach ($values as $value => $isfilterselected) {
-          if (array_values($isfilterselected)[0]) {
-            $fullString = array_keys($isfilterselected)[0];
-            $productIdsWithTypes = explode(',', $fullString);
-
-            foreach ($productIdsWithTypes as $item) {
-              $parts = explode('|', $item);
-              if (isset($parts[1])) {
-                $specVariantIds[$parts[1]][] = (string)$parts[0];
-              } else {
-                $specProductIds[] = (string)$parts[0];
-              }
+    $activeFilters = [];
+    foreach ($this->queryfilters as $specName => $values) {
+        $activeValues = array_filter($values, function($filterData) {
+            if (is_array($filterData)) {
+                return array_values($filterData)[0] === true;
             }
-
-            $sanitizedValue = str_replace(',', '.', $value);
-            $this->selectedfilters[$sanitizedValue] = $specName;
-          }
+            return $filterData === true;
+        });
+        
+        if (!empty($activeValues)) {
+            $activeFilters[$specName] = $activeValues;
         }
-
-        if (!empty($specProductIds)) {
-          $productIdsPerSpec[] = array_unique($specProductIds);
-        }
-
-        $totalspecs++;
-      }
-
-      $ids = [];
-
-      // Handle variant filtering
-      if (!empty($specVariantIds)) {
-        foreach ($specVariantIds as $parentId => $variants) {
-          $variantCount = array_count_values($variants);
-          $maxCount = max($variantCount);
-
-          $mostFrequentVariant = array_search($maxCount, $variantCount);
-          $ids[] = [(string)$mostFrequentVariant];
-        }
-      }
-
-      if (!empty($productIdsPerSpec)) {
-        $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
-
-        if (!empty($filteredSpecs)) {
-          $ids[] = array_intersect(...$filteredSpecs);
-        }
-      }
-
-
-
-      $mergedIds = array_merge(...$ids);
-      $this->selectedKeys = !empty($mergedIds) ? $mergedIds : $this->products->pluck('id')->toArray();
-
-      session()->put('filtered_values', [
-        'category_id' => $this->category['id'],
-        'queryfilters' => $this->queryfilters
-      ]);
-
-      $this->emit('filtersApplied', count($this->selectedKeys));
     }
 
-    return $this->products->whereIn('id', $this->selectedKeys);
-  }
 
-  public function clearall()
-  {
+    if (!empty($activeFilters)) {
+        foreach ($activeFilters as $specName => $values) {
+            $specProductIds = [];
+
+            foreach ($values as $value => $isfilterselected) {
+                if (array_values($isfilterselected)[0]) {
+                    $fullString = array_keys($isfilterselected)[0];
+                    $productIdsWithTypes = explode(',', $fullString);
+
+                    foreach ($productIdsWithTypes as $item) {
+                        $parts = explode('|', $item);
+                        if (isset($parts[1])) {
+                            $specVariantIds[$parts[1]][] = (string)$parts[0];
+                        } else {
+                            $specProductIds[] = (string)$parts[0];
+                        }
+                    }
+
+                    $sanitizedValue = str_replace(',', '.', $value);
+                    $this->selectedfilters[$sanitizedValue] = $specName;
+                }
+            }
+
+            if (!empty($specProductIds)) {
+                $productIdsPerSpec[] = array_unique($specProductIds);
+            }
+        }
+
+        $ids = [];
+
+        if (!empty($specVariantIds)) {
+            foreach ($specVariantIds as $parentId => $variants) {
+                $variantCount = array_count_values($variants);
+                $maxCount = max($variantCount);
+                $mostFrequentVariant = array_search($maxCount, $variantCount);
+                $ids[] = [(string)$mostFrequentVariant];
+            }
+        }
+
+        if (!empty($productIdsPerSpec)) {
+            $filteredSpecs = array_filter($productIdsPerSpec, fn($ids) => !empty($ids));
+
+            if (!empty($filteredSpecs)) {
+                $ids[] = array_intersect(...$filteredSpecs);
+            }
+        }
+
+        if (!empty($ids)) {
+            $mergedIds = array_merge(...$ids);
+            $this->selectedKeys = !empty($mergedIds) ? $mergedIds : [];
+        }
+
+        $this->buttonTotal = count($this->selectedKeys);
+
+        session()->put('filtered_values', [
+            'category_id' => $this->category['id'],
+            'queryfilters' => $this->queryfilters
+        ]);
+
+        $this->emit('buttonTotalUpdated', $this->buttonTotal);
+    } else {
+
+        $this->selectedKeys = [];
+        $this->queryfilters = [];
+        $this->selectedfilters = [];
+        session()->forget('filtered_values');
+        
+        $this->buttonTotal = Product::where('active', true)
+            ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))
+            ->where('end_date', '>=', now(config('app.timezone'))->format('Y-m-d'))
+            ->whereHas('product_categories.category', function ($query) {
+                $query->where('id', $this->category['id']);
+            })
+            ->count();
+        
+        $this->emit('buttonTotalUpdated', $this->buttonTotal);
+    }
+}
+
+
+public function clearall()
+{
     $this->queryfilters = [];
     session()->forget('filtered_values');
     $this->applyFilter();
-  }
+    
+}
 
-  public function removeSpec($key, $specname)
-  {
+public function removeSpec($key, $specname)
+{
     $sanitizedkey = str_replace('.', ',', $key);
 
     unset($this->queryfilters[$specname][$sanitizedkey]);
@@ -361,5 +412,6 @@ class StoreProducts extends Component
     }
     unset($this->selectedfilters[$sanitizedkey]);
     $this->applyFilter();
-  }
+}
+
 }

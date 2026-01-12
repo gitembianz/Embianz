@@ -15,25 +15,6 @@
             $decimal = ',';
         }
     @endphp
-
-    {{-- wishlist new system --}}
-    <script>
-        document.addEventListener("alpine:init", () => {
-            Alpine.data("wishlistButton", e => ({
-                productId: e.productId,
-                isInWishlist: e.initial,
-                loading: !1,
-                toggle() {
-                    this.loading || (this.loading = !0, this.isInWishlist = !this.isInWishlist, Livewire
-                        .emit(this.isInWishlist ? "wishlist:add" : "wishlist:remove", this
-                            .productId), this.loading = !1)
-                }
-            }))
-        });
-    </script>
-    @livewire('wishlist-actions')
-
-    {{-- breadcrumbs --}}
     @if (app()->has('global_display_breadcrumbs') && app('global_display_breadcrumbs') === 'true')
         <ol class="breadcrumbs container">
             <li>
@@ -52,6 +33,7 @@
                     </a>
                 </li>
             @endif
+            <!-------------------If Category is appear---  --------------->
             @if ($category && $category['id'] != app('global_default_category'))
                 @foreach ($this->breadcrumbs as $breadcrumb)
                     @if ($breadcrumb['id'] === $category['id'])
@@ -71,6 +53,7 @@
                     @endif
                 @endforeach
             @endif
+
         </ol>
     @endif
 
@@ -96,6 +79,7 @@
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
+            <span>{!! app('label_plp_filter_label') ?? '' !!}</span>
         </button>
         <input class="controls__search" maxlength="100" type="text" name="search" id="search"
             wire:model.live.debounce.500ms="search" autocomplete="off"
@@ -107,9 +91,9 @@
                 <line x1="21" y1="14" x2="3" y2="14"></line>
                 <line x1="21" y1="18" x2="7" y2="18"></line>
             </svg>
+            <span>{!! app('label_plp_sort_label') ?? '' !!}</span>
         </button>
     </section>
-
     <!---------------------------- Display filters-------------------------->
     @if (!empty($selectedfilters))
         <section class="tag container">
@@ -133,7 +117,6 @@
             </button>
         </section>
     @endif
-
     <!-------------------------Catalogue------------------------>
     <section class="catalogue container">
         @if ($products->isEmpty())
@@ -166,13 +149,17 @@
                             href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
                             @if ($element->media->first() != null)
                                 <img title="{{ $product->name }}, {{ $product->short_description }}"
-                                    @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif
+                                    @if ($loop->first) loading="eager" fetchpriority="high"
+                    @else
+                    loading="lazy" @endif
                                     class="card-image"
                                     src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
                                     alt="{{ $element->name }}">
                             @else
                                 <img title="Default image"
-                                    @if ($loop->first) loading="eager" fetchpriority="high" @else loading="lazy" @endif
+                                    @if ($loop->first) loading="eager" fetchpriority="high"
+                    @else
+                    loading="lazy" @endif
                                     class="card-image" src="/images/store/default/default300.webp"
                                     alt="something wrong">
                             @endif
@@ -191,7 +178,9 @@
                         @if ($price)
                             @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
                                 <p
-                                    class="card-status @if ($discount) save-secondary @else save @endif ">
+                                    class="card-status @if ($discount) save-secondary
+          @else
+             save @endif ">
                                     @if (app()->has('label_product_status_stock'))
                                         {!! app('label_product_status_stock') !!}
                                     @endif
@@ -222,24 +211,15 @@
                                 @endif
                             </p>
                         @endif
-
-                        <div x-data="wishlistButton({
-                            productId: {{ $element->id }},
-                            initial: @js($this->isInWishlist($element->id))
-                        })" x-init="window.addEventListener('wishlist-updated', (e) => {
-                            if (e.detail.productId === productId) {
-                                isInWishlist = e.detail.inWishlist
-                            }
-                        })" class="card__action">
-                            <button class="favorite__btn" :class="{ 'active': isInWishlist }" @click.prevent="toggle"
-                                aria-label="Add to wishlist">
-                                <svg viewBox="0 0 512 512" width="20">
-                                    <path
-                                        d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
-                                </svg>
-                            </button>
-                        </div>
-
+                        @livewire(
+                            'product-wishlist-button',
+                            [
+                                'productId' => $element->id,
+                                'class' => 'card__action',
+                                'is_in_wishlist' => $this->isInWishlist($element->id),
+                            ],
+                            key('w' . $element->id)
+                        )
 
                         <div class="card-info">
                             <div class="card-text">
@@ -362,9 +342,7 @@
                                     $price &&
                                     $category['display_variant_price'] == true)
                                 @livewire('add-to-cart-button', ['product' => $element], key('pro' . $element->id))
-                            @elseif(
-                                ($price && $element->type == 'parent') ||
-                                    ($element->type === 'variant' && $category['accepted_items'] === 'parents'))
+                            @elseif(($price && $element->type == 'parent') || ($element->type === 'variant' && $category['accepted_items'] === 'parents'))
                                 <div class="card__button--wrapper">
                                     <button class="card__button">
 
@@ -396,7 +374,6 @@
             @endunless
         @endif
     </section>
-
     <!-----------------------Load more---------------------->
     @if (app()->has('global_pagination') && app('global_pagination') === 'links')
         <section class="container">
@@ -409,7 +386,6 @@
             </section>
         @endif
     @endif
-
     <!----------------------Categorie + detalii--------------------->
     @if ($category)
         <section class="section__header container">
@@ -440,12 +416,12 @@
                     </svg>
                 </button>
             </div>
-            <button class="filter__top filter__top--button" id="closeFilter">
-                @if (app()->has('label_display_filters_results'))
-                    {!! app('label_display_filters_results') !!}
-                @endif
-                <span>{{ $products->total() }}</span>
-            </button>
+<button class="filter__top filter__top--button" id="closeFilter" wire:ignore.self>
+    @if (app()->has('label_display_filters_results'))
+        {!! app('label_display_filters_results') !!}
+    @endif
+    <span id="buttonTotalSpan">{{ $buttonTotal ?? 0 }}</span>
+</button>
             <div class="filter__list">
                 @foreach ($filtervalues as $values)
                     <div class="dropfilter">
@@ -494,8 +470,15 @@
                 });
             });
         </script>
+<script>
+    document.addEventListener('livewire:load', function() {
+        Livewire.on('buttonTotalUpdated', function(buttonTotal) {
+            console.log('Button updated to:', buttonTotal);
+            document.getElementById('buttonTotalSpan').textContent = buttonTotal;
+        });
+    });
+</script>
     </div>
-
     <!-------------------------Sorting----------------------->
     <div class="filter" id="sortList">
         <div class="filter__content" id="sortContent">
@@ -607,7 +590,6 @@
             </div>
         </div>
     </div>
-
     <!---------------------- Support Center -------------------->
     <x-support />
     <script src="/script/store/catalog.js" defer></script>

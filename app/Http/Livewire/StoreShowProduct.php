@@ -56,7 +56,6 @@ class StoreShowProduct extends Component
       'product_reviews' => $this->productreviews,
     ]);
   }
-
   public function mount($productId)
   {
     $this->limitload = (int) (app('global_review_limit_load') ?? 8);
@@ -91,6 +90,9 @@ class StoreShowProduct extends Component
   {
     $this->limitload += (int) (app('global_review_limit_load') ?? 8);
   }
+
+
+
 
   public function getProductReviewsProperty()
   {
@@ -127,7 +129,6 @@ class StoreShowProduct extends Component
         ->first()
     );
   }
-
   public function getProductRatingBreakdownProperty()
   {
     if (app('global_review_system') !== 'true') {
@@ -155,6 +156,9 @@ class StoreShowProduct extends Component
       }
     );
   }
+
+
+
 
   public function getLastProductProperty()
   {
@@ -190,6 +194,7 @@ class StoreShowProduct extends Component
       return collect();
     }
   }
+
 
   public function isInWishlist($productId)
   {
@@ -234,6 +239,7 @@ class StoreShowProduct extends Component
             $query->select('product_id', 'id', 'parent_id')
               ->orderBy('sequence', 'desc')
               ->orderByRaw('(SELECT innerid FROM products WHERE products.id = product_id) DESC')
+              ->limit(app('global_limit_slideritems'))
               ->with(['product' => function ($query) {
                 $query->where('active', 1)
                   ->where('start_date', '<=', now(config('app.timezone'))->format('Y-m-d'))

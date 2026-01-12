@@ -45,8 +45,8 @@ class ProductDetails extends Component
         'product_prices',
         'reviews' => function ($query) {
           $query->where('approved', true)
-            ->select('id', 'product_id', 'acronim', 'score', 'comment', 'created_at')
-            ->orderBy('created_at', 'desc');
+                ->select('id', 'product_id', 'acronim', 'score', 'comment', 'created_at')
+                ->orderBy('created_at', 'desc');
         },
         'parent' => function ($query) {
           $query->with(['variants' => function ($query) {
@@ -73,11 +73,12 @@ class ProductDetails extends Component
           'product_prices' => function ($query) {
             $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
           },
-          'reviews' => function ($query) {
-            $query->where('approved', true)
-              ->select('id', 'product_id', 'acronim', 'value', 'comment', 'approved', 'created_at')
-              ->orderBy('created_at', 'desc');
-          },
+'reviews' => function ($query) {
+    $query->where('approved', true)
+          ->select('id', 'product_id', 'acronim', 'value', 'comment', 'approved', 'created_at')
+          // ↑ ADD 'approved' here!
+          ->orderBy('created_at', 'desc');
+},
           'wishlists' => function ($query) {
             $query->where('session_id', $this->session_id);
           },
@@ -107,6 +108,7 @@ class ProductDetails extends Component
     $this->quantity = 1;
     $this->is_in_wishlist = in_array($prodid, $this->wishlistItems);
   }
+
 
   public function getVariantsProperty()
   {
@@ -156,6 +158,9 @@ class ProductDetails extends Component
     return $variantsGroupedByVariantId;
   }
 
+
+
+
   public function incrementCounter()
   {
     $this->limit = $this->product->quantity;
@@ -184,9 +189,11 @@ class ProductDetails extends Component
     if (!$cart) {
       $baseName = class_basename(Cart::class);
 
+      // Get the last cart name and calculate the next cart number
       $lastCart = Cart::latest('id')->first();
       $cartNumber = $lastCart ? ((int)str_replace("{$baseName}_", '', $lastCart->name) + 1) : 1;
 
+      // Generate the unique name
       $uniqueName = "{$baseName}_" . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
 
       $cart = Cart::create([
@@ -270,7 +277,6 @@ class ProductDetails extends Component
     }
     $this->emit('cartUpdated');
   }
-
   public function getPromotionsProperty()
   {
     if (app()->has('global_promotion_on') && app('global_promotion_on') === "true") {
@@ -286,9 +292,9 @@ class ProductDetails extends Component
       return collect();
     }
   }
-
   private function createPromotion($userId, $promo)
   {
+    // Check if the promotion already exists
     $existingPromotion = UserPromotions::where('session_id', $userId)
       ->where('promotion_id', $promo['id'])
       ->first();
@@ -312,6 +318,7 @@ class ProductDetails extends Component
       ]
     );
 
+    // If the promotion was newly created, emit the event
     if (!$existingPromotion) {
       $message = app()->has('label_confetti_modal_text') ? app('label_confetti_modal_text') : "Ai primit din partea noastra o reducere! Felicitari";
 

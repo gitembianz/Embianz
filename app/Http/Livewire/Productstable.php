@@ -1144,42 +1144,36 @@ class Productstable extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function ProductshuffledIds()
-  {
-    $products = Product::all();
-
-    $shuffledIds = range(1, $products->count());
-    shuffle($shuffledIds);
-
-    foreach ($products as $index => $product) {
-      $product->innerid = $shuffledIds[$index];
-      $product->save();
-    }
+public function ProductshuffledIds()
+{
+    DB::statement("
+        UPDATE products 
+        SET innerid = (
+            SELECT rn FROM (
+                SELECT id, ROW_NUMBER() OVER (ORDER BY RAND()) AS rn 
+                FROM products
+            ) shuffled 
+            WHERE shuffled.id = products.id
+        )
+    ");
     session()->flash('notification', [
       'message' => 'Product ids shuffled successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function Relatedshuffleseq()
-  {
-    $products = Product::all();
+public function Relatedshuffleseq()
+{
+    DB::statement("
+        UPDATE related__products rp1
+        JOIN (
+            SELECT id,
+                   ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY RAND()) AS new_sequence
+            FROM related__products
+        ) shuffled ON rp1.id = shuffled.id
+        SET rp1.sequence = shuffled.new_sequence
+    ");
 
-    $shuffledIds = range(1, $products->count());
-    shuffle($shuffledIds);
-
-    foreach ($products  as $product) {
-      if ($product->related_product->count() != 0) {
-        $shuffledIds = range(1, $product->related_product->count());
-        shuffle($shuffledIds);
-        foreach ($product->related_product as $index => $related) {
-          $related->sequence = $shuffledIds[$index];
-          $related->save();
-        }
-      } else {
-        continue;
-      }
-    }
     Cache::forget('cached_products');
 
     session()->flash('notification', [
