@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
-use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +17,6 @@ class StoreCart extends Component
   public $message = null;
   public $session_id;
   public $aplicabble_voucher = false;
-  public $wishlistItems;
 
 
   protected $listeners = [
@@ -28,13 +26,8 @@ class StoreCart extends Component
   public function mount()
   {
     $this->session_id = request()->cookie('sessionId') ?? session()->getId();
+  }
 
-    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-  }
-  public function isInWishlist($productId)
-  {
-    return in_array($productId, $this->wishlistItems);
-  }
   public function getCartProperty()
   {
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
