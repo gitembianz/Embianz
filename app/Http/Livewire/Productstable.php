@@ -1144,17 +1144,18 @@ class Productstable extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function ProductshuffledIds()
-  {
-    $products = Product::all();
-
-    $shuffledIds = range(1, $products->count());
-    shuffle($shuffledIds);
-
-    foreach ($products as $index => $product) {
-      $product->innerid = $shuffledIds[$index];
-      $product->save();
-    }
+public function ProductshuffledIds()
+{
+    DB::statement("
+        UPDATE products 
+        SET innerid = (
+            SELECT rn FROM (
+                SELECT id, ROW_NUMBER() OVER (ORDER BY RAND()) AS rn 
+                FROM products
+            ) shuffled 
+            WHERE shuffled.id = products.id
+        )
+    ");
     session()->flash('notification', [
       'message' => 'Product ids shuffled successfully!',
       'type' => 'success',
