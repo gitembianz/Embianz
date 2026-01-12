@@ -265,8 +265,8 @@ class ProductController extends Controller
             $sale_price = '';
           }
           $availability = ($product->preorder == 1 || $product->quantity > 0) 
-            ? 'in stock' 
-            : 'out of stock';
+            ? 'in_stock' 
+            : 'out_of_stock';
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->id),
