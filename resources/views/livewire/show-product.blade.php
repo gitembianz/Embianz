@@ -362,7 +362,7 @@
             </div>
 
         {{-- Comments --}}
-        <div class="textarea__tabs details__long">
+        <div class="textarea__tabs">
             @if ($editproduct === null)
                 <span class="disabled">{{ $product->comments }}</span>
             @else
@@ -370,7 +370,15 @@
             @endif
             <label for="product__name">Comments</label>
         </div>
-
+        <div class="textarea__tabs">
+            @if ($editproduct === null)
+                <span class="disabled">{{ $product->comments }}</span>
+            @else
+                <textarea type="text" placeholder=" " name="product__name" wire:model.defer="prod.comments"></textarea>
+            @endif
+            <label for="product__name">Product Highlights (1 per line)</label>
+        </div>
+        
         {{-- Product Long Description --}}
         <div class="textarea__tabs details__long">
             @if ($editproduct === null)
