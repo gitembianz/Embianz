@@ -1,5 +1,21 @@
 <div id="store-show-product">
 
+    {{-- wishlist metoda noua --}}
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data("wishlistButton", e => ({
+                productId: e.productId,
+                isInWishlist: e.initial,
+                loading: !1,
+                toggle() {
+                    this.loading || (this.loading = !0, this.isInWishlist = !this.isInWishlist, Livewire
+                        .emit(this.isInWishlist ? "wishlist:add" : "wishlist:remove", this
+                            .productId), this.loading = !1)
+                }
+            }))
+        });
+    </script>
+    @livewire('product-wishlist-button')
     @php
         if (app()->has('global_numberformat_element')) {
             if (app('global_numberformat_element') === '.') {
@@ -128,9 +144,9 @@
             <div class="product-modal__content"></div>
             <button class="product-modal__close">
                 <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
             </button>
 
             @if ($product->media->where('type', 'full')->count() == 1)
@@ -461,7 +477,25 @@
                                         src="/images/store/default/default300.webp" alt="something wrong">
                                 @endif
                             </a>
-                            @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key('relw' . $index))
+
+                            {{-- wishlist metoda noua alpine.js --}}
+                            <div x-data="wishlistButton({
+                                productId: {{ $product->product->id }},
+                                initial: @js($this->isInWishlist($product->product->id))
+                            })" x-init="window.addEventListener('wishlist-updated', (e) => {
+                                if (e.detail.productId === productId) {
+                                    isInWishlist = e.detail.inWishlist
+                                }
+                            })" class="card__action">
+                                <button class="favorite__btn" :class="{ 'active': isInWishlist }"
+                                    @click.prevent="toggle" aria-label="Add to wishlist">
+                                    <svg viewBox="0 0 512 512" width="20">
+                                        <path
+                                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                                    </svg>
+                                </button>
+                            </div>
+
                             @php
                                 if ($product->product->product_prices->count() != 0) {
                                     $price = number_format(
@@ -611,16 +645,16 @@
         </section>
         <section id="lastseenSlider" class="related__slider container">
 
-                <button class="related__btnlast card-slider__button prev" aria-label="Previous related slider">
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="related__btnlast card-slider__button next" aria-label="Next related slider">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
+            <button class="related__btnlast card-slider__button prev" aria-label="Previous related slider">
+                <svg>
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="related__btnlast card-slider__button next" aria-label="Next related slider">
+                <svg>
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
 
             <div class="related__wrapperlast">
                 @foreach ($last_visited_products as $key => $product)
@@ -637,7 +671,27 @@
                                     src="/images/store/default/default300.webp" alt="something wrong">
                             @endif
                         </a>
-                        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->id)], key('lastw' . $key))
+
+
+                         {{-- wishlist metoda noua alpine.js --}}
+
+                            <div x-data="wishlistButton({
+                                productId: {{ $product->id }},
+                                initial: @js($product->wishlists->isNotEmpty())
+                            })" x-init="window.addEventListener('wishlist-updated', (e) => {
+                                if (e.detail.productId === productId) {
+                                    isInWishlist = e.detail.inWishlist
+                                }
+                            })" class="card__action">
+                                <button class="favorite__btn" :class="{ 'active': isInWishlist }"
+                                    @click.prevent="toggle" aria-label="Add to wishlist">
+                                    <svg viewBox="0 0 512 512" width="20">
+                                        <path
+                                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                                    </svg>
+                                </button>
+                            </div>
+
                         <?php if ($product->product_prices->count() != 0) {
                             $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -649,9 +703,7 @@
                         @if ($price)
                             @if (($product->quantity < app('global_low_stock') && $product->quantity > 0) || $product->low_stock)
                                 <p
-                                    class="card-status @if ($discount) save-secondary
-          @else
-             save @endif ">
+                                    class="card-status @if ($discount) save-secondary @else save @endif ">
                                     @if (app()->has('label_product_status_stock'))
                                         {!! app('label_product_status_stock') !!}
                                     @endif
@@ -885,7 +937,8 @@
                     @endphp
 
                     <div class="container" style="padding-top: 15px" data-review>
-                        <div @if ($loop->last) id="last_record" @endif class="article-card" style="height: auto; !important;">
+                        <div @if ($loop->last) id="last_record" @endif class="article-card"
+                            style="height: auto; !important;">
                             <div class="article-content">
                                 <h2 class="article-title">{{ $review->acronim }}</h2>
                                 <div class="ratingscore">
@@ -965,31 +1018,31 @@
             }
 
             /* ---------------- RENDER ---------------- */
-let isInitialPageLoad = true;
+            let isInitialPageLoad = true;
 
-function render(withAnimation = false) {
-    const start = (currentPage - 1) * perPage;
-    const end = start + perPage;
+            function render(withAnimation = false) {
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
 
-    if (withAnimation) animateOut();
+                if (withAnimation) animateOut();
 
-    setTimeout(() => {
-        reviews.forEach((el, index) => {
-            el.style.display = (index >= start && index < end) ? '' : 'none';
-        });
+                setTimeout(() => {
+                    reviews.forEach((el, index) => {
+                        el.style.display = (index >= start && index < end) ? '' : 'none';
+                    });
 
-        renderPagination();
-        syncState();
+                    renderPagination();
+                    syncState();
 
-        if (withAnimation) animateIn();
+                    if (withAnimation) animateIn();
 
-        if (!isInitialPageLoad) {
-          //  document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
-        }
-        isInitialPageLoad = false;
+                    if (!isInitialPageLoad) {
+                        //  document.getElementById("reviewstop")?.scrollIntoView({ behavior: "smooth" });
+                    }
+                    isInitialPageLoad = false;
 
-    }, withAnimation ? 200 : 0);  
-} 
+                }, withAnimation ? 200 : 0);
+            }
 
             /* ---------------- PAGINATION ---------------- */
 
@@ -1047,7 +1100,7 @@ function render(withAnimation = false) {
                     if (disabled) return;
                     currentPage = page;
                     render(true);
-                  //  document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'});
+                    //  document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'});
                 };
 
                 li.appendChild(btn);
