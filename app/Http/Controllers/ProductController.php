@@ -166,7 +166,7 @@ class ProductController extends Controller
       ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
       ->leftJoin('media', function ($join) {
         $join->on('item_media.media_id', '=', 'media.id')
-          ->where('media.type', '=', 'full')
+          ->where('media.type', '=', 'original')
           ->where('media.sequence', '=', '1');
       })
       ->leftJoin('products_categories', function ($join) {
@@ -209,6 +209,19 @@ class ProductController extends Controller
       ->groupBy('products.id', 'products.name', 'categories.seo_title')
       ->get();
 
+      foreach ($products as $product) {
+    $product->additional_images = DB::table('item_media')
+        ->join('media', function ($join) {
+            $join->on('item_media.media_id', '=', 'media.id')
+                ->where('media.type', '=', 'original')
+                ->whereBetween('media.sequence', [2, 8]);
+        })
+        ->where('item_media.mediable_id', $product->id)
+        ->orderBy('media.sequence', 'asc')
+        ->select('media.path', 'media.name')
+        ->get();
+}
+
 
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products->where('active', '=', 1), 'google');
@@ -230,11 +243,20 @@ class ProductController extends Controller
     $feeds = [
       'google' => [
         'fileName' => 'google.csv',
-        'headers' => ['id', 'item_group_id', 'title', 'product_type', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'sale_price', 'availability', 'brand', 'custom_label_0', 'google_product_category'],
+        'headers' => ['id', 'item_group_id', 'title', 'product_type', 'description', 'link', 'mobile_link', 'image_link', 'additional_image_link', 'condition', 'price', 'sale_price', 'availability', 'brand', 'custom_label_0', 'google_product_category'],
         'columns' => function ($product) {
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
           $image = str_replace(' ', '%20', $image);
+          $additionalImages = '';
+        if (isset($product->additional_images) && $product->additional_images->count() > 0) {
+            $additionalImages = $product->additional_images
+                ->map(function ($img) {
+                    $url = env('APP_URL') . "/" . $this->sanitizeData($img->path) . $this->sanitizeData($img->name);
+                    return str_replace(' ', '%20', $url);
+                })
+                ->implode(',');
+        }
           $category = $this->sanitizeData($product->short_description);
           $price = $this->sanitizeData($product->value_no_discount) . " " . $this->sanitizeData($product->currency_name);
           if ($product->value_no_discount != $product->price) {
@@ -243,8 +265,8 @@ class ProductController extends Controller
             $sale_price = '';
           }
           $availability = ($product->preorder == 1 || $product->quantity > 0) 
-            ? 'in stock' 
-            : 'out of stock';
+            ? 'in_stock' 
+            : 'out_of_stock';
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->id),
@@ -254,6 +276,7 @@ class ProductController extends Controller
             $link,
             $link,
             $image,
+            $additionalImages,
             'new',
             $price,
             $sale_price,
