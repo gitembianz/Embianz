@@ -291,7 +291,7 @@ class ProductController extends Controller
       ],
       'facebook' => [
         'fileName' => 'facebook.csv',
-        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'google_product_category'],
+        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price','item_group_id,', 'link', 'image_link', 'brand', 'google_product_category'],
         'columns' => function ($product) {
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
@@ -300,13 +300,22 @@ class ProductController extends Controller
             ? 'in stock' 
             : 'out of stock';
           $category = $this->sanitizeData($product->category_seo_title ?? '');
+          $parentid = $this->sanitizeData($product->parentid);
+          $price = $this->sanitizeData($product->value_no_discount) . " " . $this->sanitizeData($product->currency_name);
+          if ($product->value_no_discount != $product->price) {
+            $sale_price = $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name);
+          } else {
+            $sale_price = '';
+          }
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->name),
             strip_tags($this->sanitizeData($product->long_description)),
             $availability,
             'new',
-            $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name),
+            $price,
+            $sale_price,
+            $parentid,
             $link,
             $image,
             $this->sanitizeData($product->brand),
