@@ -189,6 +189,7 @@ class ProductController extends Controller
         DB::raw('MAX(products.active) as active'),  // Aggregate active
         DB::raw('MAX(products.quantity) as quantity'),  // Aggregate quantity
         DB::raw('MAX(products.popularity) as popularity'),  // Aggregate popularity
+        DB::raw('MAX(products.parent_id) as parentid'),
         DB::raw('MAX(products.short_description) as short_description'),  // Aggregate short_description
         DB::raw('MAX(products.start_date) as start_date'),  // Aggregate start_date
         DB::raw('MAX(products.end_date) as end_date'),  // Aggregate end_date
@@ -257,6 +258,7 @@ class ProductController extends Controller
                 })
                 ->implode(',');
         }
+          $parentid = $this->sanitizeData($product->parentid);
           $category = $this->sanitizeData($product->short_description);
           $price = $this->sanitizeData($product->value_no_discount) . " " . $this->sanitizeData($product->currency_name);
           if ($product->value_no_discount != $product->price) {
@@ -269,7 +271,7 @@ class ProductController extends Controller
             : 'out_of_stock';
           return [
             $this->sanitizeData($product->id),
-            $this->sanitizeData($product->id),
+            $parentid,
             $this->sanitizeData($product->name),
             $category,
             strip_tags($this->sanitizeData($product->long_description)),
