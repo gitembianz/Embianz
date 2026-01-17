@@ -189,6 +189,7 @@ class ProductController extends Controller
         DB::raw('MAX(products.active) as active'),  // Aggregate active
         DB::raw('MAX(products.quantity) as quantity'),  // Aggregate quantity
         DB::raw('MAX(products.popularity) as popularity'),  // Aggregate popularity
+        DB::raw('MAX(products.parent_id) as parentid'),
         DB::raw('MAX(products.short_description) as short_description'),  // Aggregate short_description
         DB::raw('MAX(products.start_date) as start_date'),  // Aggregate start_date
         DB::raw('MAX(products.end_date) as end_date'),  // Aggregate end_date
@@ -257,6 +258,7 @@ class ProductController extends Controller
                 })
                 ->implode(',');
         }
+          $parentid = $this->sanitizeData($product->parentid);
           $category = $this->sanitizeData($product->short_description);
           $price = $this->sanitizeData($product->value_no_discount) . " " . $this->sanitizeData($product->currency_name);
           if ($product->value_no_discount != $product->price) {
@@ -269,7 +271,7 @@ class ProductController extends Controller
             : 'out_of_stock';
           return [
             $this->sanitizeData($product->id),
-            $this->sanitizeData($product->id),
+            $parentid,
             $this->sanitizeData($product->name),
             $category,
             strip_tags($this->sanitizeData($product->long_description)),
@@ -289,7 +291,7 @@ class ProductController extends Controller
       ],
       'facebook' => [
         'fileName' => 'facebook.csv',
-        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'google_product_category'],
+        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price','item_group_id,', 'link', 'image_link', 'brand', 'google_product_category'],
         'columns' => function ($product) {
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
@@ -298,13 +300,22 @@ class ProductController extends Controller
             ? 'in stock' 
             : 'out of stock';
           $category = $this->sanitizeData($product->category_seo_title ?? '');
+          $parentid = $this->sanitizeData($product->parentid);
+          $price = $this->sanitizeData($product->value_no_discount) . " " . $this->sanitizeData($product->currency_name);
+          if ($product->value_no_discount != $product->price) {
+            $sale_price = $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name);
+          } else {
+            $sale_price = '';
+          }
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->name),
             strip_tags($this->sanitizeData($product->long_description)),
             $availability,
             'new',
-            $this->sanitizeData($product->price) . " " . $this->sanitizeData($product->currency_name),
+            $price,
+            $sale_price,
+            $parentid,
             $link,
             $image,
             $this->sanitizeData($product->brand),
