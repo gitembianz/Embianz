@@ -162,24 +162,25 @@ class ProductController extends Controller
 
   public function feed()
   {
-    $products = Product::whereIn('products.type', ['variant', 'standard'])  // Filter products by type
-      ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
-      ->leftJoin('media', function ($join) {
-        $join->on('item_media.media_id', '=', 'media.id')
-          ->where('media.type', '=', 'original')
-          ->where('media.sequence', '=', '1');
-      })
-      ->leftJoin('products_categories', function ($join) {
-        $join->on('products.id', '=', 'products_categories.product_id')
-          ->where('products_categories.primary_category', '=', 1);  // Only get the primary category
-      })
-      ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')  // Join categories table
-      ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
+    $products = Product::whereIn('products.type', ['variant', 'standard'])
+    ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')
+    ->leftJoin('media', function ($join) {
+      $join->on('item_media.media_id', '=', 'media.id')
+        ->where('media.type', '=', 'original')
+        ->where('media.sequence', '=', '1');
+    })
+    ->leftJoin('products_categories', function ($join) {
+      $join->on('products.id', '=', 'products_categories.product_id')
+        ->where('products_categories.primary_category', '=', 1);
+    })
+    ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')
+    ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
       ->leftJoin('price_lists', 'pricelist_entries.pricelist_id', '=', 'price_lists.id')  // Join price_lists to get currency_id
       ->leftJoin('currencies', 'price_lists.currency_id', '=', 'currencies.id')  // Join currencies to get currency details
       ->select(
         'products.id',
         'products.name',
+        'products.type',
         DB::raw('MAX(products.long_description) as long_description'),  // Aggregate long_description
         DB::raw('MAX(products.seo_id) as seo_id'),  // Aggregate seo_id
         DB::raw('MAX(products.ean) as ean'),
@@ -207,7 +208,7 @@ class ProductController extends Controller
         DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
         DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
       )
-      ->groupBy('products.id', 'products.name', 'categories.seo_title')
+      ->groupBy('products.id', 'products.name','products.type','categories.seo_title')
       ->get();
 
       foreach ($products as $product) {
@@ -240,12 +241,12 @@ class ProductController extends Controller
 
   private function generateCsvFeed($products, $feedType)
   {
-    // Define CSV headers and file names for each feed
+    $cheapestVariants = $this->identifyCheapestVariants($products);
     $feeds = [
       'google' => [
         'fileName' => 'google.csv',
-        'headers' => ['id', 'item_group_id', 'title', 'product_type', 'description', 'link', 'mobile_link', 'image_link', 'additional_image_link', 'condition', 'price', 'sale_price', 'availability', 'brand', 'custom_label_0', 'google_product_category'],
-        'columns' => function ($product) {
+        'headers' => ['id', 'item_group_id', 'title', 'product_type', 'description', 'link', 'mobile_link', 'image_link', 'additional_image_link', 'condition', 'price', 'sale_price', 'availability', 'brand', 'custom_label_0', 'custom_label_1', 'google_product_category'],
+        'columns' => function ($product) use ($cheapestVariants) {
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
           $image = str_replace(' ', '%20', $image);
@@ -269,6 +270,13 @@ class ProductController extends Controller
           $availability = ($product->preorder == 1 || $product->quantity > 0) 
             ? 'in stock' 
             : 'out of stock';
+              $customLabel1 = '';
+        if ($product->type === 'variant' && isset($cheapestVariants[$parentid]) && $cheapestVariants[$parentid] == $product->id) {
+  $customLabel1 = 'cheapest_variant';
+} elseif ($product->type === 'standard') {
+  $customLabel1 = 'standard_product';
+}
+
           return [
             $this->sanitizeData($product->id),
             $parentid,
@@ -285,13 +293,14 @@ class ProductController extends Controller
             $availability,
             $this->sanitizeData($product->brand),
             $this->sanitizeData($product->short_description),
+            $customLabel1,
             $this->sanitizeData($product->google_category)
           ];
         }
       ],
       'facebook' => [
         'fileName' => 'facebook.csv',
-        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price','item_group_id,', 'link', 'image_link', 'brand', 'google_product_category'],
+        'headers' => ['id', 'title', 'description', 'availability', 'condition', 'price', 'sale_price','item_group_id,', 'link', 'image_link', 'brand', 'google_product_category','custom_label_1'],
         'columns' => function ($product) {
           $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
           $image = env('APP_URL') . "/" . $this->sanitizeData($product->media_path) . $this->sanitizeData($product->media_name);
@@ -307,6 +316,12 @@ class ProductController extends Controller
           } else {
             $sale_price = '';
           }
+                        $customLabel1 = '';
+        if ($product->type === 'variant' && isset($cheapestVariants[$parentid]) && $cheapestVariants[$parentid] == $product->id) {
+  $customLabel1 = 'cheapest_variant';
+} elseif ($product->type === 'standard') {
+  $customLabel1 = 'standard_product';
+}
           return [
             $this->sanitizeData($product->id),
             $this->sanitizeData($product->name),
@@ -319,7 +334,8 @@ class ProductController extends Controller
             $link,
             $image,
             $this->sanitizeData($product->brand),
-            $this->sanitizeData($product->google_category)
+            $this->sanitizeData($product->google_category),
+            $customLabel1
           ];
         }
       ],
@@ -387,4 +403,40 @@ class ProductController extends Controller
 
     return $data;
   }
+private function identifyCheapestVariants($products)
+{
+  $cheapestVariants = [];
+  $variantsByParent = [];
+  
+  // Group variants by parent ID
+  foreach ($products as $product) {
+    if ($product->type === 'variant') {  
+      $parentid = $this->sanitizeData($product->parentid);
+      
+      if (!isset($variantsByParent[$parentid])) {
+        $variantsByParent[$parentid] = [];
+      }
+      
+      $variantsByParent[$parentid][] = [
+        'id' => $product->id,
+        'price' => $product->price ?? 0
+      ];
+    }
+  }
+  
+
+  foreach ($variantsByParent as $parentid => $variants) {
+
+    usort($variants, function ($a, $b) {
+      return $a['price'] <=> $b['price'];
+    });
+    
+
+    if (!empty($variants)) {
+      $cheapestVariants[$parentid] = $variants[0]['id'];
+    }
+  }
+  
+  return $cheapestVariants;
+}
 }
