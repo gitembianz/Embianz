@@ -491,10 +491,10 @@ class ShowOrder extends Component
       $response = $client->post($this->samUrl . 'api/awb', [
         'headers' => [
           'Accept' => 'application/json',
-          'Content-Type' => 'application/x-www-form-urlencoded',
+          'Content-Type' => 'application/json',
           'X-AUTH-TOKEN' => $token,
         ],
-        'form_params' => $awbData,
+        'json' => $awbData,
         'curl' => [
           CURLOPT_SSL_VERIFYPEER => false,
         ],
