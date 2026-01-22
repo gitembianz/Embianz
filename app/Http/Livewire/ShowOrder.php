@@ -89,12 +89,14 @@ class ShowOrder extends Component
       $this->services = app()->has('global_sam_services') ? json_decode(app('global_sam_services'), true) : null;
       $this->addresses = app()->has('global_sam_addreses') ? json_decode(app('global_sam_addreses'), true) : null;
 
-      $this->persons = $this->addresses[0]['contact_persons'] ?? [];
-      $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
+$this->service = $this->services[0]['id'] ?? null;
 
-      $this->service = $this->services[0]['id'] ?? null;
+$this->pickup_point = !empty($this->addresses) ? end($this->addresses)['id'] : null;
 
-      $this->pickup_point = !empty($this->addresses) ? end($this->addresses)['id'] : null;
+
+$selectedAddress = collect($this->addresses)->firstWhere('id', $this->pickup_point);
+$this->persons = $selectedAddress['contact_persons'] ?? [];
+$this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
 
 
       if (
@@ -491,10 +493,10 @@ class ShowOrder extends Component
       $response = $client->post($this->samUrl . 'api/awb', [
         'headers' => [
           'Accept' => 'application/json',
-          'Content-Type' => 'application/json',
+          'Content-Type' => 'application/x-www-form-urlencoded',
           'X-AUTH-TOKEN' => $token,
         ],
-        'json' => $awbData,
+        'form_params' => $awbData,
         'curl' => [
           CURLOPT_SSL_VERIFYPEER => false,
         ],
