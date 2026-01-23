@@ -1538,6 +1538,16 @@
                         </span>
                     </label>
 
+                <label id="subscribebut" class="checkout__terms">
+                        <input type="checkbox" wire:model="subscribe" name="subscribe">
+                        <span>
+                      @if (app()->has('label_terms_confirm'))
+                                {!! app('label_terms_confirm') !!}
+                            @endif
+                        </span>
+                    </label>
+
+
                     <div class="dlv" style="display: none">
                         <span class="dlv_currency">
                             @if (app()->has('global_currency_primary_name'))

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
   use HasFactory;
-  protected $fillable = ['name', 'type', 'first_name', 'last_name', 'phone', 'email', 'company_name', 'registration_code', 'registration_number','bank_name', 'account', 'updated_at'];
+  protected $fillable = ['name', 'type', 'first_name', 'last_name', 'phone', 'email', 'company_name', 'registration_code', 'registration_number','bank_name', 'account', 'subscribe','updated_at'];
 
   public function orders()
   {
