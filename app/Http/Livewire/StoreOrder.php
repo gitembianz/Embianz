@@ -27,6 +27,7 @@ class StoreOrder extends Component
   public $is_account = null;
   public $back = false;
   public $terms = false;
+  public $subscribe = false;
   public $errorterms = false;
   public $session_id;
   public $cash;
@@ -553,6 +554,7 @@ class StoreOrder extends Component
         'name' => $this->billing_first . " " . $this->billing_last,
         'first_name' => $this->billing_first,
         'last_name' => $this->billing_last,
+        'subscribe' => $this->subscribe,
       ];
 
       if ($this->individual) {
@@ -572,6 +574,7 @@ class StoreOrder extends Component
 
       $account = Account::updateOrCreate(
         ['email' => $accountData['email']],
+        
         $accountData
       );
       cookie()->queue(cookie()->make('accountId', $account->id, 60 * 24 * 30));
@@ -663,6 +666,7 @@ class StoreOrder extends Component
         'status_id' => $status,
         'payment_id' => $this->payment['id'],
         'voucher_id' => $this->cart->voucher_id ?? null,
+        'subscribe' => $this->subscribe,
       ];
 
       $order = Order::updateOrCreate(

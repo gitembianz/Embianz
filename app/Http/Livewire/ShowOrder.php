@@ -444,9 +444,8 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
   {
     $token = Store_Settings::where('parameter', 'sam_token')->value('value');
     $client = new \GuzzleHttp\Client();
-
+  
     $shippingAddress = $this->order->shipping;
-
     $awbData = [
       'pickupPoint' => (int) $this->pickup_point,
       'contactPerson' => (int) $this->person,
@@ -458,9 +457,8 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
       'cashOnDelivery' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
       'awbPayment' => 1,
       'thirdPartyPickup' => 0,
-
       'notifyRecipient' => true,
-
+      'serviceTaxes' => [534133],
       'awbRecipient' => array_merge([
         'name' => $this->recipe['name'],
         'phoneNumber' => $this->recipe['phoneNumber'],
