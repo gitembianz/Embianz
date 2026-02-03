@@ -150,8 +150,8 @@ public function dowlandproducts()
         ->toArray();
 
     $orderNames = Order::whereIn('id', $orderIds)
-        ->pluck('name', 'id')
-        ->map(fn($name, $id) => $name ?: 'Order #' . $id);
+        ->pluck('order_number', 'id')
+        ->map(fn($orderNumber, $id) => $orderNumber ?: 'Order #' . $id);
 
     $items = Order_Item::whereIn('order_id', $orderIds)
         ->join('products', 'order__items.product_id', '=', 'products.id')
