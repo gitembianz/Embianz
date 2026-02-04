@@ -142,101 +142,119 @@ class OrderSimilarity extends Component
     return false;
   }
 
-  public function dowlandproducts()
-  {
+public function dowlandproducts()
+{
     $orderIds = collect($this->checked)
-      ->flatMap(fn($idString) => explode(',', $idString))
-      ->unique()
-      ->toArray();
+        ->flatMap(fn($idString) => explode(',', $idString))
+        ->unique()
+        ->toArray();
 
     $orderNames = Order::whereIn('id', $orderIds)
-      ->pluck('name', 'id')
-      ->map(fn($name, $id) => $name ?: 'Order #' . $id);
+        ->pluck('order_number', 'id')
+        ->map(fn($orderNumber, $id) => $orderNumber ?: 'Order #' . $id);
 
     $items = Order_Item::whereIn('order_id', $orderIds)
-    ->join('products', 'order__items.product_id', '=', 'products.id')
-    ->leftJoin('products_categories', 'products.id', '=', 'products_categories.product_id')
-
-    ->orderByRaw("
-        CASE
-            WHEN products_categories.primary_category = 1 THEN 0
-            WHEN products_categories.category_id IS NOT NULL THEN 1
-            ELSE 2
-        END
-    ")
-
-    ->orderBy('products_categories.category_id')
-
-    ->with('product')
-    ->select('order__items.*')
-    ->get();
-
+        ->join('products', 'order__items.product_id', '=', 'products.id')
+        ->leftJoin('products_categories', 'products.id', '=', 'products_categories.product_id')
+        ->orderByRaw("
+            CASE
+                WHEN products_categories.primary_category = 1 THEN 0
+                WHEN products_categories.category_id IS NOT NULL THEN 1
+                ELSE 2
+            END
+        ")
+        ->orderBy('products_categories.category_id')
+        ->with('product')
+        ->select('order__items.*') // Aici rămân duplicatele din cauza join-ului
+        ->get();
 
     if ($items->isEmpty()) {
-      session()->flash('notification', [
-        'message' => 'No products found for selected orders.',
-        'type' => 'warning',
-        'title' => 'Notice'
-      ]);
-      return;
+        session()->flash('notification', [
+            'message' => 'No products found for selected orders.',
+            'type' => 'warning',
+            'title' => 'Notice'
+        ]);
+        return;
     }
 
     $products = $items
-      ->map(fn($i) => [
-        'id' => $i->product_id,
-        'key' => trim(($i->product->name ?? 'Unknown') . ' ' . ($i->product->sku ?? '')),
-        'order_id' => $i->order_id,
-        'quantity' => $i->quantity,
-      ])
-      ->groupBy('key');
+        ->map(fn($i) => [
+            'item_id' => $i->id, // <-- ADĂUGĂM ID-ul unic al itemului din comandă
+            'id' => $i->product_id,
+            'key' => trim(($i->product->name ?? 'Unknown') . ' ' . ($i->product->sku ?? '')),
+            'order_id' => $i->order_id,
+            'quantity' => $i->quantity,
+        ])
+        ->groupBy('key');
 
     $orderColumns = collect($orderIds)->map(fn($id) => $orderNames[$id] ?? 'Order #' . $id);
+
+    // Header corectat pentru a suporta virgule în nume (escaped)
     $header = collect(['Product (Name + SKU)'])
-      ->merge($orderColumns)
-      ->push('Total')
-      ->toArray();
+        ->merge($orderColumns)
+        ->push('Total')
+        ->toArray();
 
     $rows = [];
+    $columnTotals = array_fill(0, count($orderIds), 0);
 
     foreach ($products as $key => $entries) {
-      $row = [$key];
-      $total = 0;
+        $row = [$key];
+        $productTotal = 0;
 
-      foreach ($orderIds as $orderId) {
-        $qty = $entries
-          ->where('order_id', $orderId)
-          ->sum('quantity');
-        $row[] = $qty ?: 0;
-        $total += $qty;
-      }
+        foreach ($orderIds as $index => $orderId) {
+            // FIX: Folosim unique('item_id') pentru a elimina rândurile multiplicate de SQL Join
+            $qty = $entries
+                ->where('order_id', $orderId)
+                ->unique('item_id') 
+                ->sum('quantity');
+            
+            $qty = $qty ?: 0;
+            $row[] = $qty;
+            
+            $columnTotals[$index] += $qty;
+            $productTotal += $qty;
+        }
 
-      $row[] = $total;
-      $rows[] = $row;
+        $row[] = $productTotal;
+        $rows[] = $row;
     }
 
-    $bom = "\xEF\xBB\xBF";
-    $csvData = implode(',', $header) . "\n";
+    // ADAUGĂ RÂNDUL DE TOTAL FINAL
+    $totalRow = ['TOTAL'];
+    $grandTotal = 0;
+    foreach ($columnTotals as $colTotal) {
+        $totalRow[] = $colTotal;
+        $grandTotal += $colTotal;
+    }
+    $totalRow[] = $grandTotal;
+    $rows[] = $totalRow;
 
+    // Generare CSV cu escape pentru toate câmpurile (inclusiv header)
+    $bom = "\xEF\xBB\xBF";
+    $csvData = implode(',', array_map(fn($h) => '"' . str_replace('"', '""', $h) . '"', $header)) . "\n";
+    
     foreach ($rows as $row) {
-      $csvData .= implode(',', array_map(
-        fn($v) => '"' . str_replace('"', '""', $v) . '"',
-        $row
-      )) . "\n";
+        $csvData .= implode(',', array_map(
+            fn($v) => '"' . str_replace('"', '""', $v) . '"',
+            $row
+        )) . "\n";
     }
 
     $this->checked = [];
+    
     session()->flash('notification', [
-      'message' => 'Orders downloaded successfully!',
-      'type' => 'success',
-      'title' => 'Success'
+        'message' => 'Orders downloaded successfully!',
+        'type' => 'success',
+        'title' => 'Success'
     ]);
 
     return Response::streamDownload(function () use ($bom, $csvData) {
-      echo $bom . $csvData;
+        echo $bom . $csvData;
     }, 'orders_products.csv', [
-      'Content-Type' => 'text/csv; charset=UTF-8'
+        'Content-Type' => 'text/csv; charset=UTF-8'
     ]);
-  }
+}
 
 
   public function showColumn($column)
