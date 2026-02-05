@@ -1319,24 +1319,23 @@ class Orderstable extends Component
   }
 public function getavgvalues()
 {
-    DB::transaction(function () {
-        $allJob = AllJob::create([
-            'name' => CalculateOrdersCost::class,
-            'type' => 'calculate_orders_cost',
-            'status' => 'pending',
-            'payload' => [],
-            'related_table' => 'orders',
-        ]);
-
-        DB::afterCommit(function () use ($allJob) {
-
-        CalculateOrdersCost::dispatch($allJob->id, auth()->user()->name);
-        });
-    });
-    session()->flash('notification', [
-      'message' => 'Orders cost calculation successfully started by job!',
-      'type' => 'success',
-      'title' => 'Import Queued'
+    // Create the record of the job first
+    $allJob = AllJob::create([
+        'name' => CalculateOrdersCost::class,
+        'type' => 'calculate_orders_cost',
+        'status' => 'pending',
+        'payload' => [],
+        'related_table' => 'orders',
     ]);
-  }
+
+    // Dispatch the job OUTSIDE of a manual transaction to ensure 
+    // it hits Redis immediately and lets the browser finish.
+    CalculateOrdersCost::dispatch($allJob->id, auth()->user()->name);
+
+    session()->flash('notification', [
+        'message' => 'Orders cost calculation successfully started in the background!',
+        'type' => 'success',
+        'title' => 'Process Started'
+    ]);
+}
 }
