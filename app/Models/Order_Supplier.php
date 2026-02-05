@@ -32,4 +32,9 @@ class Order_Supplier extends Model
 
     return $query;
   }
+  public function currency_info()
+{
+    return $this->belongsTo(Currency::class, 'currency', 'name');
+}
+  
 }
