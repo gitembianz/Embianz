@@ -146,4 +146,4 @@ class CalculateOrdersCost implements ShouldQueue
             ]);
         }
     }
-}p
+}
