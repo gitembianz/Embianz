@@ -1317,21 +1317,21 @@ class Orderstable extends Component
     }
     fclose($handle);
   }
-  public function getavgvalues()
-  {
-
+public function getavgvalues()
+{
     DB::transaction(function () {
-      $allJob = AllJob::create([
-        'name' => CalculateOrdersCost::class,
-        'type' => 'calculate_orders_cost',
-        'status' => 'pending',
-        'payload' => [],
-        'related_table' => 'orders',
-      ]);
+        $allJob = AllJob::create([
+            'name' => CalculateOrdersCost::class,
+            'type' => 'calculate_orders_cost',
+            'status' => 'pending',
+            'payload' => [],
+            'related_table' => 'orders',
+        ]);
 
-      DB::afterCommit(function () use ($allJob) {
-        CalculateOrdersCost::dispatch($allJob->id);
-      });
+        DB::afterCommit(function () use ($allJob) {
+
+        CalculateOrdersCost::dispatch($allJob->id, auth()->user()->name);
+        });
     });
     session()->flash('notification', [
       'message' => 'Orders cost calculation successfully started by job!',
