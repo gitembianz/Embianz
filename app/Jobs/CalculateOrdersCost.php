@@ -15,134 +15,135 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class CalculateOrdersCost implements ShouldQueue
 {
-  use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-  protected int $allJobId;
-  /**
-   * Create a new job instance.
-   */
-  public function __construct(int $allJobId)
-  {
-    $this->allJobId = $allJobId;
-  }
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-  /**
-   * Execute the job.
-   */
-  public function handle(): void
-  {
-    AllJob::where('id', $this->allJobId)->update(['status' => 'processing']);
+    protected int $allJobId;
+    protected string $userName;
 
-    try{
-      Order_Supplier_Item::wherehas('order_supplier', function ($query) {
-        $query->where('status', 'closed');
-      })->chunk(500, function ($entries) {
-        foreach ($entries as $item) {
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(int $allJobId, string $userName)
+    {
+        $this->allJobId = $allJobId;
+        $this->userName = $userName;
+    }
 
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        AllJob::where('id', $this->allJobId)->update(['status' => 'processing']);
 
-        $cartPrices = $item->product->carts_item()->pluck('price');
-        if ($cartPrices->isNotEmpty()) {
-          $averagePrice = $cartPrices->avg();
-        } else {
-          $averagePrice = optional($item->product->product_prices->first())->value;
-        }
-        $cost = $item->price;
-        $supplierCurrency = $item->order->currency ?? null;
-        $productCurrency = optional($item->product->product_prices->first())->pricelist->currency->name ?? null;
+        try {
+            // 1. Fetch ALL exchanges once to avoid DB hits inside loops
+            $exchanges = Exchange::with(['base_currency', 'quote_currency'])->get();
 
-        if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
-          $exchange = Exchange::whereHas('base_currency', function ($q) use ($supplierCurrency) {
-            $q->where('name', $supplierCurrency);
-          })->whereHas('quote_currency', function ($q) use ($productCurrency) {
-            $q->where('name', $productCurrency);
-          })->latest()->first();
+            // 2. Process Supplier Items and Calculate Product Costs
+            Order_Supplier_Item::with([
+                'order_supplier.currency_info', 
+                'product.carts_item', 
+                'product.product_prices.pricelist.currency', 
+                'product.costs'
+            ])
+            ->whereHas('order_supplier', fn($query) => $query->where('status', 'closed'))
+            ->chunk(500, function ($entries) use ($exchanges) {
+                foreach ($entries as $item) {
+                    $product = $item->product; 
+                    if (!$product) continue;
 
-          if (!$exchange) {
-            $exchange = Exchange::whereHas('base_currency', function ($q) use ($productCurrency) {
-              $q->where('name', $productCurrency);
-            })->whereHas('quote_currency', function ($q) use ($supplierCurrency) {
-              $q->where('name', $supplierCurrency);
-            })->latest()->first();
+                    $cartPrices = $product->carts_item->pluck('price');
+                    $averagePrice = $cartPrices->isNotEmpty() 
+                        ? $cartPrices->avg() 
+                        : optional($product->product_prices->first())->value;
 
-            if ($exchange) {
-              $cost /= $exchange->value;
-            }
-          } else {
-            $cost *= $exchange->value;
-          }
-        }
+                    $cost = $item->price;
+                    
+                    // Currency logic using the new currency_info relationship
+                    $supplierCurrency = $item->order_supplier->currency_info->name ?? $item->order_supplier->currency;
+                    $productCurrency = optional($product->product_prices->first())->pricelist->currency->name ?? null;
 
-        if (!$item->product->costs->count()) {
-          DB::table('product_costs')->updateOrInsert(
-            ['product_id' => $item->product->id],
-            ['price' => $averagePrice, 'cost' => $cost, 'date' => now(config('app.timezone')), 'created_by' => auth()->user()->name, 'last_modified_by' => auth()->user()->name, 'created_at' => now(config('app.timezone')), 'updated_at' => now(config('app.timezone'))]
-          );
-        } else {
-          $oldcost = $item->product->costs()->latest()->first()->cost;
-          if ($oldcost != $item->price) {
-            $averageCost = ($oldcost + $cost) / 2;
-            DB::table('product_costs')->insert([
-              'product_id' => $item->product->id,
-              'price' => $averagePrice,
-              'cost' => $averageCost,
-              'date' => now(config('app.timezone')),
-              'created_by' => auth()->user()->name,
-              'last_modified_by' => auth()->user()->name,
-              'created_at' => now(config('app.timezone')),
-              'updated_at' => now(config('app.timezone'))
+                    if ($supplierCurrency && $productCurrency && $supplierCurrency !== $productCurrency) {
+                        $exchange = $exchanges->where('base_currency.name', $supplierCurrency)
+                                              ->where('quote_currency.name', $productCurrency)
+                                              ->first();
+                        
+                        if ($exchange) {
+                            $cost *= $exchange->value;
+                        } else {
+                            $reverse = $exchanges->where('base_currency.name', $productCurrency)
+                                                 ->where('quote_currency.name', $supplierCurrency)
+                                                 ->first();
+                            if ($reverse) $cost /= $reverse->value;
+                        }
+                    }
+
+                    $this->updateProductCost($product, $averagePrice, $cost);
+                }
+            });
+
+            // 3. Update Order Average Costs
+            Order::with('orders.product.costs')->chunk(200, function ($orders) {
+                foreach ($orders as $order) {
+                    $totalOrderCost = 0;
+                    foreach ($order->orders as $orderItem) {
+                        $lastCostRecord = $orderItem->product->costs->last();
+                        $itemCost = $lastCostRecord ? $lastCostRecord->cost : 0;
+                        $totalOrderCost += ($itemCost * $orderItem->quantity);
+                    }
+                    
+                    if ($totalOrderCost > 0) {
+                        $order->update(['avg_cost' => $totalOrderCost]);
+                    }
+                }
+            });
+
+            AllJob::where('id', $this->allJobId)->update([
+                'status' => 'finished',
+                'finished_at' => now(config('app.timezone')),
             ]);
-          }
-        }
-      }
-      });
-    } catch (\Throwable $e) {
-      AllJob::where('id', $this->allJobId)->update([
-        'status' => 'failed',
-        'error' => $e->getMessage(),
-      ]);
 
-      throw $e;
+        } catch (\Throwable $e) {
+            AllJob::where('id', $this->allJobId)->update([
+                'status' => 'failed',
+                'error' => $e->getMessage() . " in " . $e->getFile() . ":" . $e->getLine(),
+            ]);
+            throw $e;
+        }
     }
 
-    try {
+    /**
+     * Logic to insert or update the product_costs table.
+     */
+    private function updateProductCost($product, $price, $cost)
+    {
+        $lastCostRecord = $product->costs->last();
+        $timestamp = now(config('app.timezone'));
 
-      Order::with('orders.product.costs')->chunk(500, function ($entries) {
-        foreach ($entries as $order) {
-          $cost = 0;
-          foreach ($order->orders as $item) {
-            if ($item->product->costs->isEmpty()) {
-              $cost = 0;
-              break;
-            }
-            if (!$item->product->costs->last()->cost) {
-              $possiblecost = $item->product->costs->where('cost', '!=', null)->last();
-              if ($possiblecost) {
-                $cost += $possiblecost->cost * $item->quantity;
-              } else {
-                $cost = 0;
-                break;
-              }
-            } else {
-              $cost += optional($item->product->costs->last())->cost  * $item->quantity;
-            }
-          }
-          if ($cost > 0) {
-            $order->update(['avg_cost' => $cost]);
-          }
+        if (!$lastCostRecord) {
+            DB::table('product_costs')->insert([
+                'product_id' => $product->id,
+                'price' => $price,
+                'cost' => $cost,
+                'date' => $timestamp,
+                'created_by' => $this->userName,
+                'last_modified_by' => $this->userName,
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp
+            ]);
+        } elseif ((float)$lastCostRecord->cost !== (float)$cost) {
+            $averageCost = ($lastCostRecord->cost + $cost) / 2;
+            DB::table('product_costs')->insert([
+                'product_id' => $product->id,
+                'price' => $price,
+                'cost' => $averageCost,
+                'date' => $timestamp,
+                'created_by' => $this->userName,
+                'last_modified_by' => $this->userName,
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp
+            ]);
         }
-      });
-
-
-      AllJob::where('id', $this->allJobId)->update([
-        'status' => 'finished',
-        'finished_at' => now(config('app.timezone')),
-      ]);
-    } catch (\Throwable $e) {
-      AllJob::where('id', $this->allJobId)->update([
-        'status' => 'failed',
-        'error' => $e->getMessage(),
-      ]);
-
-      throw $e;
     }
-  }
 }
