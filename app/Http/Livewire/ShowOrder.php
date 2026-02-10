@@ -765,6 +765,58 @@ public function generate_invoice_number($auto = false)
     }
   }
 
+  public function generate_storno_number($auto = false)
+  {
+      if (!empty($this->order->invoice_series) && !empty($this->order->external_storno_number)) {
+          return;
+      }
+
+      $existingStorno = DB::connection('mysql_invoice')
+          ->table('invoices')
+          ->where('order_number', $this->order->order_number)
+          ->where('type', 'storno')
+          ->first();
+
+      if ($existingStorno) {
+          $this->order->external_storno_number = str_pad($existingStorno->number, 4, '0', STR_PAD_LEFT);
+          $this->order->invoice_series = $existingStorno->series; 
+          $this->order->save();
+
+          session()->flash('notification', [
+              'message' => 'Existing Storno number retrieved successfully!',
+              'type' => 'success',
+              'title' => 'Success'
+          ]);
+      } else {
+          $currentSeries = app('global_invoice_series');
+
+          $latestInvoice = DB::connection('mysql_invoice')
+              ->table('invoices')
+              ->where('series', $currentSeries)
+              ->orderByDesc('number')
+              ->first();
+
+          $newNumber = $latestInvoice ? $latestInvoice->number + 1 : 1;
+
+          DB::connection('mysql_invoice')->table('invoices')->insert([
+              'number' => $newNumber,
+              'order_number' => $this->order->order_number,
+              'series' => $currentSeries,
+              'type' => 'storno'
+          ]);
+
+          $this->order->invoice_series = $currentSeries;
+          $this->order->external_storno_number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+          $this->order->save();
+
+          session()->flash('notification', [
+              'message' => 'New Storno number generated successfully!',
+              'type' => 'success',
+              'title' => 'Success'
+          ]);
+      }
+  }
+
   public function generate_invoice()
   {
     if (!$this->order->external_invoice_number) {
