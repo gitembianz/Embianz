@@ -681,49 +681,60 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
     }
   }
 
-  public function instant_invoice()
+public function instant_invoice()
   {
     $number = $this->generate_invoice_number(true);
-    $this->order->invoice_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
-    $this->order->save();
+    
+    if (empty($this->order->invoice_date)) {
+        $this->order->invoice_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
+        $this->order->save();
+    }
+    
     $this->generate_invoice();
   }
 
-  public function instant_storno()
+public function instant_storno()
   {
     $number = $this->generate_storno_number(true);
-    $this->order->storno_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
-    $this->order->save();
+
+    if (empty($this->order->storno_date)) {
+        $this->order->storno_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
+        $this->order->save();
+    }
+
     $this->generate_storno();
   }
 
-  public function generate_invoice_number($auto = false)
+public function generate_invoice_number($auto = false)
   {
-    $this->invoice_sdatabase = DB::connection('mysql_invoice')
-      ->table('invoices')
-      ->where('series', app('global_invoice_series'))
-      ->get();
+    if (!empty($this->order->invoice_series) && !empty($this->order->external_invoice_number)) {
+        return; 
+    }
 
-    $existingInvoice = $this->invoice_sdatabase
+    $existingInvoice = DB::connection('mysql_invoice')
+      ->table('invoices')
       ->where('order_number', $this->order->order_number)
       ->where('type', 'invoice')
       ->first();
 
     if ($existingInvoice) {
       $this->order->external_invoice_number = str_pad($existingInvoice->number, 4, '0', STR_PAD_LEFT);
-      $this->order->invoice_series = app('global_invoice_series');
+      $this->order->invoice_series = $existingInvoice->series;
       $this->order->save();
+
       if (!$auto) {
         session()->flash('notification', [
-          'message' => 'Invoice number generated successfully!',
+          'message' => 'Existing Invoice number retrieved successfully!',
           'type' => 'success',
           'title' => 'Success'
         ]);
       }
     } else {
+      $currentSeries = app('global_invoice_series');
+
       $latestInvoice = DB::connection('mysql_invoice')
         ->table('invoices')
-        ->where('series', app('global_invoice_series'))
+        ->where('series', $currentSeries)
         ->orderByDesc('number')
         ->first();
 
@@ -736,17 +747,17 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
       DB::connection('mysql_invoice')->table('invoices')->insert([
         'number' => $newNumber,
         'order_number' => $this->order->order_number,
-        'series' => app('global_invoice_series'),
+        'series' => $currentSeries,
         'type' => 'invoice'
       ]);
 
-      $this->order->invoice_series = app('global_invoice_series');
+      $this->order->invoice_series = $currentSeries;
       $this->order->external_invoice_number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
       $this->order->save();
 
       if (!$auto) {
         session()->flash('notification', [
-          'message' => 'Invoice number generated successfully!',
+          'message' => 'New Invoice number generated successfully!',
           'type' => 'success',
           'title' => 'Success'
         ]);
@@ -754,58 +765,56 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
     }
   }
 
-  public function generate_storno_number()
+  public function generate_storno_number($auto = false)
   {
-    $this->storno_sdatabase = DB::connection('mysql_invoice')
-      ->table('invoices')
-      ->where('series', app('global_invoice_series'))
-      ->get();
-
-    $existingstorno = $this->storno_sdatabase
-      ->where('order_number', $this->order->order_number)
-      ->where('type', 'storno')
-      ->first();
-
-    if ($existingstorno) {
-      $this->order->external_storno_number = str_pad($existingstorno->number, 4, '0', STR_PAD_LEFT);
-      $this->order->invoice_series = app('global_invoice_series');
-      $this->order->save();
-
-      session()->flash('notification', [
-        'message' => 'Invoice number generated successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-    } else {
-      $latestInvoice = DB::connection('mysql_invoice')
-        ->table('invoices')
-        ->where('series', app('global_invoice_series'))
-        ->orderByDesc('number')
-        ->first();
-
-      if ($latestInvoice) {
-        $newNumber = $latestInvoice->number + 1;
-      } else {
-        $newNumber = 1;
+      if (!empty($this->order->invoice_series) && !empty($this->order->external_storno_number)) {
+          return;
       }
 
-      DB::connection('mysql_invoice')->table('invoices')->insert([
-        'number' => $newNumber,
-        'order_number' => $this->order->order_number,
-        'series' => app('global_invoice_series'),
-        'type' => 'storno'
-      ]);
+      $existingStorno = DB::connection('mysql_invoice')
+          ->table('invoices')
+          ->where('order_number', $this->order->order_number)
+          ->where('type', 'storno')
+          ->first();
 
-      $this->order->invoice_series = app('global_invoice_series');
-      $this->order->external_storno_number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-      $this->order->save();
+      if ($existingStorno) {
+          $this->order->external_storno_number = str_pad($existingStorno->number, 4, '0', STR_PAD_LEFT);
+          $this->order->invoice_series = $existingStorno->series; 
+          $this->order->save();
 
-      session()->flash('notification', [
-        'message' => 'Storno number generated successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-    }
+          session()->flash('notification', [
+              'message' => 'Existing Storno number retrieved successfully!',
+              'type' => 'success',
+              'title' => 'Success'
+          ]);
+      } else {
+          $currentSeries = app('global_invoice_series');
+
+          $latestInvoice = DB::connection('mysql_invoice')
+              ->table('invoices')
+              ->where('series', $currentSeries)
+              ->orderByDesc('number')
+              ->first();
+
+          $newNumber = $latestInvoice ? $latestInvoice->number + 1 : 1;
+
+          DB::connection('mysql_invoice')->table('invoices')->insert([
+              'number' => $newNumber,
+              'order_number' => $this->order->order_number,
+              'series' => $currentSeries,
+              'type' => 'storno'
+          ]);
+
+          $this->order->invoice_series = $currentSeries;
+          $this->order->external_storno_number = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+          $this->order->save();
+
+          session()->flash('notification', [
+              'message' => 'New Storno number generated successfully!',
+              'type' => 'success',
+              'title' => 'Success'
+          ]);
+      }
   }
 
   public function generate_invoice()
@@ -827,8 +836,7 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
       return;
     }
 
-    // Folder system
-    $invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date); // Parse the invoice_date
+    $invoiceDate = Carbon::createFromFormat('Y-m-d', $this->order->invoice_date);
     $invoicePath = 'invoices/';
     $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
     if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
