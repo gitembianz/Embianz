@@ -681,19 +681,27 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
     }
   }
 
-  public function instant_invoice()
+public function instant_invoice()
   {
     $number = $this->generate_invoice_number(true);
-    $this->order->invoice_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
-    $this->order->save();
+    
+    if (empty($this->order->invoice_date)) {
+        $this->order->invoice_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
+        $this->order->save();
+    }
+    
     $this->generate_invoice();
   }
 
-  public function instant_storno()
+public function instant_storno()
   {
     $number = $this->generate_storno_number(true);
-    $this->order->storno_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
-    $this->order->save();
+
+    if (empty($this->order->storno_date)) {
+        $this->order->storno_date = Carbon::now(config('app.timezone'))->format('Y-m-d');
+        $this->order->save();
+    }
+
     $this->generate_storno();
   }
 
