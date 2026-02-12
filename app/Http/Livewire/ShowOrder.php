@@ -444,7 +444,24 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
   {
     $token = Store_Settings::where('parameter', 'sam_token')->value('value');
     $client = new \GuzzleHttp\Client();
-  
+
+    // Asigură-te că URL-ul are slash la final sau adaugă-l
+    $apiUrl = rtrim($this->samUrl, '/') . '/api/awb';
+
+    // Determină ID-ul taxei PDO în funcție de serviciu
+    // Conform fișierului tău paste.txt (Feb 2026)
+    $serviceId = (int) $this->service;
+    $pdoTaxId = 566231; // Default pentru 24H (7) - Colet
+
+    if (in_array($serviceId, [15, 24, 57])) {
+       // Pentru Locker NextDay (15), Locker Retur (24), Pudo Nextday (57)
+       $pdoTaxId = 566300;
+    } elseif ($serviceId == 22) {
+       // Colet la schimb (22)
+       $pdoTaxId = 566267;
+    }
+    // ... poți adăuga altele dacă e cazul
+
     $shippingAddress = $this->order->shipping;
     $awbData = [
       'pickupPoint' => (int) $this->pickup_point,
@@ -458,7 +475,10 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
       'awbPayment' => 1,
       'thirdPartyPickup' => 0,
       'notifyRecipient' => true,
-      'serviceTaxes' => [566231],
+      
+      // ✅ ID-ul corect selectat
+      'serviceTaxes' => [$pdoTaxId],
+      
       'awbRecipient' => array_merge([
         'name' => $this->recipe['name'],
         'phoneNumber' => $this->recipe['phoneNumber'],
@@ -486,9 +506,9 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
       ],
     ];
 
-
     try {
-      $response = $client->post($this->samUrl . 'api/awb', [
+      // ✅ Folosim URL-ul corectat
+      $response = $client->post($apiUrl, [
         'headers' => [
           'Accept' => 'application/json',
           'Content-Type' => 'application/x-www-form-urlencoded',
@@ -580,27 +600,35 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
 
       if ($e->hasResponse()) {
         $errorBody = json_decode($e->getResponse()->getBody(), true);
+        
+        // Loghează eroarea completă ca să fii sigur
+        Log::error('Sameday API Error Body: ', (array)$errorBody);
+
         if (
           isset($errorBody['error']['message']) &&
           $errorBody['error']['message'] === 'Invalid credentials.'
         ) {
           $token = $this->get_sameday_token();
-
           return $this->generate_awb_sameday();
         }
-        $allErrors = $this->extractErrors($errorBody['errors']['children'] ?? []);
+        
+        // Verifică structura erorilor (uneori e 'errors', alteori 'error')
+        $errorsList = $errorBody['errors']['children'] ?? [];
+        $allErrors = $this->extractErrors($errorsList);
+        
+        $msg = $allErrors[0] ?? json_encode($errorBody); // Fallback message
 
         session()->flash('notification', [
-          'message' => "AWB creation failed with the following:\n" . $allErrors[0],
+          'message' => "AWB creation failed with the following:\n" . $msg,
           'type' => 'error',
           'title' => 'Validation Error',
         ]);
-        $this->samedaymessage = $allErrors[0];
+        $this->samedaymessage = $msg;
       }
-
       return;
     }
   }
+
 
   public function extractErrors(array $errors, string $prefix = ''): array
   {
