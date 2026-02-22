@@ -146,7 +146,7 @@ class Product extends Model
   }
   public function costs()
   {
-    return $this->hasMany(ProductCost::class, 'product_id');
+    return $this->hasMany(ProductCost::class, 'product_id')->orderBy('created_at', 'asc');
   }
 
 
