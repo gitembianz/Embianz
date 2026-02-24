@@ -539,10 +539,19 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
           mkdir($dir, 0777, true);
         }
 
-        $pdfFilePath = $dir . '/awbsameday_' . $this->order->order_number . '.pdf';
+        $awbNumber = $responseData['awbNumber'] ?? $this->order->order_number;
+        $date = now(config('app.timezone'))->format('d-m-Y');
+        $prefix = app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669';
+
+        $fileName = 'awbsameday_' . $prefix . '_' . 
+                    $this->order->invoice_series . '_' . 
+                    $this->order->external_invoice_number . '_' . 
+                    $date . '_' . $awbNumber . '.pdf';
+
+        $pdfFilePath = $dir . '/' . $fileName;
         file_put_contents($pdfFilePath, $pdfContent);
 
-        $path = 'documents/awbsameday_' . $this->order->order_number . '.pdf';
+        $path = 'documents/' . $fileName;
 
         Awbs::create([
           'order_id' => $this->order->id,
