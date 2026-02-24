@@ -543,7 +543,7 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
         $date = now(config('app.timezone'))->format('d-m-Y');
         $prefix = app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669';
 
-        $fileName = 'awbsameday_' . $prefix . '_' . 
+        $fileName = $prefix . '_' . 
                     $this->order->invoice_series . '_' . 
                     $this->order->external_invoice_number . '_' . 
                     $date . '_' . $awbNumber . '.pdf';
