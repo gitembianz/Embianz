@@ -116,34 +116,22 @@ class CalculateOrdersCost implements ShouldQueue
     /**
      * Logic to insert or update the product_costs table.
      */
-    private function updateProductCost($product, $price, $cost)
-    {
-        $lastCostRecord = $product->costs->last();
-        $timestamp = now(config('app.timezone'));
+private function updateProductCost($product, $price, $cost)
+{
+    $lastCostRecord = $product->costs->last();
+    $timestamp = now(config('app.timezone'));
 
-        if (!$lastCostRecord) {
-            DB::table('product_costs')->insert([
-                'product_id' => $product->id,
-                'price' => $price,
-                'cost' => $cost,
-                'date' => $timestamp,
-                'created_by' => $this->userName,
-                'last_modified_by' => $this->userName,
-                'created_at' => $timestamp,
-                'updated_at' => $timestamp
-            ]);
-        } elseif ((float)$lastCostRecord->cost !== (float)$cost) {
-            $averageCost = ($lastCostRecord->cost + $cost) / 2;
-            DB::table('product_costs')->insert([
-                'product_id' => $product->id,
-                'price' => $price,
-                'cost' => $averageCost,
-                'date' => $timestamp,
-                'created_by' => $this->userName,
-                'last_modified_by' => $this->userName,
-                'created_at' => $timestamp,
-                'updated_at' => $timestamp
-            ]);
-        }
+    if (!$lastCostRecord || (float)$lastCostRecord->cost !== (float)$cost) {
+        DB::table('product_costs')->insert([
+            'product_id'       => $product->id,
+            'price'            => $price,
+            'cost'             => $cost,
+            'date'             => $timestamp,
+            'created_by'       => $this->userName,
+            'last_modified_by' => $this->userName,
+            'created_at'       => $timestamp,
+            'updated_at'       => $timestamp,
+        ]);
     }
+}
 }
