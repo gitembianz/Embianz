@@ -140,6 +140,12 @@
                             <label>CompanyIban</label>
                         </div>
                     @endif
+                    <div class="input__tabs details__long">
+
+        <input type="checkbox" wire:model.defer="personalDropoff" class="checkbox__details" style="width:auto">
+        <label>Easybox</label>
+
+</div>
                     <button class="button button--primary button--long" wire:click.prevent="generate_awb_sameday()">
                         <span>Generate AWB</span>
                     </button>
