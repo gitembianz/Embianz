@@ -43,6 +43,7 @@ class ShowOrder extends Component
   public $needupdatetokens = false;
   public $samedaymessage = null;
   public $fancouriermessage = null;
+  public bool $personalDropoff = false; // easybox;
   public array $parcel = [
     'weight' => 0.1,
     'length' => 15,
@@ -440,203 +441,236 @@ $this->person = !empty($this->persons) ? end($this->persons)['id'] : null;
     return;
   }
 
-  public function generate_awb_sameday()
-  {
+public function generate_awb_sameday()
+{
     $token = Store_Settings::where('parameter', 'sam_token')->value('value');
     $client = new \GuzzleHttp\Client();
 
-    // Asigură-te că URL-ul are slash la final sau adaugă-l
     $apiUrl = rtrim($this->samUrl, '/') . '/api/awb';
 
-    // Determină ID-ul taxei PDO în funcție de serviciu
-    // Conform fișierului tău paste.txt (Feb 2026)
-    $serviceId = (int) $this->service;
-    $pdoTaxId = 566231; // Default pentru 24H (7) - Colet
+    $packageType = 0; // colet standard
+    $serviceTaxes = [];
 
-    if (in_array($serviceId, [15, 24, 57])) {
-       // Pentru Locker NextDay (15), Locker Retur (24), Pudo Nextday (57)
-       $pdoTaxId = 566300;
-    } elseif ($serviceId == 22) {
-       // Colet la schimb (22)
-       $pdoTaxId = 566267;
+    // Dacă userul a bifat checkbox-ul "Predare personală (PDO)"
+    if ($this->personalDropoff) {
+        try {
+            $servicesResponse = $client->get(rtrim($this->samUrl, '/') . '/api/client/services', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-AUTH-TOKEN' => $token,
+                ],
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ]);
+
+            $servicesBody = json_decode($servicesResponse->getBody(), true);
+            $servicesList = $servicesBody['data'] ?? $servicesBody;
+
+            $pdoTaxId = null;
+            foreach ($servicesList as $srv) {
+                if ((int) $srv['id'] === (int) $this->service && !empty($srv['serviceOptionalTaxes'])) {
+                    foreach ($srv['serviceOptionalTaxes'] as $tax) {
+                        if (
+                            isset($tax['taxCode'], $tax['packageType'], $tax['id']) &&
+                            $tax['taxCode'] === 'PDO' &&
+                            (int) $tax['packageType'] === $packageType
+                        ) {
+                            $pdoTaxId = $tax['id'];
+                            break 2;
+                        }
+                    }
+                }
+            }
+
+            if ($pdoTaxId) {
+                $serviceTaxes = [$pdoTaxId];
+            } else {
+                \Log::warning('Sameday: PDO tax not found for service '.$this->service.' and packageType '.$packageType);
+            }
+        } catch (\Throwable $ex) {
+            \Log::error('Sameday: failed to load serviceOptionalTaxes: '.$ex->getMessage());
+            // dacă pică, mergem fără serviceTaxes
+        }
     }
-    // ... poți adăuga altele dacă e cazul
 
     $shippingAddress = $this->order->shipping;
-    $awbData = [
-      'pickupPoint' => (int) $this->pickup_point,
-      'contactPerson' => (int) $this->person,
-      'service' => (int) $this->service,
-      'packageType' => 0,
-      'packageNumber' => 1,
-      'packageWeight' => $this->parcel['weight'],
-      'insuredValue' => 0,
-      'cashOnDelivery' => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
-      'awbPayment' => 1,
-      'thirdPartyPickup' => 0,
-      'notifyRecipient' => true,
-      
-      // ✅ ID-ul corect selectat
-      'serviceTaxes' => [$pdoTaxId],
-      
-      'awbRecipient' => array_merge([
-        'name' => $this->recipe['name'],
-        'phoneNumber' => $this->recipe['phoneNumber'],
-        'email' => $this->recipe['email'],
-        'personType' => $this->order->account->type === 'individual' ? 0 : 1,
-        'countyString' => $this->recipe['countyString'],
-        'cityString' => $this->recipe['cityString'],
-        'address' => $this->recipe['address'],
-        'postalCode' => $this->recipe['postalCode'],
-      ], $this->order->account->type !== 'individual' ? [
-        'companyName' => $this->recipe['companyName'],
-        'companyOnrcNumber' => $this->recipe['companyOnrcNumber'],
-        'companyIban' => $this->recipe['companyIban'],
-        'companyBank' => $this->recipe['companyBank'],
-        'companyCui' => $this->recipe['companyCui'],
-      ] : []),
 
-      'parcels' => [
-        [
-          'weight' => $this->parcel['weight'],
-          'length' =>  $this->parcel['length'],
-          'width' =>  $this->parcel['width'],
-          'height' =>  $this->parcel['height'],
+    $awbData = [
+        'pickupPoint'      => (int) $this->pickup_point,
+        'contactPerson'    => (int) $this->person,
+        'service'          => (int) $this->service,
+        'packageType'      => $packageType,
+        'packageNumber'    => 1,
+        'packageWeight'    => $this->parcel['weight'],
+        'insuredValue'     => 0,
+        'cashOnDelivery'   => $this->order->payment->name === 'cash' ? $this->order->final_amount : 0,
+        'awbPayment'       => 1,
+        'thirdPartyPickup' => 0,
+        'notifyRecipient'  => true,
+
+        'awbRecipient' => array_merge([
+            'name'         => $this->recipe['name'],
+            'phoneNumber'  => $this->recipe['phoneNumber'],
+            'email'        => $this->recipe['email'],
+            'personType'   => $this->order->account->type === 'individual' ? 0 : 1,
+            'countyString' => $this->recipe['countyString'],
+            'cityString'   => $this->recipe['cityString'],
+            'address'      => $this->recipe['address'],
+            'postalCode'   => $this->recipe['postalCode'],
+        ], $this->order->account->type !== 'individual' ? [
+            'companyName'       => $this->recipe['companyName'],
+            'companyOnrcNumber' => $this->recipe['companyOnrcNumber'],
+            'companyIban'       => $this->recipe['companyIban'],
+            'companyBank'       => $this->recipe['companyBank'],
+            'companyCui'        => $this->recipe['companyCui'],
+        ] : []),
+
+        'parcels' => [
+            [
+                'weight' => $this->parcel['weight'],
+                'length' => $this->parcel['length'],
+                'width'  => $this->parcel['width'],
+                'height' => $this->parcel['height'],
+            ],
         ],
-      ],
     ];
 
+    // Adăugăm serviceTaxes doar dacă avem ceva valid
+    if (!empty($serviceTaxes)) {
+        $awbData['serviceTaxes'] = $serviceTaxes;
+    }
+
     try {
-      // ✅ Folosim URL-ul corectat
-      $response = $client->post($apiUrl, [
-        'headers' => [
-          'Accept' => 'application/json',
-          'Content-Type' => 'application/x-www-form-urlencoded',
-          'X-AUTH-TOKEN' => $token,
-        ],
-        'form_params' => $awbData,
-        'curl' => [
-          CURLOPT_SSL_VERIFYPEER => false,
-        ],
-      ]);
-
-      $responseData = json_decode($response->getBody(), true);
-
-      if (!empty($responseData['pdfLink'])) {
-        $pdfResponse = $client->get($responseData['pdfLink'], [
-          'headers' => [
-            'X-AUTH-TOKEN' => $token,
-          ],
-          'curl' => [
-            CURLOPT_SSL_VERIFYPEER => false,
-          ],
+        $response = $client->post($apiUrl, [
+            'headers' => [
+                'Accept'       => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'X-AUTH-TOKEN' => $token,
+            ],
+            'form_params' => $awbData,
+            'curl'        => [
+                CURLOPT_SSL_VERIFYPEER => false,
+            ],
         ]);
 
-        $pdfContent = $pdfResponse->getBody()->getContents();
+        $responseData = json_decode($response->getBody(), true);
 
-        $dir = public_path('documents');
-        if (!file_exists($dir)) {
-          mkdir($dir, 0777, true);
+        if (!empty($responseData['pdfLink'])) {
+            $pdfResponse = $client->get($responseData['pdfLink'], [
+                'headers' => [
+                    'X-AUTH-TOKEN' => $token,
+                ],
+                'curl' => [
+                    CURLOPT_SSL_VERIFYPEER => false,
+                ],
+            ]);
+
+            $pdfContent = $pdfResponse->getBody()->getContents();
+
+            $dir = public_path('documents');
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+
+            $awbNumber = $responseData['awbNumber'] ?? $this->order->order_number;
+            $date = now(config('app.timezone'))->format('d-m-Y');
+            $prefix = app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669';
+
+            $fileName = $prefix.'_'.
+                        $this->order->invoice_series.'_'.
+                        $this->order->external_invoice_number.'_'.
+                        $date.'_'.$awbNumber.'.pdf';
+
+            $pdfFilePath = $dir.'/'.$fileName;
+            file_put_contents($pdfFilePath, $pdfContent);
+
+            $path = 'documents/'.$fileName;
+
+            Awbs::create([
+                'order_id' => $this->order->id,
+                'date'     => now(config('app.timezone')),
+                'type'     => 'sameday',
+                'path'     => $path,
+            ]);
+
+            $this->recipe = [
+                'name'              => null,
+                'phoneNumber'       => null,
+                'email'             => null,
+                'countyString'      => null,
+                'cityString'        => null,
+                'address'           => null,
+                'postalCode'        => null,
+                'companyName'       => null,
+                'companyOnrcNumber' => null,
+                'companyIban'       => null,
+                'companyBank'       => null,
+                'companyCui'        => null,
+            ];
+
+            session()->flash('notification', [
+                'message' => 'AWB generated and saved successfully!',
+                'type'    => 'success',
+                'title'   => 'Success',
+            ]);
+        } else {
+            throw new \Exception('AWB generated but PDF link not found.');
         }
 
-        $awbNumber = $responseData['awbNumber'] ?? $this->order->order_number;
-        $date = now(config('app.timezone'))->format('d-m-Y');
-        $prefix = app()->has('label_xml_filename') ? app('label_xml_filename') : 'F_41903669';
-
-        $fileName = $prefix . '_' . 
-                    $this->order->invoice_series . '_' . 
-                    $this->order->external_invoice_number . '_' . 
-                    $date . '_' . $awbNumber . '.pdf';
-
-        $pdfFilePath = $dir . '/' . $fileName;
-        file_put_contents($pdfFilePath, $pdfContent);
-
-        $path = 'documents/' . $fileName;
-
-        Awbs::create([
-          'order_id' => $this->order->id,
-          'date' => now(config('app.timezone')),
-          'type' => 'sameday',
-          'path' => $path
-        ]);
-
+        $this->sameday = false;
         $this->recipe = [
-          'name' => null,
-          'phoneNumber' => null,
-          'email' => null,
-          'countyString' => null,
-          'cityString' => null,
-          'address' => null,
-          'postalCode' => null,
-          'companyName' => null,
-          'companyOnrcNumber' => null,
-          'companyIban' => null,
-          'companyBank' => null,
-          'companyCui' => null,
+            'name'              => null,
+            'phoneNumber'       => null,
+            'email'             => null,
+            'countyString'      => null,
+            'cityString'        => null,
+            'address'           => null,
+            'postalCode'        => null,
+            'companyName'       => null,
+            'companyOnrcNumber' => null,
+            'companyIban'       => null,
+            'companyBank'       => null,
+            'companyCui'        => null,
         ];
 
         session()->flash('notification', [
-          'message' => 'AWB generated and saved successfully!',
-          'type' => 'success',
-          'title' => 'Success'
+            'message' => 'AWB generated successfully!',
+            'type'    => 'success',
+            'title'   => 'Success',
         ]);
-      } else {
-        throw new \Exception('AWB generated but PDF link not found.');
-      }
-      $this->sameday = false;
-      $this->recipe = [
-        'name' => null,
-        'phoneNumber' => null,
-        'email' => null,
-        'countyString' => null,
-        'cityString' => null,
-        'address' => null,
-        'postalCode' => null,
-        'companyName' => null,
-        'companyOnrcNumber' => null,
-        'companyIban' => null,
-        'companyBank' => null,
-        'companyCui' => null,
-      ];
-      session()->flash('notification', [
-        'message' => 'AWB generated successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-      return;
+        return;
     } catch (\GuzzleHttp\Exception\RequestException $e) {
-      Log::error('Sameday AWB generation failed: ' . $e->getMessage());
+        Log::error('Sameday AWB generation failed: '.$e->getMessage());
 
-      if ($e->hasResponse()) {
-        $errorBody = json_decode($e->getResponse()->getBody(), true);
-        
-        // Loghează eroarea completă ca să fii sigur
-        Log::error('Sameday API Error Body: ', (array)$errorBody);
+        if ($e->hasResponse()) {
+            $errorBody = json_decode($e->getResponse()->getBody(), true);
 
-        if (
-          isset($errorBody['error']['message']) &&
-          $errorBody['error']['message'] === 'Invalid credentials.'
-        ) {
-          $token = $this->get_sameday_token();
-          return $this->generate_awb_sameday();
+            Log::error('Sameday API Error Body: ', (array) $errorBody);
+
+            if (
+                isset($errorBody['error']['message']) &&
+                $errorBody['error']['message'] === 'Invalid credentials.'
+            ) {
+                $token = $this->get_sameday_token();
+                return $this->generate_awb_sameday();
+            }
+
+            $errorsList = $errorBody['errors']['children'] ?? [];
+            $allErrors  = $this->extractErrors($errorsList);
+
+            $msg = $allErrors[0] ?? json_encode($errorBody);
+
+            session()->flash('notification', [
+                'message' => "AWB creation failed with the following:\n".$msg,
+                'type'    => 'error',
+                'title'   => 'Validation Error',
+            ]);
+            $this->samedaymessage = $msg;
         }
-        
-        // Verifică structura erorilor (uneori e 'errors', alteori 'error')
-        $errorsList = $errorBody['errors']['children'] ?? [];
-        $allErrors = $this->extractErrors($errorsList);
-        
-        $msg = $allErrors[0] ?? json_encode($errorBody); // Fallback message
-
-        session()->flash('notification', [
-          'message' => "AWB creation failed with the following:\n" . $msg,
-          'type' => 'error',
-          'title' => 'Validation Error',
-        ]);
-        $this->samedaymessage = $msg;
-      }
-      return;
+        return;
     }
-  }
+}
 
 
   public function extractErrors(array $errors, string $prefix = ''): array
