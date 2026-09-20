@@ -771,12 +771,30 @@ class StoreOrder extends Component
         ]);
 
         $this->emit('orderprocess');
+try {
+    \Illuminate\Support\Facades\Log::info('Inainte de trimitere mail comanda', [
+        'order_id' => $order->id,
+        'order_number' => $order->order_number,
+        'email' => $order->account->email,
+    ]);
 
-        try {
-          Mail::to($order->account->email)->send(new ConfirmationOrder($order));
-        } catch (\Throwable $th) {
-          return;
-        }
+    Mail::to($order->account->email)->send(new ConfirmationOrder($order));
+
+    \Illuminate\Support\Facades\Log::info('Dupa trimitere mail comanda', [
+        'order_id' => $order->id,
+        'order_number' => $order->order_number,
+    ]);
+} catch (\Throwable $th) {
+    \Illuminate\Support\Facades\Log::error('Eroare la trimitere mail comanda', [
+        'order_id' => $order->id,
+        'order_number' => $order->order_number,
+        'email' => $order->account->email,
+        'exception' => get_class($th),
+        'message' => $th->getMessage(),
+    ]);
+
+    // Nu mai facem return; aici, ca să vedem eroarea în log
+}
         $this->dispatchBrowserEvent('goup');
       } else {
         $this->cart->update(['order_id' => $order->id, 'status_id' => app('global_statuses')['cart_check_payment']]);
