@@ -378,8 +378,8 @@ function view_item_list() {
     const cardTitle = product.querySelector('.card-title a');
     const dlv_name = cardTitle?.innerText?.trim();
     
-    // Get price from card-price span
-    const priceElement = product.querySelector('.card-price');
+    // Get price from hidden .dlv_price (numar curat, fara separator de mii)
+    const priceElement = product.querySelector('.dlv_price');
     const dlv_price = parseFloat(
       priceElement?.innerText?.trim().replace(',', '.') || 0
     );

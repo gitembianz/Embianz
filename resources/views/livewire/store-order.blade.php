@@ -1971,15 +1971,7 @@
                         <span class="dlv_value">{{ $new_order->final_amount }}</span>
                         <span class="dlv_coupon">{{ optional($new_order->voucher)->code }}</span>
                         <span class="dlv_transaction">{{ $new_order->order_number }}</span>
-                        <span class="dlv_shipping">
-                            @if ($new_order->delivery_price == 0)
-                                Gratuit
-                            @else
-                                {{ $new_order->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
-                                    {!! app('global_currency_primary_symbol') !!}
-                                @endif
-                            @endif
-                        </span>
+                        <span class="dlv_shipping">{{ number_format((float) $new_order->delivery_price, 2, '.', '') }}</span>
                         @foreach ($new_order->orders as $cartItem)
                             <div class="dlv_item">
                                 <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
