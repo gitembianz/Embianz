@@ -327,7 +327,7 @@
                                 </p>
                                 <div style="display: none">
                                     <span class="dlv_name">{{ $element->name }}</span>
-                                    <span class="dlv_price">{{ $price }}</span>
+                                    <span class="dlv_price">{{ str_replace($mill, '', $price ?? '') }}</span>
                                     <span class="dlv_currency">
                                         @if (app()->has('global_currency_primary_name'))
                                             {!! app('global_currency_primary_name') !!}

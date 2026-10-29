@@ -337,7 +337,7 @@
      {!! app('global_currency_primary_symbol') !!}
     @endif
    </span>
-   <span class="dlv_value">{{ number_format($cart->sum_amount, 2, $decimal, $mill) }}</span>
+   <span class="dlv_value">{{ number_format($cart->sum_amount, 2, '.', '') }}</span>
    @foreach ($cart->cartItems as $cartItem)
     <div class="dlv_item">
      <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
