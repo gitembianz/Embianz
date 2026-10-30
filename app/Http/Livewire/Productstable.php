@@ -694,10 +694,10 @@ class Productstable extends Component
       $productType = class_basename(get_class($product));
       $filespath = 'media/' . $productType . '/';
       if (!\App\Helpers\MediaHelper::exists($filespath)) {
-        File::makeDirectory($filespath, 0755, true);
+        \App\Helpers\MediaHelper::makeDirectory($filespath);
       }
       if (!\App\Helpers\MediaHelper::exists($filespath . $product->id)) {
-        File::makeDirectory($filespath . $product->id, 0755, true);
+        \App\Helpers\MediaHelper::makeDirectory($filespath . $product->id);
       }
       $path = $filespath . $product->id . "/";
 

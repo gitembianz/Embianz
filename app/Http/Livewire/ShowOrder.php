@@ -911,7 +911,7 @@ public function generate_invoice_number($auto = false)
     $invoicePath = 'invoices/';
     $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
     if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
-      File::makeDirectory($yearMonthPath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($yearMonthPath);
     }
 
     $date = $invoiceDate->format('d-m-Y');
@@ -1399,7 +1399,7 @@ public function generate_invoice_number($auto = false)
     $yearMonthPath = $invoicePath . $invoiceDate->year . '/' . $invoiceDate->format('F');
 
     if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
-      File::makeDirectory($yearMonthPath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($yearMonthPath);
     }
 
 
@@ -1458,7 +1458,7 @@ public function generate_invoice_number($auto = false)
     $yearMonthPath = $StornoPath . $stornoDate->year . '/' . $stornoDate->format('F');
 
     if (!\App\Helpers\MediaHelper::exists($yearMonthPath)) {
-      File::makeDirectory($yearMonthPath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($yearMonthPath);
     }
 
 

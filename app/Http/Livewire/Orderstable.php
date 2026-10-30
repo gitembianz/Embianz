@@ -971,7 +971,7 @@ class Orderstable extends Component
       "_{$this->start_date}_to_{$this->end_date}.xml";
 
     if (!\App\Helpers\MediaHelper::exists($invoicePath)) {
-      File::makeDirectory($invoicePath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($invoicePath);
     }
 
     \App\Helpers\MediaHelper::put($invoicePath . $fileName, $xml->asXML());

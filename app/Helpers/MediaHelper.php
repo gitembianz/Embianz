@@ -20,6 +20,15 @@ class MediaHelper
         return file_exists(public_path($path));
     }
 
+    /**
+     * Directorul in public/ (cu parintii lui). Calea relativa la directorul curent nu e buna:
+     * sub Octane directorul curent e vendor/laravel/octane/bin, nu public/.
+     */
+    public static function makeDirectory($path)
+    {
+        \Illuminate\Support\Facades\File::ensureDirectoryExists(public_path($path), 0755);
+    }
+
     public static function put($path, $content)
     {
         return file_put_contents(public_path($path), $content);

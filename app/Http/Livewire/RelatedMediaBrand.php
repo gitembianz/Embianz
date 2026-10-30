@@ -132,10 +132,10 @@ class RelatedMediaBrand extends Component
     $productType = class_basename(get_class($this->brand));
     $filespath = 'media/' . $productType . '/';
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($filespath);
     }
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->brand->id)) {
-      File::makeDirectory($filespath . $this->brand->id, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($filespath . $this->brand->id);
     }
     $path = $filespath . $this->brand->id . "/";
 
@@ -312,10 +312,10 @@ class RelatedMediaBrand extends Component
     $productType = class_basename(get_class($this->brand));
     $filespath = 'media/' . $productType . '/';
     if (!\App\Helpers\MediaHelper::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($filespath);
     }
     if (!\App\Helpers\MediaHelper::exists($filespath . $this->brand->id)) {
-      File::makeDirectory($filespath . $this->brand->id, 0755, true);
+      \App\Helpers\MediaHelper::makeDirectory($filespath . $this->brand->id);
     }
     $path = $filespath . $this->brand->id . "/";
 
