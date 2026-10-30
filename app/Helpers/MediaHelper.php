@@ -21,17 +21,39 @@ class MediaHelper
     }
 
     /**
-     * Directorul in public/ (cu parintii lui). Calea relativa la directorul curent nu e buna:
-     * sub Octane directorul curent e vendor/laravel/octane/bin, nu public/.
+     * Directorul in public/, cu parintii lui si cu drepturi de scriere pentru server si pentru deploy (0775).
+     * Calea relativa la directorul curent nu e buna: sub Octane directorul curent e vendor/laravel/octane/bin, nu public/.
      */
     public static function makeDirectory($path)
     {
-        \Illuminate\Support\Facades\File::ensureDirectoryExists(public_path($path), 0755);
+        $current = rtrim(public_path(), '/');
+
+        foreach (array_filter(explode('/', trim($path, '/')), 'strlen') as $part) {
+            $current .= '/' . $part;
+
+            if (is_dir($current)) {
+                continue;
+            }
+
+            // Doua cereri pot crea acelasi director in acelasi timp: conteaza sa existe la final
+            if (!@mkdir($current, 0775) && !is_dir($current)) {
+                throw new \RuntimeException("Cannot create the folder $path. Check the permissions of " . dirname($current));
+            }
+
+            // mkdir tine cont de umask
+            @chmod($current, 0775);
+        }
     }
 
     public static function put($path, $content)
     {
-        return file_put_contents(public_path($path), $content);
+        $written = file_put_contents(public_path($path), $content);
+
+        if ($written !== false) {
+            @chmod(public_path($path), 0664);
+        }
+
+        return $written;
     }
 
     public static function get($path)
